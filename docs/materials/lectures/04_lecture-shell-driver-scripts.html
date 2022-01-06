@@ -1,0 +1,480 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture 4 - Data Analysis pipelines using a shell script &#8212; DSCI 310 Reproducibke and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducibke and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_lecture-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data analysis?
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/04_lecture-shell-driver-scripts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/04_lecture-shell-driver-scripts.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/04_lecture-shell-driver-scripts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-objectives">
+   Learning Objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-analysis-pipelines">
+   Data analysis pipelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#building-a-data-analysis-pipeline-using-a-shell-script-tutorial">
+   Building a Data Analysis pipeline using a Shell script tutorial
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#set-up-instructions">
+     Set-up instructions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#let-s-do-some-analysis">
+     Let’s do some analysis!
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#another-example">
+   Another example:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#closing-thoughts">
+   Closing thoughts
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-s-next">
+   What’s next?
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="lecture-4-data-analysis-pipelines-using-a-shell-script">
+<h1>Lecture 4 - Data Analysis pipelines using a shell script<a class="headerlink" href="#lecture-4-data-analysis-pipelines-using-a-shell-script" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="learning-objectives">
+<h2>Learning Objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of the lecture, students are expected to be able to:</p>
+<ul class="simple">
+<li><p>Create a data analysis pipeline using R, Python and the Unix shell to run multiple scripts</p></li>
+</ul>
+</div>
+<div class="section" id="data-analysis-pipelines">
+<h2>Data analysis pipelines<a class="headerlink" href="#data-analysis-pipelines" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>As analysis grows in length and complexity, one literate code document generally is not enough</p></li>
+<li><p>To improve code report readability (and code reproducibility and modularity) it is better to abstract at least parts of the code away (e.g, to scripts)</p></li>
+<li><p>These scripts save figures and tables that will be imported into the final report</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/scripts.png"><img alt="../../_images/scripts.png" src="../../_images/scripts.png" style="width: 600px;" /></a>
+<div class="figure align-left" id="scripts">
+<a class="reference internal image-reference" href="../../_images/scripts.png"><img alt="../../_images/scripts.png" src="../../_images/scripts.png" style="width: 800px;" /></a>
+</div>
+</div>
+<div class="section" id="building-a-data-analysis-pipeline-using-a-shell-script-tutorial">
+<h2>Building a Data Analysis pipeline using a Shell script tutorial<a class="headerlink" href="#building-a-data-analysis-pipeline-using-a-shell-script-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>adapted from <a class="reference external" href="http://software-carpentry.org/">Software Carpentry</a></p>
+<p>To illustrate how to make a data analysis pipeline using a shell script to drive other scripts, we will work through an example together. Here are some set-up instructions so that we can do this together:</p>
+<div class="section" id="set-up-instructions">
+<h3>Set-up instructions<a class="headerlink" href="#set-up-instructions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v1.0.zip">data_analysis_pipeline_eg-1.0.zip</a></p></li>
+<li><p>Unzip it and change into the <code class="docutils literal notranslate"><span class="pre">data_analysis_pipeline_eg-1.0</span></code> directory.</p></li>
+</ul>
+</div>
+<div class="section" id="let-s-do-some-analysis">
+<h3>Let’s do some analysis!<a class="headerlink" href="#let-s-do-some-analysis" title="Permalink to this headline">¶</a></h3>
+<p>Suppose we have a script, <code class="docutils literal notranslate"><span class="pre">wordcount.py</span></code>, that reads in a text file,
+counts the words in this text file, and outputs a data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/wordcount.py data/isles.txt results/isles.dat
+</pre></div>
+</div>
+<p>If we view the first 5 rows of the data file using <code class="docutils literal notranslate"><span class="pre">head</span></code>,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ head -5 results/isles.dat
+</pre></div>
+</div>
+<p>we can see that the file consists of one row per word. Each row shows the word itself,
+the number of occurrences of that word, and the number of occurrences as a percentage of
+the total number of words in the text file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">the</span> <span class="mi">3822</span> <span class="mf">6.7371760973</span>
+<span class="n">of</span> <span class="mi">2460</span> <span class="mf">4.33632998414</span>
+<span class="ow">and</span> <span class="mi">1723</span> <span class="mf">3.03719372466</span>
+<span class="n">to</span> <span class="mi">1479</span> <span class="mf">2.60708619778</span>
+<span class="n">a</span> <span class="mi">1308</span> <span class="mf">2.30565838181</span>
+</pre></div>
+</div>
+<p>Suppose we also have a script, <code class="docutils literal notranslate"><span class="pre">plotcount.py</span></code>, that reads in a data
+file and save a plot of the 10 most frequently occurring words:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/plotcount.py results/isles.dat results/figure/isles.png
+</pre></div>
+</div>
+<p>Together these scripts implement a data analysis pipeline:</p>
+<ol class="simple">
+<li><p>Read a data file.</p></li>
+<li><p>Perform an analysis on this data file.</p></li>
+<li><p>Write the analysis results to a new file.</p></li>
+<li><p>Plot a graph of the analysis results.</p></li>
+</ol>
+<p>To document how we’d like the analysis to be run, so we (and others) have a record and
+can replicate it, we will build a shell script called <code class="docutils literal notranslate"><span class="pre">run_all.sh</span></code>. Let’s work to try
+to build this pipeline so it does all that!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Nov 2017</span>
+<span class="c1">#</span>
+<span class="c1"># This driver script completes the textual analysis of</span>
+<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
+<span class="c1"># occuring words from each of the 3 novels. This script</span>
+<span class="c1"># takes no arguments.</span>
+<span class="c1">#</span>
+<span class="c1"># Usage: bash run_all.sh</span>
+
+<span class="c1"># perform wordcout on novels</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="c1"># create plots</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+<p>We actually have 4 books that we want to analyze, and then put the figures in a report.</p>
+<ol class="simple">
+<li><p>Read a data file.</p></li>
+<li><p>Perform an analysis on this data file.</p></li>
+<li><p>Write the analysis results to a new file.</p></li>
+<li><p>Plot a graph of the analysis results.</p></li>
+<li><p>Save the graph as an image, so we can put it in a paper.</p></li>
+</ol>
+<p>Let’s extend our shell script to do that!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Nov 2018</span>
+
+<span class="c1"># This driver script completes the textual analysis of</span>
+<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
+<span class="c1"># occuring words from each of the 3 novels. This script</span>
+<span class="c1"># takes no arguments.</span>
+
+<span class="c1"># example usage:</span>
+<span class="c1"># bash run_all.sh</span>
+
+<span class="c1"># count the words</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="c1"># create the plots</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+
+<span class="c1"># write the report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="another-example">
+<h2>Another example:<a class="headerlink" href="#another-example" title="Permalink to this headline">¶</a></h2>
+<p>From the <a class="reference external" href="https://github.com/ttimbers/breast_cancer_predictor">breast cancer prediction example analysis repo</a>, here is a data analysis pipeline using a shell script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Jan 2020</span>
+
+<span class="c1"># download data</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">download_data</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">out_type</span><span class="o">=</span><span class="n">feather</span> <span class="o">--</span><span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">archive</span><span class="o">.</span><span class="n">ics</span><span class="o">.</span><span class="n">uci</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">ml</span><span class="o">/</span><span class="n">machine</span><span class="o">-</span><span class="n">learning</span><span class="o">-</span><span class="n">databases</span><span class="o">/</span><span class="n">breast</span><span class="o">-</span><span class="n">cancer</span><span class="o">-</span><span class="n">wisconsin</span><span class="o">/</span><span class="n">wpbc</span><span class="o">.</span><span class="n">data</span> <span class="o">--</span><span class="n">out_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span>
+
+<span class="c1"># run eda report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;src/breast_cancer_eda.Rmd&#39;)&quot;</span>
+
+<span class="c1"># pre-process data </span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">pre_process_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="nb">input</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span> 
+
+<span class="c1"># create exploratory data analysis figure and write to file </span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">eda_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># tune model</span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">fit_breast_cancer_predict_model</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># test model</span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">breast_cancer_test_results</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">test</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># render final report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/breast_cancer_predict_report.Rmd&#39;, output_format = &#39;github_document&#39;)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="closing-thoughts">
+<h2>Closing thoughts<a class="headerlink" href="#closing-thoughts" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>What are the advantages to using a data analysis pipeline?</p></li>
+<li><p>How “good” is a shell script as a data analysis pipeline? What might not be ideal about this?</p></li>
+</ul>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Using a smart dependency tool, GNU Make, to make smarter pipelines.</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
