@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # How do reproducible and trustworthy workflows impact data analysis?
+# # How do reproducible and trustworthy workflows impact data science?
 
 # ## Week learning objectives
 # 
@@ -50,6 +50,18 @@
 # 
 # 3. having an incomplete record of how and why analysis decisions were made
 
+# ### What makes trustworthy data science?
+# 
+# Some possible criteria:
+# 
+# 1. It should be reproducible and auditable
+# 
+# 2. It should be correct 
+# 
+# 3. It should be fair, equitable and honest
+
+# There are many ways a data science can be untrustworthy... In this course we will focus on workflows that can help build trust. I highly recommend taking a course in data science ethics to help round out your education in how to do this. Further training in statistics and machine learning will also help with making sure your analysis is correct.
+
 # ### Is this really important?
 # 
 # Yes! There are both small and big ways this can impact your work.
@@ -62,7 +74,9 @@
 #     
 #     *--Tiffany Timbers*
 # 
+# 
 # 2. When prompted, paste your story in the Google doc (link to be shared in class)
+# 
 # 
 # 3. Finally, we will take 10 minutes to read at least 3 other stories from the trenches that have been shared.
 
@@ -539,16 +553,6 @@
 # 
 # - Many ways a data analysis can be untrustworthy... just because a data analysis is reproducible and auditable, doesn't mean it is fully trustworthy. But a data analysis is not trustworthy if it cannot be reproduced or studied...
 # 
-
-# ### What makes a trustworthy data analysis
-# 
-# Some possible criteria:
-# 
-# 1. It should be reproducible and auditable
-# 
-# 2. It should be correct 
-# 
-# 3. It should be fair, equitable and honest
 
 # ### What's next?
 # 
