@@ -1,0 +1,977 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture 2 - Scaling up: read-eval-print-loop (REPL) processes versus non-interactive scripts &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_lecture-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/old_02_lecture-intro-to-scripts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/old_02_lecture-intro-to-scripts.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/old_02_lecture-intro-to-scripts.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-objectives">
+   Learning Objectives:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">
+     Read-eval-print-loop (REPL) framework (
+     <em>
+      i.e.,
+     </em>
+     interactive mode) versus Scripts
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-is-a-script">
+   What is a script?
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-write-scripts">
+     Why write scripts?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#scripts-in-r">
+     Scripts in R
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#our-first-r-script">
+       Our first R script:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#running-our-first-r-script">
+       Running our first R script
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-couple-notes-about-scripts">
+       A couple notes about scripts
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#script-structure-and-organization">
+     Script structure and organization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#example-r-script-organization">
+       Example R script organization:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#example-python-script-organization">
+       Example Python script organization:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id1">
+   Scripts in R:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#note-on-functions-and-tests-in-scripts">
+     Note on functions and tests in scripts
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-command-line-arguments-in-r">
+     Using command line arguments in R
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#positional-arguments-vs-options">
+     Positional arguments vs options
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optional-elements-arguments-or-options">
+     Optional elements (arguments or options)
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#improving-our-docs">
+       Improving our docs
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#scripts-in-python">
+   Scripts in Python
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#where-to-develop-scripts-in-python">
+     Where to develop scripts in Python
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#in-a-integrated-development-environment-ide">
+       In a integrated development environment (IDE):
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#in-a-jupyter-notebook">
+       In a Jupyter notebook:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#tldr">
+       TLDR;
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#command-line-arguments-in-python-explained">
+     Command line arguments in Python explained
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">
+   Some tips for RStudio IDE:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-we-covered">
+   What we covered:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-s-next">
+   What’s next?
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="lecture-2-scaling-up-read-eval-print-loop-repl-processes-versus-non-interactive-scripts">
+<h1>Lecture 2 - Scaling up: read-eval-print-loop (REPL) processes versus non-interactive scripts<a class="headerlink" href="#lecture-2-scaling-up-read-eval-print-loop-repl-processes-versus-non-interactive-scripts" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="learning-objectives">
+<h2>Learning Objectives:<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of the lecture, students should be able to:</p>
+<ul class="simple">
+<li><p>Explain when it is optimal to work in a read-eval-print-loop (REPL) framework and when it is optimal to shift to using non-interactive scripts</p></li>
+<li><p>Be able to create simple scripts in Python and R that can take input and be executed from the command line</p></li>
+</ul>
+<div class="section" id="read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">
+<h3>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts<a class="headerlink" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Up until now, we have primarily been using R and Python in an Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode)</p></li>
+<li><p>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is when we run our code in the console in R/Python, or in cells/chunks in the RStudio/Juptyer notebooks</p></li>
+<li><p>A Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is very useful for:</p>
+<ul>
+<li><p>solving small problems</p></li>
+<li><p>developing code that will be knit to an analytic report</p></li>
+<li><p>developing code that will be run as a script (i.e., in “batch” mode)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="what-is-a-script">
+<h2>What is a script?<a class="headerlink" href="#what-is-a-script" title="Permalink to this headline">¶</a></h2>
+<p>An R/Python script is simply a plain text file containing (almost) the same commands that you would enter into R/Python’s console or in cells/chunks in the RStudio/Juptyer notebooks. We often run these from top to bottom from the command line/unix shell.</p>
+<div class="section" id="why-write-scripts">
+<h3>Why write scripts?<a class="headerlink" href="#why-write-scripts" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Efficiency!</p></li>
+<li><p>Automation!</p></li>
+<li><p>Reusable!</p></li>
+<li><p>Record of what you have done!</p></li>
+</ul>
+</div>
+<div class="section" id="scripts-in-r">
+<h3>Scripts in R<a class="headerlink" href="#scripts-in-r" title="Permalink to this headline">¶</a></h3>
+<p>Let’s start with a small, simple example to demonstrate how we write and run scripts in R (it is very similar in Python and we will get to this later in the lesson).</p>
+<p>Our script will be called <code class="docutils literal notranslate"><span class="pre">print_mean_hp.R</span></code>, and it will calculate the mean horsepower of the cars from the built-in R data frame <code class="docutils literal notranslate"><span class="pre">mtcars</span></code>.</p>
+<p>We will develop this script inside RStudio, make sure it works, and then run it from the command line/terminal/Git bash.</p>
+<div class="section" id="our-first-r-script">
+<h4>Our first R script:<a class="headerlink" href="#our-first-r-script" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean horsepower of the cars from the built-in 
+# R data frame `mtcars`. This script takes no arguments.
+#
+# Usage: Rscript print_mean_hp.R
+
+mean_hp &lt;- mean(mtcars$hp)
+print(mean_hp)
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-our-first-r-script">
+<h4>Running our first R script<a class="headerlink" href="#running-our-first-r-script" title="Permalink to this headline">¶</a></h4>
+<p>To run our R script, we need to open the command line/terminal/Git bash, and either navigate to the directory that houses the script OR point to it when we call it. We will do the former.</p>
+<p>Then to run the R script, we use the <code class="docutils literal notranslate"><span class="pre">Rscript</span></code> command, followed by the name/path to the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">print_mean_hp</span><span class="o">.</span><span class="n">R</span>
+</pre></div>
+</div>
+<p>The output should be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mf">146.6875</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-couple-notes-about-scripts">
+<h4>A couple notes about scripts<a class="headerlink" href="#a-couple-notes-about-scripts" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>If you want something to be output to the command line/terminal/Git bash, you <strong>should</strong> explicitly ask for it to be print. <em>This is not an absolute requirement in R, but it is in Python!</em></p></li>
+<li><p>Similar with figures, they need to be saved! You will never see a figure created in a script unless you write it to a file.</p></li>
+<li><p>From a reproducibility perspective, if we want input from the user, usually we will design the scripts to take command line arguments, and not use keyboard/user prompts.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="script-structure-and-organization">
+<h3>Script structure and organization<a class="headerlink" href="#script-structure-and-organization" title="Permalink to this headline">¶</a></h3>
+<p>Although not necessary in R or Python, it is still good practice and advised to organize the code in your script into a main function and other functions. This practice keeps your code readable and organized, this has some additional benefits we will discuss later.</p>
+<div class="section" id="example-r-script-organization">
+<h4>Example R script organization:<a class="headerlink" href="#example-r-script-organization" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
+
+<span class="c1"># import libraries/packages</span>
+
+<span class="c1"># parse/define command line arguments here</span>
+
+<span class="c1"># define main function</span>
+<span class="n">main</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(){</span>
+    <span class="c1"># code for &quot;guts&quot; of script goes here</span>
+<span class="p">}</span>
+
+<span class="c1"># code for other functions &amp; tests goes here</span>
+
+<span class="c1"># call main function</span>
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-python-script-organization">
+<h4>Example Python script organization:<a class="headerlink" href="#example-python-script-organization" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
+
+<span class="c1"># import libraries/packages</span>
+
+<span class="c1"># parse/define command line arguments here</span>
+
+<span class="c1"># define main function</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># code for &quot;guts&quot; of script goes here</span>
+
+<span class="c1"># code for other functions &amp; tests goes here</span>
+
+<span class="c1"># call main function</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><em>You can see that R and Python scripts should have roughly the same style. There is the difference of <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> in Python scripts, and R does not really have an equivalent. The benefit of some control flow around <code class="docutils literal notranslate"><span class="pre">main</span></code>, as is done in Python, is so that you could import or source the other functions in the script without running the <code class="docutils literal notranslate"><span class="pre">main</span></code> function.</em></p>
+<p><em>You can do something like this in R (although I am not sure how commonly it is done - I more often see folks instead typically abstract the other functions into another script and source that, or create an R package):</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">getOption</span><span class="p">(</span><span class="s1">&#39;run.main&#39;</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">main</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>I made a demo and you can find it here: <a class="reference external" href="https://github.com/ttimbers/if_name_equals_main">https://github.com/ttimbers/if_name_equals_main</a></em></p>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Scripts in R:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Here we write a script called <code class="docutils literal notranslate"><span class="pre">quick_titanic_fare_se.R</span></code> which reads in the <a class="reference external" href="https://github.ubc.ca/ubc-mds-2016/datasets/raw/master/data/titanic.csv">titanic dataset</a> and calculates the standard error for the fare (ticket price) variable.</p>
+<p>Our script has two functions, a function we defined to calculate the standard error of the mean (such a function does not exist in R) and a <code class="docutils literal notranslate"><span class="pre">main</span></code> function which runs the “body” of our code.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># author: Tiffany Timbers</span>
+<span class="c1"># date: 2020-01-15</span>
+<span class="c1">#</span>
+<span class="c1"># This script calculates the standard error for the fare (ticket price)</span>
+<span class="c1"># from titanic.csv. This script takes no arguments.</span>
+<span class="c1">#</span>
+<span class="c1"># Usage: quick_titanic_fare_se.R</span>
+
+<span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="n">library</span><span class="p">(</span><span class="n">testthat</span><span class="p">)</span>
+
+<span class="n">main</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1"># read in data</span>
+  <span class="n">data</span> <span class="o">&lt;-</span> <span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/titanic.csv&#39;</span><span class="p">)</span>
+
+  <span class="c1"># print out statistic of variable of interest</span>
+  <span class="n">out</span> <span class="o">&lt;-</span> <span class="n">data</span> <span class="o">%&gt;%</span>
+    <span class="n">pull</span><span class="p">(</span><span class="n">fare</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="n">sterror</span><span class="p">()</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">#&#39; calculate standard error</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @param x a vector of numeric values</span>
+<span class="c1">#&#39; @return the standard error of x as a numeric vector of length one</span>
+<span class="c1">#&#39; @examples</span>
+<span class="c1">#&#39; sterror(mtcars$hp)</span>
+<span class="n">sterror</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">sd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">na</span><span class="o">.</span><span class="n">rm</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="n">test_that</span><span class="p">(</span><span class="s2">&quot;sterror should return 0 if vector values are all the same&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="n">expect_equal</span><span class="p">(</span><span class="n">sterror</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="note-on-functions-and-tests-in-scripts">
+<h3>Note on functions and tests in scripts<a class="headerlink" href="#note-on-functions-and-tests-in-scripts" title="Permalink to this headline">¶</a></h3>
+<p>There are different levels of abstraction, that also scale with project complexity and importance. For now, its OK to put our functions and tests inside the scripts we call to “run” our analysis. However, as these grow in size and complexity we will want to abstract these to their own <code class="docutils literal notranslate"><span class="pre">.R</span></code> and <code class="docutils literal notranslate"><span class="pre">.py</span></code> files and take advantage of testing software that can automate the running of tests. This can also be paired with version control so that the tests are run everytime code is pushed to GitHub (we call this continuous integration). We will learn more about this later in this and follow-on courses.</p>
+</div>
+<div class="section" id="using-command-line-arguments-in-r">
+<h3>Using command line arguments in R<a class="headerlink" href="#using-command-line-arguments-in-r" title="Permalink to this headline">¶</a></h3>
+<p>Let’s make our script more flexible, and let us specify when we call the script, what variable we want to calculate the standard error for.</p>
+<p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">docopt</span></code> R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.</p>
+<p>When we run <code class="docutils literal notranslate"><span class="pre">docopt</span></code> it takes the text we entered at the command line and gives it to us as a named list of the text provided after the script name. The names of the items in the list come from the documentation. Whitespace at the command line is what is used to parse the text into separate items in the vector.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the standard error for the fare (ticket price)
+from titanic.csv. This script takes no arguments.
+
+Usage: quick_titanic_fare_se.R &lt;var&gt;
+&quot; -&gt; doc
+
+library(tidyverse)
+library(testthat)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(var) {
+
+  # read in data
+  data &lt;- read_csv(&#39;data/titanic.csv&#39;)
+
+  # print out statistic of variable of interest
+  out &lt;- data %&gt;%
+    pull({{var}}) %&gt;%
+    sterror()
+  print(out)
+}
+
+#&#39; calculate standard error
+#&#39;
+#&#39; @param x a vector of numeric values
+#&#39; @return the standard error of x as a numeric vector of length one
+#&#39; @examples
+#&#39; sterror(mtcars$hp)
+sterror &lt;- function(x) {
+  sd(x, na.rm = TRUE) / sqrt(length(x))
+}
+
+test_that(&quot;sterror should return 0 if vector values are all the same&quot;, {
+    expect_equal(sterror(c(1, 1, 1)), 0)
+})
+
+main(opt$var)
+</pre></div>
+</div>
+<p>And we would run a script like this from the command line as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_stat</span><span class="o">.</span><span class="n">R</span> <span class="n">fare</span>
+</pre></div>
+</div>
+<p>Let’s make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the Gapminder <code class="docutils literal notranslate"><span class="pre">.csv</span></code>’s we saw in Block 1).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the standard error for any numerical vector
+from a csv file. This script takes an unquoted column name and a data file path.
+
+Usage: quick_titanic_fare_se.R &lt;file_path&gt; &lt;var&gt;
+&quot; -&gt; doc
+
+library(tidyverse)
+library(testthat)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(file_path, var) {
+
+  # read in data
+  data &lt;- read_csv(file_path)
+
+  # print out statistic of variable of interest
+  out &lt;- data %&gt;%
+    pull({{var}}) %&gt;%
+    sterror()
+  print(out)
+}
+
+#&#39; calculate standard error
+#&#39;
+#&#39; @param x a vector of numeric values
+#&#39; @return the standard error of x as a numeric vector of length one
+#&#39; @examples
+#&#39; sterror(mtcars$hp)
+sterror &lt;- function(x) {
+  sd(x, na.rm = TRUE) / sqrt(length(x))
+}
+
+test_that(&quot;sterror should return 0 if vector values are all the same&quot;, {
+    expect_equal(sterror(c(1, 1, 1)), 0)
+})
+
+main(opt$file_path, opt$var)
+
+</pre></div>
+</div>
+</div>
+<div class="section" id="positional-arguments-vs-options">
+<h3>Positional arguments vs options<a class="headerlink" href="#positional-arguments-vs-options" title="Permalink to this headline">¶</a></h3>
+<p>In the examples above, we used <code class="docutils literal notranslate"><span class="pre">docopt</span></code> to specify positional arguments. This means that the order matters! If we change the order of the values of the arguments at the command line, our script will likely throw an error, because it will try to perform the wrong operations on the wrong values.</p>
+<p>Another downside to positional arguments, is that without good documentation, they can be less readable. And certainly the call to the script to is less readable. We can instead give the arguments names using <code class="docutils literal notranslate"><span class="pre">--ARGUMENT_NAME</span></code> syntax. We call these “options”. Below is the same script but specified using options as opposed to positional arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the standard error for any numerical vector
+from a csv file. This script takes an unquoted column name and a data file path.
+
+Usage: quick_titanic_fare_se.R --file_path=&lt;file_path&gt; --var=&lt;var&gt;
+
+Options:
+--file_path=&lt;file_path&gt;   Path to the data file
+--var=&lt;var&gt;               Unquoted column name of the numerical vector for which to calculate the se
+&quot; -&gt; doc
+
+library(tidyverse)
+library(testthat)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(file_path, var) {
+
+  # read in data
+  data &lt;- read_csv(file_path)
+
+  # print out statistic of variable of interest
+  out &lt;- data %&gt;%
+    pull({{var}}) %&gt;%
+    sterror()
+  print(out)
+}
+
+#&#39; calculate standard error
+#&#39;
+#&#39; @param x a vector of numeric values
+#&#39; @return the standard error of x as a numeric vector of length one
+#&#39; @examples
+#&#39; sterror(mtcars$hp)
+sterror &lt;- function(x) {
+  sd(x, na.rm = TRUE) / sqrt(length(x))
+}
+
+test_that(&quot;sterror should return 0 if vector values are all the same&quot;, {
+    expect_equal(sterror(c(1, 1, 1)), 0)
+})
+
+main(opt$file_path, opt$var)
+
+</pre></div>
+</div>
+<p>And we would run a script like this that uses options like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_stat</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span> <span class="o">--</span><span class="n">var</span><span class="o">=</span><span class="n">fare</span>
+</pre></div>
+</div>
+<p>or like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_stat</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">var</span><span class="o">=</span><span class="n">fare</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>because we gave the arguments names, and thus their position no longer matters!</p>
+</div>
+<div class="section" id="optional-elements-arguments-or-options">
+<h3>Optional elements (arguments or options)<a class="headerlink" href="#optional-elements-arguments-or-options" title="Permalink to this headline">¶</a></h3>
+<p>If you would like an argument or option to be “optional” (i.e., not required!) enclose them with the square brackets “[ ]”  in the documentation.</p>
+<div class="section" id="improving-our-docs">
+<h4>Improving our docs<a class="headerlink" href="#improving-our-docs" title="Permalink to this headline">¶</a></h4>
+<p>We can improve our docs further by adding an “Options” section with {docopt}:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the standard error for any numerical vector
+from a csv file. This script takes an unquoted column name and a data file path.
+
+Usage: quick_titanic_fare_se.R --file_path=&lt;file_path&gt; --var=&lt;var&gt;
+
+Options:
+--file_path=&lt;file_path&gt;   Path to the data file
+--var=&lt;var&gt;               Unquoted column name of the numerical vector for which to calculate the se
+&quot; -&gt; doc
+
+library(tidyverse)
+library(testthat)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(file_path, var) {
+
+  # read in data
+  data &lt;- read_csv(file_path)
+
+  # print out statistic of variable of interest
+  out &lt;- data %&gt;%
+    pull({{var}}) %&gt;%
+    sterror()
+  print(out)
+}
+
+#&#39; calculate standard error
+#&#39;
+#&#39; @param x a vector of numeric values
+#&#39; @return the standard error of x as a numeric vector of length one
+#&#39; @examples
+#&#39; sterror(mtcars$hp)
+sterror &lt;- function(x) {
+  sd(x, na.rm = TRUE) / sqrt(length(x))
+}
+
+test_that(&quot;sterror should return 0 if vector values are all the same&quot;, {
+    expect_equal(sterror(c(1, 1, 1)), 0)
+})
+
+main(opt$file_path, opt$var)
+
+</pre></div>
+</div>
+<p>And then the user can see these docs by calling the script from the command line and using the <code class="docutils literal notranslate"><span class="pre">--help</span></code> to get this information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="n">script</span> <span class="n">calculates</span> <span class="n">the</span> <span class="n">standard</span> <span class="n">error</span> <span class="k">for</span> <span class="nb">any</span> <span class="n">numerical</span> <span class="n">vector</span>
+<span class="kn">from</span> <span class="nn">a</span> <span class="n">csv</span> <span class="n">file</span><span class="o">.</span> <span class="n">This</span> <span class="n">script</span> <span class="n">takes</span> <span class="n">an</span> <span class="n">unquoted</span> <span class="n">column</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">a</span> <span class="n">data</span> <span class="n">file</span> <span class="n">path</span><span class="o">.</span>
+
+<span class="n">Usage</span><span class="p">:</span> <span class="n">quick_titanic_fare_se</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=&lt;</span><span class="n">file_path</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">var</span><span class="o">=&lt;</span><span class="n">var</span><span class="o">&gt;</span>
+
+<span class="n">Options</span><span class="p">:</span>
+<span class="o">--</span><span class="n">file_path</span><span class="o">=&lt;</span><span class="n">file_path</span><span class="o">&gt;</span>   <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">data</span> <span class="n">file</span>
+<span class="o">--</span><span class="n">var</span><span class="o">=&lt;</span><span class="n">var</span><span class="o">&gt;</span>               <span class="n">Unquoted</span> <span class="n">column</span> <span class="n">name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">numerical</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">which</span> <span class="n">to</span> <span class="n">calculate</span> <span class="n">the</span> <span class="n">se</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="scripts-in-python">
+<h2>Scripts in Python<a class="headerlink" href="#scripts-in-python" title="Permalink to this headline">¶</a></h2>
+<p>Reminder of what they typically look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
+
+<span class="c1"># import libraries/packages</span>
+
+<span class="c1"># parse/define command line arguments here</span>
+
+<span class="c1"># define main function</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># code for &quot;guts&quot; of script goes here</span>
+
+<span class="c1"># code for other functions &amp; tests goes here</span>
+
+<span class="c1"># call main function</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="where-to-develop-scripts-in-python">
+<h3>Where to develop scripts in Python<a class="headerlink" href="#where-to-develop-scripts-in-python" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="in-a-integrated-development-environment-ide">
+<h4>In a integrated development environment (IDE):<a class="headerlink" href="#in-a-integrated-development-environment-ide" title="Permalink to this headline">¶</a></h4>
+<p>Or use an IDE, such as:</p>
+<ul class="simple">
+<li><p>RStudio (gasp! 😱) via <a class="reference external" href="https://rstudio.github.io/reticulate/"><code class="docutils literal notranslate"><span class="pre">reticulate</span></code></a></p></li>
+<li><p>VS Code</p></li>
+<li><p><a class="reference external" href="https://www.spyder-ide.org/">Spyder</a> (I think this comes with Anaconda, so you should have it installed)</p></li>
+<li><p>Atom text editor + <a class="reference external" href="https://atom.io/packages/hydrogen"><code class="docutils literal notranslate"><span class="pre">hydrogen</span></code></a> (highly recommended by Mike Yuan, an MDS Alumni)</p></li>
+<li><p><a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a></p></li>
+</ul>
+</div>
+<div class="section" id="in-a-jupyter-notebook">
+<h4>In a Jupyter notebook:<a class="headerlink" href="#in-a-jupyter-notebook" title="Permalink to this headline">¶</a></h4>
+<p>Jupyter + <a class="reference external" href="https://nbconvert.readthedocs.io/en/latest/"><code class="docutils literal notranslate"><span class="pre">nbconvert</span></code></a> (install via <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">nbconvert</span></code>):</p>
+<p>Convert a notebook to a script at the command line via:
+<code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">nbconvert</span> <span class="pre">--to</span> <span class="pre">script</span> <span class="pre">&lt;input</span> <span class="pre">notebook&gt;</span></code></p>
+</div>
+<div class="section" id="tldr">
+<h4>TLDR;<a class="headerlink" href="#tldr" title="Permalink to this headline">¶</a></h4>
+<p>I recommend using an IDE over Jupyter. True, you may want to abstract code the originally was developed in a Jupyter notebook, but as soon as you switch the filename from <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code> to <code class="docutils literal notranslate"><span class="pre">.py</span></code> you should change developing environments.</p>
+</div>
+</div>
+<div class="section" id="command-line-arguments-in-python-explained">
+<h3>Command line arguments in Python explained<a class="headerlink" href="#command-line-arguments-in-python-explained" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">docopt</span></code> was originally written in and for Python! There are other packages you can use, but <code class="docutils literal notranslate"><span class="pre">docopt</span></code> is extremely elegant and powerful. I’ve used <code class="docutils literal notranslate"><span class="pre">sys</span></code> and <code class="docutils literal notranslate"><span class="pre">argparse</span></code> previously, and now that I’ve tried <code class="docutils literal notranslate"><span class="pre">docopt</span></code>, there’s no turning back for me. Key features I like are:</p>
+<ul class="simple">
+<li><p>writing the code for the command line arguments in docopt forces you to write the documentation (because it parses the documentation!)</p></li>
+<li><p>it gives you the command line arguments as simple dictionary</p></li>
+<li><p>you have to write very few lines of code to parse a complicated command line input</p></li>
+<li><p>it provides a consistent framework between R and Python</p></li>
+</ul>
+<p>Here we rewrite the script above in Python using <code class="docutils literal notranslate"><span class="pre">docopt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># author: Tiffany Timbers</span>
+<span class="c1"># date: 2020-01-15</span>
+
+<span class="sd">&#39;&#39;&#39;This script calculates the standard error for any numerical vector</span>
+<span class="sd">from a csv file. This script takes an unquoted column name and a data file path.</span>
+
+<span class="sd">Usage: quick_titanic_fare_se.py --file_path=&lt;file_path&gt; --var=&lt;var&gt;</span>
+
+<span class="sd">Options:</span>
+<span class="sd">--file_path=&lt;file_path&gt;   Path to the data file</span>
+<span class="sd">--var=&lt;var&gt;               Unquoted column name of the numerical vector for which to calculate the se</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">docopt</span> <span class="kn">import</span> <span class="n">docopt</span>
+
+<span class="n">opt</span> <span class="o">=</span> <span class="n">docopt</span><span class="p">(</span><span class="vm">__doc__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
+  <span class="c1"># read in data</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+  <span class="c1"># print out statistic of variable of interest</span>
+  <span class="n">out</span> <span class="o">=</span> <span class="n">sterror</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+  <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="c1"># standard error function</span>
+
+<span class="k">def</span> <span class="nf">sterror</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  calculate standard error</span>
+<span class="sd">    </span>
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  numpy.ndarray : x</span>
+<span class="sd">    A numpy array of numeric values.</span>
+<span class="sd">        </span>
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  se</span>
+<span class="sd">    The standard error of x. </span>
+<span class="sd">        </span>
+<span class="sd">  Examples</span>
+<span class="sd">  --------</span>
+<span class="sd">  &gt;&gt;&gt; sterror(numpy.array([2, 2, 2]))</span>
+<span class="sd">  0</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">se</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">se</span>
+  
+<span class="k">def</span> <span class="nf">test_sterror</span><span class="p">():</span>
+  <span class="k">assert</span> <span class="n">sterror</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;sterror should return 0 if vector values are all the same&quot;</span>
+
+<span class="n">test_sterror</span><span class="p">()</span>
+  
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="s2">&quot;--file_path&quot;</span><span class="p">],</span> <span class="n">opt</span><span class="p">[</span><span class="s2">&quot;--var&quot;</span><span class="p">])</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="some-tips-for-rstudio-ide">
+<h2>Some tips for RStudio IDE:<a class="headerlink" href="#some-tips-for-rstudio-ide" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>To indent a block of text, highlight and use tab</p></li>
+<li><p>To fix indenting in general to R code standards, use Command/Cntrl + I</p></li>
+<li><p>To get multiple cursors, hold alt/option and highlight lines using cursor</p></li>
+<li><p>To get multiple cursors to the beginning of the line, use control A</p></li>
+<li><p>To get multiple cursors to the end of the line, use control E</p></li>
+</ul>
+</div>
+<div class="section" id="what-we-covered">
+<h2>What we covered:<a class="headerlink" href="#what-we-covered" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>When to work in a read-eval-print-loop (REPL) framework versus when to use scripts</p></li>
+<li><p>Scripts in R</p></li>
+<li><p>Scripts in Python</p></li>
+<li><p>Command line arguments in R &amp; Python</p></li>
+</ul>
+</div>
+<div class="section" id="what-s-next">
+<h2>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>running literate code documents interactively</p></li>
+<li><p>more advanced R Markdown (figure and table formatting, citation)</p></li>
+<li><p>flexible R Markdown reports with parameterization</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
