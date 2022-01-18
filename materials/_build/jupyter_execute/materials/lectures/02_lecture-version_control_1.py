@@ -23,7 +23,7 @@
 # 
 # Source: [*Data Science: A First Introduction*](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html)
 
-# ## A Zoom poll!
+# ### A Zoom poll!
 # 
 # Before this class, you were asked to read [Chapter 12: Collaboration with version control](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html) from Data Science: A First Introduction. We're goig to do a Zoom poll with the following questions to check your knowledge!
 # 
@@ -132,6 +132,192 @@
 # 
 # 5. Resolve the merge conflict them so that you can see your changes on GitHub.
 
+# ## Going back in time!
+# 
+# ### Just going for a look:
+# 
+# The easiest way to go back in time in your version control repository is to use the GitHub.com website. To do this, we click the commits link:
+# 
+# <img src="img/releases.png" width=800>
+# 
+# Then we can view the history, along with the commit messages. To view the state of a repository at that time, we click on the "**<>**" button:
+# 
+# <img src="img/commits_eg.png" width=800>
+
+# ### Travelling in time or bringing something something from the back from the past:
+# 
+# Sometimes you want to be able to explore and run the files from the past, or bring a past version of a file to the future. When we need to do either of those things, we should be working with Git in our local repository. 
+
+# Here's the same history as viewed above, but using the JupyterLab Git extension:
+# 
+# <img src="img/jupyter-git-history.png" width=800>
+
+# To see what was changed at a given point in history, click the down arrow associated with the commit. You can then diff the file (see what was changed for a particular file by clicking the file icon beside it.
+# 
+# <img src="img/jupyter-view-changes.png">
+
+# #### Travelling in time to the past
+# 
+# If you wanted to move your project's file and directories (so entire state) back to this point in time you can do that by clicking the clock icon. **NOTE: If you do this, be sure you pushed your changes, as it will discard anything more recent than this commit on your local computer (i.e., this is a hard reset).**
+# 
+# <img src="img/jupyter-hard-reset.png" width=500>
+# 
+# Again, because this is a hard reset, Git will warn you about the consequences:
+# 
+# <img src="img/jupyter-hard-reset-warning.png" width=500>
+# 
+# Once, you have done this, you will see the more recent commits in your history are GONE!
+# 
+# <img src="img/jupyter-after-hard-reset.png" width=500>
+
+# #### Exercise:
+# 
+# 1. Clone [this GitHub repository](https://github.com/ttimbers/data_analysis_pipeline_eg) to your computer.
+# 
+# 2. View the names of the files that were changed in commit `44c17be`, and the specific changes made to the file `doc/count_report.Rmd`.
+# 
+# 3. Do a hard reset to the state of the repository as it was in commit `44c17be`.
+# 
+# 4. Then pull the Git remote repository to go back to where you started.
+# 
+# *Question - could you have gone back to where you started if the work was not stored in the remote repository?*
 # 
 
+# #### Bringing something something from the back from the past
 # 
+# There is not a nice and easy way (that I am aware of) of cherry-picking a version of single file from the past using the JupyterLab Git extension. To do this, I resort to the Git command line tool in the terminal. The general command is:
+# 
+# ```
+# git checkout <HASH> <FILE>
+# ```
+# 
+# For example, to checkout the version of the `doc/count_report.Rmd` from the commit whose hash starts with `5837143`, we would type: 
+# 
+# ```
+# git checkout 5837143 doc/count_report.Rmd
+# ```
+# 
+# That will bring that version of the `doc/count_report.Rmd` into our working directory. We can view it, run it or use it, et cetera. If we want to keep that version going forward for our project, we would have to then add and commit that version of the file to do so.
+# 
+# > ##### What Git tool to use?
+# >
+# > There are many many many different tools for using Git. We have so far discussed two in this class (the JupyterLab Git extension,
+# > and the Git command line). Others include GitHub Desktop, GitKraken, Source Tree, RStudio's Git GUI, and VSCode's Git GUI.
+# > Which one should you use? Anyone that fits you best! I recommend experimenting with a few and then settling in with the one
+# > that you find easiest to use. One note is that some commands are limited in some tools (e.g., the example above with the
+# > JupyterLab Git extension). If you hit that case in your favorite tool, you can use the Git command line tool to get around it
+# > and then go back to primarily using your tool of choice.
+
+# ## Git Branches
+# 
+# Branches allow you to have a playground 
+# for developing and testing new additions to your code,
+# as well as fixes.
+# This playground lets your explore, experiment and test 
+# in a safe place - away from others that might be using 
+# or depending on the current version of your code.
+# This is perhaps more obviously useful if your project
+# is deployed and has users (e.g., a data visualization dashboard, 
+# an R or Python package, a phone app, etc),
+# but this can also be useful for code that make up a data analyses.
+# As, in addition to the reasons stated above for branching,
+# branching also lets you organize units of work into smaller, 
+# more manageable chunks that are easier for collaborators to check over and review.
+# 
+# Once the new code additions or fixes have been 
+# finalized in their branch playground,
+# they can be merged back to the main code-base.
+# Several branch playgrounds can co-exist, 
+# one for each new code addition or fix being worked on.
+# This allows for parallelization of work!
+# 
+# We can use a construction of a house
+# as a metaphor for this kind of development.
+# First,
+# you need to build the foundation.
+# Since everything depends on the foundation being built,
+# this would be developed on the main branch.
+# When the foundation is finished,
+# the construction of other parts of the house that don't depend on each other
+# could take place in parallel,
+# e.g. some contributors might start working on the walls and others on the floor.
+# When either of these features is finished, 
+# it can be added back to the house
+# (merged into main).
+# When depicted graphically,
+# this process would look something like this
+# (each dot is a commit).
+# 
+# <img src="img/branches-house-analogy.png" width=400>
+
+# A more realistic Git branching example for a data analysis project might look something like this:
+# 
+# <img src="img/git-branch-diagrams.png" width=400>
+
+# ### Creating a branch
+# 
+# Using the JupyterLab Git extension, you create a new branch on your local computer by clicking on the up arrow in the "Current Branch" tab, and clicking the blue "New Branch" button.
+# 
+# <img src="img/create-new-branch.png" width=500>
+# 
+# A dialogue box will open, and ask you to name the branch. After you do this, click on the blue "Create Branch" button. Remember to name it after the work you plan to do. Here we plan to fix the documentation a bit, so we will call it `patch-docs`.
+# 
+# <img src="img/name-new-branch.png" width=300>
+# 
+# To finally switch to the new playground (i.e., your new branch) click on the branch name of the new branch you just created in the Branches section of the "Current Branch" tab.
+# 
+# <img src="img/switch-to-new-branch.png" width=500>
+# 
+# As you work here, you can commit your changes to version control locally, and even push your changes to the remote repository. All the changes however will live only on that branch until you do something to move them to another branch. When you want to start discussing your changes with your collaborators to start the process of bringing these changes into the main branch (main code-base) you typically create what is called a pull request. A pull request is a like an asking your collaborators "is it OK to merge my code?" Usually there will be some discussion and a few more revisions to the code, but eventually they will give you the thumbs up when everything looks good and the code can then be merged. We will discuss this more next.
+
+# #### Exercise
+# 
+# 1. Make your own copy of [this GitHub repository](https://github.com/ttimbers/sqrt) by clicking the green "Use this template" button.
+# 
+# 2. Create a new branch named `better_error_msg` in the local repository using the JupyterLab Git extension.
+# 
+# 3. On that branch, fix the `sqrt.py` so that if you run this script with a negative number as an argument you do not get an difficult to understand error, but instead throw a helpful exception informing the user that the number should be positive. Fix to add to `sqrt.py`:
+#   
+#   ```
+#   if number < 0:
+#     raise Exception("n should not a positive number")
+#   ```
+# 
+# 4. Switch back to the `main` branch and look at the `README.md` file - do you see the change there?
+# 
+# 5. Switch back to the `better_error_msg` branch - do you see the change there?
+# 
+# 6. Push your change to the remote GitHub repository, and see where you can find it there!
+
+# ## Creating a pull request
+# 
+# To create a pull request,
+# go to the remote GitHub repository,
+# and usually GitHub will should show you a yellow banner listing any recently pushed branches.
+# 
+# <img src="img/create-pr.png" width=700>
+# 
+# To create a pull request,
+# you click the green button "Compare & pull request".
+# In the new page,
+# add a message to describe the changes you have made,
+# scroll down to review the changed files,
+# and the click the green button that reads "Create pull request".
+# If you are working together in a team,
+# you could also designate certain team members to review your work
+# and assign relevant labels,
+# via the right hand side panel.
+# 
+# The next step is for a collaborator to review your work
+# and merge it in if they approve it.
+
+# #### Exercise
+# 
+# 1. Use the green "Compare & pull request" button on the yellow banner to open a pull request.
+# 
+# 2. Go to the "Pull requests" tab on the remote GitHub repository and explore the "Conversation" and "Files changed" sub-tabs there.
+
+# ## Next class: 
+# 
+# - pull request reviews
+# - GitHub tools for project management
