@@ -82,7 +82,7 @@ Before this class, you were asked to read [Chapter 12: Collaboration with versio
 
 *c. Manually open the file with the conflict and edit it to have the desired version of the changes, as well as remove the special Git syntax used to identify the merge conflict.*
 
-> ## Command Git commands at the command line
+> ## Common Git commands at the command line
 >
 > In the assigned textbook reading we use the JupyterLab Git extension tool to run Git version
 > control commands (adding to the staging area, committing, pushing, pulling).
@@ -93,9 +93,10 @@ Before this class, you were asked to read [Chapter 12: Collaboration with versio
 >
 > | Description | Command |
 > |---------|-------------|
+> | Clone a remote version control repository from GitHub.com to your local computer | `git clone` |
 > | Checking the status of the local version control repository | `git status` |
 > | Adding a file to the staging area | `git add <FILENAME>` |
-> | Commiting staged file to the version control history | `git commit -m "Some relevant message about the changes"` |
+> | Committing staged file to the version control history | `git commit -m "Some relevant message about the changes"` |
 > | Push changes to the local version control repository to the remote repository on GitHub.com | `git push` |
 > | Pull changes from the remote version control repository on GitHub.com to the local repository | `git pull` |
 > | Viewing the version control history | `git log` |
@@ -288,16 +289,16 @@ As you work here, you can commit your changes to version control locally, and ev
 
 #### Exercise
 
-1. Make your own copy of [this GitHub repository](https://github.com/ttimbers/sqrt) by clicking the green "Use this template" button.
+1. Make your own copy of [this GitHub repository](https://github.com/ttimbers/sqrt) by clicking the green "Use this template" button. And then clone your copy of the repository to your computer.
 
 2. Create a new branch named `better_error_msg` in the local repository using the JupyterLab Git extension.
 
 3. On that branch, fix the `sqrt.py` so that if you run this script with a negative number as an argument you do not get an difficult to understand error, but instead throw a helpful exception informing the user that the number should be positive. Fix to add to `sqrt.py`:
   
-  ```
-  if number < 0:
-    raise Exception("n should not a positive number")
-  ```
+```
+if number < 0:
+  raise Exception("n should not a positive number")
+```
 
 4. Switch back to the `main` branch and look at the `README.md` file - do you see the change there?
 
