@@ -94,8 +94,8 @@ Before this class, you were asked to read [Chapter 12: Collaboration with versio
 > | Description | Command |
 > |---------|-------------|
 > | Checking the status of the local version control repository | `git status` |
-> | Adding a file to the staging area | `git add <FILENAME> |
-> | Commiting staged file to the version control history | `git commit -m "Some relevant message about the changes" |
+> | Adding a file to the staging area | `git add <FILENAME>` |
+> | Commiting staged file to the version control history | `git commit -m "Some relevant message about the changes"` |
 > | Push changes to the local version control repository to the remote repository on GitHub.com | `git push` |
 > | Pull changes from the remote version control repository on GitHub.com to the local repository | `git pull` |
 > | Viewing the version control history | `git log` |
