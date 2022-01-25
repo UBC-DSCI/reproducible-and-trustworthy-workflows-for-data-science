@@ -54,7 +54,7 @@
 # 
 # #### Awesome file names :)
 # 
-# ```{figure} ../img/awesome_names.png
+# ```{figure} img/awesome_names.png
 # :width: 600px
 # :align: center
 # ```
@@ -73,7 +73,7 @@
 # **Excerpt of complete file listing:**
 # 
 # 
-# ```{figure} ../img/plasmid_names.png
+# ```{figure} img/plasmid_names.png
 # :width: 600px
 # :align: center
 # ```
@@ -81,7 +81,7 @@
 # 
 # **Example of globbing to narrow file listing:**
 # 
-# ```{figure} ../img/plasmid_glob.png
+# ```{figure} img/plasmid_glob.png
 # :width: 600px
 # :align: center
 # ```
@@ -89,7 +89,7 @@
 # #### Same using Mac OS Finder search facilities
 # 
 # 
-# ```{figure} ../img/plasmid_mac_os_search.png
+# ```{figure} img/plasmid_mac_os_search.png
 # :width: 600px
 # :align: center
 # ```
@@ -98,7 +98,7 @@
 # #### Same using regex in R
 # 
 # 
-# ```{figure} ../img/plasmid_regex.png
+# ```{figure} img/plasmid_regex.png
 # :width: 600px
 # :align: center
 # ```
@@ -112,14 +112,14 @@
 # - `"-"` hyphen used to delimit words so my eyes don't bleed
 # 
 # 
-# ```{figure} ../img/plasmid_delimiters.png
+# ```{figure} img/plasmid_delimiters.png
 # :width: 600px
 # :align: center
 # 
 # 
 # <hr>
 # 
-# ```{figure} ../img/plasmid_delimiters_code.png
+# ```{figure} img/plasmid_delimiters_code.png
 # :width: 600px
 # :align: center
 # ```
@@ -153,7 +153,7 @@
 # 
 # **Which set of file(name)s do you want at 3 a.m. before a deadline?**
 # 
-# ```{figure} ../img/human_readable_not_options.png
+# ```{figure} img/human_readable_not_options.png
 # :width: 600px
 # :align: center
 # ```
@@ -165,7 +165,7 @@
 # ![](img/slug_filenames.png)
 # 
 # slug
-# ```{figure} ../img/slug.jpg
+# ```{figure} img/slug.jpg
 # :width: 600px
 # :align: center
 # ```
@@ -190,7 +190,7 @@
 # **Chronological order:**
 # 
 # ![chronological_order](img/chronological_order.png)
-# ```{figure} ../img/chronological_order.png
+# ```{figure} img/chronological_order.png
 # :width: 600px
 # :align: center
 # ```
@@ -198,7 +198,7 @@
 # 
 # **Logical order:** Put something numeric first
 # 
-# ```{figure} ../img/logical_order.png
+# ```{figure} img/logical_order.png
 # :width: 600px
 # :align: center
 # ```
@@ -206,13 +206,13 @@
 # 
 # Use the ISO 8601 standard for dates: YYYY-MM-DD
 # 
-# ```{figure} ../img/chronological_order.png
+# ```{figure} img/chronological_order.png
 # :width: 600px
 # :align: center
 # ```
 # 
 # 
-# ```{figure} ../img/iso_8601.png
+# ```{figure} img/iso_8601.png
 # :width: 600px
 # :align: center
 # ```
@@ -221,7 +221,7 @@
 # #### Comprehensive map of all countries in the world that use the MM-DD-YYYY format
 # 
 # 
-# ```{figure} ../img/map_mmddyyy.png
+# ```{figure} img/map_mmddyyy.png
 # :width: 600px
 # :align: center
 # ```
@@ -234,7 +234,7 @@
 # #### Left pad other numbers with zeros
 # 
 # 
-# ```{figure} ../img/logical_order.png
+# ```{figure} img/logical_order.png
 # :width: 600px
 # :align: center
 # ```
@@ -279,7 +279,7 @@
 # #### Go forth and use awesome file names :)
 # 
 # 
-# ```{figure} ../img/chronological_order.png
+# ```{figure} img/chronological_order.png
 # :width: 600px
 # :align: center
 # ```
@@ -287,7 +287,7 @@
 # <br>
 # 
 # 
-# ```{figure} ../img/logical_order.png
+# ```{figure} img/logical_order.png
 # :width: 600px
 # :align: center
 # ```
