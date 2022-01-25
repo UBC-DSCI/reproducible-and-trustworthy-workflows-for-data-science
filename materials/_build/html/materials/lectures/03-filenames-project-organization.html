@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filenames and data science project organization, Integrated development environments &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Version control for transparency and collaboration" href="02_lecture-version_control_1.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01_lecture-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02_lecture-version_control_1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/03-filenames-project-organization.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/03-filenames-project-organization.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/03-filenames-project-organization.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#topic-learning-objectives">
+     Topic learning objectives
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filenames-best-practices">
+     Filenames - best practices
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#names-matter">
+       Names matter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#what-works-what-doesn-t">
+       What works, what doesn’t?
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#three-principles-for-file-names">
+       Three principles for (file) names
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#awesome-file-names">
+         Awesome file names :)
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#machine-readable">
+       Machine readable
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id1">
+         Machine readable
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#globbing">
+         Globbing
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">
+         Same using Mac OS Finder search facilities
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#same-using-regex-in-r">
+         Same using regex in R
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#punctuation-smaller">
+         Punctuation {.smaller}
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-machine-readable">
+         Recap: machine readable
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#human-readable">
+       Human readable
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id2">
+         Human readable
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#example">
+         Example
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#embrace-the-slug">
+         Embrace the slug
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-human-readable">
+         Recap: Human readable
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plays-well-with-default-ordering">
+       Plays well with default ordering
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id3">
+         Plays well with default ordering
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#examples">
+         Examples
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#dates">
+         Dates
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
+         Comprehensive map of all countries in the world that use the MM-DD-YYYY format
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">
+         Left pad other numbers with zeros
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">
+         Recap: Plays well with default ordering
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap">
+         Recap
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id4">
+         Three principles for (file) names
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#pros">
+         Pros
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">
+         Go forth and use awesome file names :)
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
+   Tell Git to ignore irrelevant files using a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .gitignore
+    </span>
+   </code>
+   file
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-gitignore-file">
+     Create a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       .gitignore
+      </span>
+     </code>
+     file
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gitignore-tips-and-tricks">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       .gitignore
+      </span>
+     </code>
+     tips and tricks
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps-to-follow">
+       Steps to follow:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#project-organization">
+   Project organization
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Filenames and data science project organization, Integrated development environments</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#topic-learning-objectives">
+     Topic learning objectives
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#filenames-best-practices">
+     Filenames - best practices
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#names-matter">
+       Names matter
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#what-works-what-doesn-t">
+       What works, what doesn’t?
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#three-principles-for-file-names">
+       Three principles for (file) names
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#awesome-file-names">
+         Awesome file names :)
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#machine-readable">
+       Machine readable
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id1">
+         Machine readable
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#globbing">
+         Globbing
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">
+         Same using Mac OS Finder search facilities
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#same-using-regex-in-r">
+         Same using regex in R
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#punctuation-smaller">
+         Punctuation {.smaller}
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-machine-readable">
+         Recap: machine readable
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#human-readable">
+       Human readable
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id2">
+         Human readable
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#example">
+         Example
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#embrace-the-slug">
+         Embrace the slug
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-human-readable">
+         Recap: Human readable
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#plays-well-with-default-ordering">
+       Plays well with default ordering
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id3">
+         Plays well with default ordering
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#examples">
+         Examples
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#dates">
+         Dates
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
+         Comprehensive map of all countries in the world that use the MM-DD-YYYY format
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">
+         Left pad other numbers with zeros
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">
+         Recap: Plays well with default ordering
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#recap">
+         Recap
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#id4">
+         Three principles for (file) names
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#pros">
+         Pros
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">
+         Go forth and use awesome file names :)
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
+   Tell Git to ignore irrelevant files using a
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     .gitignore
+    </span>
+   </code>
+   file
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-gitignore-file">
+     Create a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       .gitignore
+      </span>
+     </code>
+     file
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gitignore-tips-and-tricks">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       .gitignore
+      </span>
+     </code>
+     tips and tricks
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps-to-follow">
+       Steps to follow:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#project-organization">
+   Project organization
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="filenames-and-data-science-project-organization-integrated-development-environments">
+<h1>Filenames and data science project organization, Integrated development environments<a class="headerlink" href="#filenames-and-data-science-project-organization-integrated-development-environments" title="Permalink to this headline">¶</a></h1>
+<p><strong>Attribution:</strong> much of these notes come from <a class="reference external" href="https://en.wikipedia.org/wiki/Jenny_Bryan">Jenny Bryan</a>’s talk “Naming things” (<a class="reference external" href="http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf">original slides</a> and <a class="reference external" href="https://github.com/jennybc/organization-and-naming">source code</a>)</p>
+<div class="section" id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="simple">
+<li><p>Explain how project organization and file naming contribute to reproducible data science</p></li>
+<li><p>Organize projects and name files in a sound manner</p></li>
+<li><p>Use an integrated development environment (IDE) to create, edit and run a script (e.g., VScode in Python, or RStudio in R)</p></li>
+<li><p>Use the IDE to access documentation/help, environment variables and efficiently navigate directories</p></li>
+<li><p>Extend and customize an IDE with useful extensions/add-ons/tools such as linters and formatters</p></li>
+</ol>
+</div>
+<div class="section" id="filenames-best-practices">
+<h2>Filenames - best practices<a class="headerlink" href="#filenames-best-practices" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="names-matter">
+<h3>Names matter<a class="headerlink" href="#names-matter" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="../../_images/cheers.png"><img alt="../../_images/cheers.png" src="../../_images/cheers.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="what-works-what-doesn-t">
+<h3>What works, what doesn’t?<a class="headerlink" href="#what-works-what-doesn-t" title="Permalink to this headline">¶</a></h3>
+<p><strong>NO</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>myabstract.docx
+Joe’s Filenames Use Spaces and Punctuation.xlsx
+figure 1.png
+fig 2.png
+JW7d^(2sl@deletethisandyourcareerisoverWx2*.txt
+</pre></div>
+</div>
+<p><strong>YES</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2014</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">08</span><span class="n">_abstract</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="n">sla</span><span class="o">.</span><span class="n">docx</span>
+<span class="n">joes</span><span class="o">-</span><span class="n">filenames</span><span class="o">-</span><span class="n">are</span><span class="o">-</span><span class="n">getting</span><span class="o">-</span><span class="n">better</span><span class="o">.</span><span class="n">xlsx</span>
+<span class="n">fig01_talk</span><span class="o">-</span><span class="n">scatterplot</span><span class="o">-</span><span class="n">length</span><span class="o">-</span><span class="n">vs</span><span class="o">-</span><span class="n">interest</span><span class="o">.</span><span class="n">png</span>
+<span class="n">fig02_talk</span><span class="o">-</span><span class="n">histogram</span><span class="o">-</span><span class="n">attendance</span><span class="o">.</span><span class="n">png</span>
+<span class="mi">1986</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">28</span><span class="n">_raw</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">from</span><span class="o">-</span><span class="n">challenger</span><span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">rings</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="three-principles-for-file-names">
+<h3>Three principles for (file) names<a class="headerlink" href="#three-principles-for-file-names" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Machine readable</p></li>
+<li><p>Human readable</p></li>
+<li><p>Plays well with default ordering</p></li>
+</ol>
+<div class="section" id="awesome-file-names">
+<h4>Awesome file names :)<a class="headerlink" href="#awesome-file-names" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/awesome_names.png"><img alt="materials/img/awesome_names.png" src="materials/img/awesome_names.png" style="width: 600px;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="machine-readable">
+<h3>Machine readable<a class="headerlink" href="#machine-readable" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Machine readable<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Regular expression and globbing friendly</p>
+<ul>
+<li><p>Avoid spaces, punctuation, accented characters, case sensitivity</p></li>
+</ul>
+</li>
+<li><p>Easy to compute on</p>
+<ul>
+<li><p>Deliberate use of delimiters</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="globbing">
+<h4>Globbing<a class="headerlink" href="#globbing" title="Permalink to this headline">¶</a></h4>
+<p><strong>Excerpt of complete file listing:</strong></p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/plasmid_names.png"><img alt="materials/img/plasmid_names.png" src="materials/img/plasmid_names.png" style="width: 600px;" /></a>
+</div>
+<hr>
+<p><strong>Example of globbing to narrow file listing:</strong></p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/plasmid_glob.png"><img alt="materials/img/plasmid_glob.png" src="materials/img/plasmid_glob.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="same-using-mac-os-finder-search-facilities">
+<h4>Same using Mac OS Finder search facilities<a class="headerlink" href="#same-using-mac-os-finder-search-facilities" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/plasmid_mac_os_search.png"><img alt="materials/img/plasmid_mac_os_search.png" src="materials/img/plasmid_mac_os_search.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="same-using-regex-in-r">
+<h4>Same using regex in R<a class="headerlink" href="#same-using-regex-in-r" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/plasmid_regex.png"><img alt="materials/img/plasmid_regex.png" src="materials/img/plasmid_regex.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="punctuation-smaller">
+<h4>Punctuation {.smaller}<a class="headerlink" href="#punctuation-smaller" title="Permalink to this headline">¶</a></h4>
+<p>Deliberate use of <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;_&quot;</span></code> allows recovery of meta-data from the filenames:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;_&quot;</span></code> underscore used to delimit units of meta-data I want later</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> hyphen used to delimit words so my eyes don’t bleed</p></li>
+</ul>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/plasmid_delimiters.png"><img alt="materials/img/plasmid_delimiters.png" src="materials/img/plasmid_delimiters.png" style="width: 600px;" /></a>
+</div>
+<p>This happens to be R but also possible in the shell, Python, etc.</p>
+</div>
+<div class="section" id="recap-machine-readable">
+<h4>Recap: machine readable<a class="headerlink" href="#recap-machine-readable" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Easy to search for files later</p></li>
+<li><p>Easy to narrow file lists based on names</p></li>
+<li><p>Easy to extract info from file names, e.g. by splitting</p></li>
+<li><p>New to regular expressions and globbing? be kind to yourself and avoid</p>
+<ul>
+<li><p>Spaces in file names</p></li>
+<li><p>Punctuation</p></li>
+<li><p>Accented characters</p></li>
+<li><p>Different files named <code class="docutils literal notranslate"><span class="pre">foo</span></code> and <code class="docutils literal notranslate"><span class="pre">Foo</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="human-readable">
+<h3>Human readable<a class="headerlink" href="#human-readable" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Human readable<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Name contains info on content</p></li>
+<li><p>Connects to concept of a <em>slug</em> from semantic URLs</p></li>
+</ul>
+</div>
+<div class="section" id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<p><strong>Which set of file(name)s do you want at 3 a.m. before a deadline?</strong></p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/human_readable_not_options.png"><img alt="materials/img/human_readable_not_options.png" src="materials/img/human_readable_not_options.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="embrace-the-slug">
+<h4>Embrace the slug<a class="headerlink" href="#embrace-the-slug" title="Permalink to this headline">¶</a></h4>
+<div class="columns-2">
+slug filenames
+![](img/slug_filenames.png)
+<p>slug</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/slug.jpg"><img alt="materials/img/slug.jpg" src="materials/img/slug.jpg" style="width: 600px;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="recap-human-readable">
+<h4>Recap: Human readable<a class="headerlink" href="#recap-human-readable" title="Permalink to this headline">¶</a></h4>
+<p>Easy to figure out what the heck something is, based on its name</p>
+</div>
+</div>
+<div class="section" id="plays-well-with-default-ordering">
+<h3>Plays well with default ordering<a class="headerlink" href="#plays-well-with-default-ordering" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>Plays well with default ordering<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Put something numeric first</p></li>
+<li><p>Use the ISO 8601 standard for dates</p></li>
+<li><p>Left pad other numbers with zeros</p></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p><strong>Chronological order:</strong></p>
+<p><img alt="chronological_order" src="../../_images/chronological_order.png" /></p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/chronological_order.png"><img alt="materials/img/chronological_order.png" src="materials/img/chronological_order.png" style="width: 600px;" /></a>
+</div>
+<hr>
+<p><strong>Logical order:</strong> Put something numeric first</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/logical_order.png"><img alt="materials/img/logical_order.png" src="materials/img/logical_order.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="dates">
+<h4>Dates<a class="headerlink" href="#dates" title="Permalink to this headline">¶</a></h4>
+<p>Use the ISO 8601 standard for dates: YYYY-MM-DD</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/chronological_order.png"><img alt="materials/img/chronological_order.png" src="materials/img/chronological_order.png" style="width: 600px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/iso_8601.png"><img alt="materials/img/iso_8601.png" src="materials/img/iso_8601.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
+<h4>Comprehensive map of all countries in the world that use the MM-DD-YYYY format<a class="headerlink" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/map_mmddyyy.png"><img alt="materials/img/map_mmddyyy.png" src="materials/img/map_mmddyyy.png" style="width: 600px;" /></a>
+</div>
+<br>
+<p>From https://twitter.com/donohoe/status/597876118688026624.</p>
+</div>
+<div class="section" id="left-pad-other-numbers-with-zeros">
+<h4>Left pad other numbers with zeros<a class="headerlink" href="#left-pad-other-numbers-with-zeros" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/logical_order.png"><img alt="materials/img/logical_order.png" src="materials/img/logical_order.png" style="width: 600px;" /></a>
+</div>
+<br>
+<p>If you don’t left pad, you get this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">10</span><span class="n">_final</span><span class="o">-</span><span class="n">figs</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="n">publication</span><span class="o">.</span><span class="n">R</span>
+<span class="mi">1</span><span class="n">_data</span><span class="o">-</span><span class="n">cleaning</span><span class="o">.</span><span class="n">R</span>
+<span class="mi">2</span><span class="n">_fit</span><span class="o">-</span><span class="n">model</span><span class="o">.</span><span class="n">R</span>
+</pre></div>
+</div>
+<p>which is just sad :(</p>
+</div>
+<div class="section" id="recap-plays-well-with-default-ordering">
+<h4>Recap: Plays well with default ordering<a class="headerlink" href="#recap-plays-well-with-default-ordering" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Put something numeric first</p></li>
+<li><p>Use the ISO 8601 standard for dates</p></li>
+<li><p>Left pad other numbers with zeros</p></li>
+</ul>
+</div>
+<div class="section" id="recap">
+<h4>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="id4">
+<h4>Three principles for (file) names<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Machine readable</p></li>
+<li><p>Human readable</p></li>
+<li><p>Plays well with default ordering</p></li>
+</ol>
+</div>
+<div class="section" id="pros">
+<h4>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Easy to implement NOW</p></li>
+<li><p>Payoffs accumulate as your skills evolve and projects get more complex</p></li>
+</ul>
+</div>
+<div class="section" id="go-forth-and-use-awesome-file-names">
+<h4>Go forth and use awesome file names :)<a class="headerlink" href="#go-forth-and-use-awesome-file-names" title="Permalink to this headline">¶</a></h4>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/chronological_order.png"><img alt="materials/img/chronological_order.png" src="materials/img/chronological_order.png" style="width: 600px;" /></a>
+</div>
+<br>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/logical_order.png"><img alt="materials/img/logical_order.png" src="materials/img/logical_order.png" style="width: 600px;" /></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
+<h1>Tell Git to ignore irrelevant files using a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file<a class="headerlink" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file" title="Permalink to this headline">¶</a></h1>
+<p>You may have encountered this before:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">status</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">On</span> <span class="n">branch</span> <span class="n">timberst</span><span class="o">-</span><span class="n">master</span>
+<span class="n">Untracked</span> <span class="n">files</span><span class="p">:</span>
+  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">include</span> <span class="ow">in</span> <span class="n">what</span> <span class="n">will</span> <span class="n">be</span> <span class="n">committed</span><span class="p">)</span>
+
+	<span class="o">.</span><span class="n">ipynb_checkpoints</span><span class="o">/</span>
+	<span class="o">.</span><span class="n">DS_Store</span>
+
+<span class="n">no</span> <span class="n">changes</span> <span class="n">added</span> <span class="n">to</span> <span class="n">commit</span> <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git add&quot;</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="s2">&quot;git commit -a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Git is letting us know about untracked files (ones we have never committed before). We don’t care about these files. We’d prefer not to have them clutter our view (so we can pay attention to files we do want to track). What do we do?</p>
+<div class="section" id="create-a-gitignore-file">
+<h2>Create a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file<a class="headerlink" href="#create-a-gitignore-file" title="Permalink to this headline">¶</a></h2>
+<p>Using the plain text editor of your choice (mine is VS Code) create a file called <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> inside your Git repo. To do this with VS Code, I would type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">code</span> <span class="o">.</span><span class="n">gitignore</span>
+</pre></div>
+</div>
+<p>Inside the text file, list the files and folders you would like to ignore, one per line. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">ipynb_checkpoints</span><span class="o">/</span>
+<span class="o">.</span><span class="n">DS_Store</span>
+</pre></div>
+</div>
+<p>Save the file, and <code class="docutils literal notranslate"><span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> it with Git. Then try <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> again. You should see:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">On</span> <span class="n">branch</span> <span class="n">timberst</span><span class="o">-</span><span class="n">master</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">tree</span> <span class="n">clean</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gitignore-tips-and-tricks">
+<h2><code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> tips and tricks<a class="headerlink" href="#gitignore-tips-and-tricks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>append <code class="docutils literal notranslate"><span class="pre">**/</span></code> to the beginning of any file/folder names listed in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file to have them ignored in subdirectories within the repo as well</p></li>
+<li><p>create a <a class="reference external" href="https://help.github.com/articles/ignoring-files/#create-a-global-gitignore">global <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file</a> so that you do not have to create the same <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> for all your homework repos</p></li>
+</ul>
+<p>Let’s create a <code class="docutils literal notranslate"><span class="pre">gitignore</span></code> file in our 521 lab 2 repo.</p>
+<div class="section" id="steps-to-follow">
+<h3>Steps to follow:<a class="headerlink" href="#steps-to-follow" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>Use a text editor (e.g., VS Code, nano, Jupyter) to create a file called <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> in your 521 lab 2 repo</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">**/.ipynb_checkpoints/</span></code> to that file and save it</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> it with Git</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> and see if you no longer see <code class="docutils literal notranslate"><span class="pre">.ipynb_checkpoints/</span></code> as a untracked file</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="tex2jax_ignore mathjax_ignore section" id="project-organization">
+<h1>Project organization<a class="headerlink" href="#project-organization" title="Permalink to this headline">¶</a></h1>
+<p>A good project structure looks similar to this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project/          
+├── data/              *.csv        
+│   ├── processed/
+│   └── raw/     
+├── reports/           *.ipynb *.Rmd
+├── src/               *.py *.R
+├── doc/               *.md
+├── README.md
+└── environment.yaml (or renv.lock)
+</pre></div>
+</div>
+<p>This can differ slightly between projects
+and for R the <code class="docutils literal notranslate"><span class="pre">src</span></code> directory is often just called <code class="docutils literal notranslate"><span class="pre">R/</span></code>,
+whereas for Python is has the same name as the project (<code class="docutils literal notranslate"><span class="pre">project</span></code>).
+You will learn more about project hierarchy when making packages.</p>
+<!--
+A place for everything, everything in its place.
+
+Benjamin Franklin
+
+
+
+---
+
+![beer_messy_tidy](img/beer_messy_tidy.png)
+
+---
+
+![files_messy_tidy](img/files_messy_tidy.png)
+
+## Face it...
+
+- There are going to be files
+
+- LOTS of files
+
+- The files will change over time
+
+- The files will have relationships to each other
+
+- It'll probably get complicated
+
+## Mighty weapon
+
+- File organization and naming is a mighty weapon against chaos
+
+- Make a file's name and location VERY INFORMATIVE about what it is, why it exists, how it relates to other things
+
+- The more things are self-explanatory, the better
+
+- READMEs are great, but don't document something if you could just make that thing self-documenting by definition
+
+
+## Attribution:
+
+- Slides borrowed from the [Data Carpentry](https://datacarpentry.org/) [Reproducible Science Workshop](https://datacarpentry.org/rr-organization1/)
+
+--></div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="02_lecture-version_control_1.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Version control for transparency and collaboration</p>
+        </div>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Tiffany Timbers<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

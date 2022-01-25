@@ -3,9 +3,9 @@
 
 # # How do reproducible and trustworthy workflows impact data science?
 
-# ## Week learning objectives
+# ## Topic learning objectives
 # 
-# By the end of the lecture, students should be able to:
+# By the end of this topic, students should be able to:
 # 
 # 1. Define data science, and the related terms reproducibile and audible analysis
 # 2. Give examples of workflows that are considered reproducible and trustworthy in the context of a data analysis
