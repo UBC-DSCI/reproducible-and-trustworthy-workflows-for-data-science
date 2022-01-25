@@ -368,7 +368,6 @@ I am going to demo a code review of a pull request. I have set-up a template Git
 5. After you have made all the comments and suggested changes, then add a general comment for the code review, select "Request Changes" and submit your code review.
 
 
-
 ### Demo: Accept suggested changes from a code review:
 
 #### Steps:
@@ -423,6 +422,52 @@ Source: <https://github.com/UBC-DSCI/introduction-to-datascience/branches>
 In some cases, it might not make sense to merge a pull request. To close a pull request that should not be merged, scroll to the bottom of the pull request page, and look for a gray "Closes pull request" button. This will end move the pull request to the closed pull requests section (similar to closed issues) and does not merge the changes. 
 
 <img src="img/close-pr.png" width=500>
+
+## Git and GitHub flow
+
+Branching generally works well if a team agrees to and follows a consistent workflow. The two leading workflows used in industry are Git flow and GitHub flow. We will describe and discuss both here so you are aware of both, and we will employ GitHub flow in our projects for this course. 
+
+### GitHub Flow
+
+Key features:
+- **A single** "main" branch that also serves as the deployment branch, we call this main.
+- Every new contribution is done on a new branch (with a meaningful name) created from main.
+- Contributions from that new branch are sent back to main by means of a pull request, which ideally is reviewd & tested before merging.
+
+(note: at the time this figure was made, the default branch on GitHub as still called the master branch)
+
+<img src="https://files.programster.org/tutorials/git/flows/github-flow.png" width=600>
+
+Source: https://blog.programster.org/git-workflows
+
+### Git Flow
+
+Key features:
+- **Two** "main" branches that last forever, main for deployment and develop where things are tested before they are released to main.
+- Three supporting branches: feature, release & hotfix. Both feature & release branches are created from develop. feature branches should be merged into develop before they are incorporated into a release. release branches eventually get merged into main after adequate review and testing.
+
+(note: at the time this figure was made, the default branch on GitHub as still called the master branch)
+
+<img src="https://files.programster.org/tutorials/git/flows/git-flow.png" width=600>
+
+Source: https://blog.programster.org/git-workflows
+
+### Discuss:
+
+What do you think are pros & cons of each of these branching workflows?
+
+### Relevance to course project:
+
+- You will be expected to work using the GitHub flow workflow for your projects in this course. 
+
+### What happens when my feature branch falls behind main?
+
+> How to catch up a branch that has fallen behind the `main` branch using the command line:
+> 
+> - run `git pull origin main` to pull any changes from the remote version of main that we might not have
+> - run `git switch <branch>` to make sure we are on the branch we want to catch up
+> - run `git merge main` to merge the changes
+> - run `git push origin <branch>` to push our updated branch to the remote
 
 ## Project boards
 
@@ -508,56 +553,6 @@ We are going to practice creating milestones and associating issues with them. T
 ### Relevance to course project:
 
 - You will be expected to create a milestone on each of your project repositories for each course assigned milestone. You must link the relevant issues needed to complete that milestone to it on GitHub.
-
-### Relevance to course project:
-
-- You will be expected to work using a branch & pull-request workflow in your project repositories for this course.
-
-## Git and GitHub flow
-
-Branching generally works well if a team agrees to and follows a consistent workflow. The two leading workflows used in industry are Git flow and GitHub flow. We will describe and discuss both here so you are aware of both, and we will employ GitHub flow in our projects for this course. 
-
-### GitHub Flow
-
-Key features:
-- **A single** "main" branch that also serves as the deployment branch, we call this main.
-- Every new contribution is done on a new branch (with a meaningful name) created from main.
-- Contributions from that new branch are sent back to main by means of a pull request, which ideally is reviewd & tested before merging.
-
-(note: at the time this figure was made, the default branch on GitHub as still called the master branch)
-
-<img src="https://files.programster.org/tutorials/git/flows/github-flow.png" width=600>
-
-Source: https://blog.programster.org/git-workflows
-
-### Git Flow
-
-Key features:
-- **Two** "main" branches that last forever, main for deployment and develop where things are tested before they are released to main.
-- Three supporting branches: feature, release & hotfix. Both feature & release branches are created from develop. feature branches should be merged into develop before they are incorporated into a release. release branches eventually get merged into main after adequate review and testing.
-
-(note: at the time this figure was made, the default branch on GitHub as still called the master branch)
-
-<img src="https://files.programster.org/tutorials/git/flows/git-flow.png" width=600>
-
-Source: https://blog.programster.org/git-workflows
-
-### Discuss:
-
-What do you think are pros & cons of each of these branching workflows?
-
-### Relevance to course project:
-
-- You will be expected to work using the GitHub flow workflow for your projects in this course. 
-
-### What happens when my feature branch falls behind main?
-
-> How to catch up a branch that has fallen behind the `main` branch using the command line:
-> 
-> - run `git pull origin main` to pull any changes from the remote version of main that we might not have
-> - run `git switch <branch>` to make sure we are on the branch we want to catch up
-> - run `git merge main` to merge the changes
-> - run `git push origin <branch>` to push our updated branch to the remote
 
 ## SSH for authentication
 
