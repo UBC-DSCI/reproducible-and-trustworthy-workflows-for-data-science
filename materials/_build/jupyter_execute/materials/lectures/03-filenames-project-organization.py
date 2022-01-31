@@ -293,62 +293,6 @@
 # ```
 # 
 
-# #  Tell Git to ignore irrelevant files using a `.gitignore` file
-# 
-# You may have encountered this before:
-# 
-# ```
-# git status
-# ```
-# 
-# ```
-# On branch timberst-master
-# Untracked files:
-#   (use "git add <file>..." to include in what will be committed)
-# 
-# 	.ipynb_checkpoints/
-# 	.DS_Store
-# 
-# no changes added to commit (use "git add" and/or "git commit -a")
-# ```
-# 
-# Git is letting us know about untracked files (ones we have never committed before). We don't care about these files. We'd prefer not to have them clutter our view (so we can pay attention to files we do want to track). What do we do?
-
-# ## Create a `.gitignore` file
-# 
-# Using the plain text editor of your choice (mine is VS Code) create a file called `.gitignore` inside your Git repo. To do this with VS Code, I would type:
-# 
-# ```
-# code .gitignore
-# ```
-# 
-# Inside the text file, list the files and folders you would like to ignore, one per line. For example:
-# 
-# ```
-# .ipynb_checkpoints/
-# .DS_Store
-# ```
-# 
-# Save the file, and `add` and `commit` it with Git. Then try `git status` again. You should see:
-# 
-# ```
-# On branch timberst-master
-# nothing to commit, working tree clean
-# ```
-
-# ## `.gitignore` tips and tricks
-# 
-# - append `**/` to the beginning of any file/folder names listed in the `.gitignore` file to have them ignored in subdirectories within the repo as well
-# - create a [global `.gitignore` file](https://help.github.com/articles/ignoring-files/#create-a-global-gitignore) so that you do not have to create the same `.gitignore` for all your homework repos
-
-# Let's create a `gitignore` file in our 521 lab 2 repo. 
-# 
-# ### Steps to follow: 
-# 1. Use a text editor (e.g., VS Code, nano, Jupyter) to create a file called `.gitignore` in your 521 lab 2 repo
-# 2. Add `**/.ipynb_checkpoints/` to that file and save it
-# 3. `add` and `commit` it with Git
-# 4. Type `git status` and see if you no longer see `.ipynb_checkpoints/` as a untracked file
-
 # # Project organization
 # 
 # A good project structure looks similar to this:
@@ -413,3 +357,19 @@
 # - Slides borrowed from the [Data Carpentry](https://datacarpentry.org/) [Reproducible Science Workshop](https://datacarpentry.org/rr-organization1/)
 # 
 # -->
+
+# ### A tour de data science project organization
+# 
+# Below we link to three different data science projects shared via GitHub repositories. The first is a data analysis project, while the latter two are data science tools (an R and a Python package, respectively).
+# 
+# As you explore these projects, note the following similarities:
+# - Files related generally to the project are found in the project root (e.g., `README`, `CODE_OF_CONDUCT.md`, computational environment files, etc)
+# - Code files are generally found in the `src` or `R` directory
+# - `data` houses raw and processed data
+# - `doc` houses documentation files and or documents related to the project (sometimes there is both a `doc` and `reports` directory when there are two kinds of writing in a project).
+# - Other directories can be added as needed to group files with like/similar functions. Most important is that they have descriptive and obvious names related to the directory contents.
+# 
+# ##### Example projects
+# - [a data analysis project](https://github.com/ttimbers/breast_cancer_predictor)
+# - [a R package](https://github.com/ttimbers/canlang)
+# - [a Python package](https://github.com/ttimbers/pycounts_tat)

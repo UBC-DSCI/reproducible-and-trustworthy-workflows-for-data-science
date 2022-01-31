@@ -225,6 +225,30 @@ That will bring that version of the `doc/count_report.Rmd` into our working dire
 > JupyterLab Git extension). If you hit that case in your favorite tool, you can use the Git command line tool to get around it
 > and then go back to primarily using your tool of choice.
 
+
+## Git ignore
+
+What about pesky files that exist on our computer, that change sometimes but we don't really actively use (e.g., `.DS_Store`, `.ipynb_checkpoints`, etc). We can tell Git to ignore such irrelevant files by creating and using a `.gitignore` file
+
+### Create a `.gitignore` file
+
+Using the plain text editor of your choice, create a file called `.gitignore` inside the root of your Git repository. 
+Inside the text file, list the files and folders you would like to ignore, one per line. For example:
+
+```
+.ipynb_checkpoints/
+.DS_Store
+```
+
+Save the file, and add and commit it with Git. 
+Next time you go to use version control, 
+Git will not bother you about the files you listed there, even if they have changed!
+
+#### `.gitignore` tips and tricks
+
+- append `**/` to the beginning of any file/folder names listed in the `.gitignore` file to have them ignored in subdirectories within the repo as well
+- create a [global `.gitignore` file](https://help.github.com/articles/ignoring-files/#create-a-global-gitignore) so that you do not have to create the same `.gitignore` for all your homework repos
+
 ## Git Branches
 
 Branches allow you to have a playground 

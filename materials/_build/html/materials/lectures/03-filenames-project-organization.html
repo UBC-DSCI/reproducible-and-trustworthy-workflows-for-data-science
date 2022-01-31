@@ -41,7 +41,7 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -51,6 +51,7 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Virtual environments" href="04-virtual-environments.html" />
     <link rel="prev" title="Version control for transparency and collaboration" href="02_lecture-version_control_1.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -116,6 +117,11 @@
    Filenames and data science project organization, Integrated development environments
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -162,7 +168,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -213,7 +219,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+        <div class="d-none d-md-block col-md-2 bd-toc show">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -383,50 +389,23 @@
   </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
-   Tell Git to ignore irrelevant files using a
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     .gitignore
-    </span>
-   </code>
-   file
+  <a class="reference internal nav-link" href="#project-organization">
+   Project organization
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-gitignore-file">
-     Create a
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .gitignore
-      </span>
-     </code>
-     file
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#gitignore-tips-and-tricks">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .gitignore
-      </span>
-     </code>
-     tips and tricks
+    <a class="reference internal nav-link" href="#a-tour-de-data-science-project-organization">
+     A tour de data science project organization
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#steps-to-follow">
-       Steps to follow:
+      <a class="reference internal nav-link" href="#example-projects">
+       Example projects
       </a>
      </li>
     </ul>
    </li>
   </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#project-organization">
-   Project organization
-  </a>
  </li>
 </ul>
 
@@ -436,233 +415,7 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Filenames and data science project organization, Integrated development environments</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Filenames and data science project organization, Integrated development environments
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#topic-learning-objectives">
-     Topic learning objectives
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#filenames-best-practices">
-     Filenames - best practices
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#names-matter">
-       Names matter
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#what-works-what-doesn-t">
-       What works, what doesn’t?
-      </a>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#three-principles-for-file-names">
-       Three principles for (file) names
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#awesome-file-names">
-         Awesome file names :)
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#machine-readable">
-       Machine readable
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id1">
-         Machine readable
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#globbing">
-         Globbing
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">
-         Same using Mac OS Finder search facilities
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#same-using-regex-in-r">
-         Same using regex in R
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#punctuation-smaller">
-         Punctuation {.smaller}
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#recap-machine-readable">
-         Recap: machine readable
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#human-readable">
-       Human readable
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id2">
-         Human readable
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#example">
-         Example
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#embrace-the-slug">
-         Embrace the slug
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#recap-human-readable">
-         Recap: Human readable
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#plays-well-with-default-ordering">
-       Plays well with default ordering
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id3">
-         Plays well with default ordering
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#examples">
-         Examples
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#dates">
-         Dates
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
-         Comprehensive map of all countries in the world that use the MM-DD-YYYY format
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">
-         Left pad other numbers with zeros
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">
-         Recap: Plays well with default ordering
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#recap">
-         Recap
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id4">
-         Three principles for (file) names
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#pros">
-         Pros
-        </a>
-       </li>
-       <li class="toc-h4 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">
-         Go forth and use awesome file names :)
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
-   Tell Git to ignore irrelevant files using a
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     .gitignore
-    </span>
-   </code>
-   file
-  </a>
-  <ul class="visible nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-gitignore-file">
-     Create a
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .gitignore
-      </span>
-     </code>
-     file
-    </a>
-   </li>
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#gitignore-tips-and-tricks">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       .gitignore
-      </span>
-     </code>
-     tips and tricks
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h3 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#steps-to-follow">
-       Steps to follow:
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#project-organization">
-   Project organization
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
+        
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="filenames-and-data-science-project-organization-integrated-development-environments">
@@ -914,58 +667,6 @@ slug filenames
 </div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="tell-git-to-ignore-irrelevant-files-using-a-gitignore-file">
-<h1>Tell Git to ignore irrelevant files using a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file<a class="headerlink" href="#tell-git-to-ignore-irrelevant-files-using-a-gitignore-file" title="Permalink to this headline">¶</a></h1>
-<p>You may have encountered this before:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">status</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">On</span> <span class="n">branch</span> <span class="n">timberst</span><span class="o">-</span><span class="n">master</span>
-<span class="n">Untracked</span> <span class="n">files</span><span class="p">:</span>
-  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git add &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">include</span> <span class="ow">in</span> <span class="n">what</span> <span class="n">will</span> <span class="n">be</span> <span class="n">committed</span><span class="p">)</span>
-
-	<span class="o">.</span><span class="n">ipynb_checkpoints</span><span class="o">/</span>
-	<span class="o">.</span><span class="n">DS_Store</span>
-
-<span class="n">no</span> <span class="n">changes</span> <span class="n">added</span> <span class="n">to</span> <span class="n">commit</span> <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git add&quot;</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="s2">&quot;git commit -a&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Git is letting us know about untracked files (ones we have never committed before). We don’t care about these files. We’d prefer not to have them clutter our view (so we can pay attention to files we do want to track). What do we do?</p>
-<div class="section" id="create-a-gitignore-file">
-<h2>Create a <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file<a class="headerlink" href="#create-a-gitignore-file" title="Permalink to this headline">¶</a></h2>
-<p>Using the plain text editor of your choice (mine is VS Code) create a file called <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> inside your Git repo. To do this with VS Code, I would type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">code</span> <span class="o">.</span><span class="n">gitignore</span>
-</pre></div>
-</div>
-<p>Inside the text file, list the files and folders you would like to ignore, one per line. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">ipynb_checkpoints</span><span class="o">/</span>
-<span class="o">.</span><span class="n">DS_Store</span>
-</pre></div>
-</div>
-<p>Save the file, and <code class="docutils literal notranslate"><span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> it with Git. Then try <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> again. You should see:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">On</span> <span class="n">branch</span> <span class="n">timberst</span><span class="o">-</span><span class="n">master</span>
-<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">tree</span> <span class="n">clean</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="gitignore-tips-and-tricks">
-<h2><code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> tips and tricks<a class="headerlink" href="#gitignore-tips-and-tricks" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>append <code class="docutils literal notranslate"><span class="pre">**/</span></code> to the beginning of any file/folder names listed in the <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file to have them ignored in subdirectories within the repo as well</p></li>
-<li><p>create a <a class="reference external" href="https://help.github.com/articles/ignoring-files/#create-a-global-gitignore">global <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> file</a> so that you do not have to create the same <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> for all your homework repos</p></li>
-</ul>
-<p>Let’s create a <code class="docutils literal notranslate"><span class="pre">gitignore</span></code> file in our 521 lab 2 repo.</p>
-<div class="section" id="steps-to-follow">
-<h3>Steps to follow:<a class="headerlink" href="#steps-to-follow" title="Permalink to this headline">¶</a></h3>
-<ol class="simple">
-<li><p>Use a text editor (e.g., VS Code, nano, Jupyter) to create a file called <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> in your 521 lab 2 repo</p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">**/.ipynb_checkpoints/</span></code> to that file and save it</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">commit</span></code> it with Git</p></li>
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">status</span></code> and see if you no longer see <code class="docutils literal notranslate"><span class="pre">.ipynb_checkpoints/</span></code> as a untracked file</p></li>
-</ol>
-</div>
-</div>
-</div>
 <div class="tex2jax_ignore mathjax_ignore section" id="project-organization">
 <h1>Project organization<a class="headerlink" href="#project-organization" title="Permalink to this headline">¶</a></h1>
 <p>A good project structure looks similar to this:</p>
@@ -1026,7 +727,27 @@ Benjamin Franklin
 
 - Slides borrowed from the [Data Carpentry](https://datacarpentry.org/) [Reproducible Science Workshop](https://datacarpentry.org/rr-organization1/)
 
---></div>
+--><div class="section" id="a-tour-de-data-science-project-organization">
+<h2>A tour de data science project organization<a class="headerlink" href="#a-tour-de-data-science-project-organization" title="Permalink to this headline">¶</a></h2>
+<p>Below we link to three different data science projects shared via GitHub repositories. The first is a data analysis project, while the latter two are data science tools (an R and a Python package, respectively).</p>
+<p>As you explore these projects, note the following similarities:</p>
+<ul class="simple">
+<li><p>Files related generally to the project are found in the project root (e.g., <code class="docutils literal notranslate"><span class="pre">README</span></code>, <code class="docutils literal notranslate"><span class="pre">CODE_OF_CONDUCT.md</span></code>, computational environment files, etc)</p></li>
+<li><p>Code files are generally found in the <code class="docutils literal notranslate"><span class="pre">src</span></code> or <code class="docutils literal notranslate"><span class="pre">R</span></code> directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code> houses raw and processed data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">doc</span></code> houses documentation files and or documents related to the project (sometimes there is both a <code class="docutils literal notranslate"><span class="pre">doc</span></code> and <code class="docutils literal notranslate"><span class="pre">reports</span></code> directory when there are two kinds of writing in a project).</p></li>
+<li><p>Other directories can be added as needed to group files with like/similar functions. Most important is that they have descriptive and obvious names related to the directory contents.</p></li>
+</ul>
+<div class="section" id="example-projects">
+<h3>Example projects<a class="headerlink" href="#example-projects" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ttimbers/breast_cancer_predictor">a data analysis project</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ttimbers/canlang">a R package</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ttimbers/pycounts_tat">a Python package</a></p></li>
+</ul>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1050,8 +771,8 @@ Benjamin Franklin
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+        
+            <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="02_lecture-version_control_1.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -1060,18 +781,27 @@ Benjamin Franklin
             <p class="prev-next-title">Version control for transparency and collaboration</p>
         </div>
     </a>
+    <a class='right-next' id="next-link" href="04-virtual-environments.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Virtual environments</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
 </div>
-            
+        
         </div>
     </div>
     <footer class="footer">
-  <p>
-    
-      By Tiffany Timbers<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
 </main>
 
 
