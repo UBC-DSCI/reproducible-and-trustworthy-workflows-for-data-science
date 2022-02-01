@@ -373,3 +373,27 @@
 # - [a data analysis project](https://github.com/ttimbers/breast_cancer_predictor)
 # - [a R package](https://github.com/ttimbers/canlang)
 # - [a Python package](https://github.com/ttimbers/pycounts_tat)
+
+# ## Integrated development environments
+# 
+# Integrated development environments (IDEs) are software that provide comprehensive tools for programming in one place. 
+# 
+# The classic Jupyter notebook interface is typically not considered an IDE, however the newer, JupyterLab interface is. 
+# 
+# <img src="img/jupyternotebook.png" width=800>
+# 
+# <img src="img/jupyterlab.png" width=800>
+# 
+# Other very popular IDEs for data science include RStudio and VSCode. We will now explore these and look for similarities to identify key IDE features important for developing code for data science.
+# 
+# <img src="img/rstudio.png" width=800>
+# 
+# <img src="img/vscode.png" width=800>
+# 
+# Key features of all of these IDEs includes:
+# - screen split into panes
+# - file browser
+# - convenient access to R/Python console and a terminal
+# - editor for code writing
+# - code autocompletion
+# - code/syntax highlighting

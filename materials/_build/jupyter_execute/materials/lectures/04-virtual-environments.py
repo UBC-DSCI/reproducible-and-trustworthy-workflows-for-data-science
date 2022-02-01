@@ -442,6 +442,8 @@
 # to have a single installation of JupyterLab access kernels in other conda environments.
 # This package needs to be installed in the conda environment
 # where JupyterLab is installed.
+# For the computer setup for this course, we did that in the `base` environment, 
+# so that is where you would need to install `nb_conda_kernels` to make this work.
 # 
 # 
 # *More details are available in the [nb_conda_kernels README](https://github.com/Anaconda-Platform/nb_conda_kernels#installation)).*
