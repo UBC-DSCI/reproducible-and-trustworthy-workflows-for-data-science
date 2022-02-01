@@ -3,7 +3,7 @@
 
 # # Virtual environments
 
-# ## Attribution
+# #### Attribution
 # 
 # The conda virtual environment section of this guide
 # was originally published at http://geohackweek.github.io/ under a CC-BY license
@@ -14,31 +14,114 @@
 # 
 # By the end of the lecture you will be able to:
 # 
-# 1. Manage virtual environments with `conda` and `renv`.
-# 
-# 
+# 1. Explain what a virtual environment is and why it can be useful for reproducible data analyses
+# 2. Discuss the advantages and limitations of virtual environment tools (e.g., `conda` and `renv`) in the context of reproducible data analyses
+# 3. Use, create and share virtual environments (for example, with conda and `renv`)
 
 # ## Virtual environments
 # 
-# Virtual environments let's you have multiple versions of packages
-# and programs on the same computer
-# without them creating conflicts with each other.
-# You will be using virtual Python and R environments
-# throughout the program to setup your packages for different courses.
+# Virtual environments let's you have multiple versions of programming languages 
+# packages, and other programs on the same computer, while keeping them isolated
+# so they do not create conflicts with each other.
+# In practice virtual environments are used in one or multiple projects.
+# And you might have several virtual environments stored on your laptop,
+# so that you can have a different collection of versions programming languages 
+# and their packages for each project, as needed.
+# 
+# Most virtual environment tools have a sharing functionality which aids in making
+# data science projects reproducible, 
+# as not only is there a record of the computational environment,
+# but that computational environment can be shared to others computer - 
+# facilitating the reproduction of results from data and code.
+# This facilitation comes from the fact that programming languages 
+# and their packages are not static - they change! 
+# There are new features added, bugs are fixed, etc,
+# and this can impact how your code runs! 
+# Therefore, for a data science project to be reproducible across time, 
+# you need the computational environment in addition to the data and the code.
+# 
+# There are several other major benefits of using environments:
+# 
+# - If two of your projects on your computer rely on different versions of the same package,
+#   you can install these in different environments.
+# - If you want to play around with a new package,
+#   you don't have to change the packages versions you use for your data analysis project
+#   and risk messing something up 
+#   (package version often get upgraded when we install other new packages that share dependencies).
+# - When you develop your own packages,
+#   it is essential to use environments,
+#   since you want to to make sure you know exactly which packages yours depend on,
+#   so that it runs on other systems than your own.
+# 
+# 
+# There are **MANY** version virtual environment tools out there, 
+# even if we just focus on R and Python. 
+# When we do that we can generate this list:
+# 
+# #### R virtual environment tools
+# - `packrat`
+# - `renv`
+# - `conda`
+# 
+# #### Python virtual environment tools
+# - `venv`
+# - `virtualenv`
+# - `conda`
+# - `mamba`
+# - `poetry`
+# - `pipenv`
+# - ... there may be more that I have missed.
+# 
+# 
+# In this course, we will learn about `conda` and `renv`. 
+# `conda` is nice because it can work with both R and Python.
+# Although a downside of `conda` is that it is not as widely adopted in the R community 
+# as Python is, and therefore there are less R packages available from it, 
+# and less recent versions of those R packages than available directly from the R package index (CRAN).
+# It is true, that you can create a `conda` package for any R package that exists on CRAN, 
+# however this takes time and effort and is sometimes non-trivial.
+# 
+# Given that, we will also learn about `renv` - a new virtual environment tool in R 
+# that is gaining widespread adoption. 
+# It works directly with the packages on CRAN, 
+# and therefore allows users to crete R virtual environments with
+# the most up to date packages, and all R packages on CRAN, with less work compared to `conda`.
+# 
+# > Note on terminology: Technically what we are discussing here in this topic are referred to as virtual environments.
+# > However, in practice we often drop the "virtual" when discussing this and refer to these as simply "environments".
+# > That may happen in these lecture notes, as well as in the classroom.
 
 # ## Conda
 # 
 # [**conda**](http://conda.pydata.org/docs/) is an **open source `package` and `environment` management system for any programming language**;
-# though it is the most popular in the python community.
-# [Anaconda](https://www.continuum.io/why-anaconda) is a data science platform for Python
-# that comes with a lot of packages by default. Unlike Anaconda,
-# Miniconda doesn't come with any installed packages by default,
-# and we can pick and choose which ones we want.
-# Both include Python and conda.
+# though it is most popular in the Python community.
+# `conda` was originally developed by [Anaconda Inc.](https://www.anaconda.com/products/individual) 
+# and bundled with their Anaconda distribution of Python. 
+# However, `conda`'s widespread popularity 
+# and utility led to its decoupling into its own package.
+# 
+# It is now available for installation via:
+# - Anaconda Python distribution
+# - Miniconda Python distribution (this is what we recommended most of you install for this course)
+# - Miniforge (this is what we recommended folks with Mac ARM machines install for this course)
+# 
+# Conda builds of R and Python packages, are in fact R and Python packages and built from
+# R and Python source code, but they are packaged up and built differently, 
+# and with a different tool chain.
+# How to create `conda` packages from R and Python source code 
+# is beyond the scope of this course.
+# However, we direct keen learners of this topic to the documentation on how to do this:
+# - [Conda-build documentation](https://docs.conda.io/projects/conda-build/en/latest/)
+# 
+# What we will focus on learning is how to use `conda`
+# to create virtual environments, 
+# record the components of the virtual environment
+# and share the virtual environment with collaborators 
+# in a way that they can recreate it on their computer.
 # 
 # ### Managing Conda
 # 
-# Let's first start by checking if conda is installed.
+# Let's first start by checking if conda is installed (it should be if we followed the recommended course computer setup instructions) by running:
 # 
 # ```
 # conda --version
@@ -117,41 +200,43 @@
 # You don't need to worry about remembering to update conda,
 # it will let you know if it is out of date when you are installing new packages.
 
-# ## Managing Environments
+# ### Managing `conda` environments
 # 
-# ### What is a conda environment and why is it so useful?
+# #### What is a conda environment and why is it so useful?
 # 
-# Using `conda`, you can create an isolated python *environment* for your project.
-# An environment is a set of packages that can be used in one or multiple projects.
-# There are several major  benefits of using environments:
-# 
-# 
-# - You can guarantee that someone else can reproduce your project 
-#   by specifying which package versions your used
-#   and making it easy for others to install the same versions.
-# - If two of your projects relies on different versions of the same package,
-#   you can install these in different environments.
-# - If you want to play around with a new package,
-#   you don't have to change the packages you use for your data analysis
-#   and risk messing something up.
-# - When you develop your own packages,
-#   it is essential to use environments,
-#   since you want to to make sure you know exactly which packages yours depend on,
-#   so that it runs on other systems than your own.
-# 
+# Using `conda`, you can create an isolated R or Python virtual environment for your project.
 # The default environment is the `base` environment,
-# which contains only the essential packages from Miniconda.
+# which contains only the essential packages from Miniconda 
+# (and anything else you have installed in it since installing Miniconda).
 # You can see that your shell's prompt string is prefaced with `(base)`
-# when you are inside this environment.
-# In the setup guide,
-# we gave your instructions for how to activate this environment by default
-# every time you open Bash.
-# There are two ways of creating a conda environment.
+# when you are inside this environment:
+# 
+# ```{bash}
+# (base) Helps-MacBook-Pro:~ tiffany$
+# ```
+# 
+# In the computer setup guide,
+# we asked you to follow instructions so that this environment 
+# will be activatd by default every time you open your terminal.
+# 
+# To create another environment on your computer, 
+# that is isolated from the `(base)` environment 
+# you can either do this through:
 # 
 # 1. Manual specifications of packages.
 # 2. An environment file in YAML format (`environment.yaml`).
+# 
+# We will now discuss both, as they are both relevant workflows for data science. 
+# When do you use one versus the other?
+# I typically use the manual specifications of packages when I am creating
+# a new data science project.
+# From that I generate an environment file in YAML format 
+# that I can share with collaborators (or anyone else who wants to reproduce my work).
+# Thus, I use an environment file in YAML format when I join a project as a collaborator 
+# and I need to use the same environment that has been previously used for that project,
+# or when I want to reproduce someone else's work.
 
-# ### Creating environment by manually specifying packages
+# #### Creating environment by manually specifying packages
 # 
 # We can create `test_env` conda environment by typing `conda -n <name-of-env>`.
 # However,
@@ -185,7 +270,77 @@
 # And to see all your environments,
 # you can type `conda env list`.
 
-# ### Sharing Environments with others
+# #### Seeing what packages are available in an environment
+# 
+# We will now check packages that are available to us.
+# The command below will list all the packages in an environment, in this case `test_env`.
+# The list will include versions of each package, the specific build,
+# and the channel that the package was downloaded from.
+# `conda list` is also useful to ensure that you have installed the packages that you desire.
+# 
+# ```
+# conda list
+# ```
+# 
+# ```
+# # packages in environment at //miniconda/envs/test_env:
+# #
+# Using Anaconda Cloud api site https://api.anaconda.org
+# blas                      1.1                    openblas    conda-forge
+# ca-certificates           2016.9.26                     0    conda-forge
+# certifi                   2016.9.26                py27_0    conda-forge
+# cycler                    0.10.0                   py27_0    conda-forge
+# freetype                  2.6.3                         1    conda-forge
+# functools32               3.2.3.2                  py27_1    conda-forge
+# libgfortran               3.0.0                         0    conda-forge
+# ```
+
+# #### Installing conda package
+# 
+# Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing,
+# shows the necessary information to install the package.
+# e.g. conda-forge/rasterio.
+# The first word list the channel that this package is from and the second part shows the name of the package.
+# 
+# To install the latest version available within the channel, do not specify in the install command. We will install version 0.35 of `rasterio` from conda-forge into `test_env` in this example. Conda will also automatically install the dependencies for this package.
+# 
+# ```
+# conda install -c conda-forge rasterio=0.35
+# ```
+# 
+# If you have a few trusted channels that you prefer to use, you can pre-configure these so that everytime you are creating an environment, you won't need to explicitly declare the channel. 
+# 
+# ```
+# conda config --add channels conda-forge
+# ```
+
+# #### Removing a conda package
+# 
+# We decided that rasterio is not needed in this tutorial, so we will remove it from `test_env`.
+# Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).
+# 
+# ```
+# conda remove -n test_env rasterio
+# ```
+# 
+# ```
+# Using Anaconda Cloud api site https://api.anaconda.org
+# Fetching package metadata .........
+# Solving package specifications: ..........
+# 
+# Package plan for package removal in environment //anaconda/envs/test_env:
+# 
+# The following packages will be REMOVED:
+# 
+#     rasterio: 0.35.1-np111py27_1 conda-forge
+# 
+# Proceed ([y]/n)? y
+# 
+# Unlinking packages ...
+# [      COMPLETE      ]|#######################################################################################################| 100%
+# ```
+
+# #### Sharing Environments with others
 # 
 # To share an environment, you can export your conda environment to an environment file,
 # which will list each package and its version
@@ -243,7 +398,7 @@
 # For an environment to be reproducible,
 # you **NEED** to add the version string manually.
 
-# ### Creating environment from an environment file
+# #### Creating environment from an environment file
 # 
 # Now, let's install `environment.yaml` environment file above so that we can create a conda environment called `test_env`.
 # 
@@ -251,17 +406,17 @@
 # $ conda env create --file environment.yaml
 # ```
 
-# ### Copying an environment
+# #### Copying an environment
 # 
 # We can make an exact copy of an environment to an environment with a different name.
-# This maybe useful for any testing versus live environments or different Python 2.7 versions for the same packages.
+# This maybe useful for any testing versus live environments or different Python 3.7 versions for the same packages.
 # In this example, `test_env` is cloned to create `live_env`.
 # 
 # ```
 # conda create --name live_env --clone test_env
 # ```
 
-# ### Deleting an environment
+# #### Deleting an environment
 # 
 # Since we are only testing out our environment,
 # we will delete `live_env` to remove some clutter.
@@ -271,11 +426,12 @@
 # conda env remove -n live_env
 # ```
 
-# ### Making environments work well with JupyterLab
+# #### Making environments work well with JupyterLab
 # 
 # In brief,
-# you need to install the `ipykernel` package
-# in any new environment your create,
+# you need to install a kernel in the new conda environment
+# in any new environment your create (`ipykernel` for Python
+# and the `r-irkernel` package for R),
 # and the `nb_conda_kernels` package needs to be installed
 # in the environment where JupyterLab is installed.
 # 
@@ -287,139 +443,17 @@
 # This package needs to be installed in the conda environment
 # where JupyterLab is installed.
 # 
-# Lastly,
-# you also need to install a kernel in the new conda environment
-# so that it can be detected by `nb_conda_kernels`.
-# This kernel can be installed via the package `ipykernel` for Python
-# and the `r-irkernel` package for R
-# ([more info in the nb_conda_kernels README](https://github.com/Anaconda-Platform/nb_conda_kernels#installation)).
-
-# ## Managing Packages
 # 
-# ### Seeing what packages are available
-# 
-# We will now check packages that are available to us.
-# The command below will list all the packages in an environment, in this case `test_env`.
-# The list will include versions of each package, the specific build,
-# and the channel that the package was downloaded from.
-# `conda list` is also useful to ensure that you have installed the packages that you desire.
-# 
-# ```
-# conda list
-# ```
-# 
-# ```
-# # packages in environment at //miniconda/envs/test_env:
-# #
-# Using Anaconda Cloud api site https://api.anaconda.org
-# blas                      1.1                    openblas    conda-forge
-# ca-certificates           2016.9.26                     0    conda-forge
-# certifi                   2016.9.26                py27_0    conda-forge
-# cycler                    0.10.0                   py27_0    conda-forge
-# freetype                  2.6.3                         1    conda-forge
-# functools32               3.2.3.2                  py27_1    conda-forge
-# libgfortran               3.0.0                         0    conda-forge
-# ```
-
-# ### Searching for a certain package
-# 
-# Some packages might not be available in conda, but are available in [pypi](https://pypi.python.org/pypi).
-# For example, we will search for rasterio within the [anaconda cloud](https://anaconda.org/).
-# *It is not necessary to create an account with anaconda cloud, unless you'd like to contribute in the future when you are pro with conda.*
-# 
-# In this example, we will use rasterio from conda-forge. The anaconda cloud page for rasterio will show how to install the package, compatible OS, individual files for that package, etc.
-# 
-# With conda you can do this search within the command line:
-# 
-# ```
-# conda search rasterio
-# ```
-# 
-# ```
-# Using Anaconda Cloud api site https://api.anaconda.org
-# Run 'anaconda show <USER/PACKAGE>' to get more details:
-# Packages:
-#      Name                      |  Version | Package Types   | Platforms      
-#      ------------------------- |   ------ | --------------- | ---------------
-#      IOOS/rasterio             |    1.0a2 | conda           | linux-64, win-32, win-64, osx-64
-#      Terradue/rasterio         |   0.32.0 | conda           | linux-64       
-#                                           : Fast and direct raster I/O for use with Numpy and SciPy
-#      anaconda/rasterio         |   0.36.0 | conda           | linux-64, win-32, win-64, linux-32, osx-64
-#      conda-forge/rasterio      |    1.0a2 | conda           | linux-64, win-32, win-64, osx-64
-#                                           : Rasterio reads and writes geospatial raster datasets
-#      dharhas/rasterio          |   0.23.0 | conda           | win-64         
-#                                           : Rasterio reads and writes geospatial raster datasets.
-#      erdc/rasterio             |   0.23.0 | conda           | win-64         
-#                                           : Rasterio reads and writes geospatial raster datasets.
-#      jesserobertson/rasterio   |   0.23.0 | conda           | linux-64, linux-32, osx-64
-#      jhamman/rasterio_to_xarray | 2016.03.16-1558 | ipynb           |                
-#                                           : IPython notebook
-#      krisvanneste/rasterio     |   0.26.0 | conda           | win-64         
-#      ocefpaf/rasterio          |   0.19.1 | conda           | linux-64, osx-64
-#      omgarcia/rasterio         |   0.25.0 | conda           | linux-64       
-#      pypi/rasterio             |   0.13.2 | pypi            |                
-#                                           : Fast and direct raster I/O for Python programmers who use Numpy
-#      robintw/rasterio          |   0.35.1 | conda           | osx-64         
-#                                           : Rasterio reads and writes geospatial raster datasets
-#      sgillies/rasterio         |     0.15 | conda           | osx-64         
-#      ztessler/rasterio         |   0.31.0 | conda           | osx-64         
-#                                           : Fast and direct raster I/O for use with Numpy and SciPy
-# Found 15 packages
-# ```
-
-# ### Installing conda package
-# 
-# Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing,
-# shows the necessary information to install the package.
-# e.g. conda-forge/rasterio.
-# The first word list the channel that this package is from and the second part shows the name of the package.
-# 
-# To install the latest version available within the channel, do not specify in the install command. We will install version 0.35 of `rasterio` from conda-forge into `test_env` in this example. Conda will also automatically install the dependencies for this package.
-# 
-# ```
-# conda install -c conda-forge rasterio=0.35
-# ```
-# 
-# If you have a few trusted channels that you prefer to use, you can pre-configure these so that everytime you are creating an environment, you won't need to explicitly declare the channel. 
-# 
-# ```
-# conda config --add channels conda-forge
-# ```
-
-# #### Removing a conda Package
-# 
-# We decided that rasterio is not needed in this tutorial, so we will remove it from `test_env`.
-# Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).
-# 
-# ```
-# conda remove -n test_env rasterio
-# ```
-# 
-# ```
-# Using Anaconda Cloud api site https://api.anaconda.org
-# Fetching package metadata .........
-# Solving package specifications: ..........
-# 
-# Package plan for package removal in environment //anaconda/envs/test_env:
-# 
-# The following packages will be REMOVED:
-# 
-#     rasterio: 0.35.1-np111py27_1 conda-forge
-# 
-# Proceed ([y]/n)? y
-# 
-# Unlinking packages ...
-# [      COMPLETE      ]|#######################################################################################################| 100%
-# ```
+# *More details are available in the [nb_conda_kernels README](https://github.com/Anaconda-Platform/nb_conda_kernels#installation)).*
 
 # Remeber that when you forget a specific command
 # you can type in the help command we have created `mds-help`
 # in you terminal to see a list of all commands we use in MDS.
 
-# # R environments
+# ## `renv`
 # 
 # In R,
-# environments are managed by `renv`,
+# environments can also be managed by `renv`,
 # which works with similar principles as `conda`,
 # and other virtual environment managers,
 # but the commands are different.
