@@ -293,7 +293,7 @@
 # ```
 # 
 
-# # Project organization
+# ## Project organization
 # 
 # A good project structure looks similar to this:
 # 
@@ -397,3 +397,9 @@
 # - editor for code writing
 # - code autocompletion
 # - code/syntax highlighting
+
+# In[ ]:
+
+
+
+
