@@ -388,11 +388,11 @@
 # 
 # <img src="img/rstudio.png" width=800>
 # 
-# > ##### Note: If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html>
+# > **Note:** If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html>
 # 
 # <img src="img/vscode.png" width=800>
 # 
-# > ##### Note: If you would like to use VS Code with R, please follow the instructions below on how to configure this: 
+# > **Note:** If you would like to use VS Code with R, please follow the instructions below on how to configure this: 
 # > 
 # > 1. Install VSCode [R Extension](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) on your VSCode
 # > 2. In the R console, install `languageserver` R package via `install.packages("languageserver")`
