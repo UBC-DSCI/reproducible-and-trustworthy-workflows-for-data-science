@@ -388,13 +388,18 @@
 # 
 # <img src="img/rstudio.png" width=800>
 # 
-# > **Note:** If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html>
+# > **Note:** RStudio was originally developed to work with the R programming language, but now it can work with Python well too! If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html>
 # 
 # <img src="img/vscode.png" width=800>
 # 
-# > **Note:** If you would like to use VS Code with R, please follow the instructions below on how to configure this: 
+# > **Note 1:** If you would like to use VS Code with Python, then please follow the instructions below on how to configure this: 
+# > 1. Install the VSCode [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) in your VSCode application
+# > 2. Code can be sent line-by-line to the Python console via `Shift` + `Enter`. The first time you do this, an interactive iPython console will open up. Future `Shift` + `Enter` keystrokes during that work session will send code to that console.
+# > 3. A bash command line terminal console can be added by clicking the **Terminal** > **New Terminal** menu item, and then the "+" symbol and selecting "bash".
+# 
+# > **Note 2:** If you would like to use VS Code with R, please follow the instructions below on how to configure this: 
 # > 
-# > 1. Install VSCode [R Extension](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) on your VSCode
+# > 1. Install the VSCode [R Extension](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) in your VSCode application
 # > 2. In the R console, install `languageserver` R package via `install.packages("languageserver")`
 # > 3. Install the `radian` Python package (which gives an improved R console in VS Code) via `conda install radian`
 # > 4. In the VS Code settings (found by clicking the **Code** > **Preferences** > **Settings** menu item) search for "r.path" and paste the path to `radian` under the textbox for your operating system (you can find the path to `radian` by typing `which radian` in the terminal). For example, on my Mac x86 laptop, the path is `/Users/tiffany/opt/miniconda3/bin/radian`
@@ -408,9 +413,3 @@
 # - editor for code writing
 # - code autocompletion
 # - code/syntax highlighting
-
-# In[ ]:
-
-
-
-
