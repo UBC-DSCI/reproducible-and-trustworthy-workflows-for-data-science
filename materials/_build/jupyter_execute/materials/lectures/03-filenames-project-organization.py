@@ -388,9 +388,20 @@
 # 
 # <img src="img/rstudio.png" width=800>
 # 
+# > ##### Note: If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html>
+# 
 # <img src="img/vscode.png" width=800>
 # 
-# Key features of all of these IDEs includes:
+# > ##### Note: If you would like to use VS Code with R, please follow the instructions below on how to configure this: 
+# > 
+# > 1. Install VSCode [R Extension](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r) on your VSCode
+# > 2. In the R console, install `languageserver` R package via `install.packages("languageserver")`
+# > 3. Install the `radian` Python package (which gives an improved R console in VS Code) via `conda install radian`
+# > 4. In the VS Code settings (found by clicking the **Code** > **Preferences** > **Settings** menu item) search for "r.path" and paste the path to `radian` under the textbox for your operating system (you can find the path to `radian` by typing `which radian` in the terminal). For example, on my Mac x86 laptop, the path is `/Users/tiffany/opt/miniconda3/bin/radian`
+# > 5. In the VS Code settings (Code > Preferences > Settings) search for "R: Bracketed Paste" and select the checkbox for this setting (this allows you to send code to the R console when it is split across lines without it breaking).
+# > 6. An interactive R console can be added by clicking the **Terminal** > **New Terminal** menu item, and then the "+" symbol and selecting "R Terminal". Code can be sent line-by-line to the R console via `Cmd` + `Enter` (Mac) or `Control` + `Enter` (Windows).
+# 
+# #### Key features of all of these IDEs includes:
 # - screen split into panes
 # - file browser
 # - convenient access to R/Python console and a terminal
