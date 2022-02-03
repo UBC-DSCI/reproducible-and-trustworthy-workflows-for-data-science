@@ -224,7 +224,7 @@
 # you can either do this through:
 # 
 # 1. Manual specifications of packages.
-# 2. An environment file in YAML format (`environment.yaml`).
+# 2. An environment file in YAML format (`environment.yml`).
 # 
 # We will now discuss both, as they are both relevant workflows for data science. 
 # When do you use one versus the other?
@@ -236,7 +236,7 @@
 # and I need to use the same environment that has been previously used for that project,
 # or when I want to reproduce someone else's work.
 
-# #### Creating environment by manually specifying packages
+# ### Creating environment by manually specifying packages
 # 
 # We can create `test_env` conda environment by typing `conda -n <name-of-env>`.
 # However,
@@ -270,7 +270,7 @@
 # And to see all your environments,
 # you can type `conda env list`.
 
-# #### Seeing what packages are available in an environment
+# ### Seeing what packages are available in an environment
 # 
 # We will now check packages that are available to us.
 # The command below will list all the packages in an environment, in this case `test_env`.
@@ -295,7 +295,7 @@
 # libgfortran               3.0.0                         0    conda-forge
 # ```
 
-# #### Installing conda package
+# ### Installing conda package
 # 
 # Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing,
 # shows the necessary information to install the package.
@@ -314,7 +314,7 @@
 # conda config --add channels conda-forge
 # ```
 
-# #### Removing a conda package
+# ### Removing a conda package
 # 
 # We decided that rasterio is not needed in this tutorial, so we will remove it from `test_env`.
 # Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).
@@ -340,7 +340,7 @@
 # [      COMPLETE      ]|#######################################################################################################| 100%
 # ```
 
-# #### Sharing Environments with others
+# ### Sharing Environments with others
 # 
 # To share an environment, you can export your conda environment to an environment file,
 # which will list each package and its version
@@ -354,7 +354,7 @@
 # the extension can be either `.yaml` or `.yml`):
 # 
 # ```
-# conda env export -f environment.yaml
+# conda env export --from-history -f environment.yml
 # ```
 # 
 # Remember that `.yaml` files are plain text,
@@ -368,12 +368,11 @@
 # This is good in the sense that it gives an exact copy of *everything*
 # in your environment.
 # 
-# However,
+# We use the `--from-history` flag/option above as
 # some dependencies might differ between operating systems,
 # so this file *might* not work with someone from a different OS.
-# To remedy this,
-# you can append the `--from-history` flag,
-# which look at the history of the packages you explicitly told conda to install
+# The `--from-history` flag,
+# looks at the history of the packages you explicitly told `conda` to install
 # and only list those in the export.
 # The required dependencies will then be handled in an OS-specific manner during the installation,
 # which guarantees that they will work across OSes.
@@ -398,15 +397,30 @@
 # For an environment to be reproducible,
 # you **NEED** to add the version string manually.
 
-# #### Creating environment from an environment file
+# ### Creating environment from an environment file
 # 
-# Now, let's install `environment.yaml` environment file above so that we can create a conda environment called `test_env`.
+# Now, let's install `environment.yml` environment file above so that we can create a conda environment called `test_env`.
 # 
 # ```
-# $ conda env create --file environment.yaml
+# $ conda env create --file environment.yml
 # ```
+# 
+# #### Exercise
+# 
+# Create an environment on your laptop with an older version of Python!
+# 
+# 1. Clone [this GitHub repository](https://github.com/ttimbers/conda_env_practice/blob/main/README.md).
+# 
+# 2. Try to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as `python -c "print 'Back from the Future'"`. This should fail.
+# 
+# 3. In the terminal, navigate to the root of the repository and run: `conda env create --file environment.yml`
+# 
+# 4. Activate the environment by typing `conda activate oldie_but_a_goodie` 
+# 
+# 5. Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as `python -c "print 'Back from the Future'"`. If you activated your environment correctly, this should succeed!
+# 
 
-# #### Copying an environment
+# ### Copying an environment
 # 
 # We can make an exact copy of an environment to an environment with a different name.
 # This maybe useful for any testing versus live environments or different Python 3.7 versions for the same packages.
@@ -416,7 +430,23 @@
 # conda create --name live_env --clone test_env
 # ```
 
-# #### Deleting an environment
+# ### Listing all environments on your laptop
+# 
+# You may have created an environment 
+# and forgotten what you named it,
+# or you want to do some cleanup 
+# and delete old environments (next topic),
+# and so you want to see which exist on your computer
+# and remove the ones you are no longer using.
+# To do this we will use the `info` command 
+# along with the `--envs` flag/option.
+# 
+# 
+# ```{bash}
+# conda info --envs
+# ```
+
+# ### Deleting an environment
 # 
 # Since we are only testing out our environment,
 # we will delete `live_env` to remove some clutter.
@@ -426,7 +456,7 @@
 # conda env remove -n live_env
 # ```
 
-# #### Making environments work well with JupyterLab
+# ### Making environments work well with JupyterLab
 # 
 # In brief,
 # you need to install a kernel in the new conda environment
@@ -459,10 +489,27 @@
 # which works with similar principles as `conda`,
 # and other virtual environment managers,
 # but the commands are different.
-# To see which commands are used in `renv`,
-# you can [visit the project website](https://rstudio.github.io/renv/articles/renv.html).
-# Briefly,
-# `renv::init()` is used to create a new env,
-# `renv::snapshot` is used to save/export the environment to a file (`renv.lock`),
-# and installing and removing packages are done as usual
-# via the `install.packages()` and `remove.packages()` commands.
+# Detailed documentation for `renv`,
+# can found at the [package website](https://rstudio.github.io/renv/index.html).
+# 
+# `renv` differs from `conda` in the way that it adds package dependencies. 
+# Briefly, when you prompt `renv` to create (or update) a file to record the project dependencies (done via `renv`'s `snapshot()` function), 
+# it recursively crawls the files in the project 
+# looking for calls to `library()` or `require()`.
+# 
+# `renv` environments work best in the context of RStudio projects - and so it is recommended that you create an RStudio project that corresponds to the root of your data science project repository. If this is not done - `renv` will crawl files outside of the project, looking for dependencies.
+# 
+# Below we create a table with the general virtual environment commands for `renv` as well as the equivalent `conda` command for comparison:
+# 
+# | Description                  | `renv` command     |`conda` command                    |
+# |------------------------------|--------------------|-----------------------------------|
+# | Create a new environment without an environment file | `renv::init()`     | `conda create -n <ENV_NAME> ...` |
+# | Activate a new environment   | `renv::activate()` | `conda activate <ENV_NAME>`       |
+# | Export environment to a file | `renv::snapshot()` |  `conda env export --from-history -f environment.yml` |                |
+# | Create a new environment from an environment file | `renv::restore()` | `conda env create --file environment.yml` |
+
+# In[ ]:
+
+
+
+

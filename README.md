@@ -1,6 +1,6 @@
 ## Reproducible and Trustworthy Workflows for Data Science
 
-Tiffany A. Timbers
+Tiffany A. Timbers, Joel Ostblom, Florencia D'Andrea, Rodolfo Lourenzutti
 
 January, 2022
 
