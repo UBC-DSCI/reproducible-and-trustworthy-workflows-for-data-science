@@ -495,7 +495,9 @@
 # `renv` differs from `conda` in the way that it adds package dependencies. 
 # Briefly, when you prompt `renv` to create (or update) a file to record the project dependencies (done via `renv`'s `snapshot()` function), 
 # it recursively crawls the files in the project 
-# looking for calls to `library()` or `require()`.
+# looking for calls to `library()` or `require()`. 
+# 
+# The key file `renv` creates for recording and sharing environments is called `renv.lock`. Other files are created when you use `renv` but `renv.lock` is the one needed for sharing the environment with collaborators.
 # 
 # `renv` environments work best in the context of RStudio projects - and so it is recommended that you create an RStudio project that corresponds to the root of your data science project repository. If this is not done - `renv` will crawl files outside of the project, looking for dependencies.
 # 
