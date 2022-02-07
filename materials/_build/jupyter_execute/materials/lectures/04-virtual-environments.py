@@ -12,7 +12,7 @@
 # 
 # ## Topic learning goals
 # 
-# By the end of the lecture you will be able to:
+# By the end of the topic you will be able to:
 # 
 # 1. Explain what a virtual environment is and why it can be useful for reproducible data analyses
 # 2. Discuss the advantages and limitations of virtual environment tools (e.g., `conda` and `renv`) in the context of reproducible data analyses
