@@ -126,48 +126,53 @@
 # ### Virtual environment
 # 
 # #### Advantages
-# - 
-# - 
+# - Extremely small size
+# - Porous (less isolated) - makes it easy to pair the virtualized computational environment with files on your computer
+# - Specify these with a single text file
 # 
 # #### Disadvantages
-# - 
-# - 
+# - Not always possible to capture and share operating system dependencies, and other software your analysis depends upon
+# - Computational environment is not fully isolated, and so silent missed dependencies
 # 
 
 # ### Containers
 # 
 # #### Advantages
-# - 
-# - 
+# - Somewhat light-weight in size (manageable for easy sharing - there are tools and software to facilitate this)
+# - Possible to capture and share operating system dependencies, and other software your analysis depends upon
+# - Computational environment is fully isolated, and errors will occur if dependencies are missing
+# - Specify these with a single text file
+# - Can share volumes and ports (advantage compared to virtual machines)
 # 
 # #### Disadvantages
-# - 
-# - 
+# - Possible security issues - running software on your computer that you may allow to be less isolated (i.e., mount volumes, expose ports)
+# - Takes some effort to share volumes and ports (disadvantage compared to virtual environments)
 # 
 
 # ### Virtual machine
 # 
 # #### Advantages
-# - 
-# - 
+# - High security, because these are much more isolated (filesystem, ports, etc)
+# - Can share an entirely different operating system (might not so useful in the context of reproducibility however...)
 # 
 # #### Disadvantages
-# - 
-# - 
+# - Very big in size, which can make it prohibitive to share them
+# - Takes great effort to share volumes and ports - which makes it hard to give access to data on your computer
 # 
 
 # ## Container useage workflow
 # 
 # A schematic of Container useage workflow from a [blog post](https://blog.octo.com/en/docker-registry-first-steps/) by Arnaud Mazin:
 # 
-# ![Containers_vs_images](img/docker-stages.png)
+# <img src="img/docker-stages.png" width=600>
+# 
 # *Source: [OctoTalks](https://blog.octo.com/en/docker-registry-first-steps/)*
 
 # ## Image vs container?
 # 
 # Analogy: The program Chrome is like a Docker image, whereas a Chrome window is like a Docker container.
 # 
-# <img src="img/instance_analogy.png" width="600" align="left"/>
+# <img src="img/instance_analogy.png" width="600">
 
 # You can list the container **images** on your computer that you pulled using Docker via: `docker images`. You should see a list like this when you do this:
 # 
