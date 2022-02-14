@@ -1,0 +1,1048 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture 8: Tidy evaluation &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02-version-control-1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-filenames-project-organization.html">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05-containerization.html">
+   Managing dependencies using containerization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06-intro-to-testing-code.html">
+   Introduction to testing code for data science
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/08-lecture-tidy-evaluation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/08-lecture-tidy-evaluation.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/08-lecture-tidy-evaluation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lecture-learning-objectives">
+   Lecture learning objectives:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-metaprogramming-lets-you-do-in-r">
+   What Metaprogramming lets you do in R
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-is-metaprogramming">
+     What is metaprogramming?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#our-narrow-focus-on-metaprogramming-for-this-course">
+     Our narrow focus on metaprogramming for this course:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-focus-on-tidy-evaluation">
+     Why focus on tidy evaluation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tidy-evaluation">
+   Tidy evaluation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-does-that-even-work">
+     How does that even work?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#back-to-our-example">
+     Back to our example:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#trade-off-of-lovely-interactivity-of-tidyverse-functions">
+     Trade off of lovely interactivity of tidyverse functions…
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#programming-with-them-can-be-more-challenging">
+     programming with them can be more challenging.
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-functions-using-tidy-eval-s-enquo-and">
+     Defining functions using tidy eval’s
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       enquo
+      </span>
+     </code>
+     and
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       !!
+      </span>
+     </code>
+     :
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-functions-by-embracing-column-names">
+     Defining functions by embracing column names:
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       {{
+      </span>
+      <span class="pre">
+       }}
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optional-creating-functions-that-handle-column-names-as-strings">
+     (Optional) Creating functions that handle column names as strings:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-walrus-operator-is-needed-when-assigning-values">
+     The walrus operator
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       :=
+      </span>
+     </code>
+     is needed when assigning values
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pass-the-dots-when-you-can">
+     Pass the dots when you can
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#notes-on-passing-the-dots">
+       Notes on passing the dots
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#pass-the-dots-is-not-always-the-solution">
+       Pass the dots is not always the solution…
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#when-passing-in-different-column-names-to-different-functions-embrace-mutliple-column-names">
+     When passing in different column names to different functions, embrace mutliple column names
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#combining-embracing-with-pass-the-dots">
+       Combining embracing with pass the dots:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#programming-defensively-with-tidy-evaluation">
+   Programming defensively with tidy evaluation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#what-did-we-learn">
+   What did we learn?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attribution">
+   Attribution:
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="lecture-8-tidy-evaluation">
+<h1>Lecture 8: Tidy evaluation<a class="headerlink" href="#lecture-8-tidy-evaluation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="lecture-learning-objectives">
+<h2>Lecture learning objectives:<a class="headerlink" href="#lecture-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By then end of this lecture &amp; worksheet 8, students should be able to:</p>
+<ul class="simple">
+<li><p>Describe data masking as it relates to the <code class="docutils literal notranslate"><span class="pre">dplyr</span></code> functions. Explain the problems it solves for interactive programming and the problems it creates for programming in a non-interactive setting</p></li>
+<li><p>Explain what the <code class="docutils literal notranslate"><span class="pre">enquo()</span></code> function and the <code class="docutils literal notranslate"><span class="pre">!!</span></code> operator do in R in the context of data masking as it relates to the <code class="docutils literal notranslate"><span class="pre">dplyr</span></code> functions</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">{{</span></code> (read: curly curly) operator (abstracts quote-and-unquote into a single interpolation step), the <code class="docutils literal notranslate"><span class="pre">:=</span></code> (read: walrus) operatpr in R, and <code class="docutils literal notranslate"><span class="pre">...</span></code> (read: pass the dots) to write functions which wrap the <code class="docutils literal notranslate"><span class="pre">dplyr</span></code> functions</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">gapminder</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">ggplot2</span> 3.3.5     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">purrr  </span> 0.3.4
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tibble </span> 3.1.6     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">dplyr  </span> 1.0.7
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.1.4     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.0.1     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">filter()</span> masks <span class=" -Color -Color-Blue">stats</span>::filter()
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">lag()</span>    masks <span class=" -Color -Color-Blue">stats</span>::lag()
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="what-metaprogramming-lets-you-do-in-r">
+<h2>What Metaprogramming lets you do in R<a class="headerlink" href="#what-metaprogramming-lets-you-do-in-r" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>write <code class="docutils literal notranslate"><span class="pre">library(purrr)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">library(&quot;purrr&quot;)</span></code></p></li>
+<li><p>enable <code class="docutils literal notranslate"><span class="pre">plot(x,</span> <span class="pre">sin(x))</span></code> to automatically label the axes with <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">sin(x)</span></code></p></li>
+<li><p>create a model object via <code class="docutils literal notranslate"><span class="pre">lm(y</span> <span class="pre">~</span> <span class="pre">x1</span> <span class="pre">+</span> <span class="pre">x2,</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">df)</span></code></p></li>
+<li><p>and much much more (that you will see in Data Wrangling as we explore the tidyverse)</p></li>
+</ul>
+<div class="section" id="what-is-metaprogramming">
+<h3>What is metaprogramming?<a class="headerlink" href="#what-is-metaprogramming" title="Permalink to this headline">¶</a></h3>
+<p>Code that writes code/code that mutates code.</p>
+</div>
+<div class="section" id="our-narrow-focus-on-metaprogramming-for-this-course">
+<h3>Our narrow focus on metaprogramming for this course:<a class="headerlink" href="#our-narrow-focus-on-metaprogramming-for-this-course" title="Permalink to this headline">¶</a></h3>
+<p>Tidy evaluation</p>
+</div>
+<div class="section" id="why-focus-on-tidy-evaluation">
+<h3>Why focus on tidy evaluation<a class="headerlink" href="#why-focus-on-tidy-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>In the rest of MDS you will be relying on functions from the tidyverse to do a lot of:</p>
+<ul class="simple">
+<li><p>data wrangling</p></li>
+<li><p>statistics</p></li>
+<li><p>data visualization</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="tidy-evaluation">
+<h2>Tidy evaluation<a class="headerlink" href="#tidy-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>The functions from the tidyverse are beautiful to use interactively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">gapminder</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1704 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Afghanistan</td><td>Asia</td><td>1952</td><td>28.801</td><td> 8425333</td><td>779.4453</td></tr>
+	<tr><td>Afghanistan</td><td>Asia</td><td>1957</td><td>30.332</td><td> 9240934</td><td>820.8530</td></tr>
+	<tr><td>Afghanistan</td><td>Asia</td><td>1962</td><td>31.997</td><td>10267083</td><td>853.1007</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Zimbabwe</td><td>Africa</td><td>2002</td><td>39.989</td><td>11926563</td><td>672.0386</td></tr>
+	<tr><td>Zimbabwe</td><td>Africa</td><td>2007</td><td>43.487</td><td>12311143</td><td>469.7093</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>with base r:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">gapminder</span><span class="p">[</span><span class="n">gapminder</span><span class="o">$</span><span class="n">country</span> <span class="o">==</span> <span class="s">&quot;Canada&quot;</span> <span class="o">&amp;</span> <span class="n">gapminder</span><span class="o">$</span><span class="n">year</span> <span class="o">==</span> <span class="m">1952</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>In the tidyverse:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">country</span> <span class="o">==</span> <span class="s">&quot;Canada&quot;</span><span class="p">,</span> <span class="n">year</span> <span class="o">==</span> <span class="m">1952</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="how-does-that-even-work">
+<h3>How does that even work?<a class="headerlink" href="#how-does-that-even-work" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>When functions like <code class="docutils literal notranslate"><span class="pre">filter</span></code> are called, there is a delay in evaluation and the data frame is temporarily promoted as first class objects, we say the data masks the workspace</p></li>
+</ul>
+<ul class="simple">
+<li><p>This is to allow the promotion of the data frame, such that it masks the workspace (global environment)</p></li>
+</ul>
+<ul class="simple">
+<li><p>When this happens, R can then find the relevant columns for the computation</p></li>
+</ul>
+<p><em>This is referred to as data masking</em></p>
+</div>
+<div class="section" id="back-to-our-example">
+<h3>Back to our example:<a class="headerlink" href="#back-to-our-example" title="Permalink to this headline">¶</a></h3>
+<p>What is going on here?</p>
+<ul class="simple">
+<li><p>code evaluation is delayed</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">filter</span></code> function quotes columns <code class="docutils literal notranslate"><span class="pre">country</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code></p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">filter</span></code> function then creates a data mask (to mingle variables from the environment and the data frame)</p></li>
+<li><p>the columns <code class="docutils literal notranslate"><span class="pre">country</span></code> and <code class="docutils literal notranslate"><span class="pre">year</span></code> and unquoted and evaluated within the data mask</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">country</span> <span class="o">==</span> <span class="s">&quot;Canada&quot;</span><span class="p">,</span> <span class="n">year</span> <span class="o">==</span> <span class="m">1952</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="trade-off-of-lovely-interactivity-of-tidyverse-functions">
+<h3>Trade off of lovely interactivity of tidyverse functions…<a class="headerlink" href="#trade-off-of-lovely-interactivity-of-tidyverse-functions" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="programming-with-them-can-be-more-challenging">
+<h3>programming with them can be more challenging.<a class="headerlink" href="#programming-with-them-can-be-more-challenging" title="Permalink to this headline">¶</a></h3>
+<p>Let’s try writing a function which wraps filter for gapminder:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s2">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span><span class="p">:</span> <span class="nb">object</span> <span class="s1">&#39;country&#39;</span> <span class="ow">not</span> <span class="n">found</span>
+<span class="n">Traceback</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s2">&quot;Canada&quot;</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="nb">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>   <span class="c1"># at line 4 of file &lt;text&gt;</span>
+<span class="mf">3.</span> <span class="nb">filter</span><span class="o">.</span><span class="n">tbl_df</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="mf">4.</span> <span class="n">filter_impl</span><span class="p">(</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">quo</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Why does <code class="docutils literal notranslate"><span class="pre">filter</span></code> work with non-quoted variable names, but our function <code class="docutils literal notranslate"><span class="pre">filter_gap</span></code> fail?</p>
+</div>
+<div class="section" id="defining-functions-using-tidy-eval-s-enquo-and">
+<h3>Defining functions using tidy eval’s <code class="docutils literal notranslate"><span class="pre">enquo</span></code> and <code class="docutils literal notranslate"><span class="pre">!!</span></code>:<a class="headerlink" href="#defining-functions-using-tidy-eval-s-enquo-and" title="Permalink to this headline">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">enquo</span></code> to quote the column names, and then <code class="docutils literal notranslate"><span class="pre">!!</span></code> to unquote them in context.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">col</span> <span class="o">&lt;-</span> <span class="nf">enquo</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="o">!!</span><span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 12 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="defining-functions-by-embracing-column-names">
+<h3>Defining functions by embracing column names: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">}}</span></code><a class="headerlink" href="#defining-functions-by-embracing-column-names" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>In the newest release of <code class="docutils literal notranslate"><span class="pre">rlang</span></code>, there has been the introduction of the <code class="docutils literal notranslate"><span class="pre">{{</span></code> (pronounced “curly curly”) operator.</p></li>
+<li><p>Does the same thing as <code class="docutils literal notranslate"><span class="pre">enguo</span></code> and <code class="docutils literal notranslate"><span class="pre">!!</span></code> but (hopefully) easier to use.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="p">{{</span><span class="n">col</span><span class="p">}}</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 12 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="optional-creating-functions-that-handle-column-names-as-strings">
+<h3>(Optional) Creating functions that handle column names as strings:<a class="headerlink" href="#optional-creating-functions-that-handle-column-names-as-strings" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you want to pass a column name into a function as a string (often useful when you are programming and have the column names as a character vector).</p>
+<p>You can do this by using symbols + unquoting with <code class="docutils literal notranslate"><span class="pre">sym</span></code> + <code class="docutils literal notranslate"><span class="pre">!!</span></code> :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># example of what we want to wrap: filter(gapminder, country == &quot;Canada&quot;)</span>
+<span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">col</span> <span class="o">&lt;-</span> <span class="nf">sym</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+    <span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="o">!!</span><span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">filter_gap</span><span class="p">(</span><span class="s">&quot;country&quot;</span><span class="p">,</span> <span class="s">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 12 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="the-walrus-operator-is-needed-when-assigning-values">
+<h3>The walrus operator <code class="docutils literal notranslate"><span class="pre">:=</span></code> is needed when assigning values<a class="headerlink" href="#the-walrus-operator-is-needed-when-assigning-values" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">:=</span></code> is needed when addinging values with tidyevaluation</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">group_summary</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data</span> <span class="o">%&gt;%</span> 
+        <span class="nf">group_by</span><span class="p">({{</span> <span class="n">group</span> <span class="p">}})</span> <span class="o">%&gt;%</span> 
+        <span class="nf">summarise</span><span class="p">(</span> <span class="p">{{</span> <span class="n">col</span> <span class="p">}}</span> <span class="o">:=</span> <span class="nf">fun</span><span class="p">({{</span> <span class="n">col</span> <span class="p">}}))</span>
+<span class="p">}</span>
+
+<span class="nf">group_summary</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">gdpPercap</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 5 × 2</caption>
+<thead>
+	<tr><th scope=col>continent</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Africa  </td><td> 2193.755</td></tr>
+	<tr><td>Americas</td><td> 7136.110</td></tr>
+	<tr><td>Asia    </td><td> 7902.150</td></tr>
+	<tr><td>Europe  </td><td>14469.476</td></tr>
+	<tr><td>Oceania </td><td>18621.609</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="pass-the-dots-when-you-can">
+<h3>Pass the dots when you can<a class="headerlink" href="#pass-the-dots-when-you-can" title="Permalink to this headline">¶</a></h3>
+<p>If you are only passing on variable to a tidyverse function, and that variable is not used in logical comparisons, or in variable assignment, you can get away with passing the dots:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sort_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">arrange</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">sort_gap</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1704 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Afghanistan</td><td>Asia  </td><td>1952</td><td>28.801</td><td>8425333</td><td> 779.4453</td></tr>
+	<tr><td>Albania    </td><td>Europe</td><td>1952</td><td>55.230</td><td>1282697</td><td>1601.0561</td></tr>
+	<tr><td>Algeria    </td><td>Africa</td><td>1952</td><td>43.077</td><td>9279525</td><td>2449.0082</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Zambia  </td><td>Africa</td><td>2007</td><td>42.384</td><td>11746035</td><td>1271.2116</td></tr>
+	<tr><td>Zimbabwe</td><td>Africa</td><td>2007</td><td>43.487</td><td>12311143</td><td> 469.7093</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="notes-on-passing-the-dots">
+<h4>Notes on passing the dots<a class="headerlink" href="#notes-on-passing-the-dots" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>the dots should be the last function argument (or you will not be able to use positional arguments)</p></li>
+<li><p>they are useful because you can add multiple arguments</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sort_gap</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">arrange</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">sort_gap</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span> <span class="n">argument</span> <span class="s2">&quot;x&quot;</span> <span class="ow">is</span> <span class="n">missing</span><span class="p">,</span> <span class="k">with</span> <span class="n">no</span> <span class="n">default</span>
+<span class="n">Traceback</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">sort_gap</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># at line 2 of file &lt;text&gt;</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">sort_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span>
+    <span class="nf">arrange</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nf">sort_gap</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 2
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1704 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Algeria</td><td>Africa</td><td>1952</td><td>43.077</td><td>9279525</td><td>2449.008</td></tr>
+	<tr><td>Angola </td><td>Africa</td><td>1952</td><td>30.015</td><td>4232095</td><td>3520.610</td></tr>
+	<tr><td>Benin  </td><td>Africa</td><td>1952</td><td>38.223</td><td>1738315</td><td>1062.752</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Australia  </td><td>Oceania</td><td>2007</td><td>81.235</td><td>20434176</td><td>34435.37</td></tr>
+	<tr><td>New Zealand</td><td>Oceania</td><td>2007</td><td>80.204</td><td> 4115771</td><td>25185.01</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="pass-the-dots-is-not-always-the-solution">
+<h4>Pass the dots is not always the solution…<a class="headerlink" href="#pass-the-dots-is-not-always-the-solution" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">square_diff_n_select</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data</span> <span class="o">%&gt;%</span> 
+        <span class="n">mutate</span><span class="p">(</span><span class="o">...</span> <span class="o">:=</span> <span class="p">(</span><span class="o">...</span> <span class="o">-</span> <span class="n">mean</span><span class="p">(</span><span class="o">...</span><span class="p">))</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+        <span class="n">select</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">square_diff_n_select</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">mpg</span><span class="p">,</span> <span class="n">mpg</span><span class="p">:</span><span class="n">hp</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Error: Problem with `mutate()` input `...`.
+✖ object &#39;hp&#39; not found
+ℹ Input `...` is `(... - mean(...))^2`.
+Traceback:
+
+1. square_diff_n_select(mtcars, mpg, mpg:hp)
+2. data %&gt;% mutate(`:=`(..., (... - mean(...))^2)) %&gt;% select(...)   # at line 2-4 of file &lt;text&gt;
+3. withVisible(eval(quote(`_fseq`(`_lhs`)), env, env))
+4. eval(quote(`_fseq`(`_lhs`)), env, env)
+5. eval(quote(`_fseq`(`_lhs`)), env, env)
+6. `_fseq`(`_lhs`)
+7. freduce(value, `_function_list`)
+8. function_list[[i]](value)
+9. mutate(., `:=`(..., (... - mean(...))^2))
+10. mutate.data.frame(., `:=`(..., (... - mean(...))^2))
+11. mutate_cols(.data, ...)
+12. withCallingHandlers({
+  .     for (i in seq_along(dots)) {
+  .         not_named &lt;- (is.null(dots_names) || dots_names[i] == 
+  .             &quot;&quot;)
+  ...
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="when-passing-in-different-column-names-to-different-functions-embrace-mutliple-column-names">
+<h3>When passing in different column names to different functions, embrace mutliple column names<a class="headerlink" href="#when-passing-in-different-column-names-to-different-functions-embrace-mutliple-column-names" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">square_diff_n_select</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col_to_change</span><span class="p">,</span> <span class="n">col_range</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data</span> <span class="o">%&gt;%</span> 
+        <span class="nf">mutate</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">:=</span> <span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">-</span> <span class="nf">mean</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}))</span><span class="o">^</span><span class="m">2</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+        <span class="nf">select</span><span class="p">({{</span><span class="n">col_range</span><span class="p">}})</span>
+<span class="p">}</span>
+
+<span class="nf">square_diff_n_select</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">mpg</span><span class="p">,</span> <span class="n">mpg</span><span class="o">:</span><span class="n">hp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 32 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>mpg</th><th scope=col>cyl</th><th scope=col>disp</th><th scope=col>hp</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Mazda RX4</th><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
+	<tr><th scope=row>Mazda RX4 Wag</th><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
+	<tr><th scope=row>Datsun 710</th><td>7.3407129</td><td>4</td><td>108</td><td> 93</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>Maserati Bora</th><td>25.914463</td><td>8</td><td>301</td><td>335</td></tr>
+	<tr><th scope=row>Volvo 142E</th><td> 1.714463</td><td>4</td><td>121</td><td>109</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<div class="section" id="combining-embracing-with-pass-the-dots">
+<h4>Combining embracing with pass the dots:<a class="headerlink" href="#combining-embracing-with-pass-the-dots" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">square_diff_n_select</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col_to_change</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">data</span> <span class="o">%&gt;%</span> 
+        <span class="nf">mutate</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">:=</span> <span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">-</span> <span class="nf">mean</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}))</span><span class="o">^</span><span class="m">2</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+        <span class="nf">select</span><span class="p">(</span><span class="kc">...</span><span class="p">,</span> <span class="p">{{</span> <span class="n">col_to_change</span> <span class="p">}})</span>
+<span class="p">}</span>
+
+<span class="nf">square_diff_n_select</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">mpg</span><span class="p">,</span> <span class="n">drat</span><span class="p">,</span> <span class="n">carb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 32 × 3</caption>
+<thead>
+	<tr><th></th><th scope=col>drat</th><th scope=col>carb</th><th scope=col>mpg</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Mazda RX4</th><td>3.90</td><td>4</td><td>0.8269629</td></tr>
+	<tr><th scope=row>Mazda RX4 Wag</th><td>3.90</td><td>4</td><td>0.8269629</td></tr>
+	<tr><th scope=row>Datsun 710</th><td>3.85</td><td>1</td><td>7.3407129</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>Maserati Bora</th><td>3.54</td><td>8</td><td>25.914463</td></tr>
+	<tr><th scope=row>Volvo 142E</th><td>4.11</td><td>2</td><td> 1.714463</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="programming-defensively-with-tidy-evaluation">
+<h2>Programming defensively with tidy evaluation<a class="headerlink" href="#programming-defensively-with-tidy-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>You can embrace <code class="docutils literal notranslate"><span class="pre">{{</span></code> the column names in an <code class="docutils literal notranslate"><span class="pre">if</span></code> + <code class="docutils literal notranslate"><span class="pre">stop</span></code> statement to check user input when unquoted column names are used as function arguments.</p>
+<p>First, we demonstrate how to check if a column is numeric using <code class="docutils literal notranslate"><span class="pre">DATA_FRAME</span>&#160; <span class="pre">%&gt;%</span> <span class="pre">pull({{</span> <span class="pre">COLUMN_NAME</span> <span class="pre">}})</span></code> to access the column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">check_if_numeric</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">is.numeric</span><span class="p">(</span><span class="n">data</span> <span class="o">%&gt;%</span> <span class="nf">pull</span><span class="p">({{</span> <span class="n">col</span> <span class="p">}}))</span>
+<span class="p">}</span>
+
+<span class="nf">check_if_numeric</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">pop</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">TRUE</div></div>
+</div>
+<p>Next, we add a <code class="docutils literal notranslate"><span class="pre">if</span></code> + <code class="docutils literal notranslate"><span class="pre">stop</span></code> to this, to throw an error in our <code class="docutils literal notranslate"><span class="pre">square_diff_n_select</span></code> function when the column type is not what our function is designed to handle. Here our function works, as the <code class="docutils literal notranslate"><span class="pre">lifeExp</span></code> column in the <code class="docutils literal notranslate"><span class="pre">gapminder</span></code> data set is numeric.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">square_diff_n_select</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col_to_change</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">is.numeric</span><span class="p">(</span><span class="n">data</span> <span class="o">%&gt;%</span> <span class="nf">pull</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}})))</span> <span class="p">{</span>
+        <span class="nf">stop</span><span class="p">(</span><span class="s">&#39;col_to_change must be numeric&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="n">data</span> <span class="o">%&gt;%</span> 
+        <span class="nf">mutate</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">:=</span> <span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}</span> <span class="o">-</span> <span class="nf">mean</span><span class="p">({{</span> <span class="n">col_to_change</span> <span class="p">}}))</span><span class="o">^</span><span class="m">2</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+        <span class="nf">select</span><span class="p">(</span><span class="kc">...</span><span class="p">,</span> <span class="p">{{</span> <span class="n">col_to_change</span> <span class="p">}})</span>
+<span class="p">}</span>
+
+<span class="nf">square_diff_n_select</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">lifeExp</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1704 × 3</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>year</th><th scope=col>lifeExp</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Afghanistan</td><td>1952</td><td>940.8599</td></tr>
+	<tr><td>Afghanistan</td><td>1957</td><td>849.2818</td></tr>
+	<tr><td>Afghanistan</td><td>1962</td><td>755.0097</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Zimbabwe</td><td>2002</td><td>379.6823</td></tr>
+	<tr><td>Zimbabwe</td><td>2007</td><td>255.5982</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Here our function throws an error, as the <code class="docutils literal notranslate"><span class="pre">continent</span></code> column in the <code class="docutils literal notranslate"><span class="pre">gapminder</span></code> data set is <strong>not</strong> numeric.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">square_diff_n_select</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">square_diff_n_select</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span> <span class="n">col_to_change</span> <span class="n">must</span> <span class="n">be</span> <span class="n">numeric</span>
+<span class="n">Traceback</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">square_diff_n_select</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">stop</span><span class="p">(</span><span class="s2">&quot;col_to_change must be numeric&quot;</span><span class="p">)</span>   <span class="c1"># at line 3 of file &lt;text&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="what-did-we-learn">
+<h2>What did we learn?<a class="headerlink" href="#what-did-we-learn" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>data masking and its role in tidy evaluation</p></li>
+<li><p>programming with tidy-evaluated functions by embracing column names <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">}}</span></code></p></li>
+<li><p>the walrus <code class="docutils literal notranslate"><span class="pre">:=</span></code> operator for assignment when programming with tidy-evaluated functions</p></li>
+<li><p>more useful examples of pass the dots <code class="docutils literal notranslate"><span class="pre">...</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="attribution">
+<h2>Attribution:<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tidyeval.tidyverse.org/">Tidy evaluation</a> by Lionel Henry &amp; Hadley Wickham</p></li>
+<li><p><a class="reference external" href="https://speakerdeck.com/jennybc/tidy-eval-in-context">Tidy eval in context</a>  talk by Jenny Bryan</p></li>
+<li><p><a class="reference external" href="https://dplyr.tidyverse.org/articles/programming.html">Programming in the tidyverse</a></p></li>
+<li><p><a class="reference external" href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            kernelName: "ir",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

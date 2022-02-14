@@ -1,0 +1,926 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture 3: Code reviews, testing and advice for testing complex things &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02-version-control-1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-filenames-project-organization.html">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05-containerization.html">
+   Managing dependencies using containerization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06-intro-to-testing-code.html">
+   Introduction to testing code for data science
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/lecture-code-review-and-testing.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/lecture-code-review-and-testing.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/lecture-code-review-and-testing.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-objectives">
+   Learning objectives:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code-reviews-using-in-line-comments-and-suggested-code-fixes">
+   Code reviews using in-line comments and suggested code fixes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#demo-do-a-code-review">
+     Demo: do a code review:
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps">
+       Steps:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#demo-accept-suggested-changes-from-a-code-review">
+     Demo: Accept suggested changes from a code review:
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Steps:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discussion">
+     Discussion:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-do-you-not-accept-a-pull-request">
+     How do you not accept a pull request?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#some-common-and-useful-types-of-testing">
+   Some common and useful types of testing
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#unit-testing">
+     Unit testing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#in-the-chat">
+       In the chat:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#integration-testing">
+     Integration testing
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       In the chat:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#regression-testing">
+     Regression testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#black-box-white-box-testing">
+   Black box &amp; white box testing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#write-unit-tests-for-complex-objects">
+   Write unit tests for complex objects
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#general-guidelings-for-testing-data-frames">
+   General guidelings for testing data frames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#general-guidelings-for-testing-plot-objects">
+   General guidelings for testing plot objects
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#other-attributes-you-might-want-to-test">
+     Other attributes you might want to test?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-test-for-altair-plots">
+     Example test for altair plots
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-guidelings-for-testing-model-objects">
+     General guidelings for testing model objects
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#but-i-have-another-type-of-object-how-do-i-test-it">
+     But I have another type of object? How do I test it?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-pytest-works">
+   How pytest works:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id3">
+   How pytest works:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#how-testthat-works">
+   How testthat works:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#organizing-tests-for-your-r-package">
+     Organizing tests for your R package:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Organizing tests for your R package:
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-are-we-headed-next">
+   Where are we headed next?
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="lecture-3-code-reviews-testing-and-advice-for-testing-complex-things">
+<h1>Lecture 3: Code reviews, testing and advice for testing complex things<a class="headerlink" href="#lecture-3-code-reviews-testing-and-advice-for-testing-complex-things" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="learning-objectives">
+<h2>Learning objectives:<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of this lecture, students should be able to:</p>
+<ul class="simple">
+<li><p>Perform a code review that uses inline comments and suggested code fixes</p></li>
+<li><p>Define the following 3 types of testing</p>
+<ul>
+<li><p>unit testing</p></li>
+<li><p>integration testing</p></li>
+<li><p>regression testing</p></li>
+</ul>
+</li>
+<li><p>Employ a workflow that optimizes accurate code</p></li>
+<li><p>Write unit tests for complex objects (e.g., data frames, models, plots)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and <code class="docutils literal notranslate"><span class="pre">testhat</span></code> to run a project’s entire test suite</p></li>
+<li><p>Explain how <code class="docutils literal notranslate"><span class="pre">pytest</span></code> and <code class="docutils literal notranslate"><span class="pre">testhat</span></code> find the test functions when they are asked to run a project’s entire test suite</p></li>
+</ul>
+</div>
+<div class="section" id="code-reviews-using-in-line-comments-and-suggested-code-fixes">
+<h2>Code reviews using in-line comments and suggested code fixes<a class="headerlink" href="#code-reviews-using-in-line-comments-and-suggested-code-fixes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>In the project, you are expected to read and review eachother’s code BEFORE accepting a pull request.</p></li>
+<li><p>Do not expect all (or even most) pull requests to be perfect in their first submission.</p></li>
+<li><p>We very often need to have a conversation to get pull requests into good shape before merging into master, and GitHub has a very nice tool we can utilize to do this: <strong>GitHub code reviews</strong></p></li>
+</ul>
+<a class="reference internal image-reference" href="https://help.github.com/assets/images/help/commits/hover-comment-icon.gif"><img alt="https://help.github.com/assets/images/help/commits/hover-comment-icon.gif" src="https://help.github.com/assets/images/help/commits/hover-comment-icon.gif" style="width: 700px;" /></a>
+<p><em>Source: <a class="reference external" href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request">https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request</a></em></p>
+<div class="section" id="demo-do-a-code-review">
+<h3>Demo: do a code review:<a class="headerlink" href="#demo-do-a-code-review" title="Permalink to this headline">¶</a></h3>
+<p>I am going to demo a code review of a pull request. I have set-up a template GitHub repository for you so that you can easily generate a pull request for you to review if you want to try this later.</p>
+<div class="section" id="steps">
+<h4>Steps:<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Click the green “Use this template” button in <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request">this repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
+<li><p>Create a remote branch named <code class="docutils literal notranslate"><span class="pre">pr</span></code> (this will use GitHub Actions to create a pull request for you to review in this repository).</p></li>
+<li><p>Click on the Pull Requests tab of your copy of the repository, click on the pull request titled “Report most accomplished pilots”, and then click on “Files Changed”. Next click on the <code class="docutils literal notranslate"><span class="pre">star-wars.Rmd</span></code> file. Review the file and observe the following problems with the R Markdown report that was submitted via the pull request:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Reasoning of the sentence on line 15</p></li>
+<li><p>Incompatibility with the sentence on line 15 with the code in the code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code></p></li>
+<li><p>Incorrect code in code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code> (unested <code class="docutils literal notranslate"><span class="pre">film</span></code> instead of <code class="docutils literal notranslate"><span class="pre">starships</span></code>) leads to naming the wrong pilot as the most accomplished pilot on line 19</p></li>
+<li><p>Incorrect code in code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code> (unested <code class="docutils literal notranslate"><span class="pre">film</span></code> instead of <code class="docutils literal notranslate"><span class="pre">starships</span></code>) leads to the use of the wrong character’s picture in the image that is sourced in the code chunk named <code class="docutils literal notranslate"><span class="pre">top-pilot</span></code> (it should be a picture of Obi-Wan Kenobi, you could use this URL for example: <a class="reference external" href="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg">https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg</a>).</p></li>
+</ul>
+<ol class="simple">
+<li><p>Add comments and suggested changes using the <code class="docutils literal notranslate"><span class="pre">+</span></code> sign beside the line numbers (the first time you do this will trigger the start of your code review. Need help? See <a class="reference external" href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request">GitHub’s how to on reviewing proposed changes in a pull request</a>.</p></li>
+<li><p>After you have made all the comments and suggested changes, then add a general comment for the code review, select “Request Changes” and submit your code review.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="demo-accept-suggested-changes-from-a-code-review">
+<h3>Demo: Accept suggested changes from a code review:<a class="headerlink" href="#demo-accept-suggested-changes-from-a-code-review" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Steps:<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>To accept the code changes that you provided as suggestions, revisit the Pull Requests tab of your copy of the repository and clicking on the pull request titled “Report most accomplished pilots”. Scroll through the pull request comments and find the code suggestions. Then click on the “Commit suggestion button” for each suggestion.</p></li>
+<li><p>Click on the “Show all reviewers” link beside the red “Changes requested”” text. Then click on the <code class="docutils literal notranslate"><span class="pre">...</span></code> beside the reviewer and click “Approve changes”.</p></li>
+<li><p>Finally click on the green buttons (“Merge Pull Request” &amp; “Confirm merge”) to merge the pull request.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="discussion">
+<h3>Discussion:<a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h3>
+<p>Could I have done the entire code review well by just reviewing it on GitHub?</p>
+<p><em>Hint: if I didn’t tell you that the top pilot was Obi-Wan Kenobi, how would you have known that?</em></p>
+</div>
+<div class="section" id="how-do-you-not-accept-a-pull-request">
+<h3>How do you not accept a pull request?<a class="headerlink" href="#how-do-you-not-accept-a-pull-request" title="Permalink to this headline">¶</a></h3>
+<p>In some cases, it might not make sense to merge a pull request. To close a pull request that should not be merged, scroll to the bottom of the pull request page, and look for a gray “Closes pull request” button. This will end move the pull request to the closed pull requests section (similar to closed issues) and does not merge the changes.</p>
+<div class="figure align-default" id="close-pr-png">
+<a class="reference internal image-reference" href="../../_images/close-pr.png"><img alt="../../_images/close-pr.png" src="../../_images/close-pr.png" style="width: 500px;" /></a>
+</div>
+</div>
+</div>
+<div class="section" id="some-common-and-useful-types-of-testing">
+<h2>Some common and useful types of testing<a class="headerlink" href="#some-common-and-useful-types-of-testing" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>unit testing</p></li>
+<li><p>integration testing</p></li>
+<li><p>regression testing</p></li>
+</ul>
+<div class="section" id="unit-testing">
+<h3>Unit testing<a class="headerlink" href="#unit-testing" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Tests whether an individual component of a piece of software works as expected</p></li>
+</ul>
+<div class="section" id="in-the-chat">
+<h4>In the chat:<a class="headerlink" href="#in-the-chat" title="Permalink to this headline">¶</a></h4>
+<p>With your neighbour, come up with a description of an example of a unit test.</p>
+</div>
+</div>
+<div class="section" id="integration-testing">
+<h3>Integration testing<a class="headerlink" href="#integration-testing" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Tests whether separate components of a piece of software, which depend upon eachother, work together as expected.</p></li>
+<li><p><strong>An example</strong>: tests that checks whether <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> works as expected.</p></li>
+</ul>
+<div class="section" id="id2">
+<h4>In the chat:<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>With your neighbour, discuss whether it always makes sense for software packages to have integration tests? Do you think your project needs integration tests?</p>
+</div>
+</div>
+<div class="section" id="regression-testing">
+<h3>Regression testing<a class="headerlink" href="#regression-testing" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Tests that check that recent changes to the code base do not break already implemented features.</p></li>
+<li><p>This is done by running all (or a large) subset of tests that already exist after making changes to the code base to ensure they still all pass</p></li>
+</ul>
+<p>This is especially challenging in projects with a large code base when tests are split across many files and functions/code chunks. How can we do this?</p>
+<p>We can take advantage of using tools designed to automate this (e.g., <code class="docutils literal notranslate"><span class="pre">pytest</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">testthat</span></code>) and following their function/method, file &amp; directory naming conventions &amp; organization (more on this later in the lecture).</p>
+</div>
+</div>
+<div class="section" id="black-box-white-box-testing">
+<h2>Black box &amp; white box testing<a class="headerlink" href="#black-box-white-box-testing" title="Permalink to this headline">¶</a></h2>
+<p><strong>Black box testing:</strong> is a method of software testing that examines the functionality of an application without peering into its internal structures or workings. This method of test can be applied virtually to every level of software testing: unit, integration, system and acceptance. It is sometimes referred to as specification-based testing.</p>
+<p><strong>White box testing:</strong> is a method of software testing that tests internal structures or workings of an application, as opposed to its functionality (<em>i.e.</em> black-box testing). In white-box testing an internal perspective of the system, as well as programming skills, are used to design test cases.</p>
+<p><em>Source: <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></em></p>
+</div>
+<div class="section" id="write-unit-tests-for-complex-objects">
+<h2>Write unit tests for complex objects<a class="headerlink" href="#write-unit-tests-for-complex-objects" title="Permalink to this headline">¶</a></h2>
+<p>(e.g., data frames, models, plots)</p>
+<p>Writing unit tests for a single value, vector or list is fairly straight forward from what we have learned in 511 &amp; 523, but what about more complex object? How do we write tests when our functions return:</p>
+<ul class="simple">
+<li><p>data frames?</p></li>
+<li><p>plot objects?</p></li>
+<li><p>model objects?</p></li>
+</ul>
+</div>
+<div class="section" id="general-guidelings-for-testing-data-frames">
+<h2>General guidelings for testing data frames<a class="headerlink" href="#general-guidelings-for-testing-data-frames" title="Permalink to this headline">¶</a></h2>
+<p><strong>Reproducibly</strong> create helper/test data that is simple and tractable, that you could use to perform your function’s job by hand.</p>
+<p>Simplest:</p>
+<ul class="simple">
+<li><p>Data can live (preferrably generated) in the test file, above where the tests are written (simplest). <strong>Do not use <code class="docutils literal notranslate"><span class="pre">test</span></code> in the names of these functions.</strong></p></li>
+</ul>
+<p>If you need to speed things up you can:</p>
+<ul class="simple">
+<li><p>Python:</p>
+<ul>
+<li><p>In Python packages, the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> testing framework allows data to be coded as fixtures in the test file (see <a class="reference external" href="https://www.tutorialspoint.com/pytest/pytest_fixtures.htm">simple pytest fixtures tutorial here</a> to generate data in a function before the tests are run.</p></li>
+</ul>
+</li>
+<li><p>R:</p>
+<ul>
+<li><p>put your helper functions in a file in the <code class="docutils literal notranslate"><span class="pre">tests/testthat</span></code> directory that and pre-fix the filename with <code class="docutils literal notranslate"><span class="pre">helper_</span></code> so that they will be run before the tests.</p></li>
+<li><p>In R packages, data can also be “part of the package” and made external to the user. If you think your test data might be useful for the package user (i.e., beyond developer testing) then you can do this by putting it in the data directory. {usethis} has some nice helpers to make this easy, and you can see the instructions for this <a class="reference external" href="https://r-pkgs.org/data.html">here</a> in the R packages book.</p></li>
+</ul>
+</li>
+</ul>
+<ul class="simple">
+<li><p>Where possible, use functions designed specifically for testing data frames (e.g., <code class="docutils literal notranslate"><span class="pre">dplyr::all_equal</span></code> and <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.equals</span></code>).</p></li>
+</ul>
+<ul class="simple">
+<li><p>If not possible, test for equality of important values (e.g., specific columns) and attributes (e.g., shape, column names, column type, etc) using the <code class="docutils literal notranslate"><span class="pre">expect_*</span></code> functions inside of <code class="docutils literal notranslate"><span class="pre">test_that</span></code> in R, or via assertions in Python.</p></li>
+</ul>
+</div>
+<div class="section" id="general-guidelings-for-testing-plot-objects">
+<h2>General guidelings for testing plot objects<a class="headerlink" href="#general-guidelings-for-testing-plot-objects" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Reproducibly</strong> create helper/test data that is simple and tractable, that you could use to test your function’s performance.</p></li>
+</ul>
+<ul class="simple">
+<li><p>Initial tests should be designed to test that plots have expected attributes (e.g., expected mark, correct mapping to axes, etc)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Once a desired plot is generated, visual regression tests can be used to ensure that further code refactoring does not change the plot function. Tools for this exist for R in the <a class="reference external" href="https://github.com/r-lib/vdiffr"><code class="docutils literal notranslate"><span class="pre">vdiffr</span></code></a> package. Matplotlib uses visual regression testing as well, you can see the docs for examples of this <a class="reference external" href="https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test">here</a>.</p></li>
+</ul>
+<p>Consider this function, what tests might we write for it?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">testthat</span><span class="p">)</span>
+
+<span class="c1">#&#39; scatter2d </span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; A short-cut function for creating 2 dimensional scatterplots via ggplot2.</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @param data data.frame or tibble</span>
+<span class="c1">#&#39; @param x unquoted column name to plot on the x-axis from data data.frame or tibble</span>
+<span class="c1">#&#39; @param y unquoted column name to plot on the y-axis from data data.frame or tibble</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @return</span>
+<span class="c1">#&#39; @export</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @examples</span>
+<span class="c1">#&#39; scatter2d(mtcars, hp, mpg)</span>
+<span class="n">scatter2d</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ggplot2</span><span class="o">::</span><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ggplot2</span><span class="o">::</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="p">{{</span><span class="n">x</span><span class="p">}},</span> <span class="n">y</span> <span class="o">=</span> <span class="p">{{</span><span class="n">y</span><span class="p">}}))</span> <span class="o">+</span>
+        <span class="n">ggplot2</span><span class="o">::</span><span class="nf">geom_point</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see how we can get <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> object attributes by first creating an some simple data, and then an object with our function, and then poking around at the object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">test_data</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">tibble</span><span class="p">(</span><span class="n">x_vals</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span>
+                   <span class="n">y_vals</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot2d</span> <span class="o">&lt;-</span> <span class="nf">scatter2d</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">x_vals</span><span class="p">,</span> <span class="n">y_vals</span><span class="p">)</span>
+<span class="n">plot2d</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/lecture-code-review-and-testing_26_0.png" src="../../_images/lecture-code-review-and-testing_26_0.png" />
+</div>
+</div>
+<p>Can we find the an attribute that tells us it has a <code class="docutils literal notranslate"><span class="pre">geom_point</span></code> attribute?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot2d</span><span class="o">$</span><span class="n">layers</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1]]
+geom_point: na.rm = FALSE
+stat_identity: na.rm = FALSE
+position_identity 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot2d</span><span class="o">$</span><span class="n">layers</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span><span class="n">geom</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggproto object: Class GeomPoint, Geom, gg&gt;
+    aesthetics: function
+    default_aes: uneval
+    draw_group: function
+    draw_key: function
+    draw_layer: function
+    draw_panel: function
+    extra_params: na.rm
+    handle_na: function
+    non_missing_aes: size shape colour
+    optional_aes: 
+    parameters: function
+    required_aes: x y
+    setup_data: function
+    setup_params: function
+    use_defaults: function
+    super:  &lt;ggproto object: Class Geom, gg&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot2d</span><span class="o">$</span><span class="n">layers</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span><span class="n">geom</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ggproto object: Class GeomPoint, Geom, gg&gt;
+    aesthetics: function
+    default_aes: uneval
+    draw_group: function
+    draw_key: function
+    draw_layer: function
+    draw_panel: function
+    extra_params: na.rm
+    handle_na: function
+    non_missing_aes: size shape colour
+    optional_aes: 
+    parameters: function
+    required_aes: x y
+    setup_data: function
+    setup_params: function
+    use_defaults: function
+    super:  &lt;ggproto object: Class Geom, gg&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">class</span><span class="p">(</span><span class="n">plot2d</span><span class="o">$</span><span class="n">layers</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span><span class="n">geom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>
+.list-inline {list-style: none; margin:0; padding: 0}
+.list-inline>li {display: inline-block}
+.list-inline>li:not(:last-child)::after {content: "\00b7"; padding: 0 .5ex}
+</style>
+<ol class=list-inline><li>'GeomPoint'</li><li>'Geom'</li><li>'ggproto'</li><li>'gg'</li></ol>
+</div></div>
+</div>
+<p>Can we find the an attribute that tells us that the variables have been correctly mapped to the axes?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot2d</span><span class="o">$</span><span class="n">mapping</span><span class="o">$</span><span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&lt;quosure&gt;</span>
+expr: ^x_vals
+env:  global
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">rlang</span><span class="o">::</span><span class="nf">get_expr</span><span class="p">(</span><span class="n">plot2d</span><span class="o">$</span><span class="n">mapping</span><span class="o">$</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>x_vals
+</pre></div>
+</div>
+</div>
+</div>
+<p>We could go through the same exercise for the y-axis</p>
+<p>Great, now we know enough that can write some basic tests for our function. This function will need a plot to test on, so we need to create that first within our <code class="docutils literal notranslate"><span class="pre">test_that</span></code> chunk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">test_that</span><span class="p">(</span><span class="s">&#39;Plot should use geom_point and map x to x-axis, and y to y-axis.&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nf">expect_true</span><span class="p">(</span><span class="s">&quot;GeomPoint&quot;</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="nf">class</span><span class="p">(</span><span class="n">plot2d</span><span class="o">$</span><span class="n">layers</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span><span class="n">geom</span><span class="p">)))</span>
+    <span class="nf">expect_true</span><span class="p">(</span><span class="s">&quot;x_vals&quot;</span>  <span class="o">==</span> <span class="n">rlang</span><span class="o">::</span><span class="nf">get_expr</span><span class="p">(</span><span class="n">plot2d</span><span class="o">$</span><span class="n">mapping</span><span class="o">$</span><span class="n">x</span><span class="p">))</span>
+    <span class="nf">expect_true</span><span class="p">(</span><span class="s">&quot;y_vals&quot;</span> <span class="o">==</span> <span class="n">rlang</span><span class="o">::</span><span class="nf">get_expr</span><span class="p">(</span><span class="n">plot2d</span><span class="o">$</span><span class="n">mapping</span><span class="o">$</span><span class="n">y</span><span class="p">))</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🥳
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="other-attributes-you-might-want-to-test">
+<h3>Other attributes you might want to test?<a class="headerlink" href="#other-attributes-you-might-want-to-test" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Labels via <code class="docutils literal notranslate"><span class="pre">&quot;Some</span> <span class="pre">label&quot;</span> <span class="pre">==</span> <span class="pre">p$labels$x</span></code> for the x-axis, for example</p></li>
+<li><p>That a variable is mapped to colour via <code class="docutils literal notranslate"><span class="pre">a_variable</span> <span class="pre">==</span> <span class="pre">rlang::get_expr(p$colour)</span></code>, for example</p></li>
+<li><p>That the plot is facetted via <code class="docutils literal notranslate"><span class="pre">&quot;FacetGrid&quot;</span> <span class="pre">%in%</span> <span class="pre">class(rlang::get_expr(side_by_side_world$facet))</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="example-test-for-altair-plots">
+<h3>Example test for altair plots<a class="headerlink" href="#example-test-for-altair-plots" title="Permalink to this headline">¶</a></h3>
+<p>Here’s a function that creates a scatter plot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">):</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">mark_line</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="n">x_axis</span> <span class="o">+</span> <span class="s1">&#39;:Q&#39;</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+              <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">tickMinStep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y_axis</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">chart</span>
+</pre></div>
+</div>
+<p>Here’s some small data to test it on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">small_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1901</span><span class="p">,</span> <span class="mi">1902</span><span class="p">,</span> <span class="mi">1903</span><span class="p">,</span> <span class="mi">1904</span><span class="p">,</span> <span class="mi">1905</span><span class="p">]),</span>
+        <span class="s1">&#39;measure&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+    <span class="p">})</span>
+<span class="n">small_data</span>
+</pre></div>
+</div>
+<p>Here’s the plot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">small_scatter</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">small_data</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;measure&#39;</span><span class="p">)</span>
+<span class="n">small_scatter</span>
+</pre></div>
+</div>
+<div class="figure align-default" id="alt-chart-png">
+<a class="reference internal image-reference" href="materials/lectures/img/alt_chart.png"><img alt="materials/lectures/img/alt_chart.png" src="materials/lectures/img/alt_chart.png" style="height: 500px;" /></a>
+</div>
+<p>Here’s a unit test for the <code class="docutils literal notranslate"><span class="pre">scatter</span></code> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_scatter</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">field</span> <span class="o">==</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;x_axis should be mapped to the x axis&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">field</span> <span class="o">==</span> <span class="s1">&#39;measure&#39;</span><span class="p">,</span> <span class="s1">&#39;y_axis should be mapped to the y axis&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">mark</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="s1">&#39;mark should be a line&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">zero</span> <span class="o">==</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;x-axis should not start at 0&quot;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">tickMinStep</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x-axis small tick step should be 1&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="general-guidelings-for-testing-model-objects">
+<h3>General guidelings for testing model objects<a class="headerlink" href="#general-guidelings-for-testing-model-objects" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Reproducibly</strong> create helper/test data that is simple and tractable, that you could use to perform your function’s job by hand (ideally)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Initial tests should be designed to test that models have expected attributes and results</p></li>
+</ul>
+<ul class="simple">
+<li><p>Only secondarily, may you want to compare to existing methods (rationale for this being second: what if their tests are wrong? Or worse, what if they don’t have any!)</p></li>
+</ul>
+</div>
+<div class="section" id="but-i-have-another-type-of-object-how-do-i-test-it">
+<h3>But I have another type of object? How do I test it?<a class="headerlink" href="#but-i-have-another-type-of-object-how-do-i-test-it" title="Permalink to this headline">¶</a></h3>
+<p>If you don’t know where to start writing tests for the object you plan to use or return in your function, try the following:</p>
+<ul class="simple">
+<li><p>make such an object and interactively explore it</p></li>
+</ul>
+<ul class="simple">
+<li><p>look at other packages that have functions and return the same kind of object, what do they test for?</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="how-pytest-works">
+<h2>How pytest works:<a class="headerlink" href="#how-pytest-works" title="Permalink to this headline">¶</a></h2>
+<p>Let’s explore the <code class="docutils literal notranslate"><span class="pre">convertempPy</span></code> package!</p>
+<ul class="simple">
+<li><p>https://github.com/ttimbers/convertempPy</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>How pytest works:<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>To run all tests in an Python package that uses <code class="docutils literal notranslate"><span class="pre">pytest</span></code>, run the following from the command line with the working directory being set as the package’s root directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">run</span> <span class="n">pytest</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: because we are using Poetry to build our packages, we need to prefix the pytest command with <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span></code> so that the tests are run in our package’s virtual environment.</p>
+</div></blockquote>
+<p>This command runs a recursive search (downward from the directory where this command is run) for files that are prefixed with <code class="docutils literal notranslate"><span class="pre">test_*.py</span></code> or <code class="docutils literal notranslate"><span class="pre">*_test.py</span></code> files which are imported by their test package name. From these files, it will run the functions whose names are pre-fixed with <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
+<p><strong>Demonstration</strong> of <code class="docutils literal notranslate"><span class="pre">pytest</span></code> (time permitted)</p>
+</div>
+<div class="section" id="how-testthat-works">
+<h2>How testthat works:<a class="headerlink" href="#how-testthat-works" title="Permalink to this headline">¶</a></h2>
+<p>To run all tests in an R package that uses <code class="docutils literal notranslate"><span class="pre">testthat</span></code>, run the following from the R console with the working directory being set as the package’s root directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">devtools</span><span class="p">::</span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This command is a shortcut for <code class="docutils literal notranslate"><span class="pre">testthat::test_dir()</span></code>, and it runs all the files that live in <code class="docutils literal notranslate"><span class="pre">tests/testthat/</span></code> that start with <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
+<p><em>Source: <a class="reference external" href="https://r-pkgs.org/tests.html">R Packages, Chapter 10</a></em></p>
+<div class="section" id="organizing-tests-for-your-r-package">
+<h3>Organizing tests for your R package:<a class="headerlink" href="#organizing-tests-for-your-r-package" title="Permalink to this headline">¶</a></h3>
+<p>Let’s explore the <code class="docutils literal notranslate"><span class="pre">convertempr</span></code> package!</p>
+<ul class="simple">
+<li><p>https://github.com/ttimbers/convertempr</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>Organizing tests for your R package:<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Tests are organised hierarchically: <strong>expectations</strong> are grouped into <strong>tests</strong> which are organised in <strong>files</strong>:</p>
+<ul class="simple">
+<li><p>An <strong>expectation</strong> is the atom of testing. It describes the expected result of a computation: Does it have the right value and right class? Does it produce error messages when it should? An expectation automates visual checking of results in the console. Expectations are functions that start with <code class="docutils literal notranslate"><span class="pre">expect_</span></code>.</p></li>
+</ul>
+<ul class="simple">
+<li><p>A <strong>test</strong> groups together multiple expectations to test the output from a simple function, a range of possibilities for a single parameter from a more complicated function, or tightly related functionality from across multiple functions. This is why they are sometimes called <strong>unit</strong> as they test one unit of functionality. A test is created with <code class="docutils literal notranslate"><span class="pre">test_that()</span></code>.</p></li>
+</ul>
+<ul class="simple">
+<li><p>A <strong>file</strong> groups together multiple related tests. Files are given a human readable name with <code class="docutils literal notranslate"><span class="pre">context()</span></code>.</p></li>
+</ul>
+<p><em>Source: <a class="reference external" href="https://r-pkgs.org/tests.html">R Packages, Chapter 10</a></em></p>
+</div>
+</div>
+<div class="section" id="where-are-we-headed-next">
+<h2>Where are we headed next?<a class="headerlink" href="#where-are-we-headed-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>What is code coverage, why is it important and how do we measure it?</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            kernelName: "ir",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>

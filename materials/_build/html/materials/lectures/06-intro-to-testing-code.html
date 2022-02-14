@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction to testing code for data science &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Managing dependencies using containerization" href="05-containerization.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02-version-control-1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-filenames-project-organization.html">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05-containerization.html">
+   Managing dependencies using containerization
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Introduction to testing code for data science
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/06-intro-to-testing-code.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/06-intro-to-testing-code.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/06-intro-to-testing-code.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#topic-learning-objectives">
+   Topic learning objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-functions-in-r">
+   Defining functions in R:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#default-function-arguments">
+     Default function arguments
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#optional-advanced">
+       Optional - Advanced
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#extra-arguments-via">
+         Extra arguments via
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           ...
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lexical-scoping-in-r">
+     Lexical scoping in R
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#name-masking">
+       Name masking
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#dynamic-lookup">
+       Dynamic lookup
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#a-fresh-start">
+       A fresh start
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lazy-evaluation">
+     Lazy evaluation
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#add-one-in-r">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_one
+        </span>
+       </code>
+       in R
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#add-one-in-python">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         add_one
+        </span>
+       </code>
+       in Python
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#the-power-of-lazy-evaluation">
+       The power of lazy evaluation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exception-handling">
+   Exception handling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#programming-with-the-tidyverse-functions">
+   Programming with the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     tidyverse
+    </span>
+   </code>
+   functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#defining-tidyverse-functions-by-embracing-column-names">
+     Defining
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       tidyverse
+      </span>
+     </code>
+     functions by embracing column names:
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       {{
+      </span>
+      <span class="pre">
+       }}
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-walrus-operator-is-needed-when-assigning-values">
+     The walrus operator
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       :=
+      </span>
+     </code>
+     is needed when assigning values
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#function-documentation">
+   Function documentation
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-documentation-in-r">
+     Function documentation in R
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attribution">
+   Attribution:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-to-next">
+   Where to next?
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="introduction-to-testing-code-for-data-science">
+<h1>Introduction to testing code for data science<a class="headerlink" href="#introduction-to-testing-code-for-data-science" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="simple">
+<li><p>Fully specify a function and write comprehensive tests against the specification.</p></li>
+<li><p>Reproducibly generate test data (e.g., data frames, models, plots).</p></li>
+<li><p>Discuss the observability of unit outputs in data science (e.g., plot objects), and how
+this should be taken into account when designing software.</p></li>
+<li><p>Explain why test-driven development (TDD) affords testability</p></li>
+<li><p>Use exceptions when writing code.</p></li>
+<li><p>Test if a function is throwing an exception when it should, and that is does not do so
+when it shouldn’t.</p></li>
+<li><p>Evaluate test suite quality.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Limit output of data frame output to 10 lines</span>
+<span class="nf">options</span><span class="p">(</span><span class="n">repr.matrix.max.rows</span> <span class="o">=</span> <span class="m">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Functions are individual units of code that perform a specific task.</p></li>
+<li><p>They are useful for increasing code modularity - this helps with reusability and readability.</p></li>
+<li><p>Functions can be easily tested to ensure the correct function outputs are given and that they handle user errors in expected ways. These checks help to increase the robustness of your code.</p></li>
+</ul>
+<p>When should you write a function? In practice, when you start re-writing code for the second or third time, it really is time to abstract your code into a function. When does this happen in data science? Think back to your DSCI 100 projects, you may have had redundant code when you:</p>
+<ol class="simple">
+<li><p>Repeatedly applied some data cleaning/manipulation to columns in your raw data suring the data wrangling process</p></li>
+<li><p>Created many similar data visualizations during your exploratory data analysis</p></li>
+<li><p>Created many similar tidymodels workflows when you were tuning your predictive models</p></li>
+</ol>
+</div>
+<div class="section" id="defining-functions-in-r">
+<h2>Defining functions in R:<a class="headerlink" href="#defining-functions-in-r" title="Permalink to this headline">¶</a></h2>
+<p>In this course, we will get to practice writing functions (and then testing them) in the R programming language. Given this has not been covered in the course pre-requisites, we will cover it here briefly. To learn more about functions in R, we refer you to the <a class="reference external" href="https://adv-r.hadley.nz/functions.html">functions chapter in the Advanced R book</a>.</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">variable</span> <span class="pre">&lt;-</span> <span class="pre">function(…arguments…)</span> <span class="pre">{</span> <span class="pre">…body…</span> <span class="pre">}</span></code> to create a function and give it a name</p></li>
+</ul>
+<p>Example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">add_two_numbers</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="p">}</span>
+
+<span class="nf">add_two_numbers</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">5</div></div>
+</div>
+<ul class="simple">
+<li><p>Functions in R are objects. This is referred to as “first-class functions”.</p></li>
+<li><p>The last line of the function returns the object created, or listed there. To return a value early use the special word <code class="docutils literal notranslate"><span class="pre">return</span></code> (as shown below).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">math_two_numbers</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if </span><span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&quot;add&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">return</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+  <span class="p">}</span> 
+  <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">math_two_numbers </span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="s">&quot;add&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">5</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">math_two_numbers </span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="s">&quot;subtract&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">-3</div></div>
+</div>
+<div class="section" id="default-function-arguments">
+<h3>Default function arguments<a class="headerlink" href="#default-function-arguments" title="Permalink to this headline">¶</a></h3>
+<p>Default values can be specified in the function definition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">math_two_numbers</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">operation</span> <span class="o">=</span> <span class="s">&quot;add&quot;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if </span><span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&quot;add&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">return</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+  <span class="p">}</span> 
+  <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">math_two_numbers </span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">5</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">math_two_numbers </span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="s">&quot;subtract&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">-3</div></div>
+</div>
+<div class="section" id="optional-advanced">
+<h4>Optional - Advanced<a class="headerlink" href="#optional-advanced" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="extra-arguments-via">
+<h5>Extra arguments via <code class="docutils literal notranslate"><span class="pre">...</span></code><a class="headerlink" href="#extra-arguments-via" title="Permalink to this headline">¶</a></h5>
+<p>If we want our function to be able to take extra arguments that we don’t specify, we must explicitly convert <code class="docutils literal notranslate"><span class="pre">...</span></code> to a list (otherwise <code class="docutils literal notranslate"><span class="pre">...</span></code> will just return the first object passed to <code class="docutils literal notranslate"><span class="pre">...</span></code>):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">add</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="kc">...</span><span class="p">))</span>
+<span class="p">}</span>
+<span class="nf">add</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1]]
+[1] 5
+
+[[2]]
+[1] 6
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="lexical-scoping-in-r">
+<h3>Lexical scoping in R<a class="headerlink" href="#lexical-scoping-in-r" title="Permalink to this headline">¶</a></h3>
+<p>R’s lexical scoping follows several rules, we will cover the following 3:</p>
+<ul class="simple">
+<li><p>Name masking</p></li>
+<li><p>Dynamic lookup</p></li>
+<li><p>A fresh start</p></li>
+</ul>
+<div class="section" id="name-masking">
+<h4>Name masking<a class="headerlink" href="#name-masking" title="Permalink to this headline">¶</a></h4>
+<p>Object names which are defined inside a function mask object names defined outside of that function. For example, below <code class="docutils literal notranslate"><span class="pre">x</span></code> is first defined in the global environment, and then also defined in the function environment. <code class="docutils literal notranslate"><span class="pre">x</span></code> in the function environment masks <code class="docutils literal notranslate"><span class="pre">x</span></code> in the global environment, so the value of 5 is used in <code class="docutils literal notranslate"><span class="pre">to_add</span> <span class="pre">+</span> <span class="pre">x</span></code> instead of 10:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">10</span>
+
+<span class="n">add_to_x</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">to_add</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">5</span>
+    <span class="n">to_add</span> <span class="o">+</span> <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">7</div></div>
+</div>
+<p>If a function refers to an object name that is not defined inside the function, then R looks at the environment one level above. And if it is not found there, it again, looks another level above. This will happen all the way up the environment tree until it searches all possible environments for that session (including the global environment and loaded packages).</p>
+<a class="reference internal image-reference" href="../../_images/env-lookup.png"><img alt="../../_images/env-lookup.png" src="../../_images/env-lookup.png" style="width: 600px;" /></a>
+<p><em><strong>Attribution</strong>: Derived from <a class="reference external" href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</em></p>
+<p>Here <code class="docutils literal notranslate"><span class="pre">x</span></code> is not defined in the function environment, and so R then looks one-level up to the global environment to try to find <code class="docutils literal notranslate"><span class="pre">x</span></code>. In this case it does and it is then used to calculate <code class="docutils literal notranslate"><span class="pre">to_add</span> <span class="pre">+</span> <span class="pre">x</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">10</span>
+
+<span class="n">add_to_x</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">to_add</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">to_add</span> <span class="o">+</span> <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">12</div></div>
+</div>
+</div>
+<div class="section" id="dynamic-lookup">
+<h4>Dynamic lookup<a class="headerlink" href="#dynamic-lookup" title="Permalink to this headline">¶</a></h4>
+<p>R does not look up the values for objects it references when it is defined/created, instead it does this when the function is called. This can lead to the function returning different things depending on the values of the objects it references outside of the function’s environment.</p>
+<p>For example, each time the function <code class="docutils literal notranslate"><span class="pre">add_to_x</span></code> is run, R looks up the current value of <code class="docutils literal notranslate"><span class="pre">x</span></code> and uses that to compute <code class="docutils literal notranslate"><span class="pre">to_add</span> <span class="pre">+</span> <span class="pre">x</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">add_to_x</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">to_add</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">to_add</span> <span class="o">+</span> <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">10</span>
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">20</span>
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">12</div><div class="output text_html">22</div></div>
+</div>
+</div>
+<div class="section" id="a-fresh-start">
+<h4>A fresh start<a class="headerlink" href="#a-fresh-start" title="Permalink to this headline">¶</a></h4>
+<p>Functions in R have no memory of what happened the last time they were called. This happens because a new function environment is created, R created a new environment in which to execute it.</p>
+<p>For example, even though we update the value of <code class="docutils literal notranslate"><span class="pre">x</span></code> inside the function by adding two to it every time we execute it, it returns the same value each time, because R creates a new function environment each time we run it and that environment has no recollection of what happened the last time the function was run:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">10</span>
+
+<span class="n">add_to_x</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">to_add</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">to_add</span> <span class="o">+</span> <span class="n">x</span>
+    <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+<span class="nf">add_to_x</span><span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">12</div><div class="output text_html">12</div><div class="output text_html">12</div></div>
+</div>
+</div>
+</div>
+<div class="section" id="lazy-evaluation">
+<h3>Lazy evaluation<a class="headerlink" href="#lazy-evaluation" title="Permalink to this headline">¶</a></h3>
+<p>In R, function arguments are lazily evaluated: they’re only evaluated if accessed.</p>
+<p>Knowing that, now consider the <code class="docutils literal notranslate"><span class="pre">add_one</span></code> function written in both R and Python below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code (this would work)</span>
+<span class="n">add_one</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="p">}</span> 
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Python code (this would not work)</span>
+<span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Why will the above <code class="docutils literal notranslate"><span class="pre">add_one</span></code> function will work in R, but the equivalent version of the function in python would break?</p>
+<ul class="simple">
+<li><p>Python evaluates the function arguments before it evaluates the function and because it doesn’t know what <code class="docutils literal notranslate"><span class="pre">y</span></code> is, it will break even though it is not used in the function.</p></li>
+<li><p>R performs lazy evaluation, meaning it delays the evaluation of the function arguments until its value is needed within/inside the function. Since <code class="docutils literal notranslate"><span class="pre">y</span></code> is never referenced inside the function, R doesn’t complain, or even notice it.</p></li>
+</ul>
+<div class="section" id="add-one-in-r">
+<h4><code class="docutils literal notranslate"><span class="pre">add_one</span></code> in R<a class="headerlink" href="#add-one-in-r" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_one</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="p">}</span> 
+</pre></div>
+</div>
+<p>This works:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>and so does this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-one-in-python">
+<h4><code class="docutils literal notranslate"><span class="pre">add_one</span></code> in Python<a class="headerlink" href="#add-one-in-python" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>def add_one(x, y):
+    x = x + 1
+    return x`
+</pre></div>
+</div>
+<p>This works:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>This does not:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">f2e542671748</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="ne">TypeError</span><span class="p">:</span> <span class="n">add_one</span><span class="p">()</span> <span class="n">missing</span> <span class="mi">1</span> <span class="n">required</span> <span class="n">positional</span> <span class="n">argument</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-power-of-lazy-evaluation">
+<h4>The power of lazy evaluation<a class="headerlink" href="#the-power-of-lazy-evaluation" title="Permalink to this headline">¶</a></h4>
+<p>Let’s you have easy to use interactive code like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">dplyr</span><span class="o">::</span><span class="nf">select</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">mpg</span><span class="p">,</span> <span class="n">cyl</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">qsec</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 32 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>mpg</th><th scope=col>cyl</th><th scope=col>hp</th><th scope=col>qsec</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Mazda RX4</th><td>21.0</td><td>6</td><td>110</td><td>16.46</td></tr>
+	<tr><th scope=row>Mazda RX4 Wag</th><td>21.0</td><td>6</td><td>110</td><td>17.02</td></tr>
+	<tr><th scope=row>Datsun 710</th><td>22.8</td><td>4</td><td> 93</td><td>18.61</td></tr>
+	<tr><th scope=row>Hornet 4 Drive</th><td>21.4</td><td>6</td><td>110</td><td>19.44</td></tr>
+	<tr><th scope=row>Hornet Sportabout</th><td>18.7</td><td>8</td><td>175</td><td>17.02</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>Lotus Europa</th><td>30.4</td><td>4</td><td>113</td><td>16.9</td></tr>
+	<tr><th scope=row>Ford Pantera L</th><td>15.8</td><td>8</td><td>264</td><td>14.5</td></tr>
+	<tr><th scope=row>Ferrari Dino</th><td>19.7</td><td>6</td><td>175</td><td>15.5</td></tr>
+	<tr><th scope=row>Maserati Bora</th><td>15.0</td><td>8</td><td>335</td><td>14.6</td></tr>
+	<tr><th scope=row>Volvo 142E</th><td>21.4</td><td>4</td><td>109</td><td>18.6</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>There’s more than just lazy evaluation happening in the code above, but lazy evaluation is part of it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">package::function()</span></code> is a way to use a function from an R package without loading the entire library.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="exception-handling">
+<h2>Exception handling<a class="headerlink" href="#exception-handling" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes our code is correct but we still encounter errors. This commonly occurs with functions when users attempt to use them in weird and creative ways that the developer did not intend. Developers are well advised to try to anticipate some of this user behaviour and guard against this in a way that can be of help to the user. One way to do this is to have a function fail intentionally when incorrect user input is given.</p>
+<p>Imagine we have a simple function to convert temperatures from Fahrenheit to Celsius:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">fahr_to_celsius</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">(</span><span class="n">temp</span> <span class="o">-</span> <span class="m">32</span><span class="p">)</span> <span class="o">*</span> <span class="m">5</span><span class="o">/</span><span class="m">9</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What if our user anticipates that our function can handle numbers written as strings? When this happens our users gets a somewhat cryptic error message (which is inversely correlated with their knowledge of the R programming language):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fahr_to_celsius</span><span class="p">(</span><span class="s2">&quot;thirty&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">temp</span> <span class="o">-</span> <span class="mi">32</span><span class="p">:</span> <span class="n">non</span><span class="o">-</span><span class="n">numeric</span> <span class="n">argument</span> <span class="n">to</span> <span class="n">binary</span> <span class="n">operator</span>
+<span class="n">Traceback</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">fahr_to_celsius</span><span class="p">(</span><span class="s2">&quot;thirty&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This error message is not as helpful as it could be! Also, if this calculation happened to take a long time, it might be nicer to check the data type before we attempt the calculation and then if the wrong data type was given, throw an purposeful error with a more helpful error message. One way we can do this simply in R is using a conditional (i.e., <code class="docutils literal notranslate"><span class="pre">if</span></code> statement) to test the type and then calling <code class="docutils literal notranslate"><span class="pre">stop</span></code> with a useful error message if the type is incorrect.</p>
+<p>For example with the <code class="docutils literal notranslate"><span class="pre">fahr_to_celsius</span></code> function, we can use <code class="docutils literal notranslate"><span class="pre">if(!is.numeric(temp))</span></code> to check whether <code class="docutils literal notranslate"><span class="pre">temp</span></code> is not numeric. And then if it is not, <code class="docutils literal notranslate"><span class="pre">stop</span></code> causes a break and the printing out of the more helpful error message “<code class="docutils literal notranslate"><span class="pre">fahr_to_celsius</span></code> expects a vector of numeric values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">fahr_to_celsius</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if</span><span class="p">(</span><span class="o">!</span><span class="nf">is.numeric</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span> <span class="p">{</span>    
+    <span class="nf">stop</span><span class="p">(</span><span class="s">&quot;`fahr_to_celsius` expects a vector of numeric values&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="p">(</span><span class="n">temp</span> <span class="o">-</span> <span class="m">32</span><span class="p">)</span> <span class="o">*</span> <span class="m">5</span><span class="o">/</span><span class="m">9</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fahr_to_celsius</span><span class="p">(</span><span class="s2">&quot;thirty&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Error in fahr_to_celsius(&quot;thirty&quot;): `fahr_to_celsius` expects a vector of numeric values
+Traceback:
+
+1. fahr_to_celsius(&quot;thirty&quot;)
+2. stop(&quot;`fahr_to_celsius` expects a vector of numeric values&quot;)   # at line 3 of file &lt;text&gt;
+</pre></div>
+</div>
+<p>If you wanted to issue a warning instead of an error, you could use <code class="docutils literal notranslate"><span class="pre">warning</span></code> in place of <code class="docutils literal notranslate"><span class="pre">stop</span></code> in the example above. However, in most cases it is better practice to throw an error than to print a warning…</p>
+<p>More advanced exception handling exists in R, and I invite interested learner to read more about it here in the <a class="reference external" href="http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling">Condition Handling</a> and <a class="reference external" href="http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming">Defensive Programming</a> sections of Advanced R.</p>
+</div>
+<div class="section" id="programming-with-the-tidyverse-functions">
+<h2>Programming with the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> functions<a class="headerlink" href="#programming-with-the-tidyverse-functions" title="Permalink to this headline">¶</a></h2>
+<p>The functions from the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> are beautiful to use interactively - with these functions, we can “pretend” that the data frame column names are objects in the global environment and refer to them without quotations (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">gapminder</span><span class="p">)</span>
+
+<span class="n">gapminder</span> <span class="o">|&gt;</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">country</span> <span class="o">==</span> <span class="s">&quot;Canada&quot;</span><span class="p">,</span> <span class="n">year</span> <span class="o">==</span> <span class="m">1952</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">ggplot2</span> 3.3.5     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">purrr  </span> 0.3.4
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tibble </span> 3.1.6     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">dplyr  </span> 1.0.7
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.1.4     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.0.1     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">filter()</span> masks <span class=" -Color -Color-Blue">stats</span>::filter()
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">lag()</span>    masks <span class=" -Color -Color-Blue">stats</span>::lag()
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>expecially when compared with base R:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">gapminder</span><span class="p">[</span><span class="n">gapminder</span><span class="o">$</span><span class="n">country</span> <span class="o">==</span> <span class="s">&quot;Canada&quot;</span> <span class="o">&amp;</span> <span class="n">gapminder</span><span class="o">$</span><span class="n">year</span> <span class="o">==</span> <span class="m">1952</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>However, the beauty of being able to refer to data frame column names in R without quotations, leads to problems when we try to use them in a function.
+For example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s2">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span><span class="p">:</span> <span class="nb">object</span> <span class="s1">&#39;country&#39;</span> <span class="ow">not</span> <span class="n">found</span>
+<span class="n">Traceback</span><span class="p">:</span>
+
+<span class="mf">1.</span> <span class="n">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s2">&quot;Canada&quot;</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="nb">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>   <span class="c1"># at line 4 of file &lt;text&gt;</span>
+<span class="mf">3.</span> <span class="nb">filter</span><span class="o">.</span><span class="n">tbl_df</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">col</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="mf">4.</span> <span class="n">filter_impl</span><span class="p">(</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">quo</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Why does <code class="docutils literal notranslate"><span class="pre">filter</span></code> work with non-quoted variable names, but our function <code class="docutils literal notranslate"><span class="pre">filter_gap</span></code> fail?
+At a very high-level, this is because <code class="docutils literal notranslate"><span class="pre">filter</span></code> is doing more behind the scenes to handle these
+unquoted column names than we see without looking at the source code.
+So to make this work for our function, we need to do a little more work too.</p>
+<p>Given that this is not a course in R programming, we will not go into the details of why this happens,
+but we will show one way of how to handle this.
+For learners intersted to learn more about why this happens,
+we recommend reading these two resources:</p>
+<ol class="simple">
+<li><p><a class="reference external" href="https://dplyr.tidyverse.org/articles/programming.html">Programming with <code class="docutils literal notranslate"><span class="pre">dplyr</span></code></a></p></li>
+<li><p><a class="reference external" href="https://adv-r.hadley.nz/metaprogramming.html">Metaprogramming</a></p></li>
+</ol>
+<div class="section" id="defining-tidyverse-functions-by-embracing-column-names">
+<h3>Defining <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> functions by embracing column names: <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">}}</span></code><a class="headerlink" href="#defining-tidyverse-functions-by-embracing-column-names" title="Permalink to this headline">¶</a></h3>
+<p>In the newest release of the <code class="docutils literal notranslate"><span class="pre">rlang</span></code> R package, there has been the introduction of the <code class="docutils literal notranslate"><span class="pre">{{</span></code> (pronounced “curly curly”) operator.
+This operator does the necessary work behind the scenes so that you can continue to use unquoted column names
+with the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> functions even when you use them in functions that you write yourself.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">{{</span></code> operator, we “embrace” the unquoted column names when we refer to them inside our function body.
+An important note is that there are several ways to implement the usage of unquoted column names in R,
+and  the <code class="docutils literal notranslate"><span class="pre">{{</span></code> operator only works with the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> functions.
+Please refer to the <a class="reference external" href="https://adv-r.hadley.nz/metaprogramming.html">Metaprogramming</a> chapter of Advanced R
+if you need to do this with non-tidyverse functions.</p>
+<p>Here’s the function we show above working when we use the <code class="docutils literal notranslate"><span class="pre">{{</span></code> operator to “embrace” the unquoted column names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">filter_gap</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">filter</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="p">{{</span><span class="n">col</span><span class="p">}}</span> <span class="o">==</span> <span class="n">val</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">filter_gap</span><span class="p">(</span><span class="n">country</span><span class="p">,</span> <span class="s">&quot;Canada&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 12 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1967</td><td>72.13</td><td>20819767</td><td>16076.59</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1972</td><td>72.88</td><td>22284500</td><td>18970.57</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1987</td><td>76.860</td><td>26549700</td><td>26626.52</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1992</td><td>77.950</td><td>28523502</td><td>26342.88</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>1997</td><td>78.610</td><td>30305843</td><td>28954.93</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
+	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="the-walrus-operator-is-needed-when-assigning-values">
+<h3>The walrus operator <code class="docutils literal notranslate"><span class="pre">:=</span></code> is needed when assigning values<a class="headerlink" href="#the-walrus-operator-is-needed-when-assigning-values" title="Permalink to this headline">¶</a></h3>
+<p>For similar reasons, the walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) is needed when writing functions that create new columns using unquoted column names with the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> functions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">group_summary</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">data</span> <span class="o">|&gt;</span>
+    <span class="nf">group_by</span><span class="p">({{</span> <span class="n">group</span> <span class="p">}})</span> <span class="o">|&gt;</span>
+    <span class="nf">summarise</span><span class="p">(</span> <span class="p">{{</span> <span class="n">col</span> <span class="p">}}</span> <span class="o">:=</span> <span class="nf">fun</span><span class="p">({{</span> <span class="n">col</span> <span class="p">}}))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">group_summary</span><span class="p">(</span><span class="n">gapminder</span><span class="p">,</span> <span class="n">continent</span><span class="p">,</span> <span class="n">gdpPercap</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 5 × 2</caption>
+<thead>
+	<tr><th scope=col>continent</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Africa  </td><td> 2193.755</td></tr>
+	<tr><td>Americas</td><td> 7136.110</td></tr>
+	<tr><td>Asia    </td><td> 7902.150</td></tr>
+	<tr><td>Europe  </td><td>14469.476</td></tr>
+	<tr><td>Oceania </td><td>18621.609</td></tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</div>
+</div>
+<div class="section" id="function-documentation">
+<h2>Function documentation<a class="headerlink" href="#function-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Function documentation is extremely useful at both the time of function creation/development, as well as at the time of function usage by the user. At the time of creation/development, it is useful for clearly delineating and communication the planned function’s specifications. At the time of usage, it is often the primary documentation a user will refer to in order to understand how to use the function. If a function is not well documented, it will not be well understood or widely used.</p>
+<div class="section" id="function-documentation-in-r">
+<h3>Function documentation in R<a class="headerlink" href="#function-documentation-in-r" title="Permalink to this headline">¶</a></h3>
+<p>In R, we write function documentation in a style that the <code class="docutils literal notranslate"><span class="pre">roxygen2</span></code> R package can use to automatically generate nicely formatted documentation, accessible via R’s help function, when we create R packages. This is not available to us until we package our functions in software packages, however it is a good practice to get into because it helps ensure you document the key aspects of a function for your user, and it means that when you go to create an R package to share your function, you will have already correctly formatted the function documentation - saving future you some work!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#&#39; Converts temperatures from Fahrenheit to Celsius.</span>
+<span class="c1">#&#39;    </span>
+<span class="c1">#&#39; @param temp a vector of temperatures in Fahrenheit</span>
+<span class="c1">#&#39; </span>
+<span class="c1">#&#39; @return a vector of temperatures in Celsius</span>
+<span class="c1">#&#39; </span>
+<span class="c1">#&#39; @examples</span>
+<span class="c1">#&#39; fahr_to_celcius(-20)</span>
+<span class="n">fahr_to_celsius</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">temp</span> <span class="o">-</span> <span class="m">32</span><span class="p">)</span> <span class="o">*</span> <span class="m">5</span><span class="o">/</span><span class="m">9</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>RStudio has a nice feature to provide a <code class="docutils literal notranslate"><span class="pre">roxygen2</span></code> formatted skeleton for function documentation. To use it, you put the cursor in the function definition, and then select the menu items “Code” &gt; “Insert Roxygen Skeleton”:</p>
+<a class="reference internal image-reference" href="../../_images/insert_roxygen.png"><img alt="../../_images/insert_roxygen.png" src="../../_images/insert_roxygen.png" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="attribution">
+<h2>Attribution:<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</p></li>
+<li><p><a class="reference external" href="http://tidynomicon.tech/">The Tidynomicon</a> by Greg Wilson</p></li>
+</ul>
+</div>
+<div class="section" id="where-to-next">
+<h2>Where to next?<a class="headerlink" href="#where-to-next" title="Permalink to this headline">¶</a></h2>
+<p>Now that we know how to write functions in R, we will learn how to write tests for them to make them more robust.
+As well as how writing tests can actually help us write our functions in the first place!</p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "r"
+        },
+        kernelOptions: {
+            kernelName: "ir",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'ir'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="05-containerization.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Managing dependencies using containerization</p>
+        </div>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
