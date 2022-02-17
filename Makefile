@@ -7,3 +7,4 @@ book:
 
 clean-book:
 	rm -rf docs/*
+	rm -rf materials/_build/*
