@@ -265,3 +265,17 @@ are passed to `data_frame` and `class_col` arguments", {
   expect_error(count_classes(two_classes_3_obs, vector_class_labels))
   expect_error(count_classes(two_classes_3_obs_as_list, class_lables))
 })
+
+pretty_scatter <- function(.data, x_axis_col, y_axis_col) {
+    ggplot2::ggplot(data = .data, 
+                    ggplot2::aes(x = {{ x_axis_col }}, y = {{ y_axis_col }})) +
+        ggplot2::geom_point(alpha = 0.8, colour = "steelblue", size = 3) +
+        ggplot2::theme_bw() +
+        ggplot2::theme(text = ggplot2::element_text(size = 14))
+}
+
+library(palmerpenguins)
+library(ggplot2)
+penguins_scatter <- pretty_scatter(penguins, bill_length_mm, bill_depth_mm) + 
+    labs(x = "Bill length (mm)", y = "Bill depth (mm)")
+penguins_scatter

@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,17 +33,17 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
+    <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -94,7 +94,7 @@
   </a>
  </li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
+<p class="caption">
  <span class="caption-text">
   Course notes
  </span>
@@ -176,7 +176,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -227,7 +227,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+        <div class="d-none d-md-block col-md-2 bd-toc show">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -386,169 +386,7 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Lecture 8: Tidy evaluation</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lecture-learning-objectives">
-   Lecture learning objectives:
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-metaprogramming-lets-you-do-in-r">
-   What Metaprogramming lets you do in R
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is-metaprogramming">
-     What is metaprogramming?
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#our-narrow-focus-on-metaprogramming-for-this-course">
-     Our narrow focus on metaprogramming for this course:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#why-focus-on-tidy-evaluation">
-     Why focus on tidy evaluation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tidy-evaluation">
-   Tidy evaluation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#how-does-that-even-work">
-     How does that even work?
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#back-to-our-example">
-     Back to our example:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#trade-off-of-lovely-interactivity-of-tidyverse-functions">
-     Trade off of lovely interactivity of tidyverse functions…
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#programming-with-them-can-be-more-challenging">
-     programming with them can be more challenging.
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-functions-using-tidy-eval-s-enquo-and">
-     Defining functions using tidy eval’s
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       enquo
-      </span>
-     </code>
-     and
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       !!
-      </span>
-     </code>
-     :
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-functions-by-embracing-column-names">
-     Defining functions by embracing column names:
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       {{
-      </span>
-      <span class="pre">
-       }}
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#optional-creating-functions-that-handle-column-names-as-strings">
-     (Optional) Creating functions that handle column names as strings:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-walrus-operator-is-needed-when-assigning-values">
-     The walrus operator
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       :=
-      </span>
-     </code>
-     is needed when assigning values
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#pass-the-dots-when-you-can">
-     Pass the dots when you can
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#notes-on-passing-the-dots">
-       Notes on passing the dots
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#pass-the-dots-is-not-always-the-solution">
-       Pass the dots is not always the solution…
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#when-passing-in-different-column-names-to-different-functions-embrace-mutliple-column-names">
-     When passing in different column names to different functions, embrace mutliple column names
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#combining-embracing-with-pass-the-dots">
-       Combining embracing with pass the dots:
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#programming-defensively-with-tidy-evaluation">
-   Programming defensively with tidy evaluation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#what-did-we-learn">
-   What did we learn?
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#attribution">
-   Attribution:
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
+        
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="lecture-8-tidy-evaluation">
@@ -570,10 +408,18 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>Error in library(gapminder): there is no package called ‘gapminder’
-Traceback:
-
-1. library(gapminder)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ─────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">ggplot2</span> 3.3.5     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">purrr  </span> 0.3.4
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tibble </span> 3.1.6     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">dplyr  </span> 1.0.7
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.1.4     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.0.1     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">filter()</span> masks <span class=" -Color -Color-Blue">stats</span>::filter()
+<span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">lag()</span>    masks <span class=" -Color -Color-Blue">stats</span>::lag()
 </pre></div>
 </div>
 </div>
@@ -615,7 +461,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1704 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -625,12 +471,7 @@ Traceback:
 	<tr><td>Afghanistan</td><td>Asia</td><td>1952</td><td>28.801</td><td> 8425333</td><td>779.4453</td></tr>
 	<tr><td>Afghanistan</td><td>Asia</td><td>1957</td><td>30.332</td><td> 9240934</td><td>820.8530</td></tr>
 	<tr><td>Afghanistan</td><td>Asia</td><td>1962</td><td>31.997</td><td>10267083</td><td>853.1007</td></tr>
-	<tr><td>Afghanistan</td><td>Asia</td><td>1967</td><td>34.020</td><td>11537966</td><td>836.1971</td></tr>
-	<tr><td>Afghanistan</td><td>Asia</td><td>1972</td><td>36.088</td><td>13079460</td><td>739.9811</td></tr>
 	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>Zimbabwe</td><td>Africa</td><td>1987</td><td>62.351</td><td> 9216418</td><td>706.1573</td></tr>
-	<tr><td>Zimbabwe</td><td>Africa</td><td>1992</td><td>60.377</td><td>10704340</td><td>693.4208</td></tr>
-	<tr><td>Zimbabwe</td><td>Africa</td><td>1997</td><td>46.809</td><td>11404948</td><td>792.4500</td></tr>
 	<tr><td>Zimbabwe</td><td>Africa</td><td>2002</td><td>39.989</td><td>11926563</td><td>672.0386</td></tr>
 	<tr><td>Zimbabwe</td><td>Africa</td><td>2007</td><td>43.487</td><td>12311143</td><td>469.7093</td></tr>
 </tbody>
@@ -645,7 +486,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -665,7 +506,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -706,7 +547,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -759,7 +600,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 12 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -769,12 +610,7 @@ Traceback:
 	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1967</td><td>72.13</td><td>20819767</td><td>16076.59</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1972</td><td>72.88</td><td>22284500</td><td>18970.57</td></tr>
 	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1987</td><td>76.860</td><td>26549700</td><td>26626.52</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1992</td><td>77.950</td><td>28523502</td><td>26342.88</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1997</td><td>78.610</td><td>30305843</td><td>28954.93</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
 </tbody>
@@ -799,7 +635,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 12 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -809,12 +645,7 @@ Traceback:
 	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1967</td><td>72.13</td><td>20819767</td><td>16076.59</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1972</td><td>72.88</td><td>22284500</td><td>18970.57</td></tr>
 	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1987</td><td>76.860</td><td>26549700</td><td>26626.52</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1992</td><td>77.950</td><td>28523502</td><td>26342.88</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1997</td><td>78.610</td><td>30305843</td><td>28954.93</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
 </tbody>
@@ -839,7 +670,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 12 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
@@ -849,12 +680,7 @@ Traceback:
 	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1957</td><td>69.96</td><td>17010154</td><td>12489.95</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>1962</td><td>71.30</td><td>18985849</td><td>13462.49</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1967</td><td>72.13</td><td>20819767</td><td>16076.59</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1972</td><td>72.88</td><td>22284500</td><td>18970.57</td></tr>
 	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1987</td><td>76.860</td><td>26549700</td><td>26626.52</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1992</td><td>77.950</td><td>28523502</td><td>26342.88</td></tr>
-	<tr><td>Canada</td><td>Americas</td><td>1997</td><td>78.610</td><td>30305843</td><td>28954.93</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2002</td><td>79.770</td><td>31902268</td><td>33328.97</td></tr>
 	<tr><td>Canada</td><td>Americas</td><td>2007</td><td>80.653</td><td>33390141</td><td>36319.24</td></tr>
 </tbody>
@@ -880,10 +706,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>`summarise()` ungrouping output (override with `.groups` argument)
-</pre></div>
-</div>
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 5 × 2</caption>
 <thead>
 	<tr><th scope=col>continent</th><th scope=col>gdpPercap</th></tr>
@@ -914,24 +737,19 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1704 × 6</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
 	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>Afghanistan</td><td>Asia    </td><td>1952</td><td>28.801</td><td> 8425333</td><td> 779.4453</td></tr>
-	<tr><td>Albania    </td><td>Europe  </td><td>1952</td><td>55.230</td><td> 1282697</td><td>1601.0561</td></tr>
-	<tr><td>Algeria    </td><td>Africa  </td><td>1952</td><td>43.077</td><td> 9279525</td><td>2449.0082</td></tr>
-	<tr><td>Angola     </td><td>Africa  </td><td>1952</td><td>30.015</td><td> 4232095</td><td>3520.6103</td></tr>
-	<tr><td>Argentina  </td><td>Americas</td><td>1952</td><td>62.485</td><td>17876956</td><td>5911.3151</td></tr>
+	<tr><td>Afghanistan</td><td>Asia  </td><td>1952</td><td>28.801</td><td>8425333</td><td> 779.4453</td></tr>
+	<tr><td>Albania    </td><td>Europe</td><td>1952</td><td>55.230</td><td>1282697</td><td>1601.0561</td></tr>
+	<tr><td>Algeria    </td><td>Africa</td><td>1952</td><td>43.077</td><td>9279525</td><td>2449.0082</td></tr>
 	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>Vietnam           </td><td>Asia  </td><td>2007</td><td>74.249</td><td>85262356</td><td>2441.5764</td></tr>
-	<tr><td>West Bank and Gaza</td><td>Asia  </td><td>2007</td><td>73.422</td><td> 4018332</td><td>3025.3498</td></tr>
-	<tr><td>Yemen, Rep.       </td><td>Asia  </td><td>2007</td><td>62.698</td><td>22211743</td><td>2280.7699</td></tr>
-	<tr><td>Zambia            </td><td>Africa</td><td>2007</td><td>42.384</td><td>11746035</td><td>1271.2116</td></tr>
-	<tr><td>Zimbabwe          </td><td>Africa</td><td>2007</td><td>43.487</td><td>12311143</td><td> 469.7093</td></tr>
+	<tr><td>Zambia  </td><td>Africa</td><td>2007</td><td>42.384</td><td>11746035</td><td>1271.2116</td></tr>
+	<tr><td>Zimbabwe</td><td>Africa</td><td>2007</td><td>43.487</td><td>12311143</td><td> 469.7093</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -969,6 +787,26 @@ Traceback:
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] 2
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1704 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Algeria</td><td>Africa</td><td>1952</td><td>43.077</td><td>9279525</td><td>2449.008</td></tr>
+	<tr><td>Angola </td><td>Africa</td><td>1952</td><td>30.015</td><td>4232095</td><td>3520.610</td></tr>
+	<tr><td>Benin  </td><td>Africa</td><td>1952</td><td>38.223</td><td>1738315</td><td>1062.752</td></tr>
+	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><td>Australia  </td><td>Oceania</td><td>2007</td><td>81.235</td><td>20434176</td><td>34435.37</td></tr>
+	<tr><td>New Zealand</td><td>Oceania</td><td>2007</td><td>80.204</td><td> 4115771</td><td>25185.01</td></tr>
+</tbody>
+</table>
+</div></div>
 </div>
 </div>
 <div class="section" id="pass-the-dots-is-not-always-the-solution">
@@ -1023,24 +861,19 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A data.frame: 32 × 4</caption>
 <thead>
-	<tr><th scope=col>mpg</th><th scope=col>cyl</th><th scope=col>disp</th><th scope=col>hp</th></tr>
-	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+	<tr><th></th><th scope=col>mpg</th><th scope=col>cyl</th><th scope=col>disp</th><th scope=col>hp</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
-	<tr><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
-	<tr><td>7.3407129</td><td>4</td><td>108</td><td> 93</td></tr>
-	<tr><td>1.7144629</td><td>6</td><td>258</td><td>110</td></tr>
-	<tr><td>1.9338379</td><td>8</td><td>360</td><td>175</td></tr>
-	<tr><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>106.2832129</td><td>4</td><td> 95.1</td><td>113</td></tr>
-	<tr><td> 18.4094629</td><td>8</td><td>351.0</td><td>264</td></tr>
-	<tr><td>  0.1525879</td><td>6</td><td>145.0</td><td>175</td></tr>
-	<tr><td> 25.9144629</td><td>8</td><td>301.0</td><td>335</td></tr>
-	<tr><td>  1.7144629</td><td>4</td><td>121.0</td><td>109</td></tr>
+	<tr><th scope=row>Mazda RX4</th><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
+	<tr><th scope=row>Mazda RX4 Wag</th><td>0.8269629</td><td>6</td><td>160</td><td>110</td></tr>
+	<tr><th scope=row>Datsun 710</th><td>7.3407129</td><td>4</td><td>108</td><td> 93</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>Maserati Bora</th><td>25.914463</td><td>8</td><td>301</td><td>335</td></tr>
+	<tr><th scope=row>Volvo 142E</th><td> 1.714463</td><td>4</td><td>121</td><td>109</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -1060,24 +893,19 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A data.frame: 32 × 3</caption>
 <thead>
-	<tr><th scope=col>mpg</th><th scope=col>drat</th><th scope=col>carb</th></tr>
-	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+	<tr><th></th><th scope=col>drat</th><th scope=col>carb</th><th scope=col>mpg</th></tr>
+	<tr><th></th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>0.8269629</td><td>3.90</td><td>4</td></tr>
-	<tr><td>0.8269629</td><td>3.90</td><td>4</td></tr>
-	<tr><td>7.3407129</td><td>3.85</td><td>1</td></tr>
-	<tr><td>1.7144629</td><td>3.08</td><td>1</td></tr>
-	<tr><td>1.9338379</td><td>3.15</td><td>2</td></tr>
-	<tr><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><td>106.2832129</td><td>3.77</td><td>2</td></tr>
-	<tr><td> 18.4094629</td><td>4.22</td><td>4</td></tr>
-	<tr><td>  0.1525879</td><td>3.62</td><td>6</td></tr>
-	<tr><td> 25.9144629</td><td>3.54</td><td>8</td></tr>
-	<tr><td>  1.7144629</td><td>4.11</td><td>2</td></tr>
+	<tr><th scope=row>Mazda RX4</th><td>3.90</td><td>4</td><td>0.8269629</td></tr>
+	<tr><th scope=row>Mazda RX4 Wag</th><td>3.90</td><td>4</td><td>0.8269629</td></tr>
+	<tr><th scope=row>Datsun 710</th><td>3.85</td><td>1</td><td>7.3407129</td></tr>
+	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td></tr>
+	<tr><th scope=row>Maserati Bora</th><td>3.54</td><td>8</td><td>25.914463</td></tr>
+	<tr><th scope=row>Volvo 142E</th><td>4.11</td><td>2</td><td> 1.714463</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -1100,10 +928,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1] TRUE
-</pre></div>
-</div>
-</div>
+<div class="output text_html">TRUE</div></div>
 </div>
 <p>Next, we add a <code class="docutils literal notranslate"><span class="pre">if</span></code> + <code class="docutils literal notranslate"><span class="pre">stop</span></code> to this, to throw an error in our <code class="docutils literal notranslate"><span class="pre">square_diff_n_select</span></code> function when the column type is not what our function is designed to handle. Here our function works, as the <code class="docutils literal notranslate"><span class="pre">lifeExp</span></code> column in the <code class="docutils literal notranslate"><span class="pre">gapminder</span></code> data set is numeric.</p>
 <div class="cell docutils container">
@@ -1123,7 +948,7 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><table>
+<div class="output text_html"><table class="dataframe">
 <caption>A tibble: 1704 × 3</caption>
 <thead>
 	<tr><th scope=col>country</th><th scope=col>year</th><th scope=col>lifeExp</th></tr>
@@ -1194,21 +1019,23 @@ Traceback:
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+        
+            <!-- Previous / next buttons -->
 <div class='prev-next-area'>
 </div>
-            
+        
         </div>
     </div>
     <footer class="footer">
-  <p>
-    
-      By Tiffany Timbers<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
 </main>
 
 

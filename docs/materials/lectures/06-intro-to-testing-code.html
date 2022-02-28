@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,17 +33,17 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
+    <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
@@ -95,7 +95,7 @@
   </a>
  </li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
+<p class="caption">
  <span class="caption-text">
   Course notes
  </span>
@@ -177,7 +177,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -228,7 +228,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+        <div class="d-none d-md-block col-md-2 bd-toc show">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -525,6 +525,35 @@
     <a class="reference internal nav-link" href="#visual-regression-testing">
      Visual regression testing
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#visual-regression-testing-with-vdiffr">
+       Visual regression testing with
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         vdiffr
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#vdiffr-demo">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         vdiffr
+        </span>
+       </code>
+       demo
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#practice-exercises">
+         Practice exercises
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -551,333 +580,7 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Introduction to testing code for data science</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#topic-learning-objectives">
-   Topic learning objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functions">
-   Functions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#defining-functions-in-r">
-   Defining functions in R:
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#default-function-arguments">
-     Default function arguments
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#optional-advanced">
-       Optional - Advanced
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#extra-arguments-via">
-         Extra arguments via
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           ...
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lexical-scoping-in-r">
-     Lexical scoping in R
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#name-masking">
-       Name masking
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#dynamic-lookup">
-       Dynamic lookup
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#a-fresh-start">
-       A fresh start
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lazy-evaluation">
-     Lazy evaluation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#add-one-in-r">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         add_one
-        </span>
-       </code>
-       in R
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#add-one-in-python">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         add_one
-        </span>
-       </code>
-       in Python
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#the-power-of-lazy-evaluation">
-       The power of lazy evaluation
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exception-handling">
-   Exception handling
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#programming-with-the-tidyverse-functions">
-   Programming with the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     tidyverse
-    </span>
-   </code>
-   functions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-tidyverse-functions-by-embracing-column-names">
-     Defining
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       tidyverse
-      </span>
-     </code>
-     functions by embracing column names:
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       {{
-      </span>
-      <span class="pre">
-       }}
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-walrus-operator-is-needed-when-assigning-values">
-     The walrus operator
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       :=
-      </span>
-     </code>
-     is needed when assigning values
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#function-documentation">
-   Function documentation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#function-documentation-in-r">
-     Function documentation in R
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#practice-writing-functions-in-r">
-   Practice writing functions in R
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-code-for-data-science">
-   Testing code for data science
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#workflow-for-writing-functions-and-tests-for-data-science">
-   Workflow for writing functions and tests for data science
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-of-workflow-for-writing-functions-and-tests-for-data-science">
-     Example of workflow for writing functions and tests for data science
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#write-the-function-specifications-and-documentation-but-do-not-implement-the-function">
-       1. Write the function specifications and documentation - but do not implement the function:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#plan-the-test-cases-and-document-them">
-       2. Plan the test cases and document them:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#create-test-data-that-is-useful-for-assessing-whether-your-function-works-as-expected">
-       3. Create test data that is useful for assessing whether your function works as expected:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#write-the-tests-to-evaluate-your-function-based-on-the-planned-test-cases-and-test-data">
-       4. Write the tests to evaluate your function based on the planned test cases and test data:
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#testthat-test-structure">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           testthat
-          </span>
-         </code>
-         test structure:
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#common-expect-statements-for-use-with-test-that">
-       Common
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expect_*
-        </span>
-       </code>
-       statements for use with
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         test_that
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#is-the-object-equal-to-a-value">
-         Is the object equal to a value?
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#does-code-produce-an-output-message-warning-error">
-         Does code produce an output/message/warning/error?
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#is-the-object-true-false">
-         Is the object true/false?
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#implement-the-function-by-writing-the-needed-code-in-the-function-body-to-pass-the-tests">
-       5. Implement the function by writing the needed code in the function body to pass the tests:
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#where-do-the-function-and-test-files-go">
-     Where do the function and test files go?
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#where-does-the-function-go">
-       Where does the function go?
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#where-do-the-tests-go">
-       Where do the tests go?
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#convenience-functions-for-setting-this-up">
-       Convenience functions for setting this up
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reproducibly-generating-test-data">
-   Reproducibly generating test data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#test-driven-development-tdd-and-testability">
-   Test-driven development (TDD) and testability
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#observability-of-unit-outputs-in-data-science">
-   Observability of unit outputs in data science
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visual-regression-testing">
-     Visual regression testing
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#evaluate-test-suite-quality">
-   Evaluate test suite quality
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#attribution">
-   Attribution:
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#where-to-next">
-   Where to next?
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
+        
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="introduction-to-testing-code-for-data-science">
@@ -1302,27 +1005,31 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ─────────────────────────────────────── tidyverse 1.3.1 ──
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ─────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">ggplot2</span> 3.3.5     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">purrr  </span> 0.3.4
 <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tibble </span> 3.1.6     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">dplyr  </span> 1.0.7
-<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.2.0     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
-<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.1.2     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.1.4     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.0.1     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ────────────────────────────────────────── tidyverse_conflicts() ──
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 <span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">filter()</span> masks <span class=" -Color -Color-Blue">stats</span>::filter()
 <span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">lag()</span>    masks <span class=" -Color -Color-Blue">stats</span>::lag()
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>Error in library(gapminder): there is no package called ‘gapminder’
-Traceback:
-
-1. library(gapminder)
-</pre></div>
-</div>
-</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A tibble: 1 × 6</caption>
+<thead>
+	<tr><th scope=col>country</th><th scope=col>continent</th><th scope=col>year</th><th scope=col>lifeExp</th><th scope=col>pop</th><th scope=col>gdpPercap</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Canada</td><td>Americas</td><td>1952</td><td>68.75</td><td>14785584</td><td>11367.16</td></tr>
+</tbody>
+</table>
+</div></div>
 </div>
 <p>expecially when compared with base R:</p>
 <div class="cell docutils container">
@@ -1605,24 +1312,24 @@ As well as how writing tests can actually help us write our functions in the fir
 </div>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Attaching package: ‘testthat’
-
-
-The following object is masked from ‘package:dplyr’:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The following object is masked from ‘package:dplyr’:
 
     matches
-
-
-The following object is masked from ‘package:purrr’:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The following object is masked from ‘package:purrr’:
 
     is_null
-
-
-The following objects are masked from ‘package:readr’:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The following objects are masked from ‘package:readr’:
 
     edition_get, local_edition
-
-
-The following object is masked from ‘package:tidyr’:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The following object is masked from ‘package:tidyr’:
 
     matches
 </pre></div>
@@ -1657,18 +1364,21 @@ The following object is masked from ‘package:tidyr’:
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should return a data frame or data frame extension</span> ─────────────────────
 Reason: empty test
-
-── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should return a data frame, or data frame extension, </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should return a data frame, or data frame extension, </span>
 <span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
 <span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
 Reason: empty test
-
-── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should return a data frame, or data frame extension, </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should return a data frame, or data frame extension, </span>
 <span class=" -Color -Color-Bold">whose values in the `count` column correspond to the number of observations </span>
 <span class=" -Color -Color-Bold">for the group in the `class` column from the original data frame</span> ─────────────────────
 Reason: empty test
-
-── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should throw an error when incorrect types </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Blue">Skip</span><span class=" -Color -Color-Bold"> (???): `count_classes` should throw an error when incorrect types </span>
 <span class=" -Color -Color-Bold">are passed to `data_frame` and `class_col` arguments</span> ─────────────────────
 Reason: empty test
 </pre></div>
@@ -1782,8 +1492,9 @@ as well as the data we expect our function to return.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:2:3): `count_classes` should return a tibble</span> ─────────────────────
 count_classes(two_classes_3_obs, class_lables) is not an S3 object
-
-── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:8:3): `count_classes` should return a data frame, or data frame extension, </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:8:3): `count_classes` should return a data frame, or data frame extension, </span>
 <span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
 <span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
 count_classes(five_classes_3_obs, class_lables) not equivalent to `five_classes_3_obs_output`.
@@ -1806,8 +1517,9 @@ target is NULL, current is data.frame
 <span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
 count_classes(empty_df, class_lables) not equivalent to `empty_df_output`.
 target is NULL, current is data.frame
-
-── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:17:3): `count_classes` should return a data frame, or data frame extension, </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:17:3): `count_classes` should return a data frame, or data frame extension, </span>
 <span class=" -Color -Color-Bold">whose values in the `count` column correspond to the number of observations </span>
 <span class=" -Color -Color-Bold">for the group in the `class` column from the original data frame</span> ─────────────────────
 count_classes(two_classes_3_and_2_obs, class_lables) not equivalent to `two_classes_3_and_2_obs_output`.
@@ -1818,8 +1530,9 @@ target is NULL, current is data.frame
 <span class=" -Color -Color-Bold">for the group in the `class` column from the original data frame</span> ─────────────────────
 count_classes(two_classes_3_and_1_obs, class_lables) not equivalent to `two_classes_3_and_1_obs_output`.
 target is NULL, current is data.frame
-
-── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:23:3): `count_classes` should throw an error when incorrect types </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:23:3): `count_classes` should throw an error when incorrect types </span>
 <span class=" -Color -Color-Bold">are passed to `data_frame` and `class_col` arguments</span> ─────────────────────
 `count_classes(two_classes_3_obs, vector_class_labels)` did not throw an error.
 
@@ -1902,10 +1615,16 @@ target is NULL, current is data.frame
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🎉
-<span class=" -Color -Color-Green">Test passed</span> 😸
-<span class=" -Color -Color-Green">Test passed</span> 😸
-<span class=" -Color -Color-Green">Test passed</span> 🥳
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 😸
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🌈
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🥇
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 😸
 </pre></div>
 </div>
 </div>
@@ -1966,9 +1685,12 @@ which should live in the <code class="docutils literal notranslate"><span class=
 </div>
 <div class="section" id="test-driven-development-tdd-and-testability">
 <h2>Test-driven development (TDD) and testability<a class="headerlink" href="#test-driven-development-tdd-and-testability" title="Permalink to this headline">¶</a></h2>
+<p><strong>Test-driven development (TDD):</strong> a process for developing software, whereby you write test cases that assess the software requirements before you write the software that implements the software requirements/functionality. <em>Hey! We just did that in the workflow above!</em></p>
+<p><em>Source: <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></em></p>
 <p><strong>Testability</strong> is defined as the degree to which a system or component facilitates the establishment of test objectives
 and the execution of tests to determine whether those objectives have been achieved.</p>
 <p><em>Source: <a class="reference external" href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410 class notes from Reid Holmes, UBC</a></em></p>
+<p><strong>Discussion:</strong> Does test-driven development afford testability? How might it do so?</p>
 </div>
 <div class="section" id="observability-of-unit-outputs-in-data-science">
 <h2>Observability of unit outputs in data science<a class="headerlink" href="#observability-of-unit-outputs-in-data-science" title="Permalink to this headline">¶</a></h2>
@@ -1988,7 +1710,103 @@ However, when our code under test does something more complex, such as create a 
 <h3>Visual regression testing<a class="headerlink" href="#visual-regression-testing" title="Permalink to this headline">¶</a></h3>
 <p><strong>Regression testing</strong> is defined as tests that check that recent changes to the code base do not break already implemented features.</p>
 <p>Testing plot objects is more challenging. In the cases of several commonly used plotting functions and package in R and Python, the objects created are not rich objects with attributes that can be easily accessed (or accessed at all). Thus, regression testing against an image generated by the plotting function is often the “best we can do”, or because of this history, what is commonly done.</p>
-<p>Once a desired plot is generated from the plotting function, visual regression tests can be used to ensure that further code refactoring does not change the plot function. Tools for this exist for R in the <a class="reference external" href="https://github.com/r-lib/vdiffr"><code class="docutils literal notranslate"><span class="pre">vdiffr</span></code></a> package. Matplotlib uses visual regression testing as well, you can see the docs for examples of this <a class="reference external" href="https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test">here</a>.</p>
+<p>Once a desired plot is generated from the plotting function, visual regression tests can be used to ensure that further code refactoring does not change the plot function. Tools for this exist for R in the <a class="reference external" href="https://vdiffr.r-lib.org/"><code class="docutils literal notranslate"><span class="pre">vdiffr</span></code></a> package. Matplotlib uses visual regression testing as well, you can see the docs for examples of this <a class="reference external" href="https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test">here</a>.</p>
+<div class="section" id="visual-regression-testing-with-vdiffr">
+<h4>Visual regression testing with <code class="docutils literal notranslate"><span class="pre">vdiffr</span></code><a class="headerlink" href="#visual-regression-testing-with-vdiffr" title="Permalink to this headline">¶</a></h4>
+<p>Say you have a function
+that creates a nicely formatted scatter plot using <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code>,
+such as the one shown below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">pretty_scatter</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">x_axis_col</span><span class="p">,</span> <span class="n">y_axis_col</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ggplot2</span><span class="o">::</span><span class="nf">ggplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">.data</span><span class="p">,</span> 
+                    <span class="n">ggplot2</span><span class="o">::</span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="p">{{</span> <span class="n">x_axis_col</span> <span class="p">}},</span> <span class="n">y</span> <span class="o">=</span> <span class="p">{{</span> <span class="n">y_axis_col</span> <span class="p">}}))</span> <span class="o">+</span>
+        <span class="n">ggplot2</span><span class="o">::</span><span class="nf">geom_point</span><span class="p">(</span><span class="n">alpha</span> <span class="o">=</span> <span class="m">0.8</span><span class="p">,</span> <span class="n">colour</span> <span class="o">=</span> <span class="s">&quot;steelblue&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">ggplot2</span><span class="o">::</span><span class="nf">theme_bw</span><span class="p">()</span> <span class="o">+</span>
+        <span class="n">ggplot2</span><span class="o">::</span><span class="nf">theme</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="n">ggplot2</span><span class="o">::</span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="m">14</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="nf">library</span><span class="p">(</span><span class="n">palmerpenguins</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="n">penguins_scatter</span> <span class="o">&lt;-</span> <span class="nf">pretty_scatter</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">bill_length_mm</span><span class="p">,</span> <span class="n">bill_depth_mm</span><span class="p">)</span> <span class="o">+</span> 
+    <span class="nf">labs</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s">&quot;Bill length (mm)&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&quot;Bill depth (mm)&quot;</span><span class="p">)</span>
+<span class="n">penguins_scatter</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
+“Removed 2 rows containing missing values (geom_point).”
+</pre></div>
+</div>
+<img alt="../../_images/06-intro-to-testing-code_80_1.png" src="../../_images/06-intro-to-testing-code_80_1.png" />
+</div>
+</div>
+<blockquote>
+<div><p>What is so pretty about this scatter plot? Compared to the default settings of a scatter plot created in <code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> this scatter plot has a white instead of grey background, has blue points instead of black, has larger points, and they points have a bit of transparency so you can see some overlapping data points.</p>
+</div></blockquote>
+<p>Now, say that you want to write tests to make sure that as you further develop
+and refactor your data visualization code, you do not break it or change the plot
+(because you have decided you are happy with what it looks like).
+You can use the <a class="reference external" href="https://vdiffr.r-lib.org/"><code class="docutils literal notranslate"><span class="pre">vdiffr</span></code></a>
+visual regression testing package to do this.
+First, you need to abstract the function to an R script that lives in <code class="docutils literal notranslate"><span class="pre">R</span></code>.
+For this case, we would create a file called <code class="docutils literal notranslate"><span class="pre">R/pretty_scatter.R</span></code>
+that houses the <code class="docutils literal notranslate"><span class="pre">pretty_scatter</span></code> function shown above.</p>
+<p>Then you need to setup a <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory
+and test file in which to house your tests
+that works with the <a class="reference external" href="https://testthat.r-lib.org/"><code class="docutils literal notranslate"><span class="pre">testthat</span></code></a> framework
+(we recommend using <code class="docutils literal notranslate"><span class="pre">usethis::use_testthat()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">usethis::use_test(&quot;FUNCTION_NAME&quot;)</span></code> to do this).</p>
+<p>Finally, add an expectation with <code class="docutils literal notranslate"><span class="pre">vdiffr::expect_doppelganger</span></code> to your
+<code class="docutils literal notranslate"><span class="pre">test_that</span></code> statement:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">palmerpenguins</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">vdiffr</span><span class="p">)</span>
+<span class="nf">source</span><span class="p">(</span><span class="s">&quot;../../R/pretty_scatter.R&quot;</span><span class="p">)</span>
+
+<span class="n">penguins_scatter</span> <span class="o">&lt;-</span> <span class="nf">pretty_scatter</span><span class="p">(</span><span class="n">penguins</span><span class="p">,</span> <span class="n">bill_length_mm</span><span class="p">,</span> <span class="n">bill_depth_mm</span><span class="p">)</span> <span class="o">+</span> 
+    <span class="nf">labs</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s">&quot;Bill length (mm)&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">&quot;Bill depth (mm)&quot;</span><span class="p">)</span>
+<span class="n">penguins_scatter</span>
+
+<span class="nf">test_that</span><span class="p">(</span><span class="s">&quot;refactoring our code should not change our plot&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nf">expect_doppelganger</span><span class="p">(</span><span class="s">&quot;pretty scatter&quot;</span><span class="p">,</span> <span class="n">penguins_scatter</span><span class="p">)</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Then when you run <code class="docutils literal notranslate"><span class="pre">testthat::test_dir(&quot;tests/testthat&quot;)</span></code>
+to run your test suite for the first time,
+it will take a snapshot of the figure created in your test for that visualization
+and save it to <code class="docutils literal notranslate"><span class="pre">tests/testthat/_snaps/EXPECT_DOPPELGANGER_TITLE.svg</span></code>.
+Then as you refactor your code, you and run <code class="docutils literal notranslate"><span class="pre">testthat::test_dir(&quot;tests/testthat&quot;)</span></code>
+it will compare a new snapshot of the figure with the existing one.
+If they differ, the tests will fail.
+You can then run <code class="docutils literal notranslate"><span class="pre">testthat::snapshot_review()</span></code> to get an interactive viewer
+which will let you compare the two data visualizations
+and allow you to either choose to accept the new snapshot
+(if you wish to include the changes to the data visualization
+as part of your code revision and refactoring)
+or you can stop the app and revert/fix some of your code changes
+so that the data visualization is not unintentionally changed.</p>
+<p>Below we show an example of running <code class="docutils literal notranslate"><span class="pre">testthat::snapshot_review()</span></code>
+after we made our tests fail by removing <code class="docutils literal notranslate"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">0.8</span></code> from our <code class="docutils literal notranslate"><span class="pre">pretty_scatter</span></code>
+function source:</p>
+<a class="reference internal image-reference" href="../../_images/snapshot-reviewer.png"><img alt="../../_images/snapshot-reviewer.png" src="../../_images/snapshot-reviewer.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="vdiffr-demo">
+<h4><code class="docutils literal notranslate"><span class="pre">vdiffr</span></code> demo<a class="headerlink" href="#vdiffr-demo" title="Permalink to this headline">¶</a></h4>
+<p>In this GitHub repository, we have created a <code class="docutils literal notranslate"><span class="pre">vdiffr</span></code> demo based on the case above: <a class="reference external" href="https://github.com/ttimbers/vdiffr-demo">https://github.com/ttimbers/vdiffr-demo</a></p>
+<p>To get experience and practice using this, we recommend forking this, and then cloning it so that you can try using this, and building off it locally.</p>
+<div class="section" id="practice-exercises">
+<h5>Practice exercises<a class="headerlink" href="#practice-exercises" title="Permalink to this headline">¶</a></h5>
+<ol class="simple">
+<li><p>Inside RStudio, run <code class="docutils literal notranslate"><span class="pre">testthat::test_dir(&quot;tests/testthat&quot;)</span></code> to ensure you can get the tests to pass as they exist in the demo.</p></li>
+<li><p>Change something about the code in <code class="docutils literal notranslate"><span class="pre">R/pretty_scatter.R</span></code> that will change what the plot looks like (text size, point colour, type of geom used, etc).</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">testthat::test_dir(&quot;tests/testthat&quot;)</span></code> and see if the tests fail. If they do, run <code class="docutils literal notranslate"><span class="pre">testthat::snapshot_review()</span></code> to explore the differences in the two image snapshots. You may be prompted to install a couple R packages to get this working.</p></li>
+<li><p>Add another plot function to the project and create a test for it using <code class="docutils literal notranslate"><span class="pre">testthat</span></code> and <code class="docutils literal notranslate"><span class="pre">vdiffr</span></code>.</p></li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="evaluate-test-suite-quality">
@@ -2038,8 +1856,8 @@ However, when our code under test does something more complex, such as create a 
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+        
+            <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="05-containerization.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -2049,17 +1867,19 @@ However, when our code under test does something more complex, such as create a 
         </div>
     </a>
 </div>
-            
+        
         </div>
     </div>
     <footer class="footer">
-  <p>
-    
-      By Tiffany Timbers<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
 </main>
 
 
