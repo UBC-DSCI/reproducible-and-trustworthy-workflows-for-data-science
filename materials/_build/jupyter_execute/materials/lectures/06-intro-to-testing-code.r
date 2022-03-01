@@ -269,6 +269,8 @@ are passed to `data_frame` and `class_col` arguments", {
   expect_error(count_classes(two_classes_3_obs_as_list, class_lables))
 })
 
+options(repr.plot.width = 4, repr.plot.height = 4)
+
 cars_ggplot_scatter <- ggplot2::ggplot(mtcars, ggplot2::aes(hp, mpg)) + 
     ggplot2::geom_point()
 
