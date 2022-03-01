@@ -1,0 +1,71 @@
+Traceback (most recent call last):
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/client.py", line 1085, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/client.py", line 551, in async_execute
+    await self.async_execute_cell(
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/client.py", line 846, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/Users/tiffany/opt/miniconda3/lib/python3.9/site-packages/nbclient/client.py", line 748, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+test_that("`count_classes` should return a tibble", {
+  expect_s3_class(count_classes(two_classes_3_obs, class_lables), "tibble")
+})
+
+test_that("`count_classes` should return a data frame, or data frame extension, 
+with the number of rows that corresponds to the number of unique classes 
+in the column passed to `class_col`", {
+  expect_equivalent(count_classes(five_classes_3_obs, class_lables), five_classes_3_obs_output)
+  expect_equivalent(count_classes(two_classes_3_obs, class_lables), two_classes_3_obs_output)
+  expect_equivalent(count_classes(one_class_3_obs, class_lables), one_class_3_obs_output)
+  expect_equivalent(count_classes(empty_df, class_lables), empty_df_output)
+})
+
+test_that("`count_classes` should return a data frame, or data frame extension, 
+whose values in the `count` column correspond to the number of observations 
+for the group in the `class` column from the original data frame", {
+  expect_equivalent(count_classes(two_classes_3_and_2_obs, class_lables), two_classes_3_and_2_obs_output)
+  expect_equivalent(count_classes(two_classes_3_and_1_obs, class_lables), two_classes_3_and_1_obs_output)
+})
+
+test_that("`count_classes` should throw an error when incorrect types 
+are passed to `data_frame` and `class_col` arguments", {
+  expect_error(count_classes(two_classes_3_obs, vector_class_labels))
+  expect_error(count_classes(two_classes_3_obs_as_list, class_lables))
+})
+------------------
+
+[1m[33mError[39m:[22m
+[33m![39m Test failed
+Traceback:
+
+1. test_that("`count_classes` should return a tibble", {
+ .     expect_s3_class(count_classes(two_classes_3_obs, class_lables), 
+ .         "tibble")
+ . })
+2. (function (envir) 
+ . {
+ .     handlers <- get_handlers(envir)
+ .     errors <- list()
+ .     for (handler in handlers) {
+ .         tryCatch(eval(handler$expr, handler$envir), error = function(e) {
+ .             errors[[length(errors) + 1]] <<- e
+ .         })
+ .     }
+ .     for (error in errors) {
+ .         stop(error)
+ .     }
+ . })(<environment>)
+ERROR: [1m[33mError[39m:[22m
+[33m![39m Test failed
+
+

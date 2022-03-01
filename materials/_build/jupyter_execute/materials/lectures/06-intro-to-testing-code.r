@@ -233,7 +233,10 @@ are passed to `data_frame` and `class_col` arguments", {
 #' @examples
 #' count_classes(mtcars, am)
 count_classes <- function(data_frame, class_col) {
-  # returns a data frame with two columns: class and count
+  if (!is.data.frame(data_frame)) {
+    stop("`data_frame` should be a data frame or data frame extension (e.g. a tibble)")
+  }
+
   data_frame |>
     dplyr::group_by({{ class_col }}) |>
     dplyr::summarize(count = dplyr::n()) |>
@@ -265,6 +268,49 @@ are passed to `data_frame` and `class_col` arguments", {
   expect_error(count_classes(two_classes_3_obs, vector_class_labels))
   expect_error(count_classes(two_classes_3_obs_as_list, class_lables))
 })
+
+cars_ggplot_scatter <- ggplot2::ggplot(mtcars, ggplot2::aes(hp, mpg)) + 
+    ggplot2::geom_point()
+
+cars_ggplot_scatter
+
+cars_ggplot_scatter$layers[[1]]$geom
+
+cars_ggplot_scatter$mapping$x
+
+#' scatter2d 
+#'
+#' A short-cut function for creating 2 dimensional scatterplots via ggplot2.
+#'
+#' @param data data.frame or tibble
+#' @param x unquoted column name to plot on the x-axis from data data.frame or tibble
+#' @param y unquoted column name to plot on the y-axis from data data.frame or tibble
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' scatter2d(mtcars, hp, mpg)
+scatter2d <- function(data, x, y) {
+    ggplot2::ggplot(data, ggplot2::aes(x = {{x}}, y = {{y}})) +
+        ggplot2::geom_point()
+}
+
+helper_data <- dplyr::tibble(x_vals = c(2, 4, 6),
+                   y_vals = c(2, 4, 6))
+
+helper_plot2d <- scatter2d(helper_data, x_vals, y_vals)
+
+test_that('Plot should use geom_point and map x to x-axis, and y to y-axis.', {
+    expect_true("GeomPoint" %in% c(class(helper_plot2d$layers[[1]]$geom)))
+    expect_true("x_vals"  == rlang::get_expr(helper_plot2d$mapping$x))
+    expect_true("y_vals" == rlang::get_expr(helper_plot2d$mapping$y))
+})
+
+cars_scatter <- plot(mtcars$hp, mtcars$mpg)
+
+typeof(cars_scatter)
+class(cars_scatter)
 
 pretty_scatter <- function(.data, x_axis_col, y_axis_col) {
     ggplot2::ggplot(data = .data, 
