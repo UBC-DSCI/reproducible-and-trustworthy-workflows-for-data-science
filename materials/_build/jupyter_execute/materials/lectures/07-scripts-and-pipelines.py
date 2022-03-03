@@ -145,6 +145,38 @@
 # }
 # ```
 
+# ### Saving things from scripts
+# 
+# Above we just printed the mean to the terminal. 
+# That is was done because the purpose of that script 
+# was to have a very simple illustration of how to create and run scripts in R.
+# However, in practice, we typically want to save our analysis artifacts (figures, tables, values, etc)
+# to disc so that we can load them into other files 
+# (e.g., our final reports to communicate our analysis findings).
+# 
+# Below we show an example of how we would use `readr::write_csv` 
+# to save the mean value we calculated to a `.csv` file:
+# 
+# ```
+# # author: Tiffany Timbers
+# # date: 2020-01-15
+# #
+# # This script calculates the mean horsepower of the cars from the built-in 
+# # R data frame `mtcars` and saves it to `results/mean_hp_col.csv`. 
+# # This script takes no arguments.
+# #
+# # Usage: Rscript print_mean_hp.R
+# 
+# library(readr)
+# 
+# mean_hp <- mean(mtcars$hp)
+# mean_hp <- data.frame(value = mean_hp)
+# write_csv(mean_hp, "results/mean_hp_col.csv")
+# ```
+# 
+# > Note: in this script we are saving the file to the results directory.
+# > There needs to be a results directory created before this script would work.
+
 # ### Using command line arguments in R
 # Let's make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.
 # 
@@ -157,8 +189,8 @@
 # # author: Tiffany Timbers
 # # date: 2020-01-15
 # 
-# "This script calculates the mean for the fare (ticket price)
-# from titanic.csv. This script takes no arguments.
+# "This script calculates the mean for a specified column
+# from titanic.csv.
 # 
 # Usage: quick_titanic_col_mean.R <col>
 # " -> doc
