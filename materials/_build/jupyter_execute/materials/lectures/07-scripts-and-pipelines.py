@@ -103,23 +103,9 @@
 # # code for "guts" of script goes here
 # ```
 
-# *You can see that R and Python scripts should have roughly the same style. There is the difference of `if __name__ == "__main__":` in Python scripts, and R does not really have an equivalent. The benefit of some control flow around `main`, as is done in Python, is so that you could import or source the other functions in the script without running the `main` function.* 
-# 
-# *You can do something like this in R (although I am not sure how commonly it is done - I more often see folks instead typically abstract the other functions into another script and source that, or create an R package):*
-# 
-# ```
-# if (getOption('run.main', default = FALSE)) {
-#   main()
-# }
-# ```
-# 
-# *I made a demo and you can find it here: [https://github.com/ttimbers/if_name_equals_main](https://github.com/ttimbers/if_name_equals_main)*
-
 # ## Scripts in R:
 
-# Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://github.ubc.ca/ubc-mds-2016/datasets/raw/master/data/titanic.csv) and calculates the standard error for the fare (ticket price) variable.
-# 
-# Our script has two functions, a function we defined to calculate the standard error of the mean (such a function does not exist in R) and a `main` function which runs the "body" of our code.
+# Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://github.ubc.ca/ubc-mds-2016/datasets/raw/master/data/titanic.csv) and calculates the  mean for the fare (ticket price) variable.
 # 
 # ```
 # # author: Tiffany Timbers
@@ -136,15 +122,31 @@
 # 
 # out <- data %>%
 #          pull(fare) %>%
-#          mean()
+#          mean(na.rm = TRUE)
 # 
 # print(out)
 # ```
 # 
-# Wait! Other languages use a `main` function (so you can, for example, import and access parts of the code into other code docs) - why are we not doing this here? I truly do not know the answer (yet) to why not, however, it is not commonly done. Perhaps this is due to historical origins and culture of the R programming language and it's user base. A question is, can you do this if you want? That question I can answer with a yes, see here for an example: <https://github.com/ttimbers/if_name_equals_main>
+# Wait! Other languages use a `main` function (so you can, for example, import and access parts of the code into other code docs) - why are we not doing this here? I truly do not know the answer (yet) to why not, however, it is not commonly done:
+# 
+# <img src="img/twitter-poll.png" width=600>
+# 
+# Perhaps this is due to historical origins and culture of the R programming language and it's user base? 
+# A follow-up question is, can you do this if you want? That question I can answer with a yes, see below for an example: 
+# 
+# ```
+# main <- function() {
+#   # script code
+# }
+# 
+# 
+# if (!interactive()) {
+#   main()
+# }
+# ```
 
 # ### Using command line arguments in R
-# Let's make our script more flexible, and let us specify when we call the script, what variable we want to calculate the standard error for.
+# Let's make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.
 # 
 # To do this, we use the `docopt` R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script. 
 # 
@@ -155,10 +157,10 @@
 # # author: Tiffany Timbers
 # # date: 2020-01-15
 # 
-# "This script calculates the standard error for the fare (ticket price)
+# "This script calculates the mean for the fare (ticket price)
 # from titanic.csv. This script takes no arguments.
 # 
-# Usage: quick_titanic_fare_se.R <var>
+# Usage: quick_titanic_col_mean.R <col>
 # " -> doc
 # 
 # 
@@ -170,16 +172,23 @@
 # data <- read_csv('data/titanic.csv')
 # 
 # out <- data %>%
-#          pull({{ opt$var }}) %>%
-#          mean()
+#          pull(!!opt$col) %>%
+#          mean(na.rm = TRUE)
 # 
 # print(out)
 # ```
 # 
+# > Note: we use `!!` in front of `opt$col` because all command line arguments are passed into R
+# > as strings, and are thus quoted. However, `pull` is a function from the `tidyverse` that expects 
+# > an unquoted column name of a data frame. `!!` does this unquoting.
+# > This is similar to `{{` that we saw before with functions 
+# > (which quotes and unquotes values when they are passed into functions). 
+# > However here we use `!!` as we have no indirection and just need to perform unquoting.
+# 
 # And we would run a script like this from the command line as follows: 
 # 
 # ```
-# Rscript src/quick_csv_stat.R fare
+# Rscript src/quick_titanic_col_mean.R fare
 # ```
 
 # Let's make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the Gapminder `.csv`'s we saw in Block 1).
@@ -189,10 +198,10 @@
 # # author: Tiffany Timbers
 # # date: 2020-01-15
 # 
-# "This script calculates the standard error for any numerical vector
+# "This script calculates the mean for any numerical vector
 # from a csv file. This script takes an unquoted column name and a data file path.
 # 
-# Usage: quick_titanic_fare_se.R <file_path> <var>
+# Usage: quick_csv_col_mean.R <file_path> <col>
 # " -> doc
 # 
 # 
@@ -204,8 +213,8 @@
 # data <- read_csv(opt$file_path)
 # 
 # out <- data %>%
-#          pull({{ opt$var }}) %>%
-#          mean()
+#          pull(!!opt$col) %>%
+#          mean(na.rm = TRUE)
 # 
 # print(out)
 # ```
@@ -213,7 +222,7 @@
 # Now we would run a script like this from the command line as follows: 
 # 
 # ```
-# Rscript src/quick_csv_stat.R data/titanic.csv fare
+# Rscript src/quick_csv_col_mean.R data/titanic.csv fare
 # ```
 
 # ### Positional arguments vs options
@@ -226,14 +235,14 @@
 # # author: Tiffany Timbers
 # # date: 2020-01-15
 # 
-# "This script calculates the standard error for any numerical vector
+# "This script calculates the mean for any numerical vector
 # from a csv file. This script takes an unquoted column name and a data file path.
 # 
-# Usage: quick_titanic_fare_se.R --file_path=<file_path> --var=<var>
+# Usage: quick_csv_col_mean.R --file_path=<file_path> --col=<col>
 # 
 # Options:
 # --file_path=<file_path>   Path to the data file
-# --var=<var>               Unquoted column name of the numerical vector for which to calculate the se
+# --col=<col>               Unquoted column name of the numerical vector for which to calculate the mean
 # " -> doc
 # 
 # 
@@ -245,8 +254,8 @@
 # data <- read_csv(opt$file_path)
 # 
 # out <- data %>%
-#          pull({{ opt$var }}) %>%
-#          mean()
+#          pull(!!opt$col) %>%
+#          mean(na.rm = TRUE)
 # 
 # print(out)
 # ```
@@ -254,13 +263,13 @@
 # And we would run a script like this that uses options like this: 
 # 
 # ```
-# Rscript src/quick_csv_stat.R --file_path=data/titanic.csv --var=fare
+# Rscript src/quick_csv_col_mean.R --file_path=data/titanic.csv --col=fare
 # ```
 # 
 # or like this: 
 # 
 # ```
-# Rscript src/quick_csv_stat.R --var=fare --file_path=data/titanic.csv
+# Rscript src/quick_csv_col_mean.R --col=fare --file_path=data/titanic.csv
 # ```
 # 
 # because we gave the arguments names, and thus their position no longer matters!
@@ -277,14 +286,14 @@
 # # author: Tiffany Timbers
 # # date: 2020-01-15
 # 
-# "This script calculates the standard error for any numerical vector
+# "This script calculates the mean for any numerical vector
 # from a csv file. This script takes an unquoted column name and a data file path.
 # 
-# Usage: quick_titanic_fare_se.R --file_path=<file_path> --var=<var>
+# Usage: quick_csv_col_mean.R --file_path=<file_path> --col=<col>
 # 
 # Options:
 # --file_path=<file_path>   Path to the data file
-# --var=<var>               Unquoted column name of the numerical vector for which to calculate the se
+# --col=<col>               Unquoted column name of the numerical vector for which to calculate the mean
 # " -> doc
 # 
 # 
@@ -296,8 +305,8 @@
 # data <- read_csv(opt$file_path)
 # 
 # out <- data %>%
-#          pull({{ opt$var }}) %>%
-#          mean()
+#          pull(!!opt$col) %>%
+#          mean(na.rm = TRUE)
 # 
 # print(out)
 # ```
@@ -305,109 +314,14 @@
 # And then the user can see these docs by calling the script from the command line and using the `--help` to get this information:
 # 
 # ```
-# This script calculates the standard error for any numerical vector
+# This script calculates the mean for any numerical vector
 # from a csv file. This script takes an unquoted column name and a data file path.
 # 
-# Usage: quick_titanic_fare_se.R --file_path=<file_path> --var=<var>
+# Usage: quick_csv_col_mean.R --file_path=<file_path> --col=<col>
 # 
 # Options:
 # --file_path=<file_path>   Path to the data file
-# --var=<var>               Unquoted column name of the numerical vector for which to calculate the se 
-# ```
-
-# ### Where to develop scripts in Python
-# 
-# #### In a integrated development environment (IDE):
-# 
-# Or use an IDE, such as:
-# - RStudio (gasp! 😱) via [`reticulate`](https://rstudio.github.io/reticulate/)
-# - VS Code
-# - [Spyder](https://www.spyder-ide.org/) (I think this comes with Anaconda, so you should have it installed)
-# - Atom text editor + [`hydrogen`](https://atom.io/packages/hydrogen) (highly recommended by Mike Yuan, an MDS Alumni)
-# - [PyCharm](https://www.jetbrains.com/pycharm/)
-# 
-# #### In a Jupyter notebook:
-# 
-# Jupyter + [`nbconvert`](https://nbconvert.readthedocs.io/en/latest/) (install via `conda install nbconvert`):
-# 
-# Convert a notebook to a script at the command line via:
-# ```jupyter nbconvert --to script <input notebook>```
-# 
-# #### TLDR;
-# 
-# I recommend using an IDE over Jupyter. True, you may want to abstract code the originally was developed in a Jupyter notebook, but as soon as you switch the filename from `.ipynb` to `.py` you should change developing environments.
-
-# ### Command line arguments in Python explained
-# 
-# `docopt` was originally written in and for Python! There are other packages you can use, but `docopt` is extremely elegant and powerful. I've used `sys` and `argparse` previously, and now that I've tried `docopt`, there's no turning back for me. Key features I like are:
-# - writing the code for the command line arguments in docopt forces you to write the documentation (because it parses the documentation!)
-# - it gives you the command line arguments as simple dictionary
-# - you have to write very few lines of code to parse a complicated command line input
-# - it provides a consistent framework between R and Python
-
-# Here we rewrite the script above in Python using `docopt`:
-# 
-# 
-# ```
-# # author: Tiffany Timbers
-# # date: 2020-01-15
-# 
-# '''This script calculates the standard error for any numerical vector
-# from a csv file. This script takes an unquoted column name and a data file path.
-# 
-# Usage: quick_titanic_fare_se.py --file_path=<file_path> --var=<var>
-# 
-# Options:
-# --file_path=<file_path>   Path to the data file
-# --var=<var>               Unquoted column name of the numerical vector for which to calculate the se
-# '''
-# 
-# import pandas as pd
-# import numpy as np
-# from docopt import docopt
-# 
-# opt = docopt(__doc__)
-# 
-# def main(file_path, var):
-#   # read in data
-#   data = pd.read_csv(file_path)
-# 
-#   # print out statistic of variable of interest
-#   out = sterror(data[var])
-#   print(out)
-# 
-# # standard error function
-# 
-# def sterror(x):
-#   """
-#   calculate standard error
-#     
-#   Parameters
-#   ----------
-#   numpy.ndarray : x
-#     A numpy array of numeric values.
-#         
-#   Returns
-#   -------
-#   se
-#     The standard error of x. 
-#         
-#   Examples
-#   --------
-#   >>> sterror(numpy.array([2, 2, 2]))
-#   0
-#   """
-#   se = x.std()/np.sqrt(x.size)
-#   return se
-#   
-# def test_sterror():
-#   assert sterror(np.array([1, 1, 1])) == 0, "sterror should return 0 if vector values are all the same"
-# 
-# test_sterror()
-#   
-# if __name__ == "__main__":
-#     main(opt["--file_path"], opt["--var"])
-# 
+# --col=<col>               Unquoted column name of the numerical vector for which to calculate the mean
 # ```
 
 # #### Some tips for RStudio IDE:
