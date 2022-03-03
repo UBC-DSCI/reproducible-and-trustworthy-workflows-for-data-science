@@ -105,7 +105,7 @@
 
 # ## Scripts in R:
 
-# Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://github.ubc.ca/ubc-mds-2016/datasets/raw/master/data/titanic.csv) and calculates the  mean for the fare (ticket price) variable.
+# Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv) (*original source: <https://biostat.app.vumc.org/wiki/Main/DataSets>*) and calculates the  mean for the fare (ticket price) variable.
 # 
 # ```
 # # author: Tiffany Timbers
