@@ -1,0 +1,940 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reproducible reports &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Non-interactive scripts and data analysis pipelines" href="07-scripts-and-pipelines.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02-version-control-1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-filenames-project-organization.html">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05-containerization.html">
+   Managing dependencies using containerization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06-intro-to-testing-code.html">
+   Introduction to testing code for data science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07-scripts-and-pipelines.html">
+   Non-interactive scripts and data analysis pipelines
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Reproducible reports
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/08-reproducible-reports.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/08-reproducible-reports.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/08-reproducible-reports.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#topic-learning-objectives">
+   Topic learning objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">
+   Reproducible reports vs What You See Is What You Get (WYSIWYG) editors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#r-markdown">
+   R Markdown
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-get-to-know-r-markdown">
+     Exercise - get to know R Markdown
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-render-your-first-document">
+     Exercise - render your first document
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">
+     Exercise - checkout the new visual markdown editor
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents">
+     A helpful hint for successfully working with R Markdown documents
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-editing-and-creating-code-chunks">
+     Running, editing and creating code chunks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naming-code-chunks-and-r-markdown-document-sections">
+     Naming code chunks and R Markdown document sections
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-snippets">
+     Code snippets
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-chunk-options">
+     Code chunk options
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-few-tips-and-tricks">
+     A few tips and tricks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-table-of-contents">
+     Creating a table of contents
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-tables-and-table-descriptions">
+     Create tables and table descriptions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resize-figures-and-keep-figure-descriptions-associated-with-their-figures">
+   Resize figures and keep figure descriptions associated with their figures
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#resizing-figures-and-writing-figure-captions-generated-from-an-r-plot-object">
+     1. Resizing figures and writing figure captions generated from an R plot object
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#resizing-figures-and-writing-figure-captions-generated-from-a-saved-file-e-g-png">
+     2. Resizing figures and writing figure captions generated from a saved file (e.g., .png)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#referencing-values-from-code-inline-in-the-narrative-text">
+     Referencing values from code inline in the narrative text
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-references-section-for-citing-external-sources">
+     Create a references section for citing external sources
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps-to-citing-in-r-markdown">
+       Steps to citing in R Markdown
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#getting-bibtex-citations">
+       Getting bibtex citations
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#search-for-the-paper-on-google-scholar">
+       1. Search for the paper on Google Scholar
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#use-goolge-scholar-to-get-the-citation">
+       2. Use Goolge Scholar to get the citation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Reproducible reports</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#topic-learning-objectives">
+   Topic learning objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">
+   Reproducible reports vs What You See Is What You Get (WYSIWYG) editors
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#r-markdown">
+   R Markdown
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-get-to-know-r-markdown">
+     Exercise - get to know R Markdown
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-render-your-first-document">
+     Exercise - render your first document
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">
+     Exercise - checkout the new visual markdown editor
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents">
+     A helpful hint for successfully working with R Markdown documents
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-editing-and-creating-code-chunks">
+     Running, editing and creating code chunks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naming-code-chunks-and-r-markdown-document-sections">
+     Naming code chunks and R Markdown document sections
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-snippets">
+     Code snippets
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-chunk-options">
+     Code chunk options
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-few-tips-and-tricks">
+     A few tips and tricks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-a-table-of-contents">
+     Creating a table of contents
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-tables-and-table-descriptions">
+     Create tables and table descriptions
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resize-figures-and-keep-figure-descriptions-associated-with-their-figures">
+   Resize figures and keep figure descriptions associated with their figures
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#resizing-figures-and-writing-figure-captions-generated-from-an-r-plot-object">
+     1. Resizing figures and writing figure captions generated from an R plot object
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#resizing-figures-and-writing-figure-captions-generated-from-a-saved-file-e-g-png">
+     2. Resizing figures and writing figure captions generated from a saved file (e.g., .png)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#referencing-values-from-code-inline-in-the-narrative-text">
+     Referencing values from code inline in the narrative text
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-references-section-for-citing-external-sources">
+     Create a references section for citing external sources
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps-to-citing-in-r-markdown">
+       Steps to citing in R Markdown
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#getting-bibtex-citations">
+       Getting bibtex citations
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#search-for-the-paper-on-google-scholar">
+       1. Search for the paper on Google Scholar
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#use-goolge-scholar-to-get-the-citation">
+       2. Use Goolge Scholar to get the citation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="reproducible-reports">
+<h1>Reproducible reports<a class="headerlink" href="#reproducible-reports" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="simple">
+<li><p>Discuss the advantages and disadvantages of using literate code documents (e.g.,
+Jupyter, R Markdown) for writing analytic reports compared to What You See Is
+What You Get (WYSIWYG) editors (e.g., Word, Pages)</p></li>
+<li><p>Compare and contrast the different implementations for literate code documents (e.g.,
+Jupyter and R Markdown) and discuss where some implementations shine with
+regards to reproducibility of data analysis and where there is still room for
+improvement</p></li>
+<li><p>Execute and render literate code documents</p></li>
+<li><p>Generate tables of contents, label and number figures and tables, and format
+bibliographies in a reproducible and automatted manner</p></li>
+</ol>
+</div>
+<div class="section" id="reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">
+<h2>Reproducible reports vs What You See Is What You Get (WYSIWYG) editors<a class="headerlink" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors" title="Permalink to this headline">¶</a></h2>
+<p>Reproducible reports are reports where automation is used to update a report when changes to data or data analysis methods lead to changes in data analysis artifacts (e.g., figures, tables, inline text values). This automation is usually specified and controlled by code. In the field of data science, the most common implementations of this are:</p>
+<ul class="simple">
+<li><p>R Markdown</p></li>
+<li><p>Jupyter</p></li>
+<li><p>LaTeX</p></li>
+</ul>
+<blockquote>
+<div><p>Note: R Markdown and Jupyter are not completely separable from LaTeX, as they both wrap LaTeX when the desired output is PDF.</p>
+</div></blockquote>
+<p>Most implementations of reproducible reports involve a process called rendering, where a document containing code and/or markup language used to specify the text formatting, document layout, figure and table placement and numbering, bibliography formatting, <em>etc</em>, is converted to an output more suitable for consumption (e.g., beautifully formatted PDF or html document) by some software.</p>
+<a class="reference internal image-reference" href="../../_images/render-report.png"><img alt="../../_images/render-report.png" src="../../_images/render-report.png" style="width: 700px;" /></a>
+<p>This contrasts from What You See Is What You Get (WYSIWYG) software or editors (e.g., Microsoft Word, Google Docs, etc), where the document that is being edited looks exactly like the final document - there is no rendering process. WYSIWYG reports are typically easier to get started with and use. However, they are usually quite limited in their ability to automatically update a report when changes to data or data analysis methods lead to changes in data analysis artifacts. This makes them less reproducible, and can lead to errors when repeated manual updating of data analysis artifacts is needed when analysis is iterated on during development.</p>
+<a class="reference internal image-reference" href="../../_images/word.png"><img alt="../../_images/word.png" src="../../_images/word.png" style="width: 300px;" /></a>
+</div>
+<div class="section" id="r-markdown">
+<h2>R Markdown<a class="headerlink" href="#r-markdown" title="Permalink to this headline">¶</a></h2>
+<p>R Markdown is one implementation of a reproducible reporting tool.
+It is very user friendly and has become very powerful -
+allowing a great deal of control over formatting
+with the ability to render to many different outputs.
+Including:</p>
+<ul class="simple">
+<li><p>PDF</p></li>
+<li><p>html</p></li>
+<li><p>Word</p></li>
+<li><p>Powerpoint presentation</p></li>
+<li><p>many more!</p></li>
+</ul>
+<p>It is a mix of markdown primarily used for narrative text,
+and code chunks where code can be executed in an engine.
+It was originally created for the R programming language,
+but can be used with several others, including Python.</p>
+<div class="section" id="exercise-get-to-know-r-markdown">
+<h3>Exercise - get to know R Markdown<a class="headerlink" href="#exercise-get-to-know-r-markdown" title="Permalink to this headline">¶</a></h3>
+<p>Let’s get to know R Markdown! Open RStudio and create a new R Markdown document, choosing HTML as the output format.
+Look at the source document that is created, where is the narrative text written? Where is the code written? How does this differ from Jupyter?</p>
+</div>
+<div class="section" id="exercise-render-your-first-document">
+<h3>Exercise - render your first document<a class="headerlink" href="#exercise-render-your-first-document" title="Permalink to this headline">¶</a></h3>
+<p>There are two ways to render a document from the Rmd source to the desired output. One is using a button in RStudio - the knit button that looks like this:</p>
+<a class="reference internal image-reference" href="../../_images/knit.png"><img alt="../../_images/knit.png" src="../../_images/knit.png" style="width: 90px;" /></a>
+<p>Try clicking that button and see what happens!</p>
+<p>Another way you can do this is through code! Try running this in the R console (replacing <code class="docutils literal notranslate"><span class="pre">&quot;FILEPATH/FILE.Rmd&quot;</span></code> with the file path to where you saved this R Markdown document:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rmarkdown</span><span class="p">::</span><span class="n">render</span><span class="p">(</span><span class="s2">&quot;FILEPATH/FILE.Rmd&quot;</span><span class="p">,</span> <span class="n">output_format</span> <span class="o">=</span> <span class="s2">&quot;html_document&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-checkout-the-new-visual-markdown-editor">
+<h3>Exercise - checkout the new visual markdown editor<a class="headerlink" href="#exercise-checkout-the-new-visual-markdown-editor" title="Permalink to this headline">¶</a></h3>
+<p>RStudio has implemented a new feature for working with R Markdown to make it more similar to working with Jupyter - it is called the visual markdown editor. Checkout this feature by clicking the visual markdown editor button when you have an R Markdown file open in the editor. The button looks like this:</p>
+<a class="reference internal image-reference" href="../../_images/viz-md-button.png"><img alt="../../_images/viz-md-button.png" src="../../_images/viz-md-button.png" style="width: 50px;" /></a>
+</div>
+<div class="section" id="a-helpful-hint-for-successfully-working-with-r-markdown-documents">
+<h3>A helpful hint for successfully working with R Markdown documents<a class="headerlink" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents" title="Permalink to this headline">¶</a></h3>
+<p>Given that you need to render the entire document to see your Markdown and LaTeX rendered,
+it is important to “knit” often as you make changes.
+If you make an error in a LaTeX equation for example,
+it will stop the knitting/rendering process
+and you will not get to see the rendered document.
+So by knitting/rendering often
+you will know where the last changes you made are
+and then will be able to easily identify and fix your errors.</p>
+</div>
+<div class="section" id="running-editing-and-creating-code-chunks">
+<h3>Running, editing and creating code chunks<a class="headerlink" href="#running-editing-and-creating-code-chunks" title="Permalink to this headline">¶</a></h3>
+<p>Just like Jupyter notebooks,
+R Markdown has code cells,
+although they’re more commonly referred to as code “chunks” or “blocks”.
+These are based off fenced Markdown code blocks
+and always start and end with 3 backticks (```),
+just like in Markdown.
+Unique to R Markdown
+is that the leading three backticks are followed by curly braces
+containing the language engine you want to run,
+which for r looks like this <code class="docutils literal notranslate"><span class="pre">{r}</span></code>.
+Additional metadata can be included,
+for example a name to reference the code chunk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r my first code chunk}
+x &lt;- 5
+x
+```
+</pre></div>
+</div>
+<p>There are other language engines that can be used in RMarkdown,
+you can learn more about that <a class="reference external" href="https://bookdown.org/yihui/rmarkdown/language-engines.html">here</a>.</p>
+<p>All code cells are run when you knit/render the entire document
+(like pressing “Run all” in JupyterLab).
+By default,
+the code in the chunk and the code output will be included in your rendered document.
+You can also run the code by clicking the green play button on the right-hand side of the code chunk.</p>
+</div>
+<div class="section" id="naming-code-chunks-and-r-markdown-document-sections">
+<h3>Naming code chunks and R Markdown document sections<a class="headerlink" href="#naming-code-chunks-and-r-markdown-document-sections" title="Permalink to this headline">¶</a></h3>
+<p>When you include Markdown headers
+(using the <code class="docutils literal notranslate"><span class="pre">#</span></code> symbol)
+R Studio automatically creates a pop-up-like menu
+for you to use to navigate the document,
+which you can access
+by clicking the bar below this editor panel.
+It looks like:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/menu0.png"><img alt="materials/img/menu0.png" src="materials/img/menu0.png" style="width: 500px;" /></a>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/menu1.png"><img alt="materials/img/menu1.png" src="materials/img/menu1.png" style="width: 500px;" /></a>
+</div>
+<p>By clicking on any of the headings in the pop-up-like menu,
+RStudio will navigate you to that section of the R Markdown document.
+Try clicking on one to see how it works.</p>
+<p>In addition to Markdown headings,
+RStudio also keeps track of code chunks in that menu.
+By default RStudio names the chunks by their position
+(e.g. Chunk 1, Chunk 2, etc).
+But in reality those names are not that useful
+and it is more helpful to give code chunks meaningful names.
+For example,
+in the code chunk below where we use a for loop to sum the numbers from 1 to 10,
+we name the chunk “for loop sum”.</p>
+<div class="highlight-R notranslate"><div class="highlight"><pre><span></span><span class="n">```{r for loop sum}</span>
+<span class="n"># initialize sum to 0</span>
+<span class="n">loop_sum &lt;- 0</span>
+
+<span class="n"># loop of a sequence from 1 to 10 and calculate the sum</span>
+<span class="n">for (i in seq(1:10)){</span>
+<span class="n">  loop_sum &lt;- loop_sum + i</span>
+<span class="n">}</span>
+
+<span class="n">print(loop_sum)</span>
+<span class="n">```</span>
+</pre></div>
+</div>
+<p><strong>Do not duplicate code chunk names,
+this will break the rendering of your document!</strong></p>
+</div>
+<div class="section" id="code-snippets">
+<h3>Code snippets<a class="headerlink" href="#code-snippets" title="Permalink to this headline">¶</a></h3>
+<p>As we started to type <code class="docutils literal notranslate"><span class="pre">for</span></code> above,
+the code completion popped up
+and the first entry said “snippet”,
+what is that?
+A code snippet is a text macro,
+which means that you can type a short string of characters
+to insert a template or snippet of text by pressing <kbd>TAB</kbd>.
+You can see all the default snippets
+and define your own by going to
+<code class="docutils literal notranslate"><span class="pre">Tools</span> <span class="pre">-&gt;</span> <span class="pre">Global</span> <span class="pre">options</span> <span class="pre">-&gt;</span> <span class="pre">Code</span> <span class="pre">-&gt;</span> <span class="pre">Edit</span> <span class="pre">snippets</span></code>.
+Snippets are available anywhere in RStudio,
+not just in R Markdown documents.</p>
+</div>
+<div class="section" id="code-chunk-options">
+<h3>Code chunk options<a class="headerlink" href="#code-chunk-options" title="Permalink to this headline">¶</a></h3>
+<p>There are many code chunk options that you can set.
+These options let you customize chunk behavior,
+including whether a chunk is evaluated,
+whether to include the output in the rendered document,
+etc.
+A short list of code chunk options is shown below,
+but you can find an extensive list starting on the second page of
+<a class="reference external" href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">this</a> document.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="materials/img/chunk_options.jpeg"><img alt="materials/img/chunk_options.jpeg" src="materials/img/chunk_options.jpeg" style="width: 500px;" /></a>
+</div>
+<p>You can set the chunk options at either a global level
+(once set they will be applied to all code chunks in the <code class="docutils literal notranslate"><span class="pre">.Rmd</span></code> file)
+or locally for a specific chunk
+(these will override the global chunk options if they are contradictory).</p>
+<p>Global options are usually set in one chunk at the top of the document
+and looks like this (this is a screenshot):</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">```{r setup, include=FALSE}</span>
+<span class="n">knitr::opts_chunk$set(echo = FALSE)</span>
+<span class="n">```</span>
+</pre></div>
+</div>
+<p>Global chunk options are set by adding them as arguments to <code class="docutils literal notranslate"><span class="pre">knitr::opts_chunk$set(...)</span></code>
+(put them in place of <code class="docutils literal notranslate"><span class="pre">...</span></code> and separate multiple options with a comma).
+The only global chunk options set in this document is <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">=</span> <span class="pre">FALSE</span></code>,
+which hides the code chunks and only shows the output,
+something that can be useful for non-technical reports.</p>
+<p>Local chunk options are set by adding the options in the curly braces of a code chunk
+after the language engine and code chunk name.
+For example,
+to not display warnings in a single code chunk
+we would use the <code class="docutils literal notranslate"><span class="pre">warning</span> <span class="pre">=</span> <span class="pre">FALSE</span></code> code chunk as follows:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">```{r correlation no warning, warning = FALSE}</span>
+<span class="n"># some R code that throws a warning</span>
+<span class="n">cor( c( 1 , 1 ), c( 2 , 3 ) )</span>
+<span class="n">```</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-few-tips-and-tricks">
+<h3>A few tips and tricks<a class="headerlink" href="#a-few-tips-and-tricks" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>R Markdown support inline evaluated code via the following syntax</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Adding 3 to 4 gives `r 4 + 3`.
+The value of `x` is currently `r x`.
+</pre></div>
+</div>
+</li>
+<li><p>Latex equations can be written the same way as in Jupyter notebooks
+and standard markdown documents.
+- <code class="docutils literal notranslate"><span class="pre">$\alpha</span> <span class="pre">=</span> <span class="pre">5$</span></code> for inline latex and <code class="docutils literal notranslate"><span class="pre">$$\alpha</span> <span class="pre">=</span> <span class="pre">5$$</span></code> for a math block.
+- When hovering over equations,
+R will display the rendered equation in a pop up.</p></li>
+<li><p>R Markdown is built upon the Pandoc Markdown engine.
+This is useful to know since the <a class="reference external" href="https://pandoc.org/MANUAL.html">Pandoc manual</a>
+is a great exhaustive resource for looking up anything Markdown related.</p></li>
+<li><p>One of the features made available thanks to Pandoc
+is support for citations and bibliographies.</p>
+<ul class="simple">
+<li><p>Let’s cite the R-package by typing <code class="docutils literal notranslate"><span class="pre">citation()</span></code> into the console,
+and copying the BibTex citation into a new document
+that we call <code class="docutils literal notranslate"><span class="pre">rstudio-demo.bib</span>&#160; <span class="pre">and</span> <span class="pre">adding</span> <span class="pre">an</span> <span class="pre">identifier</span> <span class="pre">string</span> <span class="pre">(a</span> <span class="pre">key)</span> <span class="pre">before</span> <span class="pre">the</span> <span class="pre">first</span> <span class="pre">comma,</span> <span class="pre">e.g.</span> </code>r-lang`.</p></li>
+<li><p>Include the following field in the YAML metadata
+in the beginning of the document: <code class="docutils literal notranslate"><span class="pre">bibliography:</span> <span class="pre">rstudio-demo.bib</span></code>,
+then cite it somewhere in the text by adding <code class="docutils literal notranslate"><span class="pre">[&#64;r-lang]</span></code>.
+The bibliography will be appended to the document,
+so it is advisable to add a heading saying <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">References</span></code>
+at the very end.</p></li>
+</ul>
+</li>
+<li><p>When working with R Markdown
+(and code in general)
+be careful that you don’t copy stylized quotation marks
+because these will not work.
+For example, this will throw an error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>a = “This string”
+</pre></div>
+</div>
+<p>It should look like this instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;This string&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="creating-a-table-of-contents">
+<h3>Creating a table of contents<a class="headerlink" href="#creating-a-table-of-contents" title="Permalink to this headline">¶</a></h3>
+<p>A table of contents can be automatically generated by specifying <code class="docutils literal notranslate"><span class="pre">toc:</span> <span class="pre">true</span></code> in the YAML front matter. It must be indented as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="p">:</span> 
+  <span class="n">github_document</span><span class="p">:</span>
+    <span class="n">toc</span><span class="p">:</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>This works for all output file types I have explored so far!</p>
+</div>
+<div class="section" id="create-tables-and-table-descriptions">
+<h3>Create tables and table descriptions<a class="headerlink" href="#create-tables-and-table-descriptions" title="Permalink to this headline">¶</a></h3>
+<p>Data frames and other rectangular objects in R can be made into nice tables using <code class="docutils literal notranslate"><span class="pre">knitr::kable</span></code>. At the most basic level the syntax is:</p>
+<p><code class="docutils literal notranslate"><span class="pre">knitr::kable(data_frame)</span></code></p>
+<p>To have a table description stay associated with the table, use the <code class="docutils literal notranslate"><span class="pre">caption</span></code> argument. For example:</p>
+<p><code class="docutils literal notranslate"><span class="pre">knitr::kable(data_frame,</span> <span class="pre">caption</span> <span class="pre">=</span> <span class="pre">&quot;Table</span> <span class="pre">1.</span> <span class="pre">This</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">summary</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">data</span> <span class="pre">set&quot;)</span></code></p>
+<p>A couple notes:</p>
+<ul class="simple">
+<li><p>If you render to <code class="docutils literal notranslate"><span class="pre">github_document</span></code> or <code class="docutils literal notranslate"><span class="pre">html_document</span></code> you do need to manually write the “Table 1.” in your figure caption. If you render to <code class="docutils literal notranslate"><span class="pre">pdf_document</span></code> you do not.</p></li>
+<li><p>Want fancier tables? Use the <code class="docutils literal notranslate"><span class="pre">kableExtra</span></code> package! See docs here: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="resize-figures-and-keep-figure-descriptions-associated-with-their-figures">
+<h2>Resize figures and keep figure descriptions associated with their figures<a class="headerlink" href="#resize-figures-and-keep-figure-descriptions-associated-with-their-figures" title="Permalink to this headline">¶</a></h2>
+<p>There are two ways to do this, and you they depend on whether you are creating the figure from an R object vs a file.</p>
+<div class="section" id="resizing-figures-and-writing-figure-captions-generated-from-an-r-plot-object">
+<h3>1. Resizing figures and writing figure captions generated from an R plot object<a class="headerlink" href="#resizing-figures-and-writing-figure-captions-generated-from-an-r-plot-object" title="Permalink to this headline">¶</a></h3>
+<p>Here you need to:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fig.width=&lt;WIDTH&gt;,</span> <span class="pre">fig.height=&lt;HEIGHT&gt;</span></code> in the R code chunk options.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fig.cap</span> <span class="pre">=</span> <span class="pre">&quot;CAPTION&quot;</span></code> in the R code chunk options.</p></li>
+</ul>
+</div>
+<div class="section" id="resizing-figures-and-writing-figure-captions-generated-from-a-saved-file-e-g-png">
+<h3>2. Resizing figures and writing figure captions generated from a saved file (e.g., .png)<a class="headerlink" href="#resizing-figures-and-writing-figure-captions-generated-from-a-saved-file-e-g-png" title="Permalink to this headline">¶</a></h3>
+<p>Here you need to:</p>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">knitr::include_graphics(&lt;FILE_PATH&gt;)</span></code> inside a code chunk to point the figure file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fig.cap</span></code> in the R code chunk options to write the figure caption</p></li>
+<li><p>use <code class="docutils literal notranslate"><span class="pre">out.width</span> <span class="pre">=</span> <span class="pre">'40%'</span></code> and <code class="docutils literal notranslate"><span class="pre">out.height</span> <span class="pre">=</span> <span class="pre">'40%'</span></code> in the R code chunk options to set the figure size.</p></li>
+</ul>
+</div>
+<div class="section" id="referencing-values-from-code-inline-in-the-narrative-text">
+<h3>Referencing values from code inline in the narrative text<a class="headerlink" href="#referencing-values-from-code-inline-in-the-narrative-text" title="Permalink to this headline">¶</a></h3>
+<p>You can refer to values stored in code inside your markdown text using the <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">object</span></code> surrounded by backticks.</p>
+<p>This is extremely useful for iterating over an analysis near the final stages when you already have the report written, or when doing parameterized reports (more on these in a bit).</p>
+<p>However, the value you represent must be a vector.</p>
+</div>
+<div class="section" id="create-a-references-section-for-citing-external-sources">
+<h3>Create a references section for citing external sources<a class="headerlink" href="#create-a-references-section-for-citing-external-sources" title="Permalink to this headline">¶</a></h3>
+<p>DO NOT format references by hand, you will drive yourself nuts, especially the more references you collect! Instead use R Markdowns bibliography/citiation functionality. Below is a brief introduction, full docs <a class="reference external" href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">here</a>.</p>
+<div class="section" id="steps-to-citing-in-r-markdown">
+<h4>Steps to citing in R Markdown<a class="headerlink" href="#steps-to-citing-in-r-markdown" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">bibliography:</span> <span class="pre">PATH/FILENAME.bib</span></code> to the YAML front matter</p></li>
+<li><p>At the very end of the <code class="docutils literal notranslate"><span class="pre">.Rmd</span></code> file add <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">References</span></code></p></li>
+<li><p>Create <code class="docutils literal notranslate"><span class="pre">PATH/FILENAME.bib</span></code> (this is a plain text file) and place citations in there using bibtex citation format (see examples <a class="reference external" href="https://www.economics.utoronto.ca/osborne/latex/BIBTEX.HTM">here</a>).</p></li>
+<li><p>In the <code class="docutils literal notranslate"><span class="pre">.Rmd</span></code> mardown text, use <code class="docutils literal notranslate"><span class="pre">&#64;label</span></code> (corresponds to the first string inside the <code class="docutils literal notranslate"><span class="pre">{}</span></code> in the <code class="docutils literal notranslate"><span class="pre">.bib</span></code> file for the reference of interest) to do a in-text citation.</p></li>
+</ol>
+</div>
+<div class="section" id="getting-bibtex-citations">
+<h4>Getting bibtex citations<a class="headerlink" href="#getting-bibtex-citations" title="Permalink to this headline">¶</a></h4>
+<p>Bibtex citations for code (R &amp; Python programming languages and their respective packages) can be obtained from the sources:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">citatation()</span></code> function in R (no argument will give you the citation for R, adding a package name as a string to the function call will give you the citation for that package)</p></li>
+<li><p>For Python, I have found I have had to do this somewhat manually from package GitHub repos or docs pages (some packages exist to do this, but none seem to work flawlessly out of box). See my demo <code class="docutils literal notranslate"><span class="pre">.bib</span></code> file here for an example: https://github.com/ttimbers/breast_cancer_predictor/blob/master/doc/breast_cancer_refs.bib</p></li>
+</ul>
+<p>Bibtex citations for papers can usually be found via Google scholar:</p>
+</div>
+<div class="section" id="search-for-the-paper-on-google-scholar">
+<h4>1. Search for the paper on Google Scholar<a class="headerlink" href="#search-for-the-paper-on-google-scholar" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>visit https://scholar.google.com/</p></li>
+</ul>
+</div>
+<div class="section" id="use-goolge-scholar-to-get-the-citation">
+<h4>2. Use Goolge Scholar to get the citation<a class="headerlink" href="#use-goolge-scholar-to-get-the-citation" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Click on the quotation icon under the paper:</p></li>
+</ul>
+<div class="figure align-left" id="google-scholar-step-1">
+<a class="reference internal image-reference" href="../../_images/google_scholar_step_1.png"><img alt="../../_images/google_scholar_step_1.png" src="../../_images/google_scholar_step_1.png" style="width: 600px;" /></a>
+</div>
+<ul class="simple">
+<li><p>Click on the Bibtex link on the pop-up box:</p></li>
+</ul>
+<div class="figure align-left" id="google-scholar-step-2">
+<a class="reference internal image-reference" href="../../_images/google_scholar_step_2.png"><img alt="../../_images/google_scholar_step_2.png" src="../../_images/google_scholar_step_2.png" style="width: 600px;" /></a>
+</div>
+<ul class="simple">
+<li><p>Copy the BibTeX citation to your .bib file</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">ahmad2007k</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">A</span> <span class="n">k</span><span class="o">-</span><span class="n">mean</span> <span class="n">clustering</span> <span class="n">algorithm</span> <span class="k">for</span> <span class="n">mixed</span> <span class="n">numeric</span> <span class="ow">and</span> <span class="n">categorical</span> <span class="n">data</span><span class="p">},</span>
+  <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Ahmad</span><span class="p">,</span> <span class="n">Amir</span> <span class="ow">and</span> <span class="n">Dey</span><span class="p">,</span> <span class="n">Lipika</span><span class="p">},</span>
+  <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">Data</span> \<span class="o">&amp;</span> <span class="n">Knowledge</span> <span class="n">Engineering</span><span class="p">},</span>
+  <span class="n">volume</span><span class="o">=</span><span class="p">{</span><span class="mi">63</span><span class="p">},</span>
+  <span class="n">number</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">},</span>
+  <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">503</span><span class="o">--</span><span class="mi">527</span><span class="p">},</span>
+  <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2007</span><span class="p">},</span>
+  <span class="n">publisher</span><span class="o">=</span><span class="p">{</span><span class="n">Elsevier</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note: The Zotero reference manager now works nicely with R Markdown too! You might want to try this for your project, see here: &lt;
+<a class="reference external" href="https://www.rstudio.com/blog/rstudio-1-4-preview-citations/#citations-from-zotero">https://www.rstudio.com/blog/rstudio-1-4-preview-citations/#citations-from-zotero</a></p>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="07-scripts-and-pipelines.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Non-interactive scripts and data analysis pipelines</p>
+        </div>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By Tiffany Timbers<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
