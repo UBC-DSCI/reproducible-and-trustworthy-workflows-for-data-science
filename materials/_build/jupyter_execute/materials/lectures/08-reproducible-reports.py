@@ -131,16 +131,9 @@
 # by clicking the bar below this editor panel.
 # It looks like:
 # 
+# <img src="img/menu0.png" width=500>
 # 
-# ```{figure} ../img/menu0.png
-# :width: 500px
-# :align: center
-# ```
-# 
-# ```{figure} ../img/menu1.png
-# :width: 500px
-# :align: center
-# ```
+# <img src="img/menu1.png" width=500>
 # 
 # By clicking on any of the headings in the pop-up-like menu,
 # RStudio will navigate you to that section of the R Markdown document.
@@ -199,10 +192,7 @@
 # but you can find an extensive list starting on the second page of
 # [this](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) document.
 # 
-# ```{figure} ../img/chunk_options.jpeg
-# :width: 500px
-# :align: center
-# ```
+# <img src="img/chunk_options.jpeg" width=500>
 # 
 # You can set the chunk options at either a global level
 # (once set they will be applied to all code chunks in the `.Rmd` file)
