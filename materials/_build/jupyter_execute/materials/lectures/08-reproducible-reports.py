@@ -147,10 +147,10 @@
 # and it is more helpful to give code chunks meaningful names.
 # For example,
 # in the code chunk below where we use a for loop to sum the numbers from 1 to 10,
-# we name the chunk "for loop sum".
+# we name the chunk "for-loop-sum".
 # 
 # ````R
-# ```{r for loop sum}
+# ```{r for-loop-sum}
 # # initialize sum to 0
 # loop_sum <- 0
 # 
@@ -165,21 +165,6 @@
 # 
 # **Do not duplicate code chunk names,
 # this will break the rendering of your document!**
-
-# ### Code snippets
-# 
-# As we started to type `for` above,
-# the code completion popped up
-# and the first entry said "snippet",
-# what is that?
-# A code snippet is a text macro,
-# which means that you can type a short string of characters
-# to insert a template or snippet of text by pressing <kbd>TAB</kbd>.
-# You can see all the default snippets
-# and define your own by going to
-# `Tools -> Global options -> Code -> Edit snippets`.
-# Snippets are available anywhere in RStudio,
-# not just in R Markdown documents.
 
 # ### Code chunk options
 # 
@@ -297,17 +282,17 @@
 # - Want fancier tables? Use the `kableExtra` package! See docs here: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
 # 
 
-# ## Resize figures and keep figure descriptions associated with their figures
+# ### Resize figures and keep figure descriptions associated with their figures
 # 
 # There are two ways to do this, and you they depend on whether you are creating the figure from an R object vs a file.
 # 
-# ### 1. Resizing figures and writing figure captions generated from an R plot object
+# #### 1. Resizing figures and writing figure captions generated from an R plot object
 # 
 # Here you need to:
 # - `fig.width=<WIDTH>, fig.height=<HEIGHT>` in the R code chunk options.
 # - `fig.cap = "CAPTION"` in the R code chunk options. 
 # 
-# ### 2. Resizing figures and writing figure captions generated from a saved file (e.g., .png) 
+# #### 2. Resizing figures and writing figure captions generated from a saved file (e.g., .png) 
 # 
 # Here you need to:
 # - use `knitr::include_graphics(<FILE_PATH>)` inside a code chunk to point the figure file
