@@ -53,6 +53,15 @@
 # and code chunks where code can be executed in an engine.
 # It was originally created for the R programming language,
 # but can be used with several others, including Python.
+# See [here](https://rmarkdown.rstudio.com/lesson-5.html) 
+# in the R Markdown tutorial for how to use it with other languages,
+# and [here](https://github.com/ttimbers/python_rmd/blob/main/python_rmd.Rmd) 
+# for a GitHub repository with a working example of this.
+# 
+# ### R Markdown resources
+# - [R Markdown tutorial](https://rmarkdown.rstudio.com/lesson-1.html)
+# - [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+# - [R Markdown documentation](https://rmarkdown.rstudio.com/docs/)
 # 
 # #### Exercise - get to know R Markdown
 # 
@@ -366,5 +375,22 @@
 # }
 # ```
 
-# Note: The Zotero reference manager now works nicely with R Markdown too! You might want to try this for your project, see here: <
-# <https://www.rstudio.com/blog/rstudio-1-4-preview-citations/#citations-from-zotero>
+# > Note: The Zotero reference manager now works nicely with R Markdown too! You might want to try this for your project, see here:
+# > <https://www.rstudio.com/blog/rstudio-1-4-preview-citations/#citations-from-zotero>
+
+# ### R Markdown extensions
+# 
+# What if you need more formatting than is available to you in vanilla R Markdown? For example,
+# cross referencing between sections for a report or thesis? Or journal article templates for research manuscripts? You can add additional functionality like this by adding the use of the [`bookdown`](https://bookdown.org/) or [`rticle`](https://github.com/rstudio/rticles) R packages, respectively.
+# 
+
+# ## Jupyter as a reproducible reporting tool
+# 
+# Jupyter notebooks along are reproducible reporting tools, and can be used as such, However, they have less power and functionality on their own compared to R Markdown on it's own. To address this issue, a new tool, called [Jupyter book](https://jupyterbook.org/intro.html), has been developed. It adds many of the features we have discussed above to Jupyter and makes it comparable to R Markdown.One important thing to note is that it is in early development stages still and changes to the package are being released frequently.
+# 
+
+# In[ ]:
+
+
+
+
