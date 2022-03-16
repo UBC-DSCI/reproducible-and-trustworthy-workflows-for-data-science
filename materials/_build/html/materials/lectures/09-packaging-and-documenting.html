@@ -320,6 +320,57 @@
    Key package things for Python and R packages
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dealing-with-other-package-dependencies-in-your-package">
+   Dealing with other package dependencies in your package
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#dealing-with-package-dependencies-in-r">
+     Dealing with package dependencies in R
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#the-pipe-a-special-dependency">
+     The pipe,
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       %&gt;%
+      </span>
+     </code>
+     , a special dependency
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#package-documentation-for-r">
+   Package documentation for R
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-level-documentation-roxygen-style-comments">
+     Code-level documentation (Roxygen-style comments)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vignettes">
+     Vignettes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#package-websites-via-pkgdown">
+     Package websites (via
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pkgdown
+      </span>
+     </code>
+     )
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
             </nav>
@@ -507,6 +558,92 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="dealing-with-other-package-dependencies-in-your-package">
+<h2>Dealing with other package dependencies in your package<a class="headerlink" href="#dealing-with-other-package-dependencies-in-your-package" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dealing-with-package-dependencies-in-r">
+<h3>Dealing with package dependencies in R<a class="headerlink" href="#dealing-with-package-dependencies-in-r" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>When we write code in our package that uses functions from other packages we need to import those functions from the namespace of their packages.</p></li>
+<li><p>In R, we do this via <code class="docutils literal notranslate"><span class="pre">use_package</span></code>, which adds that package to the “Imports” section of DESCRIPTION</p></li>
+<li><p>We also need to refer to that package in our function code, there are two ways to do this:</p>
+<ol class="simple">
+<li><p>refer the function by <code class="docutils literal notranslate"><span class="pre">package::fun_name</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">dplyer::filter</span></code>) whenever you use the function in your code</p></li>
+<li><p>add the function to your packages namespace so that you can just refer to it as your normally would. To do this add <code class="docutils literal notranslate"><span class="pre">&#64;importFrom</span> <span class="pre">&lt;package_name&gt;</span> <span class="pre">&lt;function_or_operator&gt;</span></code> to the Roxygen documentation of the function that you would like to use the function from the other package in and then use <code class="docutils literal notranslate"><span class="pre">document()</span></code> to update the DESCRIPTION and NAMESPACE file.</p></li>
+</ol>
+</li>
+</ul>
+<p><em>It is recommended to use method 1 (<code class="docutils literal notranslate"><span class="pre">pkg::fun_name</span></code>) because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you). The trade off is that it’s a little more work to write.</em></p>
+</div>
+<div class="section" id="the-pipe-a-special-dependency">
+<h3>The pipe, <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code>, a special dependency<a class="headerlink" href="#the-pipe-a-special-dependency" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Given the ubiquity of the pipe operator, <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code>, in R, there is a function that automates exposing to your entire package: <code class="docutils literal notranslate"><span class="pre">usethis::use_pipe()</span></code></p></li>
+<li><p>Note, in general, the tidyverse team does not recommend using the pipe in packages unless they are personal, low use packages, or “pro” packages with a lot of data wrangling because:</p>
+<ul>
+<li><p>In most cases it is really an unnecessary dependency</p></li>
+<li><p>It is not that readable for folks who do not typically use the pipe</p></li>
+<li><p>makes debugging more challenging</p></li>
+</ul>
+</li>
+</ul>
+<p>So, should you use the pipe in your package? The answer is, it depends on your package’s scope, aims and goals. Also, this is probably your first package, so it doesn’t have to be perfect. If using the pipe helps you get the job done this time around, go for it. Just know that if you aim to ever build a widely used package, you probably do not want to depend on it.</p>
+</div>
+</div>
+<div class="section" id="package-documentation-for-r">
+<h2>Package documentation for R<a class="headerlink" href="#package-documentation-for-r" title="Permalink to this headline">¶</a></h2>
+<p>There are several levels of documentation possible for R packages:</p>
+<ul class="simple">
+<li><p>code-level documentation (Roxygen-style comments)</p></li>
+<li><p>vignettes</p></li>
+<li><p>package websites (via <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code>)</p></li>
+</ul>
+<div class="section" id="code-level-documentation-roxygen-style-comments">
+<h3>Code-level documentation (Roxygen-style comments)<a class="headerlink" href="#code-level-documentation-roxygen-style-comments" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>We learned the basics of how to write Roxygen-style comments in DSCI 511</p></li>
+<li><p>In the package context, there are Namespace tags you should know about:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;export</span></code> - this should be added to all package functions you want your user to know about</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;NoRd</span></code> - this should be added to helper/internal helper functions that you don’t want your user to know about</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="vignettes">
+<h3>Vignettes<a class="headerlink" href="#vignettes" title="Permalink to this headline">¶</a></h3>
+<p>It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. Think of your vignette as a demonstration of how someone would use your function to solve a problem.</p>
+<ul>
+<li><p>It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.</p></li>
+<li><p>To create a template for your vignette, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usethis</span><span class="p">::</span><span class="n">use_vignette</span><span class="p">(</span><span class="s2">&quot;package_name-vignette&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add content to that file and knit it when done.</p></li>
+</ul>
+<p>As an example, here’s the <code class="docutils literal notranslate"><span class="pre">dplyr</span></code> vignette: <a class="reference external" href="https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html">https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html</a></p>
+</div>
+<div class="section" id="package-websites-via-pkgdown">
+<h3>Package websites (via <a class="reference external" href="https://pkgdown.r-lib.org/"><code class="docutils literal notranslate"><span class="pre">pkgdown</span></code></a>)<a class="headerlink" href="#package-websites-via-pkgdown" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> R package let’s you build a beautiful website for your R package in 4 steps!</p>
+<ol class="simple">
+<li><p>Turn on GitHub pages in your package repository, setting <code class="docutils literal notranslate"><span class="pre">main</span> <span class="pre">branch</span> <span class="pre">/</span> <span class="pre">docs</span> <span class="pre">folder</span></code> as the source.</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code>: `install.packages(“pkgdown”)</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">pkgdown::build_site()</span></code> from the root of your project, and commit and push the changes made by this.</p></li>
+<li><p>Push your code, including the <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory to GitHub.com</p></li>
+</ol>
+</li>
+</ul>
+<p>In addition to the beautiful website, <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉</p>
+<blockquote>
+<div><p>Note you can also configure a GitHub Actions workflow to automate the rebuilding of the <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> site
+anytime changes are pushed to your package’s GitHub repository.
+We will discuss this later in the course under the topic of continuous deployment.</p>
+</div></blockquote>
+</div>
 </div>
 </div>
 

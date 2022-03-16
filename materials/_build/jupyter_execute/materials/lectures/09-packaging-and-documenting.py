@@ -138,3 +138,77 @@
 # | Package metadata                                        | `pyproject.toml` | `DESCRIPTION` |
 # | File(s) that define the Namespace                      | `__init__.py`     | `NAMESPACE`         | 
 # | Tool(s) for easy package creation                      |  Cookiecutter & Poetry | `usethis` & `devtools` |
+
+# ## Dealing with other package dependencies in your package
+# 
+# ### Dealing with package dependencies in R
+# 
+# - When we write code in our package that uses functions from other packages we need to import those functions from the namespace of their packages.
+# 
+# - In R, we do this via `use_package`, which adds that package to the “Imports” section of DESCRIPTION
+# 
+# - We also need to refer to that package in our function code, there are two ways to do this:
+#   1. refer the function by `package::fun_name` (e.g., `dplyer::filter`) whenever you use the function in your code
+#   2. add the function to your packages namespace so that you can just refer to it as your normally would. To do this add `@importFrom <package_name> <function_or_operator>` to the Roxygen documentation of the function that you would like to use the function from the other package in and then use `document()` to update the DESCRIPTION and NAMESPACE file. 
+#   
+# *It is recommended to use method 1 (`pkg::fun_name`) because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you). The trade off is that it’s a little more work to write.*
+# 
+# ### The pipe, `%>%`, a special dependency
+# 
+# - Given the ubiquity of the pipe operator, `%>%`, in R, there is a function that automates exposing to your entire package: `usethis::use_pipe()`
+# 
+# - Note, in general, the tidyverse team does not recommend using the pipe in packages unless they are personal, low use packages, or “pro” packages with a lot of data wrangling because:
+#   - In most cases it is really an unnecessary dependency 
+#   - It is not that readable for folks who do not typically use the pipe
+#   - makes debugging more challenging 
+#   
+# So, should you use the pipe in your package? The answer is, it depends on your package's scope, aims and goals. Also, this is probably your first package, so it doesn't have to be perfect. If using the pipe helps you get the job done this time around, go for it. Just know that if you aim to ever build a widely used package, you probably do not want to depend on it.
+
+# ## Package documentation for R
+# 
+# There are several levels of documentation possible for R packages:
+# - code-level documentation (Roxygen-style comments)
+# - vignettes
+# - package websites (via `pkgdown`)
+# 
+# ### Code-level documentation (Roxygen-style comments)
+# 
+# - We learned the basics of how to write Roxygen-style comments in DSCI 511
+# - In the package context, there are Namespace tags you should know about:
+#     - `@export` - this should be added to all package functions you want your user to know about
+#     - `@NoRd` - this should be added to helper/internal helper functions that you don't want your user to know about
+#     
+# ### Vignettes
+# It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. Think of your vignette as a demonstration of how someone would use your function to solve a problem. 
+# 
+# - It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.
+# 
+# - To create a template for your vignette, run:
+#     ```
+#     usethis::use_vignette("package_name-vignette")
+#     ```
+#     
+# - Add content to that file and knit it when done.
+# 
+# As an example, here's the `dplyr` vignette: <https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html>
+# 
+# ### Package websites (via [`pkgdown`](https://pkgdown.r-lib.org/))
+# 
+# - Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others.
+# 
+# - The `pkgdown` R package let's you build a beautiful website for your R package in 4 steps!
+# 
+#     1. Turn on GitHub pages in your package repository, setting `main branch / docs folder` as the source.
+# 
+#     2. Install `pkgdown`: `install.packages("pkgdown")
+# 
+#     3. Run `pkgdown::build_site()` from the root of your project, and commit and push the changes made by this.
+# 
+#     4. Push your code, including the `docs` directory to GitHub.com
+# 
+#     
+# In addition to the beautiful website, `pkgdown` automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉
+# 
+# > Note you can also configure a GitHub Actions workflow to automate the rebuilding of the `pkgdown` site 
+# > anytime changes are pushed to your package's GitHub repository. 
+# > We will discuss this later in the course under the topic of continuous deployment.
