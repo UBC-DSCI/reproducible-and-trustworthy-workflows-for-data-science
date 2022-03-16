@@ -1,0 +1,1114 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecture 6: Introductions to Continuous Development (CD), package documentation &amp; publishing &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../README.html">
+   Reproducible and Trustworthy Workflows for Data Science
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Course notes
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="01-intro-to-ds-workflows.html">
+   How do reproducible and trustworthy workflows impact data science?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="02-version-control-1.html">
+   Version control for transparency and collaboration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="03-filenames-project-organization.html">
+   Filenames and data science project organization, Integrated development environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="04-virtual-environments.html">
+   Virtual environments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="05-containerization.html">
+   Managing dependencies using containerization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="06-intro-to-testing-code.html">
+   Introduction to testing code for data science
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="07-scripts-and-pipelines.html">
+   Non-interactive scripts and data analysis pipelines
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="08-reproducible-reports.html">
+   Reproducible reports
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="09-packaging-and-documenting.html">
+   Packaging and documenting code
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="10-continuous-integration.html">
+   Automated testing and continuous integration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="11-deploy-and-publish.html">
+   Deploying and publishing packages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="12-licenses-and-copyright.html">
+   Copyright and licenses
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/materials/lectures/06_lecture-cd-semver-and-docs.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/06_lecture-cd-semver-and-docs.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/06_lecture-cd-semver-and-docs.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#learning-objectives">
+   Learning objectives:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#continous-deployment-cd">
+   Continous Deployment (CD)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-use-cd">
+     Why use CD?
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Why use CD?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-github-actions-to-perform-cd-for-your-python-package">
+   Using GitHub Actions to perform CD for your Python package
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-read-ci-cd-yml">
+     Exercise: read
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       ci-cd.yml
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#ci-job">
+       ci job:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cd-job">
+       cd job:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-can-we-automate-version-bumping">
+     How can we automate version bumping?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#semantic-versioning">
+   Semantic versioning
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#id2">
+   Semantic versioning
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#semantic-versioning-case-study">
+     Semantic versioning case study
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-name-that-semantic-version-release">
+     Exercise: name that semantic version release
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conventional-commit-messages">
+   Conventional commit messages
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#an-example-of-a-conventional-commit-message">
+     An example of a conventional commit message
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#another-example-of-a-conventional-commit-message">
+     Another example of a conventional commit message
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#some-practical-notes-for-usage-in-your-packages">
+     Some practical notes for usage in your packages:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-practical-notes-for-usage-in-your-packages">
+     A practical notes for usage in your packages:
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#solution-1">
+       Solution 1:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#possible-solution-2">
+       Possible solution 2:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#demo-of-continous-deployment">
+     Demo of Continous Deployment!
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#what-about-cd-with-r-packages">
+     What about CD with R packages
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#package-level-documentation-for-python">
+   Package-level documentation for Python
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-package-level-documentation">
+     Code &amp; package-level documentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Code &amp; package-level documentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-of-rst-formatted-docstrings">
+     Example of RST formatted docstrings:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#example-of-numpy-style-docstrings">
+     Example of Numpy-style docstrings:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Code &amp; package-level documentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#editing-rendering-package-level-documentation">
+     Editing &amp; Rendering package-level documentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Editing &amp; Rendering package-level documentation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#vignettes">
+     Vignettes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#package-websites-via-read-the-docs">
+     Package websites (via Read the Docs)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#package-documentation-for-r">
+   Package documentation for R
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#code-level-documentation-roxygen-style-comments">
+     Code-level documentation (Roxygen-style comments)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id6">
+     Vignettes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#package-websites-via-pkgdown">
+     Package websites (via
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       pkgdown
+      </span>
+     </code>
+     )
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#building-your-pkgdown-site-with-github-actions">
+       Building your
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         pkgdown
+        </span>
+       </code>
+       site with GitHub Actions
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#publishing-your-python-package-for-this-milestone">
+   Publishing your Python package for this milestone:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#publishing-your-r-package-for-this-milestone">
+   Publishing your R package for this milestone:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary">
+   Summary
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-to-next">
+   Where to next:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#semantic-versioning-case-study-answers">
+     Semantic versioning case study - answers
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="lecture-6-introductions-to-continuous-development-cd-package-documentation-publishing">
+<h1>Lecture 6: Introductions to Continuous Development (CD), package documentation &amp; publishing<a class="headerlink" href="#lecture-6-introductions-to-continuous-development-cd-package-documentation-publishing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="learning-objectives">
+<h2>Learning objectives:<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
+<p>By the end of this lecture, students should be able to:</p>
+<ul class="simple">
+<li><p>Define continuous deployment</p></li>
+<li><p>Explain why continuous deployment is superior to manually deploying software</p></li>
+<li><p>Use GitHub Actions to set-up automated deployment of Python packages upon push to the master branch</p></li>
+<li><p>Explain semantic versioning, and define what constitutes patch, minor, major and breaking changes</p></li>
+<li><p>Write conventional commit messages that are useful for semantic release</p></li>
+<li><p>Generate well formatted function and package-level documentation for Python packages using Sphinx &amp; Read the Docs</p></li>
+<li><p>Generate well formatted function and package-level documentation for R using Roxygen and <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code></p></li>
+<li><p>Publish Python packages to test PyPI</p></li>
+<li><p>Publish R packages to GitHub, document how to install them via <code class="docutils literal notranslate"><span class="pre">devtools::install_github</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="continous-deployment-cd">
+<h2>Continous Deployment (CD)<a class="headerlink" href="#continous-deployment-cd" title="Permalink to this headline">¶</a></h2>
+<p>Defined as the practice of automating the deployment of software that has successfully run through your test-suite.</p>
+<p>For example, upon merging a pull request to master, an automation process builds the Python package and publishes to PyPI without further human intervention.</p>
+<div class="section" id="why-use-cd">
+<h3>Why use CD?<a class="headerlink" href="#why-use-cd" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>little to no effort in deploying new version of the software allows new features to be rolled out quickly and frequently</p></li>
+<li><p>also allows for quick implementation and release of bug fixes</p></li>
+<li><p>deployment can be done by many contributors, not just one or two people with a high level of Software Engineering expertise</p></li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3>Why use CD?<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Perhaps this story is more convincing:</p>
+<p><em>The company, let’s call them ABC Corp, had 16 instances of the same software, each as a different white label hosted on separate Linux machines in their data center. What I ended up watching (for 3 hours) was how the client remotely connected to each machine individually and did a “capistrano deploy”. For those unfamiliar, Capistrano is essentially a scripting tool which allows for remote execution of various tasks. The deployment process involved running multiple commands on each machine and then doing manual testing to make sure it worked.</em></p>
+<p><em>The best part was that this developer and one other were the only two in the whole company who knew how to run the deployment, meaning they were forbidden from going on vacation at the same time. And if one of them was sick, the other had the responsibility all for themselves. This deployment process was done once every two weeks.</em></p>
+<p><a class="reference external" href="https://levelup.gitconnected.com/heres-why-continuous-integration-and-deployment-is-so-important-to-the-software-development-c0caeead5881"><em>Source</em></a><em>: Tylor Borgeson</em></p>
+<p>Infrequent &amp; manual deployment makes me feel like this when it comes time to do it:</p>
+<p><img alt="" src="https://media.giphy.com/media/bEVKYB487Lqxy/giphy.gif" /></p>
+<p><em>and so it can become a viscious cycle of delaying deployment because its hard, and then making it harder to do deployment because a lot of changes have been made since the last deployment…</em></p>
+<p>So to avoid this, we are going to do continuous deployment when we can! And where we can’t, we will automate as much as we can up until the point where we need to manually step in.</p>
+</div>
+</div>
+<div class="section" id="using-github-actions-to-perform-cd-for-your-python-package">
+<h2>Using GitHub Actions to perform CD for your Python package<a class="headerlink" href="#using-github-actions-to-perform-cd-for-your-python-package" title="Permalink to this headline">¶</a></h2>
+<p>We will be building off what we learned last class about continuous integration with GitHub actions for Python. What we need to change to make a continuous deployment work for our package?</p>
+<ul class="simple">
+<li><p>change the event trigger</p></li>
+<li><p>change the runner to one machine - ubuntu</p></li>
+<li><p>bump the version</p></li>
+<li><p>create a release on GitHub that corresponds to that version</p></li>
+<li><p>build our package</p></li>
+<li><p>publish to (test) PyPI</p></li>
+</ul>
+<div class="section" id="exercise-read-ci-cd-yml">
+<h3>Exercise: read <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a><a class="headerlink" href="#exercise-read-ci-cd-yml" title="Permalink to this headline">¶</a></h3>
+<p>To make sure we understand what is happening in our workflow that performs CD,
+let’s read <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a> and convert each <strong>step</strong> to a human-readable explanation:</p>
+<div class="section" id="ci-job">
+<h4>ci job:<a class="headerlink" href="#ci-job" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Sets up Python on the runner</p></li>
+<li><p>Checkout our repository files from GitHub and put them on the runner</p></li>
+<li><p>Installs poetry</p></li>
+<li><p>Installs our package and the package dependencies</p></li>
+<li><p>Run test suite and get coverage report</p></li>
+<li><p>Upload coverage report to codecov.io</p></li>
+<li><p>Build the documentation</p></li>
+</ol>
+</div>
+<div class="section" id="cd-job">
+<h4>cd job:<a class="headerlink" href="#cd-job" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<blockquote>
+<div><p>Note: I filled in the steps we went over last class, so you can just fill in the new stuff</p>
+</div></blockquote>
+<p><strong><em>Question: when does the <code class="docutils literal notranslate"><span class="pre">cd</span></code> job run?</em></strong></p>
+</div>
+</div>
+<div class="section" id="how-can-we-automate-version-bumping">
+<h3>How can we automate version bumping?<a class="headerlink" href="#how-can-we-automate-version-bumping" title="Permalink to this headline">¶</a></h3>
+<p>Let’s look at the step that accomplishes this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="c1"># Step 4. Use PSR to make release</span>
+    <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Python</span> <span class="n">Semantic</span> <span class="n">Release</span>
+      <span class="n">run</span><span class="p">:</span> <span class="o">|</span>
+          <span class="n">pip</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">semantic</span><span class="o">-</span><span class="n">release</span>
+          <span class="n">git</span> <span class="n">config</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span> <span class="n">github</span><span class="o">-</span><span class="n">actions</span>
+          <span class="n">git</span> <span class="n">config</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="n">github</span><span class="o">-</span><span class="n">actions</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span>
+          <span class="n">semantic</span><span class="o">-</span><span class="n">release</span> <span class="n">publish</span>
+</pre></div>
+</div>
+<p>Our key command in this step is <code class="docutils literal notranslate"><span class="pre">semantic-release</span> <span class="pre">publish</span></code>.</p>
+<p><a class="reference external" href="https://python-semantic-release.readthedocs.io/en/latest/">Python semantic-release</a> is a Python tool which parses commit messages looking for keywords to indicate how to bump the version. It bumps the version in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+<p>To understand how it works so that we can use it, we need to understand <strong>semantic versioning</strong> and how to write <strong>conventional commit</strong> messages.</p>
+<p>Let’s unpack eack of these on its own.</p>
+</div>
+</div>
+<div class="section" id="semantic-versioning">
+<h2>Semantic versioning<a class="headerlink" href="#semantic-versioning" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>When we make changes and publish new versions of our packages, we should tag these with a version number so that we and others can view and use older versions of the package if needed.</p></li>
+</ul>
+<ul class="simple">
+<li><p>These version numbers should also communicate something about how the underlying code has changed from one version to the next.</p></li>
+</ul>
+<ul class="simple">
+<li><p>Semantic versioning is an agreed upon “code” by developers that gives meaning to version number changes, so developers and users can make meaningful predictions about how code changes between versions from looking solely at the version numbers.</p></li>
+</ul>
+<ul class="simple">
+<li><p>Semantic versioning assumes version 1.0.0 defines the API, and the changes going forward use that as a starting reference.</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>Semantic versioning<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>Given a version number <code class="docutils literal notranslate"><span class="pre">MAJOR.MINOR.PATCH</span></code> (e.g., <code class="docutils literal notranslate"><span class="pre">2.3.1</span></code>), increment the:</p>
+<ul class="simple">
+<li><p>MAJOR version when you make incompatible API changes (often called breaking changes 💥)</p></li>
+</ul>
+<ul class="simple">
+<li><p>MINOR version when you add functionality in a backwards compatible manner ✨↩️</p></li>
+</ul>
+<ul class="simple">
+<li><p>PATCH version when you make backwards compatible bug fixes 🐞</p></li>
+</ul>
+<p><em>Source: https://semver.org/</em></p>
+<div class="section" id="semantic-versioning-case-study">
+<h3>Semantic versioning case study<a class="headerlink" href="#semantic-versioning-case-study" title="Permalink to this headline">¶</a></h3>
+<p><strong>Case 1:</strong> In June 2009, Python bumped versions from 3.0.1, some changes in the new release included:</p>
+<ul class="simple">
+<li><p>Addition of an ordered dictionary type</p></li>
+<li><p>A pure Python reference implementation of the import statement</p></li>
+<li><p>New syntax for nested with statements</p></li>
+</ul>
+<p><strong>Case 2:</strong> In Dec 2017, Python bumped versions from 3.6.3, some changes in the new release included:</p>
+<ul class="simple">
+<li><p>Fixed several issues in printing tracebacks (<code class="docutils literal notranslate"><span class="pre">PyTraceBack_Print()</span></code>).</p></li>
+<li><p>Fix the interactive interpreter looping endlessly when no memory.</p></li>
+<li><p>Fixed an assertion failure in Python parser in case of a bad <code class="docutils literal notranslate"><span class="pre">unicodedata.normalize()</span></code></p></li>
+</ul>
+<p><strong>Case 3:</strong> In Feb 2008, Python bumped versions from 2.7.17, some changes in the new release included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">print</span></code> became a function</p></li>
+<li><p>integer division resulted in creation of a float, instead of an integer</p></li>
+<li><p>Some well-known APIs no longer returned lists (e.g., <code class="docutils literal notranslate"><span class="pre">dict.keys</span></code>, <code class="docutils literal notranslate"><span class="pre">dict.values</span></code>, <code class="docutils literal notranslate"><span class="pre">map</span></code>)</p></li>
+</ul>
+</div>
+<div class="section" id="exercise-name-that-semantic-version-release">
+<h3>Exercise: name that semantic version release<a class="headerlink" href="#exercise-name-that-semantic-version-release" title="Permalink to this headline">¶</a></h3>
+<p>Reading the three cases posted above, think about whether each should be a major, minor or patch version bump. Answer the chat when prompted.</p>
+</div>
+</div>
+<div class="section" id="conventional-commit-messages">
+<h2>Conventional commit messages<a class="headerlink" href="#conventional-commit-messages" title="Permalink to this headline">¶</a></h2>
+<p>Python semantic-release by default uses a parser that works on the conventional (or Angular) commit message style, which is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">optional</span> <span class="n">scope</span><span class="p">):</span> <span class="n">succinct</span> <span class="n">description</span> <span class="n">of</span> <span class="n">the</span> <span class="n">change</span>
+
+<span class="p">(</span><span class="n">optional</span> <span class="n">body</span><span class="p">:</span> <span class="n">the</span> <span class="n">motivation</span> <span class="k">for</span> <span class="n">the</span> <span class="n">change</span> <span class="ow">and</span> <span class="n">contrast</span> <span class="n">this</span> <span class="k">with</span> <span class="n">previous</span> <span class="n">behavior</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">optional</span> <span class="n">footer</span><span class="p">:</span> <span class="n">note</span> <span class="n">BREAKING</span> <span class="n">CHANGES</span> <span class="n">here</span><span class="p">,</span> <span class="k">as</span> <span class="n">well</span> <span class="k">as</span> <span class="nb">any</span> <span class="n">issues</span> <span class="n">to</span> <span class="n">be</span> <span class="n">closed</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>How to affect semantic versioning with conventional commit messages:</p>
+<ul class="simple">
+<li><p>a commit with the type <code class="docutils literal notranslate"><span class="pre">fix</span></code> leads to a patch version bump</p></li>
+<li><p>a commit with the type <code class="docutils literal notranslate"><span class="pre">feat</span></code> leads to a minor version bump</p></li>
+<li><p>a commit with a body or footer that starts with <code class="docutils literal notranslate"><span class="pre">BREAKING</span> <span class="pre">CHANGE:</span></code> - these can be of any type</p></li>
+</ul>
+<blockquote>
+<div><p>Note - commit types other than <code class="docutils literal notranslate"><span class="pre">fix</span></code> and <code class="docutils literal notranslate"><span class="pre">feat</span></code> are allowed. Recommeneded ones include <code class="docutils literal notranslate"><span class="pre">docs</span></code>, <code class="docutils literal notranslate"><span class="pre">style</span></code>, <code class="docutils literal notranslate"><span class="pre">refactor</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">ci</span></code> and <a class="reference external" href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type">others</a>.</p>
+</div></blockquote>
+<div class="section" id="an-example-of-a-conventional-commit-message">
+<h3>An example of a conventional commit message<a class="headerlink" href="#an-example-of-a-conventional-commit-message" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;feat(function_x): added the ability to initialize a project even if a pyproject.toml file exists </span>
+</pre></div>
+</div>
+<p>What kind of version bump would this result in?</p>
+</div>
+<div class="section" id="another-example-of-a-conventional-commit-message">
+<h3>Another example of a conventional commit message<a class="headerlink" href="#another-example-of-a-conventional-commit-message" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git commit -m &quot;feat: change to use of `%&gt;%` to add new layers to ggplot objects
+
+BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release
+</pre></div>
+</div>
+<p>What kind of version bump would this result in?</p>
+</div>
+<div class="section" id="some-practical-notes-for-usage-in-your-packages">
+<h3>Some practical notes for usage in your packages:<a class="headerlink" href="#some-practical-notes-for-usage-in-your-packages" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p>You must add <code class="docutils literal notranslate"><span class="pre">python-semantic-release</span></code> as a dev dependency via poetry</p></li>
+<li><p>You must add the following to the tool section of your <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file as shown below, for this to work (filling in <code class="docutils literal notranslate"><span class="pre">&lt;package_name&gt;</span></code> with the appropriate value). <a class="reference external" href="https://py-pkgs.org/08-ci-cd#psr-table">Table 8.2</a> from the Python packages book explains each of these in more detail.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">semantic_release</span><span class="p">]</span>
+<span class="n">version_variable</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml:version&quot;</span> <span class="c1"># version location</span>
+<span class="n">branch</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span>                             <span class="c1"># branch to make releases of</span>
+<span class="n">changelog_file</span> <span class="o">=</span> <span class="s2">&quot;CHANGELOG.md&quot;</span>             <span class="c1"># changelog file</span>
+<span class="n">build_command</span> <span class="o">=</span> <span class="s2">&quot;pip install poetry &amp;&amp; poetry build&quot;</span>  <span class="c1"># build dists</span>
+<span class="n">dist_path</span> <span class="o">=</span> <span class="s2">&quot;dist/&quot;</span>                         <span class="c1"># where to put dists</span>
+<span class="n">upload_to_pypi</span> <span class="o">=</span> <span class="n">false</span>                      <span class="c1"># don&#39;t auto-upload to PyPI</span>
+<span class="n">remove_dist</span> <span class="o">=</span> <span class="n">false</span>                         <span class="c1"># don&#39;t remove dists</span>
+<span class="n">patch_without_tag</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>                  <span class="c1"># always bump version on CD, even without angular commit (default is patch)</span>
+</pre></div>
+</div>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">feat</span></code> or <code class="docutils literal notranslate"><span class="pre">BREAKING</span> <span class="pre">CHANGES:</span></code> are not included in the commits when a pull request is merged to master, by default Python’s <code class="docutils literal notranslate"><span class="pre">semantic-release</span></code> bumps the patch version.</p></li>
+</ol>
+</div>
+<div class="section" id="a-practical-notes-for-usage-in-your-packages">
+<h3>A practical notes for usage in your packages:<a class="headerlink" href="#a-practical-notes-for-usage-in-your-packages" title="Permalink to this headline">¶</a></h3>
+<p>If you have been working with main branch protection, you will need to change something to use <code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code> work for continuous deployment. The reason for this, is that this workflow (which bumps versions and deploy the package) is triggered to run <strong>after</strong> the pull request is merged to main. Therefore, when we bump the versions in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file awe need to push these changes to the main branch - however this is problematic given that we have set-up main branch protection!</p>
+<p>What are we to do?</p>
+<div class="section" id="solution-1">
+<h4>Solution 1:<a class="headerlink" href="#solution-1" title="Permalink to this headline">¶</a></h4>
+<p>Remove main branch protection. This is not the most idealistic solution, however it is a simple and practical one.</p>
+</div>
+<div class="section" id="possible-solution-2">
+<h4>Possible solution 2:<a class="headerlink" href="#possible-solution-2" title="Permalink to this headline">¶</a></h4>
+<p>(I say possible because this is still experimental for me and not well tested)</p>
+<p>Another option may be use a bot to briefly turn off main branch protection just before we push the files where we bumped the version, and then use the bot to turn it back on again after pushing. To do this, we will use the <a class="reference external" href="https://github.com/benjefferies/branch-protection-bot"><code class="docutils literal notranslate"><span class="pre">benjefferies/branch-protection-bot</span></code> action</a>.</p>
+<p>Looking at <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a>, we could add the <code class="docutils literal notranslate"><span class="pre">branch-protection-bot</span></code> action to <strong>turn off</strong> main branch protection after the step named “checkout” but before the step named “Python Semantic Release”. We could also add the <code class="docutils literal notranslate"><span class="pre">branch-protection-bot</span></code> action to <strong>turn on</strong> main branch protection after the step named “Python Semantic Release” but before the step named “Publish to TestPyPI”.</p>
+<p>Below is the section of our <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a> <strong>before</strong> we add the <code class="docutils literal notranslate"><span class="pre">branch-protection-bot</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    # Check-out repository so we can access its contents
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    # Use PSR to make release
+    - name: Python Semantic Release
+      run: |
+          pip install python-semantic-release
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          semantic-release publish
+          
+    # Publish to TestPyPI
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: {% raw %}${{ secrets.TEST_PYPI_API_TOKEN }}{% endraw %}
+        repository_url: https://test.pypi.org/legacy/
+        skip_existing: true
+</pre></div>
+</div>
+<p>Below is the section of our <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a> <strong>after</strong> we add the <code class="docutils literal notranslate"><span class="pre">branch-protection-bot</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    # Check-out repository so we can access its contents
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Disable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()
+      with:
+          access_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: main
+          enforce_admins: false
+          
+    # Use PSR to make release
+    - name: Python Semantic Release
+      run: |
+          pip install python-semantic-release
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          semantic-release publish
+          
+    - name: Enable admin branch protection
+      uses: benjefferies/branch-protection-bot@master
+      if: always()  # Force to always run this step to ensure &quot;include administrators&quot; is always turned back on
+      with:
+        access_token: ${{ secrets.ACCESS_TOKEN }}
+        branch: main
+        enforce_admins: true
+        
+    # Publish to TestPyPI
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: {% raw %}${{ secrets.TEST_PYPI_API_TOKEN }}{% endraw %}
+        repository_url: https://test.pypi.org/legacy/
+        skip_existing: true
+</pre></div>
+</div>
+<p>Finally, to make this work you would need to add one of your team members personal GitHub access tokens as a GitHub secret named <code class="docutils literal notranslate"><span class="pre">ACCESS_TOKEN</span></code> (see <a class="reference external" href="https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line">here</a> for how to get your personal GitHub access token).</p>
+<ul class="simple">
+<li><p>Demo of this in action from a project from last year: <a class="reference external" href="https://github.com/UBC-MDS/NiceNumber">https://github.com/UBC-MDS/NiceNumber</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="demo-of-continous-deployment">
+<h3>Demo of Continous Deployment!<a class="headerlink" href="#demo-of-continous-deployment" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ttimbers/pycounts_tat">https://github.com/ttimbers/pycounts_tat</a></p></li>
+</ul>
+</div>
+<div class="section" id="what-about-cd-with-r-packages">
+<h3>What about CD with R packages<a class="headerlink" href="#what-about-cd-with-r-packages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>This is not a common practice (yet!). One reason for this could be that CRAN has a policy where they only want to see updates every 1-2 months.</p></li>
+<li><p>Semantic versioning is used in Tidyverse R packages, but creating versions is done manually</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="package-level-documentation-for-python">
+<h2>Package-level documentation for Python<a class="headerlink" href="#package-level-documentation-for-python" title="Permalink to this headline">¶</a></h2>
+<p>There are several levels of documentation possible for Python packages:</p>
+<ul class="simple">
+<li><p>code-level documentation (formatted docstrings)</p></li>
+<li><p>package-level documentation via <a class="reference external" href="https://www.sphinx-doc.org/en/master/index.html"><code class="docutils literal notranslate"><span class="pre">sphinx</span></code></a></p></li>
+<li><p>package websites (via <a class="reference external" href="https://readthedocs.org/">Read the Docs</a>)</p></li>
+</ul>
+<div class="section" id="code-package-level-documentation">
+<h3>Code &amp; package-level documentation<a class="headerlink" href="#code-package-level-documentation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>We learned the basics of how to write formatted docstrings for our functions in DSCI 511</p></li>
+</ul>
+<ul class="simple">
+<li><p>These docstrings can not only be accessed via <code class="docutils literal notranslate"><span class="pre">?function_name</span></code>, but can also be used to automatically generate package-level documentation via <a class="reference external" href="https://www.sphinx-doc.org/en/master/index.html"><code class="docutils literal notranslate"><span class="pre">sphinx</span></code></a></p></li>
+</ul>
+<ul class="simple">
+<li><p>We already did this with our toy <code class="docutils literal notranslate"><span class="pre">foocat</span></code> package by:</p>
+<ul>
+<li><p>adding sphinx as a dev dependency via <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">add</span> <span class="pre">--dev</span> <span class="pre">sphinx</span></code></p></li>
+<li><p>create the <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files for your package functions by running: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">sphinx-apidoc</span> <span class="pre">-f</span> <span class="pre">-o</span> <span class="pre">docs/source</span> <span class="pre">&lt;package_name&gt;</span></code> from the project root</p></li>
+<li><p>and then ran <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">make</span> <span class="pre">html</span></code> from the docs directory</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Code &amp; package-level documentation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>To have <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> correctly render the docstring as package-level documentation, we need to either write our docstrings in the correct format for restructured text (RST) or we can use the <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> extension <code class="docutils literal notranslate"><span class="pre">napolean</span></code> that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).</p></li>
+</ul>
+</div>
+<div class="section" id="example-of-rst-formatted-docstrings">
+<h3>Example of RST formatted docstrings:<a class="headerlink" href="#example-of-rst-formatted-docstrings" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>:type path: str
+:param field_storage: The :class:`FileStorage` instance to wrap
+:type field_storage: FileStorage
+:param temporary: Whether or not to delete the file when the File
+   instance is destructed
+:type temporary: bool
+:returns: A buffered writable file descriptor
+:rtype: BufferedFileStorage
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-of-numpy-style-docstrings">
+<h3>Example of Numpy-style docstrings:<a class="headerlink" href="#example-of-numpy-style-docstrings" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Summary</span> <span class="n">line</span><span class="o">.</span>
+
+    <span class="n">Extended</span> <span class="n">description</span> <span class="n">of</span> <span class="n">function</span><span class="o">.</span>
+
+    <span class="n">Parameters</span>
+    <span class="o">----------</span>
+    <span class="n">arg1</span> <span class="p">:</span> <span class="nb">int</span>
+        <span class="n">Description</span> <span class="n">of</span> <span class="n">arg1</span>
+    <span class="n">arg2</span> <span class="p">:</span> <span class="nb">str</span>
+        <span class="n">Description</span> <span class="n">of</span> <span class="n">arg2</span>
+
+    <span class="n">Returns</span>
+    <span class="o">-------</span>
+    <span class="nb">bool</span>
+        <span class="n">Description</span> <span class="n">of</span> <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Code &amp; package-level documentation<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>When using Numpy-style docstrings, we need to do the following:</p>
+<ul class="simple">
+<li><p>add <code class="docutils literal notranslate"><span class="pre">sphinxcontrib-napoleon</span></code> as a dev dependency via <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">add</span> <span class="pre">--dev</span></code></p></li>
+<li><p>add <code class="docutils literal notranslate"><span class="pre">extensions</span> <span class="pre">=</span> <span class="pre">['sphinx.ext.napoleon']</span></code> to the docs configuration file (<code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code>) - we have already done this for you in the Cookiecutter template.</p></li>
+</ul>
+</div>
+<div class="section" id="editing-rendering-package-level-documentation">
+<h3>Editing &amp; Rendering package-level documentation<a class="headerlink" href="#editing-rendering-package-level-documentation" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>As we did in the toy <code class="docutils literal notranslate"><span class="pre">pycounts*</span></code> package, we render the docs via running <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">make</span> <span class="pre">html</span></code> from the docs directory</p></li>
+<li><p><em>Note: it is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.</em></p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Editing &amp; Rendering package-level documentation<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The Python community has been heavily invested in ReStructuredText (rst) as a mark-up language for a long time, and thus <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> works best when used with that as opposed to markdown (although it is possible, see <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/markdown.html">here</a> for details).</p></li>
+<li><p><a class="reference external" href="https://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">ReStructuredText cheat sheet</a></p></li>
+</ul>
+</div>
+<div class="section" id="vignettes">
+<h3>Vignettes<a class="headerlink" href="#vignettes" title="Permalink to this headline">¶</a></h3>
+<p>It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. In your Python package, this ideally might go in something like the Usage section of the docs. However, that document is in rst for the template we gave you to use. So for your project, you could also put it in the README of your repo (or link to it from there).</p>
+<p>There is a new sphinx extension called <a class="reference external" href="https://nbsphinx.readthedocs.io/en/0.8.2/"><code class="docutils literal notranslate"><span class="pre">nbsphinx</span></code></a> that let’s you use <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code> files for package documentation. We have not used it yet in MDS, but it looks promising and we might adopt it in the future.</p>
+</div>
+<div class="section" id="package-websites-via-read-the-docs">
+<h3>Package websites (via <a class="reference external" href="https://readthedocs.org/">Read the Docs</a>)<a class="headerlink" href="#package-websites-via-read-the-docs" title="Permalink to this headline">¶</a></h3>
+<p>The standard practice for hosting and sharing docs in the Python community is to use <a class="reference external" href="https://readthedocs.org/">Read the Docs</a></p>
+<ul class="simple">
+<li><p>Similar to codecov.io, to use Read the Docs with our package, we need to link it to our GitHub repository</p></li>
+<li><p>Read the Docs then checks out the files from the GitHub repo and uses their remote machines to render and serve your documentation</p></li>
+<li><p>To do this, Read the Docs needs access to the packages <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. This is done via the creation of a <code class="docutils literal notranslate"><span class="pre">.readthedocs.yml</span></code> file in the root of your project that looks like this:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">build</span><span class="p">:</span>
+  <span class="n">image</span><span class="p">:</span> <span class="n">latest</span>
+<span class="n">python</span><span class="p">:</span>
+  <span class="n">version</span><span class="p">:</span> <span class="mf">3.9</span>
+  <span class="n">pip_install</span><span class="p">:</span> <span class="n">true</span>
+  <span class="n">extra_requirements</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">docs</span>
+</pre></div>
+</div>
+<p><em>note - the version of Python specified here has to be a version that your package can be installed with!</em></p>
+</div>
+</div>
+<div class="section" id="package-documentation-for-r">
+<h2>Package documentation for R<a class="headerlink" href="#package-documentation-for-r" title="Permalink to this headline">¶</a></h2>
+<p>There are several levels of documentation possible for R packages:</p>
+<ul class="simple">
+<li><p>code-level documentation (Roxygen-style comments)</p></li>
+<li><p>vignettes</p></li>
+<li><p>package websites (via <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code>)</p></li>
+</ul>
+<div class="section" id="code-level-documentation-roxygen-style-comments">
+<h3>Code-level documentation (Roxygen-style comments)<a class="headerlink" href="#code-level-documentation-roxygen-style-comments" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>We learned the basics of how to write Roxygen-style comments in DSCI 511</p></li>
+<li><p>In the package context, there are Namespace tags you should know about:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;export</span></code> - this should be added to all package functions you want your user to know about</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;NoRd</span></code> - this should be added to helper/internal helper functions that you don’t want your user to know about</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>Vignettes<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Think of your vignette as a demonstration of how someone would use your function to solve a problem.</p></li>
+<li><p>It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.</p></li>
+<li><p>To create a template for your vignette, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usethis</span><span class="p">::</span><span class="n">use_vignette</span><span class="p">(</span><span class="s2">&quot;package_name-vignette&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add content to that file and knit it when done.</p></li>
+</ul>
+<p>As an example, here’s the <code class="docutils literal notranslate"><span class="pre">dplyr</span></code> vignette: <a class="reference external" href="https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html">https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html</a></p>
+</div>
+<div class="section" id="package-websites-via-pkgdown">
+<h3>Package websites (via <a class="reference external" href="https://pkgdown.r-lib.org/"><code class="docutils literal notranslate"><span class="pre">pkgdown</span></code></a>)<a class="headerlink" href="#package-websites-via-pkgdown" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> R package let’s you build a beautiful website for your R package in 4 steps!</p>
+<ol class="simple">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code>: `install.packages(“pkgdown”)</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">pkgdown::build_site()</span></code> from the root of your project, and commit and push the changes made by this.</p></li>
+<li><p>Turn on GitHub pages in your package repository, setting <code class="docutils literal notranslate"><span class="pre">main</span> <span class="pre">branch</span> <span class="pre">/</span> <span class="pre">docs</span> <span class="pre">folder</span></code> as the source.</p></li>
+<li><p>Oh wait, there’s no step 4! 🎉</p></li>
+</ol>
+</li>
+</ul>
+<p>In addition to the beautiful website, <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉</p>
+<div class="section" id="building-your-pkgdown-site-with-github-actions">
+<h4>Building your <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> site with GitHub Actions<a class="headerlink" href="#building-your-pkgdown-site-with-github-actions" title="Permalink to this headline">¶</a></h4>
+<p>You can also configure a GitHub Actions workflow to automate the rebuilding of the <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> site
+anytime changes are pushed to your package’s GitHub repository.
+You can do this by adding this GitHub Actions workflow file to <code class="docutils literal notranslate"><span class="pre">github/workflows</span></code>:
+<a class="reference external" href="https://github.com/r-lib/actions/blob/v2-branch/examples/pkgdown.yaml">https://github.com/r-lib/actions/blob/v2-branch/examples/pkgdown.yaml</a>.
+You can do this by locally running <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action(&quot;pkgdown&quot;)</span></code> in the R console
+and pushing your changes to GitHub.com</p>
+</div>
+</div>
+</div>
+<div class="section" id="publishing-your-python-package-for-this-milestone">
+<h2>Publishing your Python package for this milestone:<a class="headerlink" href="#publishing-your-python-package-for-this-milestone" title="Permalink to this headline">¶</a></h2>
+<p>For this course, we will publish your package on test PyPI and PyPI. You will use continuous deployment via the <code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code> workflow file to do this.</p>
+<p>To get your packages README and important links to show-up on the test PyPI and PyPI pages for your package, add the  following information to the [tool.poetry] table in pyproject.toml</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">readme</span> <span class="o">=</span> <span class="s2">&quot;README.md&quot;</span>
+<span class="n">homepage</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/&lt;github_username&gt;/&lt;github_repo&gt;&quot;</span>
+<span class="n">repository</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/&lt;github_username&gt;/&lt;github_repo&gt;&quot;</span>
+<span class="n">documentation</span> <span class="o">=</span> <span class="s1">&#39;https://&lt;package_name&gt;.readthedocs.io&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="publishing-your-r-package-for-this-milestone">
+<h2>Publishing your R package for this milestone:<a class="headerlink" href="#publishing-your-r-package-for-this-milestone" title="Permalink to this headline">¶</a></h2>
+<p>For this course, we will only publish your package on GitHub, not CRAN. For this to work, you need to push your package code to GitHub and provide users these instructions to download, build and install your package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># install.packages(&quot;devtools&quot;)</span>
+<span class="n">devtools</span><span class="p">::</span><span class="n">install_github</span><span class="p">(</span><span class="s2">&quot;ttimbers/convertempr&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next week we will talk about publishing on CRAN.</p>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>What did we learn today? Biggest take homes?</p>
+<ul class="simple">
+<li><p>semantic versioning and automated versioning</p></li>
+<li><p>how to use GitHub Actions</p></li>
+<li><p>Difference between CI &amp; CD</p></li>
+</ul>
+</div>
+<div class="section" id="where-to-next">
+<h2>Where to next:<a class="headerlink" href="#where-to-next" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Tha package indices, PyPI and CRAN</p></li>
+<li><p>Peer review of data science software packages</p></li>
+<li><p>Licenses</p></li>
+</ul>
+<div class="section" id="semantic-versioning-case-study-answers">
+<h3>Semantic versioning case study - answers<a class="headerlink" href="#semantic-versioning-case-study-answers" title="Permalink to this headline">¶</a></h3>
+<p>In 2008, Python bumped versions from 2.7.17 to 3.0.0. Some changes in the 3.0.0 release included:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">print</span></code> became a function</p></li>
+<li><p>integer division resulted in creation of a float, instead of an integer</p></li>
+<li><p>Some well-known APIs no longer returned lists (e.g., <code class="docutils literal notranslate"><span class="pre">dict.keys</span></code>, <code class="docutils literal notranslate"><span class="pre">dict.values</span></code>, <code class="docutils literal notranslate"><span class="pre">map</span></code>)</p></li>
+<li><p>and many more (see <a class="reference external" href="https://docs.python.org/3.0/whatsnew/3.0.html">here</a> if interested)</p></li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/3.0/whatsnew/3.0.html"><em>Source</em></a></p>
+<p>In 2009, Python bumped versions from 3.0.1 to 3.1.0. Some changes in the 3.1.0 release included:</p>
+<ul class="simple">
+<li><p>Addition of an ordered dictionary type</p></li>
+<li><p>A pure Python reference implementation of the import statement</p></li>
+<li><p>New syntax for nested with statements</p></li>
+</ul>
+<p><a class="reference external" href="https://www.python.org/download/releases/3.1/"><em>Source</em></a></p>
+<p>In 2017, Python bumped versions from 3.6.3 to 3.6.4. Some changes in the 3.6.4 release included:</p>
+<ul class="simple">
+<li><p>Fixed several issues in printing tracebacks (<code class="docutils literal notranslate"><span class="pre">PyTraceBack_Print()</span></code>).</p></li>
+<li><p>Fix the interactive interpreter looping endlessly when no memory.</p></li>
+<li><p>Fixed an assertion failure in Python parser in case of a bad <code class="docutils literal notranslate"><span class="pre">unicodedata.normalize()</span></code></p></li>
+</ul>
+<p><a class="reference external" href="https://docs.python.org/3.6/whatsnew/changelog.html#python-3-6-4-final"><em>Source</em></a></p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
