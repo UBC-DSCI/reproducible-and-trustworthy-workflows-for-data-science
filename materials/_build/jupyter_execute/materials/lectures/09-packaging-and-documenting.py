@@ -61,7 +61,7 @@
 # 
 # 1. [`tidyhydat`](https://github.com/ropensci/tidyhydat) - a reviewed ROpenSci R package
 # 
-# ### {usethis} and the evolution of R packaging
+# ### `usethis` and the evolution of R packaging
 # 
 # What constitutes an R package or its configuration files, has not changed in a long time. However the tools commonly used to build them have. Currently, the most straight forward, and easy way to build R packages now involves the use of two developer packages called {usethis} and {devtools}.
 # 
