@@ -63,20 +63,13 @@
 # 
 # ### `usethis` and the evolution of R packaging
 # 
-# What constitutes an R package or its configuration files, has not changed in a long time. However the tools commonly used to build them have. Currently, the most straight forward, and easy way to build R packages now involves the use of two developer packages called {usethis} and {devtools}.
+# What constitutes an R package or its configuration files, has not changed in a long time. However the tools commonly used to build them have. Currently, the most straight forward, and easy way to build R packages now involves the use of two developer packages called `usethis` and `devtools`.
 # 
-# 
-# ```{figure} img/usethis-devtools.png
-# ---
-# height: 400px
-# name: usethis-devtools
-# ---
-# `usethis` and `devtools` R packages
-# ```
+# <img src="img/usethis-devtools.png" width=400>
 # 
 # These packages automate repetitive tasks that arise during project setup and development. It prevents you from having to do things like manually create boiler plate file and directory structures needed for building your R package structure, as well as simplifies the checking, installation and building of your package from source code. 
 # 
-# Packages created via {usethis} and {devtools} can be shared so that they can be installed via source from GitHub, or as package binaries on CRAN. For a package to be shared on CRAN, there is a check and gatekeeping system (in contrast to PyPI). We will learn more about this in later parts of the course.
+# Packages created via `usethis` and `devtools` can be shared so that they can be installed via source from GitHub, or as package binaries on CRAN. For a package to be shared on CRAN, there is a check and gatekeeping system (in contrast to PyPI). We will learn more about this in later parts of the course.
 # 
 # > Fun fact! Jenny Bryan, a past UBC Statistics Professor UBC MDS founder, is the maintainer for the `usethis` R package!
 # 
@@ -163,6 +156,8 @@
 #   - makes debugging more challenging 
 #   
 # So, should you use the pipe in your package? The answer is, it depends on your package's scope, aims and goals. Also, this is probably your first package, so it doesn't have to be perfect. If using the pipe helps you get the job done this time around, go for it. Just know that if you aim to ever build a widely used package, you probably do not want to depend on it.
+# 
+# > Note: with the advent of the base R pipe `|>`, you can now use that pipe and no longer have to add it as a dependency!
 
 # ## Package documentation for R
 # 
