@@ -1,28 +1,24 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Lecture 5: Introductions to Continuous Integration (CI) & GitHub Actions
+# # Automated testing and continuous integration
 
-# ## Learning objectives:
-# By the end of this lecture, students should be able to:
-# - Define continuous integration testing
-# - Explain why continuous integration testing is superior to manually running tests
-# - Define the following key concepts that underlie GitHub Actions:
-#     - Actions
-#     - Workflow
-#     - Event
-#     - Runner
-#     - Job
-#     - Step
-# - Store and use GitHub Actions credentials safely via GitHub Secrets
-# - Use matrix GitHub Actions workflows to reduce workflow redundancy
-# - Use GitHub Actions to set-up automated running of tests by `pytest` upon push to any branch
-# - Use GitHub Actions to set-up automated running of tests by `testthat` upon push to any branch
+# ## Topic learning objectives
+# 
+# By the end of this topic, students should be able to:
+# 
+# 1. Argue the costs and benefits of using automated test infrastructure
+# 2. Use a testing framework (e.g., `testhat`) to automate the running of a
+# project's entire test suite
+# 3. Use a continuous integration (e.g., GitHub Actions) to automate the running of the
+# test suite using the testing framework
+# 4. Incorporate non-code-functionality tests such as style/format checkers into a testing
+# pipeline
 
 # ## Continuous Integration (CI)
 # 
 # Defined as the practice of **frequently** integrating code (*e.g.*, several times a day) changes from contributors to a shared repository. Often the submission of code to the shared repository is combined with automated testing (and other things, such as style checking) to increase code dependability and quality.
-
+# 
 # ### Why use CI + automated testing
 # 
 # - detects errors sooner
@@ -84,7 +80,8 @@
 #     Click on the arrow inside the build logs to expand a section and see the output of the action:
 # 
 #     <img src="img/check-logs3.png" width=600>
-
+#     
+#   
 # ### GitHub Actions workflow file:
 # 
 # A `YAML` file that lives in the `.github/workflows` directory or your repository which speciies your workflow. 
@@ -128,7 +125,7 @@
 #           echo test, and deploy your project.
 # 
 # ```
-
+# 
 # The file above has:
 # - 3 possible event triggers (push to main, pull request to main, or manual dispatch through the Actions tab)
 # - runs on an Ubuntu OS
@@ -140,7 +137,7 @@
 # ### Commands vs actions
 # 
 # Steps can consist commands or actions. Let's spend some time to discuss what each of these are and how they differ.
-
+# 
 # ### Commands
 # 
 # Steps that use commands look like the one shown below. They consist of a `name` and a `run` parameter. The commands listed after `run` are run in the runner's shell:
@@ -157,7 +154,7 @@
 #         echo Add other actions to build,
 #         echo test, and deploy your project.
 # ```
-
+# 
 # ### Actions
 # 
 # Steps that use actions look like the one shown below (which builds and publishes Docker containers). They always have a `uses` parameter, and often also have `name` and `with` parameters. The `uses` parameter specifies which action to use, and the `with` parameters provide arguments to those actions. The `@master` at the name of the `uses` line, specifies whether to use the version at the head of the actions default branch, or a specific version (*e.g.,* `@v2`).
@@ -178,7 +175,7 @@
 # > In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are intersted in learning more, I point you to the documentation below.
 
 # #### Optional:
-
+# 
 # For example, for the action above see its:
 # - [Dockerfile](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/Dockerfile)
 # - [endpoint.sh script](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/entrypoint.sh)
@@ -193,34 +190,6 @@
 # 
 # - Let's break down a simplified version of the [`ci.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci.yml) workflow file to start to better understand a real use case of GitHub Actions.
 # 
-# ```
-# name: ci
-# 
-# on: [push, pull_request]
-# 
-# jobs:
-#   ci:
-#     # Set up operating system
-#     runs-on: ubuntu-latest
-#     
-#     steps:
-#     - name: Setup Python
-#       uses: actions/setup-python@v2
-#       with:
-#         python-version: 3.9
-#     
-#     - name: Checkout repository
-#       uses: actions/checkout@v2
-#   
-#     - name: Install Poetry
-#       uses: snok/install-poetry@v1
-#     
-#     - name: Install package
-#       run: poetry install
-#    
-#     - name: Test with pytest
-#       run: poetry run pytest
-# ```
 
 # ### Exercise: Orientating ourselves with the `ci.yml` workflow
 # 
@@ -258,41 +227,6 @@
 # 
 # See GitHub's help docs for how to do this: <https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets>
 
-# ### Exercise: add a secret to your `pypkgs` GitHub repository
-# 
-# Let's learn how to add secrets to a GitHub repository. We'll do this by adding our `CODECOV_TOKEN` as a secret to our `pypkgs` GitHub repository so that we can report our coverage via a nice shiny button on our repo's README.
-# 
-# #### Steps:
-# 
-# 0. Use Poetry to add two more developmental dependencies to your project: `poetry add --dev pytest-cov codecov` and push your updated `pyproject.toml` and `poetry.lock` file to GitHub.
-# 
-# 1. Log into [codecov.io](https://codecov.io/) using GitHub to authenticate
-# 
-# 2. ~~Link your packages GitHub repo to [codecov.io](https://codecov.io/)~~
-# 
-# 3. ~~Copy the [codecov.io](https://codecov.io/) token for that repo from [codecov.io](https://codecov.io/)~~
-# 
-# 4. ~~On the "Settings" tab of GitHub, click on "Secrets"~~
-# 
-# 5. ~~Click "Add a new secret"~~
-# 
-# 6. ~~Add `CODECOV_TOKEN` as the secret name, and paste your token (which you copied from [codecov.io](https://codecov.io/)) as the value.~~
-# 
-# 7. Change the pytest command in your workflow to be: `poetry run pytest tests/ --cov=PACKAGE_NAME --cov-report=xml` and then add one more step to your workflow:
-# 
-# 
-# 8. Run tests for package
-#  
-# ```
-#     - name: Upload coverage to Codecov  
-#       uses: codecov/codecov-action@v2
-#       with:
-#         file: ./coverage.xml    # coverage report
-#         fail_ci_if_error: true
-# ```
-# 
-# *Note: you only need to do steps 2-6 when your repository is private.*
-
 # ## Authenticating with the `GITHUB_TOKEN`
 # 
 # What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow. You access this token in your workflow file via:
@@ -300,7 +234,7 @@
 # ```
 # ${{ secrets.GITHUB_TOKEN }}
 # ```
-
+# 
 # ## Creating and accessing environment variables in GitHub Actions
 # 
 # Sometimes our commands or actions need environment variables. In both of these scenarios, we create environment variables and access them within a step via: 
@@ -386,7 +320,7 @@
 #         file: ./coverage.xml    # coverage report
 #         fail_ci_if_error: true
 # ```
-
+# 
 # #### Steps in English:
 # 
 # 1. Set up and install Python on the runner
@@ -404,32 +338,6 @@
 # #### *How many jobs are run? What does each do?*
 # 
 
-# ## Setting up GitHub Actions workflows with Python
-# 
-# Your task should already be done, except for adding the GitHub Secrets. How so? When you used the Python Packages Cookiecutter template to create your package skeleton, it wrote you this workflow file:
-# - `ci-cd.yml`
-# 
-# To make the `ci-cd.yml` workflow run without fail, you will need to ensure your:
-# - the following package development dependencies have been added to `pyproject.toml` via `poetry add --dev`:
-#     - `pytest` 
-#     - `pytest-cov` 
-#     - `codecov` 
-# - all tests pass  
-# - add the GitHub Secrets for:
-#     - `TEST_PYPI_API_TOKEN`
-#     - `PYPI_API_TOKEN`
-# 
-# To create these tokens you will need to:
-# - log-in to TestPyPI and PyPI 
-# - create an API token for each (see [docs](https://pypi.org/help/#apitoken))
-# - add the token as a GitHub secret with the names listed above
-# 
-# > We will talk more about the `cd` job in `ci-cd.yml` next class.
-
-# ## Setting up GitHub Actions workflows with Python
-# 
-# The docs for the Python Packages Cookiecutter template repo has a User Guide that should help you get this all set-up: https://py-pkgs-cookiecutter.readthedocs.io/en/latest/user-guide.html
-
 # ## Setting up GitHub Actions workflows with R
 # 
 # The dev version of `usethis` has functions that will let you set-up your CI using GitHub Actions with ease! Here's a quickstart guide below, and more details can be found in the [Github actions with R](https://ropenscilabs.github.io/actions_sandbox/) book.
@@ -445,15 +353,8 @@
 # 5. Add the [codecov.io](https://codecov.io/) badge markdown syntax to your `README.Rmd` and knit to render the `README.md` file.
 # 
 # 6. Push your local changes to GitHub and sit back and watch the magic happen ✨
-
-# ![](https://media.giphy.com/media/3osxYyxqXmZQt7DPtm/giphy.gif)
-
-# ## What's next?
 # 
-# - Setting up GitHub Actions workflows for CI with R
-# - Continous development with GitHub Actions workflows in Python (including version bumping & semantic release)
-# - Package-level documentation
-# - Publishing your package on the package indices
+# ![](https://media.giphy.com/media/3osxYyxqXmZQt7DPtm/giphy.gif)
 
 # ## Resources:
 # 
