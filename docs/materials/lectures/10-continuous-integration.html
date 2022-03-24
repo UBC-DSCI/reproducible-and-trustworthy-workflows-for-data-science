@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,20 +33,21 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -95,7 +96,7 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
 </ul>
-<p class="caption">
+<p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Course notes
  </span>
@@ -207,7 +208,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -258,7 +259,7 @@ const thebe_selector_output = ".output, .cell_output"
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -339,42 +340,36 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-python-python-cookiecutter-package-ci-yml-workflow">
-   Case study: a simplified version of the Python Python cookiecutter package
+  <a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
+   Case study: a simplified version of the R
    <code class="docutils literal notranslate">
     <span class="pre">
-     ci.yml
+     check-release.yaml
     </span>
    </code>
    workflow:
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-ci-yml-workflow">
+    <a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
      Exercise: Orientating ourselves with the
      <code class="docutils literal notranslate">
       <span class="pre">
-       ci.yml
+       check-release.yaml
       </span>
      </code>
      workflow
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-adding-the-ci-yml-workflow-to-your-pycount-repository">
+    <a class="reference internal nav-link" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
      Exercise: Adding the
      <code class="docutils literal notranslate">
       <span class="pre">
-       ci.yml
+       check-release.yaml
       </span>
      </code>
-     workflow to your
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       pycount*
-      </span>
-     </code>
-     repository
+     workflow to your R package repository
     </a>
    </li>
   </ul>
@@ -405,14 +400,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-in-english-what-this-version-of-ci-yml-file-do">
-     Exercise: in English, what this version of
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       ci.yml
-      </span>
-     </code>
-     file do?
+    <a class="reference internal nav-link" href="#exercise-in-english-what-does-this-workflow-file-do">
+     Exercise: in English, what does this workflow file do?
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
@@ -432,23 +421,33 @@ const thebe_selector_output = ".output, .cell_output"
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setting-up-github-actions-workflows-with-r">
-   Setting up GitHub Actions workflows with R
+  <a class="reference internal nav-link" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
+   Setting up GitHub Actions workflows to check tests and test coverage
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#resources">
-   Resources:
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional resources:
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">
-     Curated list of awesome actions to use on GitHub 🎉
+    <a class="reference internal nav-link" href="#github-actions-with-r-book">
+     Github actions with R book
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#github-actions-for-the-r-community">
      GitHub Actions for the R community
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#github-actions-with-python">
+     GitHub Actions with Python
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">
+     Curated list of awesome actions to use on GitHub 🎉
     </a>
    </li>
   </ul>
@@ -461,7 +460,211 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Automated testing and continuous integration</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#topic-learning-objectives">
+   Topic learning objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#continuous-integration-ci">
+   Continuous Integration (CI)
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#why-use-ci-automated-testing">
+     Why use CI + automated testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#github-actions">
+   GitHub actions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#key-concepts">
+     Key concepts:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples-of-github-actions">
+     Examples of GitHub Actions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-getting-to-know-github-actions-workflows">
+     Exercise: Getting to know GitHub Actions workflows
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps">
+       Steps:
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#github-actions-workflow-file">
+     GitHub Actions workflow file:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#commands-vs-actions">
+     Commands vs actions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#commands">
+     Commands
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#actions">
+     Actions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#optional">
+       Optional:
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
+   Case study: a simplified version of the R
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     check-release.yaml
+    </span>
+   </code>
+   workflow:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
+     Exercise: Orientating ourselves with the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       check-release.yaml
+      </span>
+     </code>
+     workflow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
+     Exercise: Adding the
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       check-release.yaml
+      </span>
+     </code>
+     workflow to your R package repository
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets">
+   Storing and use GitHub Actions credentials safely via GitHub Secrets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authenticating-with-the-github-token">
+   Authenticating with the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     GITHUB_TOKEN
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-and-accessing-environment-variables-in-github-actions">
+   Creating and accessing environment variables in GitHub Actions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matrix-workflows">
+   Matrix workflows
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exercise-in-english-what-does-this-workflow-file-do">
+     Exercise: in English, what does this workflow file do?
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#steps-in-english">
+       Steps in English:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#how-many-jobs-are-run-what-does-each-do">
+       <em>
+        How many jobs are run? What does each do?
+       </em>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
+   Setting up GitHub Actions workflows to check tests and test coverage
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#additional-resources">
+   Additional resources:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#github-actions-with-r-book">
+     Github actions with R book
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#github-actions-for-the-r-community">
+     GitHub Actions for the R community
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#github-actions-with-python">
+     GitHub Actions with Python
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">
+     Curated list of awesome actions to use on GitHub 🎉
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="automated-testing-and-continuous-integration">
@@ -508,7 +711,7 @@ pipeline</p></li>
 <h3>Examples of GitHub Actions<a class="headerlink" href="#examples-of-github-actions" title="Permalink to this headline">¶</a></h3>
 <p>You have already interacted with GitHub Actions in this class! We used it to:</p>
 <ol class="simple">
-<li><p>Generate the issues in the <a class="reference external" href="https://github.com/ubc-mds/mds-homework"><code class="docutils literal notranslate"><span class="pre">mds-homework</span></code> repo</a> upon push to the “create” branch: <a class="reference external" href="https://github.com/UBC-MDS/mds-homework/blob/master/.github/workflows/create_issues.yml">https://github.com/UBC-MDS/mds-homework/blob/master/.github/workflows/create_issues.yml</a></p></li>
+<li><p>Generate the issues in the <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework"><code class="docutils literal notranslate"><span class="pre">dsci-310-homework</span></code> repo</a> upon push to the “create” branch: <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml">https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml</a></p></li>
 <li><p>Generate a pull request in the <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request"><code class="docutils literal notranslate"><span class="pre">review-my-pull-request</span></code> repo</a> upon push to the “pr” branch: : <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml">https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml</a></p></li>
 </ol>
 </div>
@@ -639,14 +842,41 @@ jobs:
 </div>
 </div>
 </div>
-<div class="section" id="case-study-a-simplified-version-of-the-python-python-cookiecutter-package-ci-yml-workflow">
-<h2>Case study: a simplified version of the Python Python cookiecutter package <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> workflow:<a class="headerlink" href="#case-study-a-simplified-version-of-the-python-python-cookiecutter-package-ci-yml-workflow" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
+<h2>Case study: a simplified version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow:<a class="headerlink" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Let’s break down a simplified version of the <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7Bcookiecutter.package_name%7D%7D/.github/workflows/ci.yml"><code class="docutils literal notranslate"><span class="pre">ci.yml</span></code></a> workflow file to start to better understand a real use case of GitHub Actions.</p></li>
+<li><p>Let’s break down a simplified and well annotated version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow file
+(<a class="reference external" href="https://github.com/r-lib/actions/blob/v2-branch/examples/check-release.yaml">full workflow here</a>)
+to better understand a real use case of GitHub Actions.</p></li>
 </ul>
-<div class="section" id="exercise-orientating-ourselves-with-the-ci-yml-workflow">
-<h3>Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> workflow<a class="headerlink" href="#exercise-orientating-ourselves-with-the-ci-yml-workflow" title="Permalink to this headline">¶</a></h3>
-<p>Let’s answer the following questions to start better understanding the <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> workflow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">on</span><span class="p">:</span> <span class="p">[</span><span class="n">push</span><span class="p">,</span> <span class="n">pull_request</span><span class="p">]</span>
+
+<span class="n">name</span><span class="p">:</span> <span class="n">R</span><span class="o">-</span><span class="n">CMD</span><span class="o">-</span><span class="n">check</span>
+
+<span class="n">jobs</span><span class="p">:</span>
+  <span class="n">R</span><span class="o">-</span><span class="n">CMD</span><span class="o">-</span><span class="n">check</span><span class="p">:</span>
+    <span class="n">runs</span><span class="o">-</span><span class="n">on</span><span class="p">:</span> <span class="n">ubuntu</span><span class="o">-</span><span class="n">latest</span>
+    
+    <span class="n">steps</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Checkout</span> <span class="n">files</span> <span class="kn">from</span> <span class="nn">GitHub</span> <span class="n">version</span> <span class="n">control</span> <span class="n">repository</span>
+        <span class="n">uses</span><span class="p">:</span> <span class="n">actions</span><span class="o">/</span><span class="n">checkout</span><span class="nd">@v2</span>
+
+      <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Setup</span> <span class="n">R</span>
+        <span class="n">uses</span><span class="p">:</span> <span class="n">r</span><span class="o">-</span><span class="n">lib</span><span class="o">/</span><span class="n">actions</span><span class="o">/</span><span class="n">setup</span><span class="o">-</span><span class="n">r</span><span class="nd">@v2</span>
+
+      <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Install</span> <span class="n">R</span> <span class="n">packages</span>
+        <span class="n">uses</span><span class="p">:</span> <span class="n">r</span><span class="o">-</span><span class="n">lib</span><span class="o">/</span><span class="n">actions</span><span class="o">/</span><span class="n">setup</span><span class="o">-</span><span class="n">r</span><span class="o">-</span><span class="n">dependencies</span><span class="nd">@v2</span>
+        <span class="k">with</span><span class="p">:</span>
+          <span class="n">extra</span><span class="o">-</span><span class="n">packages</span><span class="p">:</span> <span class="nb">any</span><span class="p">::</span><span class="n">rcmdcheck</span>
+          <span class="n">needs</span><span class="p">:</span> <span class="n">check</span>
+
+      <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Checks</span> <span class="k">if</span> <span class="n">R</span> <span class="n">package</span> <span class="n">can</span> <span class="n">be</span> <span class="n">installed</span>
+        <span class="n">uses</span><span class="p">:</span> <span class="n">r</span><span class="o">-</span><span class="n">lib</span><span class="o">/</span><span class="n">actions</span><span class="o">/</span><span class="n">check</span><span class="o">-</span><span class="n">r</span><span class="o">-</span><span class="n">package</span><span class="nd">@v2</span>
+</pre></div>
+</div>
+<div class="section" id="exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
+<h3>Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow<a class="headerlink" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow" title="Permalink to this headline">¶</a></h3>
+<p>Let’s answer the following questions to start better understanding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow.</p>
 <ol class="simple">
 <li><p>How many jobs are there?</p></li>
 <li><p>How many steps are there?</p></li>
@@ -655,14 +885,19 @@ jobs:
 <li><p>What events trigger this workflow?</p></li>
 </ol>
 </div>
-<div class="section" id="exercise-adding-the-ci-yml-workflow-to-your-pycount-repository">
-<h3>Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> workflow to your <code class="docutils literal notranslate"><span class="pre">pycount*</span></code> repository<a class="headerlink" href="#exercise-adding-the-ci-yml-workflow-to-your-pycount-repository" title="Permalink to this headline">¶</a></h3>
-<p>Let’s add the <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> workflow to our <code class="docutils literal notranslate"><span class="pre">pycount*</span></code> repository from week 1!</p>
+<div class="section" id="exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
+<h3>Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow to your R package repository<a class="headerlink" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository" title="Permalink to this headline">¶</a></h3>
+<p>There are two ways you can do this. Manually via the GitHub interface:</p>
 <ol class="simple">
 <li><p>Go to the actions tab for your GitHub repository</p></li>
 <li><p>Click on “<em>set up a workflow yourself</em>”</p></li>
-<li><p>Delete the template action provided to you, and paste the <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> file above into the text editor. Rename the file <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code>.</p></li>
+<li><p>Delete the template action provided to you, and paste the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> file above into the text editor. Rename the file <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code>.</p></li>
 <li><p>Click “Start commit”, enter a commit message and then click “Commit”.</p></li>
+</ol>
+<p>Or using the <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action</span></code> package convenience function:</p>
+<ol class="simple">
+<li><p>In the R console run <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action(&quot;check-release&quot;)</span></code></p></li>
+<li><p>Put the new <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> file in <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> under local version control and push the commit to GitHub.</p></li>
 </ol>
 </div>
 </div>
@@ -707,72 +942,60 @@ jobs:
 </pre></div>
 </div>
 <p>When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.</p>
-<div class="section" id="exercise-in-english-what-this-version-of-ci-yml-file-do">
-<h3>Exercise: in English, what this version of <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> file do?<a class="headerlink" href="#exercise-in-english-what-this-version-of-ci-yml-file-do" title="Permalink to this headline">¶</a></h3>
-<p>Now that we have some understanding of GitHub Actions workflows, let’s use that knowledge to write in English what each of the steps do in this more complicated version of the workflow found in  <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>name: ci
-
-on:
-  # Trigger the workflow on push or pull request to main
+<div class="section" id="exercise-in-english-what-does-this-workflow-file-do">
+<h3>Exercise: in English, what does this workflow file do?<a class="headerlink" href="#exercise-in-english-what-does-this-workflow-file-do" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have some understanding of GitHub Actions workflows, let’s use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>on:
   push:
-    branches:
-      - main
+    branches: [main, master]
   pull_request:
-    branches:
-      - main
+    branches: [main, master]
+
+name: R-CMD-check
 
 jobs:
-  ci:
-    runs-on: ${{ matrix.os }}
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: 3.9
-        
+        config:
+          - {os: windows-latest,  r: &#39;devel&#39;}
+          - {os: windows-latest, r: &#39;release&#39;}
+          - {os: ubuntu-latest,   r: &#39;devel&#39;}
+          - {os: ubuntu-latest,   r: &#39;release&#39;}
+    
     steps:
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    
-    - name: Checkout repository
-      uses: actions/checkout@v2
-  
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-    
-    - name: Install package
-      run: poetry install
-   
-    - name: Test with pytest
-      run: poetry run pytest tests/ --cov=pycounts_tb --cov-report=xml
-      
-    - name: Upload coverage to Codecov  
-      uses: codecov/codecov-action@v2
-      with:
-        file: ./coverage.xml    # coverage report
-        fail_ci_if_error: true
+      - name: Checkout files from GitHub version control repository
+        uses: actions/checkout@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - name: Checks if R package can be installed
+        uses: r-lib/actions/check-r-package@v2
 </pre></div>
 </div>
 <div class="section" id="steps-in-english">
 <h4>Steps in English:<a class="headerlink" href="#steps-in-english" title="Permalink to this headline">¶</a></h4>
-<ol class="simple">
-<li><p>Set up and install Python on the runner</p></li>
-<li><p>Checking out the files of the repository to the runner (last commit)</p></li>
-<li><p>Install Poetry</p></li>
-<li><p>Use Poetry to install dependencies and the package</p></li>
-<li><p>Run tests and check coverage, generate a coverage report</p></li>
-<li><p>Send the coverage report to codecov.io</p></li>
-</ol>
+<p>FILL IN DURING CLASS</p>
 </div>
 <div class="section" id="how-many-jobs-are-run-what-does-each-do">
 <h4><em>How many jobs are run? What does each do?</em><a class="headerlink" href="#how-many-jobs-are-run-what-does-each-do" title="Permalink to this headline">¶</a></h4>
+<p>FILL IN DURING CLASS</p>
 </div>
 </div>
 </div>
-<div class="section" id="setting-up-github-actions-workflows-with-r">
-<h2>Setting up GitHub Actions workflows with R<a class="headerlink" href="#setting-up-github-actions-workflows-with-r" title="Permalink to this headline">¶</a></h2>
-<p>The dev version of <code class="docutils literal notranslate"><span class="pre">usethis</span></code> has functions that will let you set-up your CI using GitHub Actions with ease! Here’s a quickstart guide below, and more details can be found in the <a class="reference external" href="https://ropenscilabs.github.io/actions_sandbox/">Github actions with R</a> book.</p>
+<div class="section" id="setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
+<h2>Setting up GitHub Actions workflows to check tests and test coverage<a class="headerlink" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Add the <code class="docutils literal notranslate"><span class="pre">covr</span></code> package as a suggested dependendency to your package via: <code class="docutils literal notranslate"><span class="pre">usethis::use_package(&quot;covr&quot;,</span> <span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;Suggests&quot;)</span></code></p></li>
 <li><p>Add a GitHub Actions workflows that runs a comprehensive build check across the major operating systems and runs the test suite and calculates coverage via: <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action_check_standard()</span></code> and <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action(&quot;test-coverage.yaml&quot;)</span></code></p></li>
@@ -783,18 +1006,30 @@ jobs:
 </ol>
 <p><img alt="" src="https://media.giphy.com/media/3osxYyxqXmZQt7DPtm/giphy.gif" /></p>
 </div>
-<div class="section" id="resources">
-<h2>Resources:<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="curated-list-of-awesome-actions-to-use-on-github">
-<h3>Curated list of awesome actions to use on GitHub 🎉<a class="headerlink" href="#curated-list-of-awesome-actions-to-use-on-github" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="additional-resources">
+<h2>Additional resources:<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="github-actions-with-r-book">
+<h3>Github actions with R book<a class="headerlink" href="#github-actions-with-r-book" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/sdras/awesome-actions">https://github.com/sdras/awesome-actions</a></p></li>
+<li><p><a class="reference external" href="https://ropenscilabs.github.io/actions_sandbox/">https://ropenscilabs.github.io/actions_sandbox/</a></p></li>
 </ul>
 </div>
 <div class="section" id="github-actions-for-the-r-community">
 <h3>GitHub Actions for the R community<a class="headerlink" href="#github-actions-for-the-r-community" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/r-lib/actions">https://github.com/r-lib/actions</a></p></li>
+</ul>
+</div>
+<div class="section" id="github-actions-with-python">
+<h3>GitHub Actions with Python<a class="headerlink" href="#github-actions-with-python" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://py-pkgs.org/08-ci-cd#introduction-to-github-actions">https://py-pkgs.org/08-ci-cd#introduction-to-github-actions</a></p></li>
+</ul>
+</div>
+<div class="section" id="curated-list-of-awesome-actions-to-use-on-github">
+<h3>Curated list of awesome actions to use on GitHub 🎉<a class="headerlink" href="#curated-list-of-awesome-actions-to-use-on-github" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/sdras/awesome-actions">https://github.com/sdras/awesome-actions</a></p></li>
 </ul>
 </div>
 </div>
@@ -822,8 +1057,8 @@ jobs:
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="09-packaging-and-documenting.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -840,19 +1075,17 @@ jobs:
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Tiffany Timbers<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
+  <p>
+    
+      By Tiffany Timbers<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
 </main>
 
 
