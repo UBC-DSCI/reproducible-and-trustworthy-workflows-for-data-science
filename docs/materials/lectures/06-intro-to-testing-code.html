@@ -22,8 +22,8 @@
       
 
     
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -33,24 +33,23 @@
     
   <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Non-interactive scripts and data analysis pipelines" href="07-scripts-and-pipelines.html" />
@@ -98,7 +97,7 @@
   </a>
  </li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
+<p class="caption">
  <span class="caption-text">
   Course notes
  </span>
@@ -210,7 +209,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -261,7 +260,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+        <div class="d-none d-md-block col-md-2 bd-toc show">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -684,433 +683,7 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Introduction to testing code for data science</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#topic-learning-objectives">
-   Topic learning objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functions">
-   Functions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#defining-functions-in-r">
-   Defining functions in R:
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#default-function-arguments">
-     Default function arguments
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#optional-advanced">
-       Optional - Advanced
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#extra-arguments-via">
-         Extra arguments via
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           ...
-          </span>
-         </code>
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lexical-scoping-in-r">
-     Lexical scoping in R
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#name-masking">
-       Name masking
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#dynamic-lookup">
-       Dynamic lookup
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#a-fresh-start">
-       A fresh start
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lazy-evaluation">
-     Lazy evaluation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#add-one-in-r">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         add_one
-        </span>
-       </code>
-       in R
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#add-one-in-python">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         add_one
-        </span>
-       </code>
-       in Python
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#the-power-of-lazy-evaluation">
-       The power of lazy evaluation
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exception-handling">
-   Exception handling
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#programming-with-the-tidyverse-functions">
-   Programming with the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     tidyverse
-    </span>
-   </code>
-   functions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#defining-tidyverse-functions-by-embracing-column-names">
-     Defining
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       tidyverse
-      </span>
-     </code>
-     functions by embracing column names:
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       {{
-      </span>
-      <span class="pre">
-       }}
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#the-walrus-operator-is-needed-when-assigning-values">
-     The walrus operator
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       :=
-      </span>
-     </code>
-     is needed when assigning values
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#function-documentation">
-   Function documentation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#function-documentation-in-r">
-     Function documentation in R
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#practice-writing-functions-in-r">
-   Practice writing functions in R
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-code-for-data-science">
-   Testing code for data science
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#workflow-for-writing-functions-and-tests-for-data-science">
-   Workflow for writing functions and tests for data science
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#example-of-workflow-for-writing-functions-and-tests-for-data-science">
-     Example of workflow for writing functions and tests for data science
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#write-the-function-specifications-and-documentation-but-do-not-implement-the-function">
-       1. Write the function specifications and documentation - but do not implement the function:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#plan-the-test-cases-and-document-them">
-       2. Plan the test cases and document them:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#create-test-data-that-is-useful-for-assessing-whether-your-function-works-as-expected">
-       3. Create test data that is useful for assessing whether your function works as expected:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#write-the-tests-to-evaluate-your-function-based-on-the-planned-test-cases-and-test-data">
-       4. Write the tests to evaluate your function based on the planned test cases and test data:
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#testthat-test-structure">
-         <code class="docutils literal notranslate">
-          <span class="pre">
-           testthat
-          </span>
-         </code>
-         test structure:
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#common-expect-statements-for-use-with-test-that">
-       Common
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         expect_*
-        </span>
-       </code>
-       statements for use with
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         test_that
-        </span>
-       </code>
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#is-the-object-equal-to-a-value">
-         Is the object equal to a value?
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#does-code-produce-an-output-message-warning-error">
-         Does code produce an output/message/warning/error?
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#is-the-object-true-false">
-         Is the object true/false?
-        </a>
-       </li>
-      </ul>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#implement-the-function-by-writing-the-needed-code-in-the-function-body-to-pass-the-tests">
-       5. Implement the function by writing the needed code in the function body to pass the tests:
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#where-do-the-function-and-test-files-go">
-     Where do the function and test files go?
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#where-does-the-function-go">
-       Where does the function go?
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#where-do-the-tests-go">
-       Where do the tests go?
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#convenience-functions-for-setting-this-up">
-       Convenience functions for setting this up
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reproducibly-generating-test-data">
-   Reproducibly generating test data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#common-types-of-test-levels-in-data-science">
-   Common types of test levels in data science
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#test-driven-development-tdd-and-testability">
-   Test-driven development (TDD) and testability
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#observability-of-unit-outputs-in-data-science">
-   Observability of unit outputs in data science
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visual-regression-testing">
-     Visual regression testing
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#visual-regression-testing-with-vdiffr">
-       Visual regression testing with
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         vdiffr
-        </span>
-       </code>
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#vdiffr-demo">
-       <code class="docutils literal notranslate">
-        <span class="pre">
-         vdiffr
-        </span>
-       </code>
-       demo
-      </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#practice-exercises">
-         Practice exercises
-        </a>
-       </li>
-      </ul>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#evaluate-test-suite-quality">
-   Evaluate test suite quality
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#black-box-white-box-testing">
-   Black box &amp; white box testing
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#coverage">
-   Coverage
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#coverage-metrics">
-     Coverage metrics:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-exactly-is-a-branch">
-     What exactly is a branch?
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#how-are-line-and-branch-coverage-different">
-   How are line and branch coverage different?
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-branch-as-the-coverage-metric">
-     Using branch as the coverage metric:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-line-as-the-coverage-metric">
-     Using line as the coverage metric:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#but-wait-line-coverage-can-be-misleading">
-     But wait, line coverage can be misleading…
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id1">
-       Using branch as the coverage metric:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id2">
-       Using line as the coverage metric:
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#take-home-message">
-     Take home message:
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#calculating-coverage-in-r">
-   Calculating coverage in R
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#testing-in-python-resources">
-   Testing in Python resources
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#attribution">
-   Attribution:
-  </a>
- </li>
-</ul>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            
+        
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="introduction-to-testing-code-for-data-science">
@@ -1535,16 +1108,16 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ───────────────────────────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Attaching packages</span> ──────────────────────────────────────────────────────────── tidyverse 1.3.1 ──
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">ggplot2</span> 3.3.5     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">purrr  </span> 0.3.4
 <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tibble </span> 3.1.6     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">dplyr  </span> 1.0.7
-<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.2.0     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
-<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.1.2     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">tidyr  </span> 1.1.4     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">stringr</span> 1.4.0
+<span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">readr  </span> 2.0.1     <span class=" -Color -Color-Green">✔</span> <span class=" -Color -Color-Blue">forcats</span> 0.5.1
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ──────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold">Conflicts</span> ─────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 <span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">filter()</span> masks <span class=" -Color -Color-Blue">stats</span>::filter()
 <span class=" -Color -Color-Red">✖</span> <span class=" -Color -Color-Blue">dplyr</span>::<span class=" -Color -Color-Green">lag()</span>    masks <span class=" -Color -Color-Blue">stats</span>::lag()
 </pre></div>
@@ -2024,27 +1597,51 @@ as well as the data we expect our function to return.</p>
 count_classes(two_classes_3_obs, class_lables) is not an S3 object
 </pre></div>
 </div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>Error:
-! Test failed
-Traceback:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:8:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
+<span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
+count_classes(five_classes_3_obs, class_lables) not equivalent to `five_classes_3_obs_output`.
+target is NULL, current is data.frame
 
-1. test_that(&quot;`count_classes` should return a tibble&quot;, {
- .     expect_s3_class(count_classes(two_classes_3_obs, class_lables), 
- .         &quot;tibble&quot;)
- . })
-2. (function (envir) 
- . {
- .     handlers &lt;- get_handlers(envir)
- .     errors &lt;- list()
- .     for (handler in handlers) {
- .         tryCatch(eval(handler$expr, handler$envir), error = function(e) {
- .             errors[[length(errors) + 1]] &lt;&lt;- e
- .         })
- .     }
- .     for (error in errors) {
- .         stop(error)
- .     }
- . })(&lt;environment&gt;)
+── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:9:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
+<span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
+count_classes(two_classes_3_obs, class_lables) not equivalent to `two_classes_3_obs_output`.
+target is NULL, current is data.frame
+
+── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:10:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
+<span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
+count_classes(one_class_3_obs, class_lables) not equivalent to `one_class_3_obs_output`.
+target is NULL, current is data.frame
+
+── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:11:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">with the number of rows that corresponds to the number of unique classes </span>
+<span class=" -Color -Color-Bold">in the column passed to `class_col`</span> ─────────────────────
+count_classes(empty_df, class_lables) not equivalent to `empty_df_output`.
+target is NULL, current is data.frame
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:17:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">whose values in the `count` column correspond to the number of observations </span>
+<span class=" -Color -Color-Bold">for the group in the `class` column from the original data frame</span> ─────────────────────
+count_classes(two_classes_3_and_2_obs, class_lables) not equivalent to `two_classes_3_and_2_obs_output`.
+target is NULL, current is data.frame
+
+── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:18:3): `count_classes` should return a data frame, or data frame extension, </span>
+<span class=" -Color -Color-Bold">whose values in the `count` column correspond to the number of observations </span>
+<span class=" -Color -Color-Bold">for the group in the `class` column from the original data frame</span> ─────────────────────
+count_classes(two_classes_3_and_1_obs, class_lables) not equivalent to `two_classes_3_and_1_obs_output`.
+target is NULL, current is data.frame
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:23:3): `count_classes` should throw an error when incorrect types </span>
+<span class=" -Color -Color-Bold">are passed to `data_frame` and `class_col` arguments</span> ─────────────────────
+`count_classes(two_classes_3_obs, vector_class_labels)` did not throw an error.
+
+── <span class=" -Color -Color-Bold -Color-Bold-Yellow">Failure</span><span class=" -Color -Color-Bold"> (&lt;text&gt;:24:3): `count_classes` should throw an error when incorrect types </span>
+<span class=" -Color -Color-Bold">are passed to `data_frame` and `class_col` arguments</span> ─────────────────────
+`count_classes(two_classes_3_obs_as_list, class_lables)` did not throw an error.
 </pre></div>
 </div>
 </div>
@@ -2125,10 +1722,16 @@ Traceback:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🎊
-<span class=" -Color -Color-Green">Test passed</span> 🌈
-<span class=" -Color -Color-Green">Test passed</span> 🥇
-<span class=" -Color -Color-Green">Test passed</span> 🎉
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🌈
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 😸
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🌈
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">Test passed</span> 🥇
 </pre></div>
 </div>
 </div>
@@ -2658,8 +2261,8 @@ function source:</p>
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+        
+            <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="05-containerization.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -2676,17 +2279,19 @@ function source:</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+        
         </div>
     </div>
     <footer class="footer">
-  <p>
-    
-      By Tiffany Timbers<br/>
-    
-        &copy; Copyright 2021.<br/>
-  </p>
-</footer>
+    <div class="container">
+      <p>
+        
+          By Tiffany Timbers<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
 </main>
 
 

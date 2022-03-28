@@ -42,9 +42,13 @@
 # 
 # So to avoid this, we are going to do continuous deployment when we can! And where we can't, we will automate as much as we can up until the point where we need to manually step in.
 
-# ## Example of CD for documentation deployment
+# ## Examples of CD being used for data science
 # 
-# TBD
+# - [Python packages](https://py-pkgs.org/08-ci-cd#setting-up-continuous-deployment) (but not R, more on this later...)
+# 
+# - Package documentation (e.g., [`pkgdown` websites](https://pkgdown.r-lib.org/) for R, [ReadtheDocs](https://py-pkgs.org/06-documentation#hosting-documentation-online) websites for Python)
+# 
+# - Books and websites (e.g., [`jupyter-book`](https://jupyterbook.org/intro.html), [`bookdown`](https://bookdown.org/), [`distill` websites](https://pkgs.rstudio.com/distill/index.html), etc)
 
 # ## Semantic versioning
 # 
