@@ -201,7 +201,19 @@
 # 
 # ### Level 1: GitHub
 # 
+# Packages can be installed from GitHub via `pip`:
+# 
+# ```
+# pip install git+https://github.com/USERNAME/REPOSITORY.git
+# ```
+# 
 # ### Level 2: PyPI
+# 
+# Packages can be installed from `PyPI` via:
+# 
+# ```
+# pip install PACKAGE_NAME
+# ```
 # 
 # - should be pronounced like "pie pea eye"
 # - also known as the Cheese Shop (a reference to the Monty Python's Flying Circus sketch "Cheese Shop")
