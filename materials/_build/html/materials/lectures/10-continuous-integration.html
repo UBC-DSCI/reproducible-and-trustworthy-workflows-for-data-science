@@ -1,478 +1,441 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Automated testing and continuous integration &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/10-continuous-integration';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Deploying and publishing packages" href="11-deploy-and-publish.html" />
     <link rel="prev" title="Packaging and documenting code" href="09-packaging-and-documenting.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../README.html">
-   Reproducible and Trustworthy Workflows for Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
- <span class="caption-text">
-  Course notes
- </span>
-</p>
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="01-intro-to-ds-workflows.html">
-   How do reproducible and trustworthy workflows impact data science?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="02-version-control-1.html">
-   Version control for transparency and collaboration
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="03-filenames-project-organization.html">
-   Filenames and data science project organization, Integrated development environments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="04-virtual-environments.html">
-   Virtual environments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="05-containerization.html">
-   Managing dependencies using containerization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="06-intro-to-testing-code.html">
-   Introduction to testing code for data science
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="07-scripts-and-pipelines.html">
-   Non-interactive scripts and data analysis pipelines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="08-reproducible-reports.html">
-   Reproducible reports
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="09-packaging-and-documenting.html">
-   Packaging and documenting code
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Automated testing and continuous integration
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="11-deploy-and-publish.html">
-   Deploying and publishing packages
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="12-licenses-and-copyright.html">
-   Copyright and licenses
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="13-reproducibility-wrap-up.html">
-   Workflows for reproducibile and trustworthy data science wrap-up
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control for transparency and collaboration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts-and-pipelines.html">Non-interactive scripts and data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/materials/lectures/10-continuous-integration.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/10-continuous-integration.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/10-continuous-integration.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/10-continuous-integration.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/10-continuous-integration.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Automated testing and continuous integration</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#topic-learning-objectives">
-   Topic learning objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#continuous-integration-ci">
-   Continuous Integration (CI)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#why-use-ci-automated-testing">
-     Why use CI + automated testing
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#github-actions">
-   GitHub actions
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#key-concepts">
-     Key concepts:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#examples-of-github-actions">
-     Examples of GitHub Actions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-getting-to-know-github-actions-workflows">
-     Exercise: Getting to know GitHub Actions workflows
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#steps">
-       Steps:
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#github-actions-workflow-file">
-     GitHub Actions workflow file:
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#commands-vs-actions">
-     Commands vs actions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#commands">
-     Commands
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#actions">
-     Actions
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#optional">
-       Optional:
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
-   Case study: a simplified version of the R
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     check-release.yaml
-    </span>
-   </code>
-   workflow:
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
-     Exercise: Orientating ourselves with the
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       check-release.yaml
-      </span>
-     </code>
-     workflow
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
-     Exercise: Adding the
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       check-release.yaml
-      </span>
-     </code>
-     workflow to your R package repository
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets">
-   Storing and use GitHub Actions credentials safely via GitHub Secrets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#authenticating-with-the-github-token">
-   Authenticating with the
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     GITHUB_TOKEN
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#creating-and-accessing-environment-variables-in-github-actions">
-   Creating and accessing environment variables in GitHub Actions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#matrix-workflows">
-   Matrix workflows
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exercise-in-english-what-does-this-workflow-file-do">
-     Exercise: in English, what does this workflow file do?
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#steps-in-english">
-       Steps in English:
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#how-many-jobs-are-run-what-does-each-do">
-       <em>
-        How many jobs are run? What does each do?
-       </em>
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
-   Setting up GitHub Actions workflows to check tests and test coverage
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#additional-resources">
-   Additional resources:
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#github-actions-with-r-book">
-     Github actions with R book
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#github-actions-for-the-r-community">
-     GitHub Actions for the R community
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#github-actions-with-python">
-     GitHub Actions with Python
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">
-     Curated list of awesome actions to use on GitHub 🎉
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-integration-ci">Continuous Integration (CI)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-ci-automated-testing">Why use CI + automated testing</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions">GitHub actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key concepts:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-github-actions">Examples of GitHub Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-actions-workflows">Exercise: Getting to know GitHub Actions workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-workflow-file">GitHub Actions workflow file:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands-vs-actions">Commands vs actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands">Commands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actions">Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optional">Optional:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">Case study: a simplified version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow">Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow to your R package repository</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets">Storing and use GitHub Actions credentials safely via GitHub Secrets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authenticating-with-the-github-token">Authenticating with the <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-and-accessing-environment-variables-in-github-actions">Creating and accessing environment variables in GitHub Actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-workflows">Matrix workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-in-english-what-does-this-workflow-file-do">Exercise: in English, what does this workflow file do?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-in-english">Steps in English:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-jobs-are-run-what-does-each-do"><em>How many jobs are run? What does each do?</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage">Setting up GitHub Actions workflows to check tests and test coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-with-r-book">Github actions with R book</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-for-the-r-community">GitHub Actions for the R community</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-with-python">GitHub Actions with Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">Curated list of awesome actions to use on GitHub 🎉</a></li>
+</ul>
+</li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="automated-testing-and-continuous-integration">
-<h1>Automated testing and continuous integration<a class="headerlink" href="#automated-testing-and-continuous-integration" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="topic-learning-objectives">
-<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="automated-testing-and-continuous-integration">
+<h1>Automated testing and continuous integration<a class="headerlink" href="#automated-testing-and-continuous-integration" title="Permalink to this heading">#</a></h1>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Argue the costs and benefits of using automated test infrastructure</p></li>
 <li><p>Use a testing framework (e.g., <code class="docutils literal notranslate"><span class="pre">testhat</span></code>) to automate the running of a
 project’s entire test suite</p></li>
@@ -481,46 +444,46 @@ test suite using the testing framework</p></li>
 <li><p>Incorporate non-code-functionality tests such as style/format checkers into a testing
 pipeline</p></li>
 </ol>
-</div>
-<div class="section" id="continuous-integration-ci">
-<h2>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="continuous-integration-ci">
+<h2>Continuous Integration (CI)<a class="headerlink" href="#continuous-integration-ci" title="Permalink to this heading">#</a></h2>
 <p>Defined as the practice of <strong>frequently</strong> integrating code (<em>e.g.</em>, several times a day) changes from contributors to a shared repository. Often the submission of code to the shared repository is combined with automated testing (and other things, such as style checking) to increase code dependability and quality.</p>
-<div class="section" id="why-use-ci-automated-testing">
-<h3>Why use CI + automated testing<a class="headerlink" href="#why-use-ci-automated-testing" title="Permalink to this headline">¶</a></h3>
+<section id="why-use-ci-automated-testing">
+<h3>Why use CI + automated testing<a class="headerlink" href="#why-use-ci-automated-testing" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>detects errors sooner</p></li>
 <li><p>reduces the amount of code to be examined when debugging</p></li>
 <li><p>facilitates merging</p></li>
 <li><p>ensures new code additions do not introduce errors</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="github-actions">
-<h2>GitHub actions<a class="headerlink" href="#github-actions" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="github-actions">
+<h2>GitHub actions<a class="headerlink" href="#github-actions" title="Permalink to this heading">#</a></h2>
 <p>A tool and service for automating software development tasks, located in the same place where you already store your code.</p>
-<div class="section" id="key-concepts">
-<h3>Key concepts:<a class="headerlink" href="#key-concepts" title="Permalink to this headline">¶</a></h3>
+<section id="key-concepts">
+<h3>Key concepts:<a class="headerlink" href="#key-concepts" title="Permalink to this heading">#</a></h3>
 <p><strong>Actions:</strong> Individual tasks you want to perform.</p>
 <p><strong>Workflow:</strong> A collection of actions (specified together in one file).</p>
 <p><strong>Event:</strong> Something that triggers the running of a workflow.</p>
 <p><strong>Runner</strong>: A machine that can run the Github Action(s).</p>
 <p><strong>Job</strong>: A set of steps executed on the same runner.</p>
 <p><strong>Step</strong>: A set of commands or actions which a job executes.</p>
-</div>
-<div class="section" id="examples-of-github-actions">
-<h3>Examples of GitHub Actions<a class="headerlink" href="#examples-of-github-actions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="examples-of-github-actions">
+<h3>Examples of GitHub Actions<a class="headerlink" href="#examples-of-github-actions" title="Permalink to this heading">#</a></h3>
 <p>You have already interacted with GitHub Actions in this class! We used it to:</p>
-<ol class="simple">
-<li><p>Generate the issues in the <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework"><code class="docutils literal notranslate"><span class="pre">dsci-310-homework</span></code> repo</a> upon push to the “create” branch: <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml">https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml</a></p></li>
-<li><p>Generate a pull request in the <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request"><code class="docutils literal notranslate"><span class="pre">review-my-pull-request</span></code> repo</a> upon push to the “pr” branch: : <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml">https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml</a></p></li>
+<ol class="arabic simple">
+<li><p>Generate the issues in the <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework"><code class="docutils literal notranslate"><span class="pre">dsci-310-homework</span></code> repo</a> upon push to the “create” branch: <a class="github reference external" href="https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml">UBC-DSCI/dsci-310-homework</a></p></li>
+<li><p>Generate a pull request in the <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request"><code class="docutils literal notranslate"><span class="pre">review-my-pull-request</span></code> repo</a> upon push to the “pr” branch: : <a class="github reference external" href="https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml">ttimbers/review-my-pull-request</a></p></li>
 </ol>
-</div>
-<div class="section" id="exercise-getting-to-know-github-actions-workflows">
-<h3>Exercise: Getting to know GitHub Actions workflows<a class="headerlink" href="#exercise-getting-to-know-github-actions-workflows" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="exercise-getting-to-know-github-actions-workflows">
+<h3>Exercise: Getting to know GitHub Actions workflows<a class="headerlink" href="#exercise-getting-to-know-github-actions-workflows" title="Permalink to this heading">#</a></h3>
 <p>We are going to each create our own GitHub Actions workflow. This workflow is a very simple toy example where we run some <code class="docutils literal notranslate"><span class="pre">echo</span></code> shell commands to print things to the runner’s terminal.</p>
-<div class="section" id="steps">
-<h4>Steps:<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h4>
-<ol>
+<section id="steps">
+<h4>Steps:<a class="headerlink" href="#steps" title="Permalink to this heading">#</a></h4>
+<ol class="arabic">
 <li><p>Create a new public <strong>GitHub.com</strong> repository with a <code class="docutils literal notranslate"><span class="pre">README</span></code>.</p></li>
 <li><p>Click on the “Actions” tab</p></li>
 <li><p>Click on the first “Set up this workflow” button</p>
@@ -536,10 +499,10 @@ pipeline</p></li>
 <a class="reference internal image-reference" href="../../_images/check-logs3.png"><img alt="../../_images/check-logs3.png" src="../../_images/check-logs3.png" style="width: 600px;" /></a>
 </li>
 </ol>
-</div>
-</div>
-<div class="section" id="github-actions-workflow-file">
-<h3>GitHub Actions workflow file:<a class="headerlink" href="#github-actions-workflow-file" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="github-actions-workflow-file">
+<h3>GitHub Actions workflow file:<a class="headerlink" href="#github-actions-workflow-file" title="Permalink to this heading">#</a></h3>
 <p>A <code class="docutils literal notranslate"><span class="pre">YAML</span></code> file that lives in the <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> directory or your repository which speciies your workflow.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># This is a basic workflow to help you get started with Actions
 
@@ -589,13 +552,13 @@ jobs:
 <li><p>the type of runner is ubuntu</p></li>
 <li><p>the first step uses an action, and the following two steps run commands</p></li>
 </ul>
-</div>
-<div class="section" id="commands-vs-actions">
-<h3>Commands vs actions<a class="headerlink" href="#commands-vs-actions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="commands-vs-actions">
+<h3>Commands vs actions<a class="headerlink" href="#commands-vs-actions" title="Permalink to this heading">#</a></h3>
 <p>Steps can consist commands or actions. Let’s spend some time to discuss what each of these are and how they differ.</p>
-</div>
-<div class="section" id="commands">
-<h3>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="commands">
+<h3>Commands<a class="headerlink" href="#commands" title="Permalink to this heading">#</a></h3>
 <p>Steps that use commands look like the one shown below. They consist of a <code class="docutils literal notranslate"><span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">run</span></code> parameter. The commands listed after <code class="docutils literal notranslate"><span class="pre">run</span></code> are run in the runner’s shell:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- name: Run a one-line script
       run: echo Hello, world!
@@ -608,9 +571,9 @@ jobs:
         <span class="n">echo</span> <span class="n">test</span><span class="p">,</span> <span class="ow">and</span> <span class="n">deploy</span> <span class="n">your</span> <span class="n">project</span><span class="o">.</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="actions">
-<h3>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="actions">
+<h3>Actions<a class="headerlink" href="#actions" title="Permalink to this heading">#</a></h3>
 <p>Steps that use actions look like the one shown below (which builds and publishes Docker containers). They always have a <code class="docutils literal notranslate"><span class="pre">uses</span></code> parameter, and often also have <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">with</span></code> parameters. The <code class="docutils literal notranslate"><span class="pre">uses</span></code> parameter specifies which action to use, and the <code class="docutils literal notranslate"><span class="pre">with</span></code> parameters provide arguments to those actions. The <code class="docutils literal notranslate"><span class="pre">&#64;master</span></code> at the name of the <code class="docutils literal notranslate"><span class="pre">uses</span></code> line, specifies whether to use the version at the head of the actions default branch, or a specific version (<em>e.g.,</em> <code class="docutils literal notranslate"><span class="pre">&#64;v2</span></code>).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
@@ -628,8 +591,8 @@ jobs:
 <blockquote>
 <div><p>In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are intersted in learning more, I point you to the documentation below.</p>
 </div></blockquote>
-<div class="section" id="optional">
-<h4>Optional:<a class="headerlink" href="#optional" title="Permalink to this headline">¶</a></h4>
+<section id="optional">
+<h4>Optional:<a class="headerlink" href="#optional" title="Permalink to this heading">#</a></h4>
 <p>For example, for the action above see its:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/Dockerfile">Dockerfile</a></p></li>
@@ -639,11 +602,11 @@ jobs:
 <p>Read the docs here to learn how to build your own Docker container GitHub action: <a class="reference external" href="https://help.github.com/en/actions/building-actions/creating-a-docker-container-action">https://help.github.com/en/actions/building-actions/creating-a-docker-container-action</a></p>
 <p>Read the docs here to learn how to build your own JavaScript GitHub action:
 <a class="reference external" href="https://help.github.com/en/actions/building-actions/creating-a-javascript-action">https://help.github.com/en/actions/building-actions/creating-a-javascript-action</a></p>
-</div>
-</div>
-</div>
-<div class="section" id="case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
-<h2>Case study: a simplified version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow:<a class="headerlink" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">
+<h2>Case study: a simplified version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow:<a class="headerlink" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Let’s break down a simplified and well annotated version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow file
 (<a class="reference external" href="https://github.com/r-lib/actions/blob/v2-branch/examples/check-release.yaml">full workflow here</a>)
@@ -674,49 +637,49 @@ to better understand a real use case of GitHub Actions.</p></li>
         <span class="n">uses</span><span class="p">:</span> <span class="n">r</span><span class="o">-</span><span class="n">lib</span><span class="o">/</span><span class="n">actions</span><span class="o">/</span><span class="n">check</span><span class="o">-</span><span class="n">r</span><span class="o">-</span><span class="n">package</span><span class="nd">@v2</span>
 </pre></div>
 </div>
-<div class="section" id="exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
-<h3>Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow<a class="headerlink" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow" title="Permalink to this headline">¶</a></h3>
+<section id="exercise-orientating-ourselves-with-the-check-release-yaml-workflow">
+<h3>Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow<a class="headerlink" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow" title="Permalink to this heading">#</a></h3>
 <p>Let’s answer the following questions to start better understanding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>How many jobs are there?</p></li>
 <li><p>How many steps are there?</p></li>
 <li><p>What which steps are actions and which are commands</p></li>
 <li><p>What is the type of runner</p></li>
 <li><p>What events trigger this workflow?</p></li>
 </ol>
-</div>
-<div class="section" id="exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
-<h3>Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow to your R package repository<a class="headerlink" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">
+<h3>Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow to your R package repository<a class="headerlink" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository" title="Permalink to this heading">#</a></h3>
 <p>There are two ways you can do this. Manually via the GitHub interface:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Go to the actions tab for your GitHub repository</p></li>
 <li><p>Click on “<em>set up a workflow yourself</em>”</p></li>
 <li><p>Delete the template action provided to you, and paste the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> file above into the text editor. Rename the file <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code>.</p></li>
 <li><p>Click “Start commit”, enter a commit message and then click “Commit”.</p></li>
 </ol>
 <p>Or using the <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action</span></code> package convenience function:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>In the R console run <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action(&quot;check-release&quot;)</span></code></p></li>
 <li><p>Put the new <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> file in <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> under local version control and push the commit to GitHub.</p></li>
 </ol>
-</div>
-</div>
-<div class="section" id="storing-and-use-github-actions-credentials-safely-via-github-secrets">
-<h2>Storing and use GitHub Actions credentials safely via GitHub Secrets<a class="headerlink" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="storing-and-use-github-actions-credentials-safely-via-github-secrets">
+<h2>Storing and use GitHub Actions credentials safely via GitHub Secrets<a class="headerlink" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets" title="Permalink to this heading">#</a></h2>
 <p>Some of the tasks we want to do in our workflows require authentication. However, the whole point of this is to automate this process - so how can we do that without sharing our authentication tokens, usernames or passwords in our workflow files?</p>
 <p>GitHub Secrets is the solution to this!</p>
 <p>GitHub Secrets are encrypted environment variables that are used only with GitHub Actions, and specified on a repository-by-repository basis. They can be accessed in a workflow file via: <code class="docutils literal notranslate"><span class="pre">${{</span> <span class="pre">secrets.SECRET_NAME</span> <span class="pre">}}</span></code></p>
 <p>See GitHub’s help docs for how to do this: <a class="reference external" href="https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets">https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets</a></p>
-</div>
-<div class="section" id="authenticating-with-the-github-token">
-<h2>Authenticating with the <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code><a class="headerlink" href="#authenticating-with-the-github-token" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="authenticating-with-the-github-token">
+<h2>Authenticating with the <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code><a class="headerlink" href="#authenticating-with-the-github-token" title="Permalink to this heading">#</a></h2>
 <p>What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code> that you can access and use in your workflow. You access this token in your workflow file via:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${{ secrets.GITHUB_TOKEN }}
 </pre></div>
 </div>
-</div>
-<div class="section" id="creating-and-accessing-environment-variables-in-github-actions">
-<h2>Creating and accessing environment variables in GitHub Actions<a class="headerlink" href="#creating-and-accessing-environment-variables-in-github-actions" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="creating-and-accessing-environment-variables-in-github-actions">
+<h2>Creating and accessing environment variables in GitHub Actions<a class="headerlink" href="#creating-and-accessing-environment-variables-in-github-actions" title="Permalink to this heading">#</a></h2>
 <p>Sometimes our commands or actions need environment variables. In both of these scenarios, we create environment variables and access them within a step via:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>steps:
   - name: Hello env vars
@@ -726,9 +689,9 @@ to better understand a real use case of GitHub Actions.</p></li>
       VARIABLE_NAME2: &lt;variable_value2&gt;
 </pre></div>
 </div>
-</div>
-<div class="section" id="matrix-workflows">
-<h2>Matrix workflows<a class="headerlink" href="#matrix-workflows" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="matrix-workflows">
+<h2>Matrix workflows<a class="headerlink" href="#matrix-workflows" title="Permalink to this heading">#</a></h2>
 <p>We don’t want our software to just work on one operating system, or just one version of Python or R. Ideally it is compatible with the three major operating systems as well as a couple versions of the programming language it was written it.</p>
 <p>How do we ensure this? Well, we could have several GitHub Action workflows, each of which runs the job on a different version of Python, on a different operating system. However, there would be a lot of redundancy in those workflows, with the only differences between them being the operating system of the runner and the version of Python.</p>
 <p>A more efficient way to do this with GitHub Actions workflows is to use matrix workflows. In these workflows, we use a matrix variable, which we specify as:</p>
@@ -742,8 +705,8 @@ to better understand a real use case of GitHub Actions.</p></li>
 </pre></div>
 </div>
 <p>When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.</p>
-<div class="section" id="exercise-in-english-what-does-this-workflow-file-do">
-<h3>Exercise: in English, what does this workflow file do?<a class="headerlink" href="#exercise-in-english-what-does-this-workflow-file-do" title="Permalink to this headline">¶</a></h3>
+<section id="exercise-in-english-what-does-this-workflow-file-do">
+<h3>Exercise: in English, what does this workflow file do?<a class="headerlink" href="#exercise-in-english-what-does-this-workflow-file-do" title="Permalink to this heading">#</a></h3>
 <p>Now that we have some understanding of GitHub Actions workflows, let’s use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>on:
   push:
@@ -784,19 +747,19 @@ jobs:
         uses: r-lib/actions/check-r-package@v2
 </pre></div>
 </div>
-<div class="section" id="steps-in-english">
-<h4>Steps in English:<a class="headerlink" href="#steps-in-english" title="Permalink to this headline">¶</a></h4>
+<section id="steps-in-english">
+<h4>Steps in English:<a class="headerlink" href="#steps-in-english" title="Permalink to this heading">#</a></h4>
 <p>FILL IN DURING CLASS</p>
-</div>
-<div class="section" id="how-many-jobs-are-run-what-does-each-do">
-<h4><em>How many jobs are run? What does each do?</em><a class="headerlink" href="#how-many-jobs-are-run-what-does-each-do" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="how-many-jobs-are-run-what-does-each-do">
+<h4><em>How many jobs are run? What does each do?</em><a class="headerlink" href="#how-many-jobs-are-run-what-does-each-do" title="Permalink to this heading">#</a></h4>
 <p>FILL IN DURING CLASS</p>
-</div>
-</div>
-</div>
-<div class="section" id="setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
-<h2>Setting up GitHub Actions workflows to check tests and test coverage<a class="headerlink" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage" title="Permalink to this headline">¶</a></h2>
-<ol class="simple">
+</section>
+</section>
+</section>
+<section id="setting-up-github-actions-workflows-to-check-tests-and-test-coverage">
+<h2>Setting up GitHub Actions workflows to check tests and test coverage<a class="headerlink" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
 <li><p>Add the <code class="docutils literal notranslate"><span class="pre">covr</span></code> package as a suggested dependendency to your package via: <code class="docutils literal notranslate"><span class="pre">usethis::use_package(&quot;covr&quot;,</span> <span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;Suggests&quot;)</span></code></p></li>
 <li><p>Add a GitHub Actions workflows that runs a comprehensive build check across the major operating systems and runs the test suite and calculates coverage via: <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action_check_standard()</span></code> and <code class="docutils literal notranslate"><span class="pre">usethis::use_github_action(&quot;test-coverage.yaml&quot;)</span></code></p></li>
 <li><p>Link your R package GitHub repo with <a class="reference external" href="https://codecov.io/">codecov.io</a></p></li>
@@ -805,35 +768,35 @@ jobs:
 <li><p>Push your local changes to GitHub and sit back and watch the magic happen ✨</p></li>
 </ol>
 <p><img alt="" src="https://media.giphy.com/media/3osxYyxqXmZQt7DPtm/giphy.gif" /></p>
-</div>
-<div class="section" id="additional-resources">
-<h2>Additional resources:<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="github-actions-with-r-book">
-<h3>Github actions with R book<a class="headerlink" href="#github-actions-with-r-book" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="additional-resources">
+<h2>Additional resources:<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<section id="github-actions-with-r-book">
+<h3>Github actions with R book<a class="headerlink" href="#github-actions-with-r-book" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://ropenscilabs.github.io/actions_sandbox/">https://ropenscilabs.github.io/actions_sandbox/</a></p></li>
 </ul>
-</div>
-<div class="section" id="github-actions-for-the-r-community">
-<h3>GitHub Actions for the R community<a class="headerlink" href="#github-actions-for-the-r-community" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="github-actions-for-the-r-community">
+<h3>GitHub Actions for the R community<a class="headerlink" href="#github-actions-for-the-r-community" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/r-lib/actions">https://github.com/r-lib/actions</a></p></li>
+<li><p><a class="github reference external" href="https://github.com/r-lib/actions">r-lib/actions</a></p></li>
 </ul>
-</div>
-<div class="section" id="github-actions-with-python">
-<h3>GitHub Actions with Python<a class="headerlink" href="#github-actions-with-python" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="github-actions-with-python">
+<h3>GitHub Actions with Python<a class="headerlink" href="#github-actions-with-python" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://py-pkgs.org/08-ci-cd#introduction-to-github-actions">https://py-pkgs.org/08-ci-cd#introduction-to-github-actions</a></p></li>
 </ul>
-</div>
-<div class="section" id="curated-list-of-awesome-actions-to-use-on-github">
-<h3>Curated list of awesome actions to use on GitHub 🎉<a class="headerlink" href="#curated-list-of-awesome-actions-to-use-on-github" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="curated-list-of-awesome-actions-to-use-on-github">
+<h3>Curated list of awesome actions to use on GitHub 🎉<a class="headerlink" href="#curated-list-of-awesome-actions-to-use-on-github" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/sdras/awesome-actions">https://github.com/sdras/awesome-actions</a></p></li>
+<li><p><a class="github reference external" href="https://github.com/sdras/awesome-actions">sdras/awesome-actions</a></p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -847,7 +810,7 @@ jobs:
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./materials/lectures"
         },
         predefinedOutput: true
@@ -855,46 +818,145 @@ jobs:
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="09-packaging-and-documenting.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Packaging and documenting code</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09-packaging-and-documenting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Packaging and documenting code</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="11-deploy-and-publish.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="11-deploy-and-publish.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Deploying and publishing packages</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-        
-        </div>
-    </div>
-    <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Tiffany Timbers<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continuous-integration-ci">Continuous Integration (CI)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-ci-automated-testing">Why use CI + automated testing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions">GitHub actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-concepts">Key concepts:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-github-actions">Examples of GitHub Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-actions-workflows">Exercise: Getting to know GitHub Actions workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-workflow-file">GitHub Actions workflow file:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands-vs-actions">Commands vs actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands">Commands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#actions">Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optional">Optional:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-a-simplified-version-of-the-r-check-release-yaml-workflow">Case study: a simplified version of the R <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-orientating-ourselves-with-the-check-release-yaml-workflow">Exercise: Orientating ourselves with the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-adding-the-check-release-yaml-workflow-to-your-r-package-repository">Exercise: Adding the <code class="docutils literal notranslate"><span class="pre">check-release.yaml</span></code> workflow to your R package repository</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#storing-and-use-github-actions-credentials-safely-via-github-secrets">Storing and use GitHub Actions credentials safely via GitHub Secrets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authenticating-with-the-github-token">Authenticating with the <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-and-accessing-environment-variables-in-github-actions">Creating and accessing environment variables in GitHub Actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matrix-workflows">Matrix workflows</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-in-english-what-does-this-workflow-file-do">Exercise: in English, what does this workflow file do?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps-in-english">Steps in English:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-jobs-are-run-what-does-each-do"><em>How many jobs are run? What does each do?</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-github-actions-workflows-to-check-tests-and-test-coverage">Setting up GitHub Actions workflows to check tests and test coverage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-with-r-book">Github actions with R book</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-for-the-r-community">GitHub Actions for the R community</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-actions-with-python">GitHub Actions with Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#curated-list-of-awesome-actions-to-use-on-github">Curated list of awesome actions to use on GitHub 🎉</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
-      </div>
-    </div>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

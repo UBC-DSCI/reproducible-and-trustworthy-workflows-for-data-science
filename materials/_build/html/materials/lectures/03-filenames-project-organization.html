@@ -1,494 +1,462 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Filenames and data science project organization, Integrated development environments &#8212; DSCI 310 Reproducible and Trustworthy Workflows for Data Science</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    
-      
-
-    
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script >const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
 const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/03-filenames-project-organization';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Virtual environments" href="04-virtual-environments.html" />
     <link rel="prev" title="Version control for transparency and collaboration" href="02-version-control-1.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
 
-    <div class="container-xl">
-      <div class="row">
-          
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="../../index.html">
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="../../_static/dsci-310-logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">DSCI 310 Reproducible and Trustworthy Workflows for Data Science</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../../README.html">
-   Reproducible and Trustworthy Workflows for Data Science
-  </a>
- </li>
-</ul>
-<p class="caption">
- <span class="caption-text">
-  Course notes
- </span>
-</p>
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="01-intro-to-ds-workflows.html">
-   How do reproducible and trustworthy workflows impact data science?
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="02-version-control-1.html">
-   Version control for transparency and collaboration
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   Filenames and data science project organization, Integrated development environments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="04-virtual-environments.html">
-   Virtual environments
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="05-containerization.html">
-   Managing dependencies using containerization
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="06-intro-to-testing-code.html">
-   Introduction to testing code for data science
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="07-scripts-and-pipelines.html">
-   Non-interactive scripts and data analysis pipelines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="08-reproducible-reports.html">
-   Reproducible reports
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="09-packaging-and-documenting.html">
-   Packaging and documenting code
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="10-continuous-integration.html">
-   Automated testing and continuous integration
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="11-deploy-and-publish.html">
-   Deploying and publishing packages
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="12-licenses-and-copyright.html">
-   Copyright and licenses
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="13-reproducibility-wrap-up.html">
-   Workflows for reproducibile and trustworthy data science wrap-up
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control for transparency and collaboration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts-and-pipelines.html">Non-interactive scripts and data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/materials/lectures/03-filenames-project-organization.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.ipynb</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+</nav></div>
     </div>
-</div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
-            <!-- Source interaction buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/03-filenames-project-organization.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+      </div>
+      
+      <main id="main-content" class="bd-main">
         
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
     </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/03-filenames-project-organization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
 
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
 
-            <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/master?urlpath=tree/materials/lectures/03-filenames-project-organization.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="../../_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/03-filenames-project-organization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
     </div>
+  
 </div>
+</div>
+              
+              
 
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Filenames and data science project organization, Integrated development environments</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div>
+                <h2> Contents </h2>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
+            <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#topic-learning-objectives">
-   Topic learning objectives
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#filenames-best-practices">
-   Filenames - best practices
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#names-matter">
-     Names matter
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-works-what-doesn-t">
-     What works, what doesn’t?
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#three-principles-for-file-names">
-     Three principles for (file) names
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#awesome-file-names">
-       Awesome file names :)
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#machine-readable">
-     Machine readable
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id1">
-       Machine readable
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#globbing">
-       Globbing
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">
-       Same using Mac OS Finder search facilities
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#same-using-regex-in-r">
-       Same using regex in R
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#punctuation-smaller">
-       Punctuation {.smaller}
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#recap-machine-readable">
-       Recap: machine readable
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#human-readable">
-     Human readable
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id2">
-       Human readable
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#example">
-       Example
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#embrace-the-slug">
-       Embrace the slug
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#recap-human-readable">
-       Recap: Human readable
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#plays-well-with-default-ordering">
-     Plays well with default ordering
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id3">
-       Plays well with default ordering
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#examples">
-       Examples
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#dates">
-       Dates
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
-       Comprehensive map of all countries in the world that use the MM-DD-YYYY format
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">
-       Left pad other numbers with zeros
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">
-       Recap: Plays well with default ordering
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#recap">
-       Recap
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id4">
-       Three principles for (file) names
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#pros">
-       Pros
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">
-       Go forth and use awesome file names :)
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#project-organization">
-   Project organization
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#a-tour-de-data-science-project-organization">
-     A tour de data science project organization
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#example-projects">
-       Example projects
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#integrated-development-environments">
-   Integrated development environments
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#key-features-of-all-of-these-ides-includes">
-     Key features of all of these IDEs includes:
-    </a>
-   </li>
-  </ul>
- </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filenames-best-practices">Filenames - best practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#names-matter">Names matter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-works-what-doesn-t">What works, what doesn’t?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-principles-for-file-names">Three principles for (file) names</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awesome-file-names">Awesome file names :)</a></li>
 </ul>
-
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-readable">Machine readable</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Machine readable</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#globbing">Globbing</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">Same using Mac OS Finder search facilities</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#same-using-regex-in-r">Same using regex in R</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#punctuation-smaller">Punctuation {.smaller}</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-machine-readable">Recap: machine readable</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#human-readable">Human readable</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Human readable</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#embrace-the-slug">Embrace the slug</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-human-readable">Recap: Human readable</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plays-well-with-default-ordering">Plays well with default ordering</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Plays well with default ordering</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dates">Dates</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">Comprehensive map of all countries in the world that use the MM-DD-YYYY format</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">Left pad other numbers with zeros</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">Recap: Plays well with default ordering</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap">Recap</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Three principles for (file) names</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pros">Pros</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">Go forth and use awesome file names :)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-organization">Project organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-tour-de-data-science-project-organization">A tour de data science project organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projects">Example projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-development-environments">Integrated development environments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features-of-all-of-these-ides-includes">Key features of all of these IDEs includes:</a></li>
+</ul>
+</li>
+</ul>
             </nav>
         </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
-              <div>
+
+              
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="filenames-and-data-science-project-organization-integrated-development-environments">
-<h1>Filenames and data science project organization, Integrated development environments<a class="headerlink" href="#filenames-and-data-science-project-organization-integrated-development-environments" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="filenames-and-data-science-project-organization-integrated-development-environments">
+<h1>Filenames and data science project organization, Integrated development environments<a class="headerlink" href="#filenames-and-data-science-project-organization-integrated-development-environments" title="Permalink to this heading">#</a></h1>
 <p><strong>Attribution:</strong> much of these notes come from <a class="reference external" href="https://en.wikipedia.org/wiki/Jenny_Bryan">Jenny Bryan</a>’s talk “Naming things” (<a class="reference external" href="http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf">original slides</a> and <a class="reference external" href="https://github.com/jennybc/organization-and-naming">source code</a>)</p>
-<div class="section" id="topic-learning-objectives">
-<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this headline">¶</a></h2>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Explain how project organization and file naming contribute to reproducible data science</p></li>
 <li><p>Organize projects and name files in a sound manner</p></li>
 <li><p>Use an integrated development environment (IDE) to create, edit and run a script (e.g., VScode in Python, or RStudio in R)</p></li>
 <li><p>Use the IDE to access documentation/help, environment variables and efficiently navigate directories</p></li>
 <li><p>Extend and customize an IDE with useful extensions/add-ons/tools such as linters and formatters</p></li>
 </ol>
-</div>
-<div class="section" id="filenames-best-practices">
-<h2>Filenames - best practices<a class="headerlink" href="#filenames-best-practices" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="names-matter">
-<h3>Names matter<a class="headerlink" href="#names-matter" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="filenames-best-practices">
+<h2>Filenames - best practices<a class="headerlink" href="#filenames-best-practices" title="Permalink to this heading">#</a></h2>
+<section id="names-matter">
+<h3>Names matter<a class="headerlink" href="#names-matter" title="Permalink to this heading">#</a></h3>
 <a class="reference internal image-reference" href="../../_images/cheers.png"><img alt="../../_images/cheers.png" src="../../_images/cheers.png" style="width: 600px;" /></a>
-</div>
-<div class="section" id="what-works-what-doesn-t">
-<h3>What works, what doesn’t?<a class="headerlink" href="#what-works-what-doesn-t" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="what-works-what-doesn-t">
+<h3>What works, what doesn’t?<a class="headerlink" href="#what-works-what-doesn-t" title="Permalink to this heading">#</a></h3>
 <p><strong>NO</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>myabstract.docx
 Joe’s Filenames Use Spaces and Punctuation.xlsx
@@ -505,25 +473,25 @@ JW7d^(2sl@deletethisandyourcareerisoverWx2*.txt
 <span class="mi">1986</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">28</span><span class="n">_raw</span><span class="o">-</span><span class="n">data</span><span class="o">-</span><span class="n">from</span><span class="o">-</span><span class="n">challenger</span><span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">rings</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="three-principles-for-file-names">
-<h3>Three principles for (file) names<a class="headerlink" href="#three-principles-for-file-names" title="Permalink to this headline">¶</a></h3>
-<ol class="simple">
+</section>
+<section id="three-principles-for-file-names">
+<h3>Three principles for (file) names<a class="headerlink" href="#three-principles-for-file-names" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
 <li><p>Machine readable</p></li>
 <li><p>Human readable</p></li>
 <li><p>Plays well with default ordering</p></li>
 </ol>
-<div class="section" id="awesome-file-names">
-<h4>Awesome file names :)<a class="headerlink" href="#awesome-file-names" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+<section id="awesome-file-names">
+<h4>Awesome file names :)<a class="headerlink" href="#awesome-file-names" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/awesome_names.png"><img alt="../../_images/awesome_names.png" src="../../_images/awesome_names.png" style="width: 600px;" /></a>
-</div>
-</div>
-</div>
-<div class="section" id="machine-readable">
-<h3>Machine readable<a class="headerlink" href="#machine-readable" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id1">
-<h4>Machine readable<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+</figure>
+</section>
+</section>
+<section id="machine-readable">
+<h3>Machine readable<a class="headerlink" href="#machine-readable" title="Permalink to this heading">#</a></h3>
+<section id="id1">
+<h4>Machine readable<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Regular expression and globbing friendly</p>
 <ul>
@@ -536,45 +504,45 @@ JW7d^(2sl@deletethisandyourcareerisoverWx2*.txt
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="globbing">
-<h4>Globbing<a class="headerlink" href="#globbing" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="globbing">
+<h4>Globbing<a class="headerlink" href="#globbing" title="Permalink to this heading">#</a></h4>
 <p><strong>Excerpt of complete file listing:</strong></p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/plasmid_names.png"><img alt="../../_images/plasmid_names.png" src="../../_images/plasmid_names.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <hr>
 <p><strong>Example of globbing to narrow file listing:</strong></p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/plasmid_glob.png"><img alt="../../_images/plasmid_glob.png" src="../../_images/plasmid_glob.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="same-using-mac-os-finder-search-facilities">
-<h4>Same using Mac OS Finder search facilities<a class="headerlink" href="#same-using-mac-os-finder-search-facilities" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+</figure>
+</section>
+<section id="same-using-mac-os-finder-search-facilities">
+<h4>Same using Mac OS Finder search facilities<a class="headerlink" href="#same-using-mac-os-finder-search-facilities" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/plasmid_mac_os_search.png"><img alt="../../_images/plasmid_mac_os_search.png" src="../../_images/plasmid_mac_os_search.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="same-using-regex-in-r">
-<h4>Same using regex in R<a class="headerlink" href="#same-using-regex-in-r" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+</figure>
+</section>
+<section id="same-using-regex-in-r">
+<h4>Same using regex in R<a class="headerlink" href="#same-using-regex-in-r" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/plasmid_regex.png"><img alt="../../_images/plasmid_regex.png" src="../../_images/plasmid_regex.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="punctuation-smaller">
-<h4>Punctuation {.smaller}<a class="headerlink" href="#punctuation-smaller" title="Permalink to this headline">¶</a></h4>
+</figure>
+</section>
+<section id="punctuation-smaller">
+<h4>Punctuation {.smaller}<a class="headerlink" href="#punctuation-smaller" title="Permalink to this heading">#</a></h4>
 <p>Deliberate use of <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;_&quot;</span></code> allows recovery of meta-data from the filenames:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;_&quot;</span></code> underscore used to delimit units of meta-data I want later</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> hyphen used to delimit words so my eyes don’t bleed</p></li>
 </ul>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/plasmid_delimiters.png"><img alt="../../_images/plasmid_delimiters.png" src="../../_images/plasmid_delimiters.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <p>This happens to be R but also possible in the shell, Python, etc.</p>
-</div>
-<div class="section" id="recap-machine-readable">
-<h4>Recap: machine readable<a class="headerlink" href="#recap-machine-readable" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="recap-machine-readable">
+<h4>Recap: machine readable<a class="headerlink" href="#recap-machine-readable" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Easy to search for files later</p></li>
 <li><p>Easy to narrow file lists based on names</p></li>
@@ -588,86 +556,86 @@ JW7d^(2sl@deletethisandyourcareerisoverWx2*.txt
 </ul>
 </li>
 </ul>
-</div>
-</div>
-<div class="section" id="human-readable">
-<h3>Human readable<a class="headerlink" href="#human-readable" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id2">
-<h4>Human readable<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+</section>
+</section>
+<section id="human-readable">
+<h3>Human readable<a class="headerlink" href="#human-readable" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h4>Human readable<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Name contains info on content</p></li>
 <li><p>Connects to concept of a <em>slug</em> from semantic URLs</p></li>
 </ul>
-</div>
-<div class="section" id="example">
-<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this heading">#</a></h4>
 <p><strong>Which set of file(name)s do you want at 3 a.m. before a deadline?</strong></p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/human_readable_not_options.png"><img alt="../../_images/human_readable_not_options.png" src="../../_images/human_readable_not_options.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="embrace-the-slug">
-<h4>Embrace the slug<a class="headerlink" href="#embrace-the-slug" title="Permalink to this headline">¶</a></h4>
+</figure>
+</section>
+<section id="embrace-the-slug">
+<h4>Embrace the slug<a class="headerlink" href="#embrace-the-slug" title="Permalink to this heading">#</a></h4>
 <div class="columns-2">
 slug filenames
 ![](img/slug_filenames.png)
 <p>slug</p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="materials/lectures/img/slug.jpg"><img alt="materials/lectures/img/slug.jpg" src="materials/lectures/img/slug.jpg" style="width: 600px;" /></a>
+</figure>
 </div>
-</div>
-</div>
-<div class="section" id="recap-human-readable">
-<h4>Recap: Human readable<a class="headerlink" href="#recap-human-readable" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="recap-human-readable">
+<h4>Recap: Human readable<a class="headerlink" href="#recap-human-readable" title="Permalink to this heading">#</a></h4>
 <p>Easy to figure out what the heck something is, based on its name</p>
-</div>
-</div>
-<div class="section" id="plays-well-with-default-ordering">
-<h3>Plays well with default ordering<a class="headerlink" href="#plays-well-with-default-ordering" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id3">
-<h4>Plays well with default ordering<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+</section>
+</section>
+<section id="plays-well-with-default-ordering">
+<h3>Plays well with default ordering<a class="headerlink" href="#plays-well-with-default-ordering" title="Permalink to this heading">#</a></h3>
+<section id="id3">
+<h4>Plays well with default ordering<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Put something numeric first</p></li>
 <li><p>Use the ISO 8601 standard for dates</p></li>
 <li><p>Left pad other numbers with zeros</p></li>
 </ul>
-</div>
-<div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h4>
 <p><strong>Chronological order:</strong></p>
 <p><img alt="chronological_order" src="../../_images/chronological_order.png" /></p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/chronological_order.png"><img alt="../../_images/chronological_order.png" src="../../_images/chronological_order.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <hr>
 <p><strong>Logical order:</strong> Put something numeric first</p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/logical_order.png"><img alt="../../_images/logical_order.png" src="../../_images/logical_order.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="dates">
-<h4>Dates<a class="headerlink" href="#dates" title="Permalink to this headline">¶</a></h4>
+</figure>
+</section>
+<section id="dates">
+<h4>Dates<a class="headerlink" href="#dates" title="Permalink to this heading">#</a></h4>
 <p>Use the ISO 8601 standard for dates: YYYY-MM-DD</p>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/chronological_order.png"><img alt="../../_images/chronological_order.png" src="../../_images/chronological_order.png" style="width: 600px;" /></a>
-</div>
-<div class="figure align-center">
+</figure>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/iso_8601.png"><img alt="../../_images/iso_8601.png" src="../../_images/iso_8601.png" style="width: 600px;" /></a>
-</div>
-</div>
-<div class="section" id="comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
-<h4>Comprehensive map of all countries in the world that use the MM-DD-YYYY format<a class="headerlink" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+</figure>
+</section>
+<section id="comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">
+<h4>Comprehensive map of all countries in the world that use the MM-DD-YYYY format<a class="headerlink" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/map_mmddyyy.png"><img alt="../../_images/map_mmddyyy.png" src="../../_images/map_mmddyyy.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <br>
 <p>From https://twitter.com/donohoe/status/597876118688026624.</p>
-</div>
-<div class="section" id="left-pad-other-numbers-with-zeros">
-<h4>Left pad other numbers with zeros<a class="headerlink" href="#left-pad-other-numbers-with-zeros" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+</section>
+<section id="left-pad-other-numbers-with-zeros">
+<h4>Left pad other numbers with zeros<a class="headerlink" href="#left-pad-other-numbers-with-zeros" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/logical_order.png"><img alt="../../_images/logical_order.png" src="../../_images/logical_order.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <br>
 <p>If you don’t left pad, you get this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">10</span><span class="n">_final</span><span class="o">-</span><span class="n">figs</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="n">publication</span><span class="o">.</span><span class="n">R</span>
@@ -676,47 +644,47 @@ slug filenames
 </pre></div>
 </div>
 <p>which is just sad :(</p>
-</div>
-<div class="section" id="recap-plays-well-with-default-ordering">
-<h4>Recap: Plays well with default ordering<a class="headerlink" href="#recap-plays-well-with-default-ordering" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="recap-plays-well-with-default-ordering">
+<h4>Recap: Plays well with default ordering<a class="headerlink" href="#recap-plays-well-with-default-ordering" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Put something numeric first</p></li>
 <li><p>Use the ISO 8601 standard for dates</p></li>
 <li><p>Left pad other numbers with zeros</p></li>
 </ul>
-</div>
-<div class="section" id="recap">
-<h4>Recap<a class="headerlink" href="#recap" title="Permalink to this headline">¶</a></h4>
-</div>
-<div class="section" id="id4">
-<h4>Three principles for (file) names<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
-<ol class="simple">
+</section>
+<section id="recap">
+<h4>Recap<a class="headerlink" href="#recap" title="Permalink to this heading">#</a></h4>
+</section>
+<section id="id4">
+<h4>Three principles for (file) names<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
 <li><p>Machine readable</p></li>
 <li><p>Human readable</p></li>
 <li><p>Plays well with default ordering</p></li>
 </ol>
-</div>
-<div class="section" id="pros">
-<h4>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="pros">
+<h4>Pros<a class="headerlink" href="#pros" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p>Easy to implement NOW</p></li>
 <li><p>Payoffs accumulate as your skills evolve and projects get more complex</p></li>
 </ul>
-</div>
-<div class="section" id="go-forth-and-use-awesome-file-names">
-<h4>Go forth and use awesome file names :)<a class="headerlink" href="#go-forth-and-use-awesome-file-names" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center">
+</section>
+<section id="go-forth-and-use-awesome-file-names">
+<h4>Go forth and use awesome file names :)<a class="headerlink" href="#go-forth-and-use-awesome-file-names" title="Permalink to this heading">#</a></h4>
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/chronological_order.png"><img alt="../../_images/chronological_order.png" src="../../_images/chronological_order.png" style="width: 600px;" /></a>
-</div>
+</figure>
 <br>
-<div class="figure align-center">
+<figure class="align-center">
 <a class="reference internal image-reference" href="../../_images/logical_order.png"><img alt="../../_images/logical_order.png" src="../../_images/logical_order.png" style="width: 600px;" /></a>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="project-organization">
-<h2>Project organization<a class="headerlink" href="#project-organization" title="Permalink to this headline">¶</a></h2>
+</figure>
+</section>
+</section>
+</section>
+<section id="project-organization">
+<h2>Project organization<a class="headerlink" href="#project-organization" title="Permalink to this heading">#</a></h2>
 <p>A good project structure looks similar to this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project/          
 ├── data/              *.csv        
@@ -775,8 +743,8 @@ Benjamin Franklin
 
 - Slides borrowed from the [Data Carpentry](https://datacarpentry.org/) [Reproducible Science Workshop](https://datacarpentry.org/rr-organization1/)
 
---><div class="section" id="a-tour-de-data-science-project-organization">
-<h3>A tour de data science project organization<a class="headerlink" href="#a-tour-de-data-science-project-organization" title="Permalink to this headline">¶</a></h3>
+--><section id="a-tour-de-data-science-project-organization">
+<h3>A tour de data science project organization<a class="headerlink" href="#a-tour-de-data-science-project-organization" title="Permalink to this heading">#</a></h3>
 <p>Below we link to three different data science projects shared via GitHub repositories. The first is a data analysis project, while the latter two are data science tools (an R and a Python package, respectively).</p>
 <p>As you explore these projects, note the following similarities:</p>
 <ul class="simple">
@@ -786,18 +754,18 @@ Benjamin Franklin
 <li><p><code class="docutils literal notranslate"><span class="pre">doc</span></code> houses documentation files and or documents related to the project (sometimes there is both a <code class="docutils literal notranslate"><span class="pre">doc</span></code> and <code class="docutils literal notranslate"><span class="pre">reports</span></code> directory when there are two kinds of writing in a project).</p></li>
 <li><p>Other directories can be added as needed to group files with like/similar functions. Most important is that they have descriptive and obvious names related to the directory contents.</p></li>
 </ul>
-<div class="section" id="example-projects">
-<h4>Example projects<a class="headerlink" href="#example-projects" title="Permalink to this headline">¶</a></h4>
+<section id="example-projects">
+<h4>Example projects<a class="headerlink" href="#example-projects" title="Permalink to this heading">#</a></h4>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/ttimbers/breast_cancer_predictor">a data analysis project</a></p></li>
 <li><p><a class="reference external" href="https://github.com/ttimbers/canlang">a R package</a></p></li>
 <li><p><a class="reference external" href="https://github.com/ttimbers/pycounts_tat">a Python package</a></p></li>
 </ul>
-</div>
-</div>
-</div>
-<div class="section" id="integrated-development-environments">
-<h2>Integrated development environments<a class="headerlink" href="#integrated-development-environments" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="integrated-development-environments">
+<h2>Integrated development environments<a class="headerlink" href="#integrated-development-environments" title="Permalink to this heading">#</a></h2>
 <p>Integrated development environments (IDEs) are software that provide comprehensive tools for programming in one place.</p>
 <p>The classic Jupyter notebook interface is typically not considered an IDE, however the newer, JupyterLab interface is.</p>
 <a class="reference internal image-reference" href="../../_images/jupyternotebook.png"><img alt="../../_images/jupyternotebook.png" src="../../_images/jupyternotebook.png" style="width: 800px;" /></a>
@@ -810,7 +778,7 @@ Benjamin Franklin
 <a class="reference internal image-reference" href="../../_images/vscode.png"><img alt="../../_images/vscode.png" src="../../_images/vscode.png" style="width: 800px;" /></a>
 <blockquote>
 <div><p><strong>Note 1:</strong> If you would like to use VS Code with Python, then please follow the instructions below on how to configure this:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Install the VSCode <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python Extension</a> in your VSCode application</p></li>
 <li><p>Code can be sent line-by-line to the Python console via <code class="docutils literal notranslate"><span class="pre">Shift</span></code> + <code class="docutils literal notranslate"><span class="pre">Enter</span></code>. The first time you do this, an interactive iPython console will open up. Future <code class="docutils literal notranslate"><span class="pre">Shift</span></code> + <code class="docutils literal notranslate"><span class="pre">Enter</span></code> keystrokes during that work session will send code to that console.</p></li>
 <li><p>A bash command line terminal console can be added by clicking the <strong>Terminal</strong> &gt; <strong>New Terminal</strong> menu item, and then the “+” symbol and selecting “bash”.</p></li>
@@ -818,7 +786,7 @@ Benjamin Franklin
 </div></blockquote>
 <blockquote>
 <div><p><strong>Note 2:</strong> If you would like to use VS Code with R, please follow the instructions below on how to configure this:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Install the VSCode <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r">R Extension</a> in your VSCode application</p></li>
 <li><p>In the R console, install <code class="docutils literal notranslate"><span class="pre">languageserver</span></code> R package via <code class="docutils literal notranslate"><span class="pre">install.packages(&quot;languageserver&quot;)</span></code></p></li>
 <li><p>Install the <code class="docutils literal notranslate"><span class="pre">radian</span></code> Python package (which gives an improved R console in VS Code) via <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">radian</span></code></p></li>
@@ -827,8 +795,8 @@ Benjamin Franklin
 <li><p>An interactive R console can be added by clicking the <strong>Terminal</strong> &gt; <strong>New Terminal</strong> menu item, and then the “+” symbol and selecting “R Terminal”. Code can be sent line-by-line to the R console via <code class="docutils literal notranslate"><span class="pre">Cmd</span></code> + <code class="docutils literal notranslate"><span class="pre">Enter</span></code> (Mac) or <code class="docutils literal notranslate"><span class="pre">Control</span></code> + <code class="docutils literal notranslate"><span class="pre">Enter</span></code> (Windows).</p></li>
 </ol>
 </div></blockquote>
-<div class="section" id="key-features-of-all-of-these-ides-includes">
-<h3>Key features of all of these IDEs includes:<a class="headerlink" href="#key-features-of-all-of-these-ides-includes" title="Permalink to this headline">¶</a></h3>
+<section id="key-features-of-all-of-these-ides-includes">
+<h3>Key features of all of these IDEs includes:<a class="headerlink" href="#key-features-of-all-of-these-ides-includes" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p>screen split into panes</p></li>
 <li><p>file browser</p></li>
@@ -837,9 +805,9 @@ Benjamin Franklin
 <li><p>code autocompletion</p></li>
 <li><p>code/syntax highlighting</p></li>
 </ul>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -853,7 +821,7 @@ Benjamin Franklin
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./materials/lectures"
         },
         predefinedOutput: true
@@ -861,46 +829,150 @@ Benjamin Franklin
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-        
-            <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="02-version-control-1.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Version control for transparency and collaboration</p>
-        </div>
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-version-control-1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Version control for transparency and collaboration</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="04-virtual-environments.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="04-virtual-environments.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Virtual environments</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
-        
-        </div>
-    </div>
-    <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Tiffany Timbers<br/>
-        
-            &copy; Copyright 2021.<br/>
-      </p>
-    </div>
-  </footer>
-</main>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filenames-best-practices">Filenames - best practices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#names-matter">Names matter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-works-what-doesn-t">What works, what doesn’t?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-principles-for-file-names">Three principles for (file) names</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#awesome-file-names">Awesome file names :)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#machine-readable">Machine readable</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Machine readable</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#globbing">Globbing</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#same-using-mac-os-finder-search-facilities">Same using Mac OS Finder search facilities</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#same-using-regex-in-r">Same using regex in R</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#punctuation-smaller">Punctuation {.smaller}</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-machine-readable">Recap: machine readable</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#human-readable">Human readable</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Human readable</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#embrace-the-slug">Embrace the slug</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-human-readable">Recap: Human readable</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plays-well-with-default-ordering">Plays well with default ordering</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Plays well with default ordering</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dates">Dates</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">Comprehensive map of all countries in the world that use the MM-DD-YYYY format</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#left-pad-other-numbers-with-zeros">Left pad other numbers with zeros</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-plays-well-with-default-ordering">Recap: Plays well with default ordering</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#recap">Recap</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Three principles for (file) names</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#pros">Pros</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#go-forth-and-use-awesome-file-names">Go forth and use awesome file names :)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-organization">Project organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-tour-de-data-science-project-organization">A tour de data science project organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-projects">Example projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-development-environments">Integrated development environments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features-of-all-of-these-ides-includes">Key features of all of these IDEs includes:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
 
-      </div>
-    </div>
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
 
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
