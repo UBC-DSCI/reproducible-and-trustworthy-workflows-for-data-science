@@ -20,9 +20,16 @@ In this course we will learn to use the most popular version control software to
 
 Source: [*Data Science: A First Introduction*](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html)
 
-### A Zoom poll!
+### A poll!
 
-Before this class, you were asked to read [Chapter 12: Collaboration with version control](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html) from Data Science: A First Introduction. We're goig to do a Zoom poll with the following questions to check your knowledge!
+We expect some introductory version control knowledge before the contents of this chapter.
+Essentially, what is covered in 
+[Chapter 12: Collaboration with version control](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html) 
+from Data Science: A First Introduction. 
+Here's a poll to check you have the prerequisite knowledge for this chapter. 
+If you cannot easily answer these questions we recommend you go back to 
+[Chapter 12: Collaboration with version control](https://ubc-dsci.github.io/introduction-to-datascience/Getting-started-with-version-control.html) 
+from Data Science: A First Introduction and read (or re-read) it.
 
 **1. Which of these is untrue about the Git and GitHub version control software?**
 
@@ -295,7 +302,7 @@ A more realistic Git branching example for a data analysis project might look so
 
 <img src="img/git-branch-diagrams.png" width=400>
 
-### Creating a branch
+### Creating a branch using the JupyterLab Git extension
 
 Using the JupyterLab Git extension, you create a new branch on your local computer by clicking on the up arrow in the "Current Branch" tab, and clicking the blue "New Branch" button.
 
@@ -310,6 +317,92 @@ To finally switch to the new playground (i.e., your new branch) click on the bra
 <img src="img/switch-to-new-branch.png" width=500>
 
 As you work here, you can commit your changes to version control locally, and even push your changes to the remote repository. All the changes however will live only on that branch until you do something to move them to another branch. When you want to start discussing your changes with your collaborators to start the process of bringing these changes into the main branch (main code-base) you typically create what is called a pull request. A pull request is a like an asking your collaborators "is it OK to merge my code?" Usually there will be some discussion and a few more revisions to the code, but eventually they will give you the thumbs up when everything looks good and the code can then be merged. We will discuss this more next.
+
+### Creating a branch using the command line
+
+In the terminal, and in the working directory of the project in which you wish to create a branch,
+use `git switch` with the `-c` flag and specify the branch name. 
+This create a new branch and immediately switch to it.
+For example, to create a branch named `patch-docs` 
+(a good branch name if we were planning on working on a fix
+in the project's documentation),
+we would type:
+
+```{bash}
+git switch -c patch-docs
+```
+
+To ask Git what branches now exist and to see where we are,
+we can use the `branch` command with the `-v` flag 
+(for "verbose", meaning tell us everything!):
+
+```{bash}
+git branch -v
+```
+
+And we should see something like the output shown below,
+which lists the branch names in the first column,
+the SHA of the last commit on each branch in the second column,
+and the commit message associated with the last commit in the third column:
+
+```
+  main       f756bbb initial
+* patch-docs f756bbb initial
+```
+
+As you work here on this new branch, 
+you can commit your changes to version control locally, 
+and even push your changes to the remote repository. 
+All the changes however will live only on that branch 
+until you do something to move them to another branch. 
+When you want to start discussing your changes with your collaborators 
+to start the process of bringing these changes into the main branch (main code-base) 
+you typically create what is called a pull request. 
+A pull request is a like an asking your collaborators "is it OK to merge my code?" 
+Usually there will be some discussion and a few more revisions to the code, 
+but eventually they will give you the thumbs up when everything looks good 
+and the code can then be merged. We will discuss this more next.
+
+#### Switching to branches that already exist
+
+After you have been working on your new brain for some time,
+you will eventually want to get back to the project's default branch, 
+or some other branch.
+To do this, we use `git switch <branch_name>`. 
+Note that we do not use the `-c` flag this time, as we are not creating a new branch.
+
+#### Getting remote branches you did not create locally
+
+If your collaborator creates a branch that you want to 
+run or test locally, but it only exists on the remote repository
+you have to tell Git to fetch (go get it) for you first, 
+before you can switch to it. 
+You can specify which branch you specifically want to grab,
+but for simplicity it is often easy to ask Git 
+to fetch all of them for you, using the `fetch` command
+with the `--all` flag:
+
+```{bash}
+git fetch --all
+```
+
+#### Useful command line Git branching commands
+
+Below is a table of the most commonly used 
+Git commands for branching. 
+This table includes the commands we presented above
+as well as the a few other useful ones.
+
+| Description | Command |
+|---------|-------------|
+| list all local branches | `git branch -v` |
+| create a new branch & immediately switch to it | `git switch -c <branch_name>` or `git checkout -b <branch_name>` |
+| switch to a branch | `git switch <branch_name>` or `git checkout  <branch_name>` |
+| fetches all changes to all branches | `git fetch --all` |
+| retrieve a branch you don't have locally on your laptop from GitHub| `git checkout --track origin/<branch_name` |
+| merge changes from another branch | `git merge <branch_name>` |
+| delete a local branch | `git branch -d <branch_name>` |
+| push changes to a remote branch | `git push origin <branch_name>` |
 
 #### Exercise
 
@@ -333,8 +426,17 @@ if number < 0:
 ## Creating a pull request
 
 To create a pull request,
+you first need to ensure all the local changes you made on the new branch 
+are also available on the remote repository
+(i.e., you need to push them).
+Once that has happened you need to
 go to the remote GitHub repository,
-and usually GitHub will should show you a yellow banner listing any recently pushed branches.
+as pull requests are created from there.
+
+GitHub often tries to be helpful when a change 
+is pushed to a new branch that doesn't yet exist
+on the default branch by showing you a yellow banner 
+listing any recently pushed branches.
 
 <img src="img/create-pr.png" width=700>
 
@@ -407,19 +509,6 @@ I am going to demo a code review of a pull request. I have set-up a template Git
 Could I have done the entire code review well by just reviewing it on GitHub?
 
 *Hint: if I didn't tell you that the top pilot was Obi-Wan Kenobi, how would you have known that?*
-
-> ### Useful command line Git branching commands
-> 
-> | Description | Command |
-> |---------|-------------|
-> | list all local branches | `git branch -v` |
-> | create a new branch & immediately switch to it | `git switch -c <branch_name>` or `git checkout -b <branch_name>` |
-> | switch to a branch | `git switch <branch_name>` or `git checkout  <branch_name>` |
-> | fetches all changes to all branches | `git fetch --all` |
-> | retrieve a branch you don't have locally on your laptop from GitHub| `git checkout --track origin/<branch_name` |
-> | merge changes from another branch | `git merge <branch_name>` |
-> | delete a local branch | `git branch -d <branch_name>` |
-> | push changes to a remote branch | `git push origin <branch_name>` |
 
 ### Useful things you can do with branches on GitHub
 
