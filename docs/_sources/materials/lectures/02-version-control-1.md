@@ -328,7 +328,7 @@ For example, to create a branch named `patch-docs`
 in the project's documentation),
 we would type:
 
-```{bash}
+```
 git switch -c patch-docs
 ```
 
@@ -336,7 +336,7 @@ To ask Git what branches now exist and to see where we are,
 we can use the `branch` command with the `-v` flag 
 (for "verbose", meaning tell us everything!):
 
-```{bash}
+```
 git branch -v
 ```
 
@@ -382,7 +382,7 @@ but for simplicity it is often easy to ask Git
 to fetch all of them for you, using the `fetch` command
 with the `--all` flag:
 
-```{bash}
+```
 git fetch --all
 ```
 
@@ -468,10 +468,7 @@ and merge it in if they approve it.
 
 - We very often need to have a conversation to get pull requests into good shape before merging into master, and GitHub has a very nice tool we can utilize to do this: **GitHub code reviews**
 
-
-<img src ="https://help.github.com/assets/images/help/commits/hover-comment-icon.gif" width=700>
-
-*Source: <https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request>*
+<img src ="code-review-suggest-change" width=600>
 
 ### Demo: do a code review:
 
