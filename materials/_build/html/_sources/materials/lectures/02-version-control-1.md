@@ -468,7 +468,7 @@ and merge it in if they approve it.
 
 - We very often need to have a conversation to get pull requests into good shape before merging into master, and GitHub has a very nice tool we can utilize to do this: **GitHub code reviews**
 
-<img src ="code-review-suggest-change" width=600>
+<img src ="img/code-review-suggest-change.png" width=600>
 
 ### Demo: do a code review:
 
