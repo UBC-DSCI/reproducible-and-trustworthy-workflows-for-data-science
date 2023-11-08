@@ -408,7 +408,7 @@ as well as the a few other useful ones.
 
 1. Make your own copy of [this GitHub repository](https://github.com/ttimbers/sqrt) by clicking the green "Use this template" button. And then clone your copy of the repository to your computer.
 
-2. Create a new branch named `better_error_msg` in the local repository using the JupyterLab Git extension.
+2. Create a new branch named `better_error_msg` in the local repository using Git.
 
 3. On that branch, fix the `sqrt.py` so that if you run this script with a negative number as an argument you do not get an difficult to understand error, but instead throw a helpful exception informing the user that the number should be positive. Fix to add to `sqrt.py`:
   
@@ -417,11 +417,27 @@ if number < 0:
   raise Exception("n should not a positive number")
 ```
 
-4. Switch back to the `main` branch and look at the `README.md` file - do you see the change there?
+4. Add and commit those changes.
 
-5. Switch back to the `better_error_msg` branch - do you see the change there?
+5. Switch back to the `main` branch and look at the `README.md` file - do you see the change there?
 
-6. Push your change to the remote GitHub repository, and see where you can find it there!
+6. Switch back to the `better_error_msg` branch - do you see the change there?
+
+7. Push your change to the remote GitHub repository, and see where you can find it there!
+
+> Note: if you use the Git command line tool and get an error message like the one shown below,
+> this is because you did not state the remote (usually it is `origin`).
+> Try pushing again using `git push origin <branch_name>`
+>
+> ```
+> fatal: The current branch better_error_msg has no upstream branch.
+> To push the current branch and set the remote as upstream, use
+> 
+>     git push --set-upstream origin better_error_msg
+> 
+> To have this happen automatically for branches without a tracking
+> upstream, see 'push.autoSetupRemote' in 'git help config'.
+> ```
 
 ## Creating a pull request
 
