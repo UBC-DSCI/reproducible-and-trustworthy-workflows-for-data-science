@@ -419,7 +419,7 @@ if number < 0:
 
 4. Add and commit those changes.
 
-5. Switch back to the `main` branch and look at the `README.md` file - do you see the change there?
+5. Switch back to the `main` branch and look at the `sqrt.py` file - do you see the change there?
 
 6. Switch back to the `better_error_msg` branch - do you see the change there?
 
