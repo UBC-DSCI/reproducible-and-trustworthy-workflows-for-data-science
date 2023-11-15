@@ -428,13 +428,13 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively">Running a Docker container non-interactively</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
@@ -852,7 +852,7 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
 <li><p>We can tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p></li>
 <li><p>Type the command below to run the container again, exit it and prove to yourself that the container was deleted (but not the image!):</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run -it --rm continuumio/miniconda3:23.9.0-0`
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
 </pre></div>
 </div>
 </section>
@@ -902,53 +902,6 @@ our computer (the container/Docker host) has many ports we can choose from to ma
 <p>Another important note is that the container port is specific to the container, and the web app installed therein. So we cannot change that without changing the container image, and/or application installed therein. Where do you learn what port is exposed in a container image? The image documentation should specify this. For example, in the <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio"><code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image documentation</a> it states:</p>
 <a class="reference internal image-reference" href="../../_images/rocker-rstudio-port-docs.png"><img alt="../../_images/rocker-rstudio-port-docs.png" src="../../_images/rocker-rstudio-port-docs.png" style="width: 600px;" /></a>
 <p><em>Source: <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">https://hub.docker.com/r/rocker/rstudio</a></em></p>
-</section>
-<section id="using-docker-desktop-to-launch-containers">
-<h2>Using Docker Desktop to launch containers<a class="headerlink" href="#using-docker-desktop-to-launch-containers" title="Permalink to this heading">#</a></h2>
-<p>The Docker Desktop app can also be used to launch containers,
-specify the ports and volume mapping.
-This can be more user friendly than the command line.
-For an example of how to do this see the
-<a class="reference external" href="https://datasciencebook.ca/setup.html#working-with-docker">“Working with Docker” chapter</a>
-from <a class="reference external" href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em></a>
-by Timbers, Campbell and Lee.</p>
-</section>
-<section id="running-a-docker-container-non-interactively">
-<h2>Running a Docker container non-interactively<a class="headerlink" href="#running-a-docker-container-non-interactively" title="Permalink to this heading">#</a></h2>
-<p>So far we have been running our containers interactively, but sometimes we want to automate further and run things non interactively. We do this be dropping the <code class="docutils literal notranslate"><span class="pre">-it</span></code> flag from our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command as well as calling a command or a script after the docker image is specified.</p>
-<p>The general form for for running things non-interactively is this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
-</pre></div>
-</div>
-<p>For example, let’s use the container run a <code class="docutils literal notranslate"><span class="pre">cowsay::say</span></code> function call to print some asci art with a cute message!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run --rm ttimbers/dockerfile-practice:v0.1.0 Rscript -e &quot;library(cowsay); say(&#39;Snow again this week?&#39;, &#39;snowman&#39;)&quot;
-</pre></div>
-</div>
-<p>And if succesfful, we should get:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>----- 
-Snow again this week? 
- ------ 
-    \   
-     \
-     _[_]_
-      (&quot;)
-  &gt;--( : )--&lt;
-    (__:__) [nosig]
-</pre></div>
-</div>
-<p>Now that was a silly example, but this can be made powerful so that we can run an analysis pipeline, such as a Makefile non-interactively using Docker! Here’s a demo we can try: https://github.com/ttimbers/data_analysis_pipeline_eg/tree/v4.0</p>
-<section id="exercise-1-fix-me">
-<h3>Exercise 1: FIX ME!<a class="headerlink" href="#exercise-1-fix-me" title="Permalink to this heading">#</a></h3>
-<p>Download https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v4.0.zip, unzip it and navigate to the root of the project directory, try to run the analysis via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code>.</p>
-</section>
-<section id="exercise-2-fix-me">
-<h3>Exercise 2: FIX ME!<a class="headerlink" href="#exercise-2-fix-me" title="Permalink to this heading">#</a></h3>
-<p>Now try to run the analysis using Docker via:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v /$(pwd):/home/rstudio/data_analysis_eg ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
-</pre></div>
-</div>
-<p><em>note - windows users must use Git Bash, set Docker to use Linux containers, and have shared their drives with Docker (see docs <a class="reference external" href="https://token2shell.com/howto/docker/sharing-windows-folders-with-containers/">here</a>) for this to work</em></p>
-</section>
 </section>
 <section id="docker-commands">
 <h2>Docker commands<a class="headerlink" href="#docker-commands" title="Permalink to this heading">#</a></h2>
@@ -1001,6 +954,53 @@ Snow again this week?
 </tr>
 </tbody>
 </table>
+</section>
+<section id="using-docker-desktop-to-launch-containers">
+<h2>Using Docker Desktop to launch containers<a class="headerlink" href="#using-docker-desktop-to-launch-containers" title="Permalink to this heading">#</a></h2>
+<p>The Docker Desktop app can also be used to launch containers,
+specify the ports and volume mapping.
+This can be more user friendly than the command line.
+For an example of how to do this see the
+<a class="reference external" href="https://datasciencebook.ca/setup.html#working-with-docker">“Working with Docker” chapter</a>
+from <a class="reference external" href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em></a>
+by Timbers, Campbell and Lee.</p>
+</section>
+<section id="running-a-docker-container-non-interactively">
+<h2>Running a Docker container non-interactively<a class="headerlink" href="#running-a-docker-container-non-interactively" title="Permalink to this heading">#</a></h2>
+<p>So far we have been running our containers interactively, but sometimes we want to automate further and run things non interactively. We do this be dropping the <code class="docutils literal notranslate"><span class="pre">-it</span></code> flag from our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command as well as calling a command or a script after the docker image is specified.</p>
+<p>The general form for for running things non-interactively is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
+</pre></div>
+</div>
+<p>For example, let’s use the container run a <code class="docutils literal notranslate"><span class="pre">cowsay::say</span></code> function call to print some asci art with a cute message!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run --rm ttimbers/dockerfile-practice:v0.1.0 Rscript -e &quot;library(cowsay); say(&#39;Snow again this week?&#39;, &#39;snowman&#39;)&quot;
+</pre></div>
+</div>
+<p>And if succesfful, we should get:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>----- 
+Snow again this week? 
+ ------ 
+    \   
+     \
+     _[_]_
+      (&quot;)
+  &gt;--( : )--&lt;
+    (__:__) [nosig]
+</pre></div>
+</div>
+<p>Now that was a silly example, but this can be made powerful so that we can run an analysis pipeline, such as a Makefile non-interactively using Docker! Here’s a demo we can try: https://github.com/ttimbers/data_analysis_pipeline_eg/tree/v4.0</p>
+<section id="exercise-1-fix-me">
+<h3>Exercise 1: FIX ME!<a class="headerlink" href="#exercise-1-fix-me" title="Permalink to this heading">#</a></h3>
+<p>Download https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v4.0.zip, unzip it and navigate to the root of the project directory, try to run the analysis via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code>.</p>
+</section>
+<section id="exercise-2-fix-me">
+<h3>Exercise 2: FIX ME!<a class="headerlink" href="#exercise-2-fix-me" title="Permalink to this heading">#</a></h3>
+<p>Now try to run the analysis using Docker via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v /$(pwd):/home/rstudio/data_analysis_eg ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
+</pre></div>
+</div>
+<p><em>note - windows users must use Git Bash, set Docker to use Linux containers, and have shared their drives with Docker (see docs <a class="reference external" href="https://token2shell.com/howto/docker/sharing-windows-folders-with-containers/">here</a>) for this to work</em></p>
+</section>
 </section>
 <section id="building-container-images-from-dockerfile-s">
 <h2>Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s<a class="headerlink" href="#building-container-images-from-dockerfile-s" title="Permalink to this heading">#</a></h2>
@@ -1495,13 +1495,13 @@ For example, to reduce the long line below which uses <code class="docutils lite
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively">Running a Docker container non-interactively</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
