@@ -431,11 +431,12 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively">Running a Docker container non-interactively</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-command-line">Running a Docker container non-interactively using the Docker command line</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
@@ -972,7 +973,8 @@ by Timbers, Campbell and Lee.</p>
 or a GUI everytime you want to launch a container.
 A better approach is to use Docker compose
 to specify how you want to launch the container.</p>
-<p>Docker compose uses a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
+<p>Docker compose uses a YAML file,
+specifically named <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>,
 to record how the container should be launched.
 This file can include details including:</p>
 <ul class="simple">
@@ -984,7 +986,7 @@ This file can include details including:</p>
 <p>Here is an example of a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
 for use with the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
-  <span class="n">book</span><span class="o">-</span><span class="n">env</span><span class="p">:</span>
+  <span class="n">analysis</span><span class="o">-</span><span class="n">env</span><span class="p">:</span>
     <span class="n">image</span><span class="p">:</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
     <span class="n">ports</span><span class="p">:</span>
       <span class="o">-</span> <span class="s2">&quot;8787:8787&quot;</span>
@@ -994,7 +996,7 @@ for use with the <code class="docutils literal notranslate"><span class="pre">ro
       <span class="n">PASSWORD</span><span class="p">:</span> <span class="n">password</span>
 </pre></div>
 </div>
-<p>To launch the container using this file,
+<p>To launch the container interactively using this file,
 you would type the <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> command shown below.
 The <code class="docutils literal notranslate"><span class="pre">-d</span></code> flag with the up command tells Docker compose
 to run the container in the background.
@@ -1012,8 +1014,8 @@ and enter the correct URL to access it.</p>
 </pre></div>
 </div>
 </section>
-<section id="running-a-docker-container-non-interactively">
-<h2>Running a Docker container non-interactively<a class="headerlink" href="#running-a-docker-container-non-interactively" title="Permalink to this heading">#</a></h2>
+<section id="running-a-docker-container-non-interactively-using-the-docker-command-line">
+<h2>Running a Docker container non-interactively using the Docker command line<a class="headerlink" href="#running-a-docker-container-non-interactively-using-the-docker-command-line" title="Permalink to this heading">#</a></h2>
 <p>So far we have been running our containers interactively, but sometimes we want to automate further and run things non interactively. We do this be dropping the <code class="docutils literal notranslate"><span class="pre">-it</span></code> flag from our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command as well as calling a command or a script after the docker image is specified.</p>
 <p>The general form for for running things non-interactively is this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
@@ -1048,6 +1050,24 @@ Snow again this week?
 </div>
 <p><em>note - windows users must use Git Bash, set Docker to use Linux containers, and have shared their drives with Docker (see docs <a class="reference external" href="https://token2shell.com/howto/docker/sharing-windows-folders-with-containers/">here</a>) for this to work</em></p>
 </section>
+</section>
+<section id="running-a-docker-container-non-interactively-using-the-docker-compose">
+<h2>Running a Docker container non-interactively using the Docker Compose<a class="headerlink" href="#running-a-docker-container-non-interactively-using-the-docker-compose" title="Permalink to this heading">#</a></h2>
+<p>We can also use Docker Compose to run containers non-interactively!
+We can do this by specifying that we want to <code class="docutils literal notranslate"><span class="pre">run</span></code> the container
+(instead of <code class="docutils literal notranslate"><span class="pre">up</span></code> to launch in interactively).
+We use the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag with the <code class="docutils literal notranslate"><span class="pre">run</span></code> command to make the container ephemeral
+(delete it upon exit).
+Then we specify the name of the service from the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
+that we want to run
+(in our <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> files so far we only have one service,
+the environment for running the analysis).
+And finally we add the command we want to run non-interactively
+using the container
+(in the example below we use <code class="docutils literal notranslate"><span class="pre">make</span></code> to run the data analysis pipeline script).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">breast_cancer_predictor</span> <span class="nb">all</span>
+</pre></div>
+</div>
 </section>
 <section id="building-container-images-from-dockerfile-s">
 <h2>Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s<a class="headerlink" href="#building-container-images-from-dockerfile-s" title="Permalink to this heading">#</a></h2>
@@ -1545,11 +1565,12 @@ For example, to reduce the long line below which uses <code class="docutils lite
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively">Running a Docker container non-interactively</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-command-line">Running a Docker container non-interactively using the Docker command line</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
