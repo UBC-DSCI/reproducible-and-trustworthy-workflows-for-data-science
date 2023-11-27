@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Non-interactive scripts and data analysis pipelines &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+    <title>Data analysis pipelines &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
   
   
   
@@ -62,11 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/07-scripts-and-pipelines';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/09-pipelines';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Reproducible reports" href="08-reproducible-reports.html" />
-    <link rel="prev" title="Introduction to testing code for data science" href="06-intro-to-testing-code.html" />
+    <link rel="next" title="Packaging and documenting code" href="10-packaging-and-documenting.html" />
+    <link rel="prev" title="Reproducible reports" href="08-reproducible-reports.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -174,13 +174,14 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Non-interactive scripts and data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts and data analysis pipelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-packaging-and-documenting.html">Packaging and documenting code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10-continuous-integration.html">Automated testing and continuous integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="11-deploy-and-publish.html">Deploying and publishing packages</a></li>
-<li class="toctree-l1"><a class="reference internal" href="12-licenses-and-copyright.html">Copyright and licenses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="13-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
 </ul>
 
     </div>
@@ -252,7 +253,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/07-scripts-and-pipelines.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/09-pipelines.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -282,7 +283,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/materials/lectures/07-scripts-and-pipelines.ipynb" target="_blank"
+      <li><a href="../../_sources/materials/lectures/09-pipelines.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -364,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Non-interactive scripts and data analysis pipelines</h1>
+    <h1>Data analysis pipelines</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -374,36 +375,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-script">What is a script?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-scripts">Why write scripts?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-r">Scripts in R</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#our-first-r-script">Our first R script:</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#running-our-first-r-script">Running our first R script</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-couple-notes-about-scripts">A couple notes about scripts</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-structure-and-organization">Script structure and organization</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-r-script-organization">Example R script organization:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scripts in R:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-things-from-scripts">Saving things from scripts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-r">Using command line arguments in R</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options">Positional arguments vs options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-elements-arguments-or-options">Optional elements (arguments or options)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-our-docs">Improving our docs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-analysis-pipelines">Data analysis pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data analysis pipelines</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>
@@ -435,19 +408,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="non-interactive-scripts-and-data-analysis-pipelines">
-<h1>Non-interactive scripts and data analysis pipelines<a class="headerlink" href="#non-interactive-scripts-and-data-analysis-pipelines" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-analysis-pipelines">
+<h1>Data analysis pipelines<a class="headerlink" href="#data-analysis-pipelines" title="Permalink to this heading">#</a></h1>
 <section id="topic-learning-objectives">
 <h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
 <ol class="arabic simple">
-<li><p>Explain when it is optimal to work in a read-eval-print-loop (REPL) framework and
-when it is optimal to shift to using non-interactive scripts.</p></li>
-<li><p>Be able to create simple scripts in R that can take input and be executed
-from the command line.</p></li>
-<li><p>Decide when to move from using command line arguments to pass variables into a
-script to passing variables in via a configuration file, and create scripts that can read
-configuration files.</p></li>
 <li><p>Justify why analysis pipelines should be used over a single long script in data analysis
 projects, specifically in regards to how this affects reproducibility, maintainability and
 future derivatives of the work.</p></li>
@@ -455,331 +421,9 @@ future derivatives of the work.</p></li>
 <li><p>Discuss the advantage of using software that has a dependency graph for analysis
 pipelines compared to software that does not.</p></li>
 </ol>
-<section id="read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">
-<h3>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts<a class="headerlink" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Up until now, we have primarily been using R and Python in an Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode)</p></li>
-<li><p>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is when we run our code in the console in R/Python, or in cells/chunks in the RStudio/Juptyer notebooks</p></li>
-<li><p>A Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is very useful for:</p>
-<ul>
-<li><p>solving small problems</p></li>
-<li><p>developing code that will be knit to an analytic report</p></li>
-<li><p>developing code that will be run as a script (i.e., in “batch” mode)</p></li>
-</ul>
-</li>
-</ul>
-</section>
-</section>
-<section id="what-is-a-script">
-<h2>What is a script?<a class="headerlink" href="#what-is-a-script" title="Permalink to this heading">#</a></h2>
-<p>An R/Python script is simply a plain text file containing (almost) the same commands that you would enter into R/Python’s console or in cells/chunks in the RStudio/Juptyer notebooks. We often run these from top to bottom from the command line/unix shell.</p>
-<section id="why-write-scripts">
-<h3>Why write scripts?<a class="headerlink" href="#why-write-scripts" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Efficiency!</p></li>
-<li><p>Automation!</p></li>
-<li><p>Reusable!</p></li>
-<li><p>Record of what you have done!</p></li>
-</ul>
-</section>
-<section id="scripts-in-r">
-<h3>Scripts in R<a class="headerlink" href="#scripts-in-r" title="Permalink to this heading">#</a></h3>
-<p>Let’s start with a small, simple example to demonstrate how we write and run scripts in R (it is very similar in Python and we will get to this later in the lesson).</p>
-<p>Our script will be called <code class="docutils literal notranslate"><span class="pre">print_mean_hp.R</span></code>, and it will calculate the mean horsepower of the cars from the built-in R data frame <code class="docutils literal notranslate"><span class="pre">mtcars</span></code>.</p>
-<p>We will develop this script inside RStudio, make sure it works, and then run it from the command line/terminal/Git bash.</p>
-<section id="our-first-r-script">
-<h4>Our first R script:<a class="headerlink" href="#our-first-r-script" title="Permalink to this heading">#</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-#
-# This script calculates the mean horsepower of the cars from the built-in 
-# R data frame `mtcars`. This script takes no arguments.
-#
-# Usage: Rscript print_mean_hp.R
-
-mean_hp &lt;- mean(mtcars$hp)
-print(mean_hp)
-</pre></div>
-</div>
-</section>
-<section id="running-our-first-r-script">
-<h4>Running our first R script<a class="headerlink" href="#running-our-first-r-script" title="Permalink to this heading">#</a></h4>
-<p>To run our R script, we need to open the command line/terminal/Git bash, and either navigate to the directory that houses the script OR point to it when we call it. We will do the former.</p>
-<p>Then to run the R script, we use the <code class="docutils literal notranslate"><span class="pre">Rscript</span></code> command, followed by the name/path to the file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">print_mean_hp</span><span class="o">.</span><span class="n">R</span>
-</pre></div>
-</div>
-<p>The output should be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mf">146.6875</span>
-</pre></div>
-</div>
-</section>
-<section id="a-couple-notes-about-scripts">
-<h4>A couple notes about scripts<a class="headerlink" href="#a-couple-notes-about-scripts" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>If you want something to be output to the command line/terminal/Git bash, you <strong>should</strong> explicitly ask for it to be print. <em>This is not an absolute requirement in R, but it is in Python!</em></p></li>
-<li><p>Similar with figures, they need to be saved! You will never see a figure created in a script unless you write it to a file.</p></li>
-<li><p>From a reproducibility perspective, if we want input from the user, usually we will design the scripts to take command line arguments, and not use keyboard/user prompts.</p></li>
-</ul>
-</section>
-</section>
-<section id="script-structure-and-organization">
-<h3>Script structure and organization<a class="headerlink" href="#script-structure-and-organization" title="Permalink to this heading">#</a></h3>
-<p>Although not necessary in R or Python, it is still good practice and advised to organize the code in your script into related sections. This practice keeps your code readable and organized. Below we outline how we typically organize R scripts:</p>
-<section id="example-r-script-organization">
-<h4>Example R script organization:<a class="headerlink" href="#example-r-script-organization" title="Permalink to this heading">#</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
-
-<span class="c1"># load libraries/packages or source functions from other scripts</span>
-
-<span class="c1"># parse/define command line arguments here</span>
-
-<span class="c1"># code for &quot;guts&quot; of script goes here</span>
-</pre></div>
-</div>
-</section>
-</section>
 </section>
 <section id="id1">
-<h2>Scripts in R:<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
-<p>Here we write a script called <code class="docutils literal notranslate"><span class="pre">quick_titanic_fare_mean.R</span></code> which reads in the <a class="reference external" href="https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv">titanic dataset</a> (<em>original source: <a class="reference external" href="https://biostat.app.vumc.org/wiki/Main/DataSets">https://biostat.app.vumc.org/wiki/Main/DataSets</a></em>) and calculates the  mean for the fare (ticket price) variable.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># author: Tiffany Timbers</span>
-<span class="c1"># date: 2020-01-15</span>
-<span class="c1">#</span>
-<span class="c1"># This script calculates the mean for the fare (ticket price)</span>
-<span class="c1"># from titanic.csv. This script takes no arguments.</span>
-<span class="c1">#</span>
-<span class="c1"># Usage: quick_titanic_fare_mean.R</span>
-
-<span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
-
-<span class="n">data</span> <span class="o">&lt;-</span> <span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/titanic.csv&#39;</span><span class="p">)</span>
-
-<span class="n">out</span> <span class="o">&lt;-</span> <span class="n">data</span> <span class="o">%&gt;%</span>
-         <span class="n">pull</span><span class="p">(</span><span class="n">fare</span><span class="p">)</span> <span class="o">%&gt;%</span>
-         <span class="n">mean</span><span class="p">(</span><span class="n">na</span><span class="o">.</span><span class="n">rm</span> <span class="o">=</span> <span class="n">TRUE</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Wait! Other languages use a <code class="docutils literal notranslate"><span class="pre">main</span></code> function (so you can, for example, import and access parts of the code into other code docs) - why are we not doing this here? I truly do not know the answer (yet) to why not, however, it is not commonly done:</p>
-<a class="reference internal image-reference" href="../../_images/twitter-poll.png"><img alt="../../_images/twitter-poll.png" src="../../_images/twitter-poll.png" style="width: 600px;" /></a>
-<p>Perhaps this is due to historical origins and culture of the R programming language and it’s user base?
-A follow-up question is, can you do this if you want? That question I can answer with a yes, see below for an example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>main &lt;- function() {
-  # script code
-}
-
-
-if (!interactive()) {
-  main()
-}
-</pre></div>
-</div>
-<section id="saving-things-from-scripts">
-<h3>Saving things from scripts<a class="headerlink" href="#saving-things-from-scripts" title="Permalink to this heading">#</a></h3>
-<p>Above we just printed the mean to the terminal.
-That is was done because the purpose of that script
-was to have a very simple illustration of how to create and run scripts in R.
-However, in practice, we typically want to save our analysis artifacts (figures, tables, values, etc)
-to disc so that we can load them into other files
-(e.g., our final reports to communicate our analysis findings).</p>
-<p>Below we show an example of how we would use <code class="docutils literal notranslate"><span class="pre">readr::write_csv</span></code>
-to save the mean value we calculated to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-#
-# This script calculates the mean horsepower of the cars from the built-in 
-# R data frame `mtcars` and saves it to `results/mean_hp_col.csv`. 
-# This script takes no arguments.
-#
-# Usage: Rscript print_mean_hp.R
-
-library(readr)
-
-mean_hp &lt;- mean(mtcars$hp)
-mean_hp &lt;- data.frame(value = mean_hp)
-write_csv(mean_hp, &quot;results/mean_hp_col.csv&quot;)
-</pre></div>
-</div>
-<blockquote>
-<div><p>Note: in this script we are saving the file to the results directory.
-There needs to be a results directory created before this script would work.</p>
-</div></blockquote>
-</section>
-<section id="using-command-line-arguments-in-r">
-<h3>Using command line arguments in R<a class="headerlink" href="#using-command-line-arguments-in-r" title="Permalink to this heading">#</a></h3>
-<p>Let’s make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.</p>
-<p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">docopt</span></code> R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.</p>
-<p>When we run <code class="docutils literal notranslate"><span class="pre">docopt</span></code> it takes the text we entered at the command line and gives it to us as a named list of the text provided after the script name. The names of the items in the list come from the documentation. Whitespace at the command line is what is used to parse the text into separate items in the vector.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-
-&quot;This script calculates the mean for a specified column
-from titanic.csv.
-
-Usage: quick_titanic_col_mean.R &lt;col&gt;
-&quot; -&gt; doc
-
-
-library(tidyverse)
-library(docopt)
-
-opt &lt;- docopt(doc)
-
-data &lt;- read_csv(&#39;data/titanic.csv&#39;)
-
-out &lt;- data %&gt;%
-         pull(!!opt$col) %&gt;%
-         mean(na.rm = TRUE)
-
-print(out)
-</pre></div>
-</div>
-<blockquote>
-<div><p>Note: we use <code class="docutils literal notranslate"><span class="pre">!!</span></code> in front of <code class="docutils literal notranslate"><span class="pre">opt$col</span></code> because all command line arguments are passed into R
-as strings, and are thus quoted. However, <code class="docutils literal notranslate"><span class="pre">pull</span></code> is a function from the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> that expects
-an unquoted column name of a data frame. <code class="docutils literal notranslate"><span class="pre">!!</span></code> does this unquoting.
-This is similar to <code class="docutils literal notranslate"><span class="pre">{{</span></code> that we saw before with functions
-(which quotes and unquotes values when they are passed into functions).
-However here we use <code class="docutils literal notranslate"><span class="pre">!!</span></code> as we have no indirection and just need to perform unquoting.</p>
-</div></blockquote>
-<p>And we would run a script like this from the command line as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_titanic_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="n">fare</span>
-</pre></div>
-</div>
-<p>Let’s make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the Gapminder <code class="docutils literal notranslate"><span class="pre">.csv</span></code>’s we saw in Block 1).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-
-&quot;This script calculates the mean for any numerical vector
-from a csv file. This script takes an unquoted column name and a data file path.
-
-Usage: quick_csv_col_mean.R &lt;file_path&gt; &lt;col&gt;
-&quot; -&gt; doc
-
-
-library(tidyverse)
-library(docopt)
-
-opt &lt;- docopt(doc)
-
-data &lt;- read_csv(opt$file_path)
-
-out &lt;- data %&gt;%
-         pull(!!opt$col) %&gt;%
-         mean(na.rm = TRUE)
-
-print(out)
-</pre></div>
-</div>
-<p>Now we would run a script like this from the command line as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span> <span class="n">fare</span>
-</pre></div>
-</div>
-</section>
-<section id="positional-arguments-vs-options">
-<h3>Positional arguments vs options<a class="headerlink" href="#positional-arguments-vs-options" title="Permalink to this heading">#</a></h3>
-<p>In the examples above, we used <code class="docutils literal notranslate"><span class="pre">docopt</span></code> to specify positional arguments. This means that the order matters! If we change the order of the values of the arguments at the command line, our script will likely throw an error, because it will try to perform the wrong operations on the wrong values.</p>
-<p>Another downside to positional arguments, is that without good documentation, they can be less readable. And certainly the call to the script to is less readable. We can instead give the arguments names using <code class="docutils literal notranslate"><span class="pre">--ARGUMENT_NAME</span></code> syntax. We call these “options”. Below is the same script but specified using options as opposed to positional arguments:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-
-&quot;This script calculates the mean for any numerical vector
-from a csv file. This script takes an unquoted column name and a data file path.
-
-Usage: quick_csv_col_mean.R --file_path=&lt;file_path&gt; --col=&lt;col&gt;
-
-Options:
---file_path=&lt;file_path&gt;   Path to the data file
---col=&lt;col&gt;               Unquoted column name of the numerical vector for which to calculate the mean
-&quot; -&gt; doc
-
-
-library(tidyverse)
-library(docopt)
-
-opt &lt;- docopt(doc)
-
-data &lt;- read_csv(opt$file_path)
-
-out &lt;- data %&gt;%
-         pull(!!opt$col) %&gt;%
-         mean(na.rm = TRUE)
-
-print(out)
-</pre></div>
-</div>
-<p>And we would run a script like this that uses options like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span> <span class="o">--</span><span class="n">col</span><span class="o">=</span><span class="n">fare</span>
-</pre></div>
-</div>
-<p>or like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">col</span><span class="o">=</span><span class="n">fare</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span>
-</pre></div>
-</div>
-<p>because we gave the arguments names, and thus their position no longer matters!</p>
-</section>
-<section id="optional-elements-arguments-or-options">
-<h3>Optional elements (arguments or options)<a class="headerlink" href="#optional-elements-arguments-or-options" title="Permalink to this heading">#</a></h3>
-<p>If you would like an argument or option to be “optional” (i.e., not required!) enclose them with the square brackets “[ ]”  in the documentation.</p>
-<section id="improving-our-docs">
-<h4>Improving our docs<a class="headerlink" href="#improving-our-docs" title="Permalink to this heading">#</a></h4>
-<p>We can improve our docs further by adding an “Options” section with {docopt}:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
-# date: 2020-01-15
-
-&quot;This script calculates the mean for any numerical vector
-from a csv file. This script takes an unquoted column name and a data file path.
-
-Usage: quick_csv_col_mean.R --file_path=&lt;file_path&gt; --col=&lt;col&gt;
-
-Options:
---file_path=&lt;file_path&gt;   Path to the data file
---col=&lt;col&gt;               Unquoted column name of the numerical vector for which to calculate the mean
-&quot; -&gt; doc
-
-
-library(tidyverse)
-library(docopt)
-
-opt &lt;- docopt(doc)
-
-data &lt;- read_csv(opt$file_path)
-
-out &lt;- data %&gt;%
-         pull(!!opt$col) %&gt;%
-         mean(na.rm = TRUE)
-
-print(out)
-</pre></div>
-</div>
-<p>And then the user can see these docs by calling the script from the command line and using the <code class="docutils literal notranslate"><span class="pre">--help</span></code> to get this information:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="n">script</span> <span class="n">calculates</span> <span class="n">the</span> <span class="n">mean</span> <span class="k">for</span> <span class="nb">any</span> <span class="n">numerical</span> <span class="n">vector</span>
-<span class="kn">from</span> <span class="nn">a</span> <span class="n">csv</span> <span class="n">file</span><span class="o">.</span> <span class="n">This</span> <span class="n">script</span> <span class="n">takes</span> <span class="n">an</span> <span class="n">unquoted</span> <span class="n">column</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">a</span> <span class="n">data</span> <span class="n">file</span> <span class="n">path</span><span class="o">.</span>
-
-<span class="n">Usage</span><span class="p">:</span> <span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=&lt;</span><span class="n">file_path</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">col</span><span class="o">=&lt;</span><span class="n">col</span><span class="o">&gt;</span>
-
-<span class="n">Options</span><span class="p">:</span>
-<span class="o">--</span><span class="n">file_path</span><span class="o">=&lt;</span><span class="n">file_path</span><span class="o">&gt;</span>   <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">data</span> <span class="n">file</span>
-<span class="o">--</span><span class="n">col</span><span class="o">=&lt;</span><span class="n">col</span><span class="o">&gt;</span>               <span class="n">Unquoted</span> <span class="n">column</span> <span class="n">name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">numerical</span> <span class="n">vector</span> <span class="k">for</span> <span class="n">which</span> <span class="n">to</span> <span class="n">calculate</span> <span class="n">the</span> <span class="n">mean</span>
-</pre></div>
-</div>
-</section>
-<section id="some-tips-for-rstudio-ide">
-<h4>Some tips for RStudio IDE:<a class="headerlink" href="#some-tips-for-rstudio-ide" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>To indent a block of text, highlight and use tab</p></li>
-<li><p>To fix indenting in general to R code standards, use Command/Cntrl + I</p></li>
-<li><p>To get multiple cursors, hold alt/option and highlight lines using cursor</p></li>
-<li><p>To get multiple cursors to the beginning of the line, use control A</p></li>
-<li><p>To get multiple cursors to the end of the line, use control E</p></li>
-</ul>
-</section>
-</section>
-</section>
-<section id="data-analysis-pipelines">
-<h2>Data analysis pipelines<a class="headerlink" href="#data-analysis-pipelines" title="Permalink to this heading">#</a></h2>
+<h2>Data analysis pipelines<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>As analysis grows in length and complexity, one literate code document generally is not enough</p></li>
 <li><p>To improve code report readability (and code reproducibility and modularity) it is better to abstract at least parts of the code away (e.g, to scripts)</p></li>
@@ -1237,20 +881,20 @@ $ make abyss.png
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="06-intro-to-testing-code.html"
+       href="08-reproducible-reports.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to testing code for data science</p>
+        <p class="prev-next-title">Reproducible reports</p>
       </div>
     </a>
     <a class="right-next"
-       href="08-reproducible-reports.html"
+       href="10-packaging-and-documenting.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Reproducible reports</p>
+        <p class="prev-next-title">Packaging and documenting code</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1269,36 +913,8 @@ $ make abyss.png
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-script">What is a script?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-scripts">Why write scripts?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-r">Scripts in R</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#our-first-r-script">Our first R script:</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#running-our-first-r-script">Running our first R script</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-couple-notes-about-scripts">A couple notes about scripts</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-structure-and-organization">Script structure and organization</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-r-script-organization">Example R script organization:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scripts in R:</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-things-from-scripts">Saving things from scripts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-r">Using command line arguments in R</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options">Positional arguments vs options</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-elements-arguments-or-options">Optional elements (arguments or options)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-our-docs">Improving our docs</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-analysis-pipelines">Data analysis pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data analysis pipelines</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>

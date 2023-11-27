@@ -1,0 +1,1177 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Non-interactive scripts and data analysis pipelines &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/07-scripts';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Reproducible reports" href="08-reproducible-reports.html" />
+    <link rel="prev" title="Introduction to testing code for data science" href="06-intro-to-testing-code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control for transparency and collaboration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Non-interactive scripts and data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/07-scripts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/07-scripts.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Non-interactive scripts and data analysis pipelines</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-script">What is a script?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-scripts">Why write scripts?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-r">Scripts in R</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#our-first-r-script">Our first R script:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-our-first-r-script">Running our first R script</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-couple-notes-about-scripts">A couple notes about scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-structure-and-organization">Script structure and organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-r-script-organization">Example R script organization:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scripts in R:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-things-from-scripts">Saving things from scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-r">Using command line arguments in R</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options">Positional arguments vs options</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example">Another example:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-python">Scripts in Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-python-script-organization">Example Python script organization:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-python">Using command line arguments in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options-in-python">Positional arguments vs options in Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-objects-from-scripts">Saving objects from scripts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-objects">Model objects</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saverds">example of <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-readrds">example of <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-pickle-dump">example of <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-pickle-load">example of <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="non-interactive-scripts-and-data-analysis-pipelines">
+<h1>Non-interactive scripts and data analysis pipelines<a class="headerlink" href="#non-interactive-scripts-and-data-analysis-pipelines" title="Permalink to this heading">#</a></h1>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="arabic simple">
+<li><p>Explain when it is optimal to work in a read-eval-print-loop (REPL) framework and
+when it is optimal to shift to using non-interactive scripts.</p></li>
+<li><p>Be able to create simple scripts in R that can take input and be executed
+from the command line.</p></li>
+<li><p>Decide when to move from using command line arguments to pass variables into a
+script to passing variables in via a configuration file, and create scripts that can read
+configuration files.</p></li>
+</ol>
+<section id="read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">
+<h3>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts<a class="headerlink" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Up until now, we have primarily been using R and Python in an Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode)</p></li>
+<li><p>Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is when we run our code in the console in R/Python, or in cells/chunks in the RStudio/Juptyer notebooks</p></li>
+<li><p>A Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) is very useful for:</p>
+<ul>
+<li><p>solving small problems</p></li>
+<li><p>developing code that will be knit to an analytic report</p></li>
+<li><p>developing code that will be run as a script (i.e., in “batch” mode)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="what-is-a-script">
+<h2>What is a script?<a class="headerlink" href="#what-is-a-script" title="Permalink to this heading">#</a></h2>
+<p>An R/Python script is simply a plain text file containing (almost) the same commands that you would enter into R/Python’s console or in cells/chunks in the RStudio/Juptyer notebooks. We often run these from top to bottom from the command line/unix shell.</p>
+<section id="why-write-scripts">
+<h3>Why write scripts?<a class="headerlink" href="#why-write-scripts" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Efficiency!</p></li>
+<li><p>Automation!</p></li>
+<li><p>Reusable!</p></li>
+<li><p>Record of what you have done!</p></li>
+</ul>
+<p><strong>It also makes your report files a lot cleaner!!!</strong></p>
+</section>
+</section>
+<section id="scripts-in-r">
+<h2>Scripts in R<a class="headerlink" href="#scripts-in-r" title="Permalink to this heading">#</a></h2>
+<p>Let’s start with a small, simple example to demonstrate how we write and run scripts in R (it is very similar in Python and we will get to this later in the lesson).</p>
+<p>Our script will be called <code class="docutils literal notranslate"><span class="pre">print_mean_hp.R</span></code>, and it will calculate the mean horsepower of the cars from the built-in R data frame <code class="docutils literal notranslate"><span class="pre">mtcars</span></code>.</p>
+<p>We will develop this script inside RStudio, make sure it works, and then run it from the command line/terminal/Git bash.</p>
+<section id="our-first-r-script">
+<h3>Our first R script:<a class="headerlink" href="#our-first-r-script" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean horsepower of the cars from the built-in 
+# R data frame `mtcars`. This script takes no arguments.
+#
+# Usage: Rscript print_mean_hp.R
+
+mean_hp &lt;- mean(mtcars$hp)
+print(mean_hp)
+</pre></div>
+</div>
+</section>
+<section id="running-our-first-r-script">
+<h3>Running our first R script<a class="headerlink" href="#running-our-first-r-script" title="Permalink to this heading">#</a></h3>
+<p>To run our R script, we need to open the command line/terminal/Git bash, and either navigate to the directory that houses the script OR point to it when we call it. We will do the former.</p>
+<p>Then to run the R script, we use the <code class="docutils literal notranslate"><span class="pre">Rscript</span></code> command, followed by the name/path to the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">print_mean_hp</span><span class="o">.</span><span class="n">R</span>
+</pre></div>
+</div>
+<p>The output should be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mf">146.6875</span>
+</pre></div>
+</div>
+</section>
+<section id="a-couple-notes-about-scripts">
+<h3>A couple notes about scripts<a class="headerlink" href="#a-couple-notes-about-scripts" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>If you want something to be output to the command line/terminal/Git bash, you <strong>should</strong> explicitly ask for it to be print. <em>This is not an absolute requirement in R, but it is in Python!</em></p></li>
+<li><p>Similar with figures, they need to be saved! You will never see a figure created in a script unless you write it to a file.</p></li>
+<li><p>From a reproducibility perspective, if we want input from the user, usually we will design the scripts to take command line arguments, and not use keyboard/user prompts.</p></li>
+</ul>
+</section>
+<section id="script-structure-and-organization">
+<h3>Script structure and organization<a class="headerlink" href="#script-structure-and-organization" title="Permalink to this heading">#</a></h3>
+<p>Although not necessary in R or Python, it is still good practice and advised to organize the code in your script into related sections. This practice keeps your code readable and organized. Below we outline how we typically organize R scripts:</p>
+<section id="example-r-script-organization">
+<h4>Example R script organization:<a class="headerlink" href="#example-r-script-organization" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
+
+<span class="c1"># import libraries/packages</span>
+
+<span class="c1"># parse/define command line arguments here</span>
+
+<span class="c1"># define main function</span>
+<span class="n">main</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(){</span>
+    <span class="c1"># code for &quot;guts&quot; of script goes here</span>
+<span class="p">}</span>
+
+<span class="c1"># code for other functions &amp; tests goes here</span>
+
+<span class="c1"># call main function</span>
+<span class="n">main</span><span class="p">()</span> <span class="c1"># pass any command line args to main here</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="id1">
+<h2>Scripts in R:<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>Here we write a script called <code class="docutils literal notranslate"><span class="pre">quick_titanic_fare_mean.R</span></code> which reads in the <a class="reference external" href="https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv">titanic dataset</a> (<em>original source: <a class="reference external" href="https://biostat.app.vumc.org/wiki/Main/DataSets">https://biostat.app.vumc.org/wiki/Main/DataSets</a></em>) and calculates the  mean for the fare (ticket price) variable.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Our script has two functions, a function we defined to calculate the standard error of the mean (such a function does not exist in R) and a `main` function which runs the &quot;body&quot; of our code.
+# author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean for the fare (ticket price)
+# from titanic.csv. This script takes no arguments.
+#
+# Usage: quick_titanic_fare_mean.R
+
+library(tidyverse)
+
+main &lt;- function() {
+data &lt;- read_csv(&#39;data/titanic.csv&#39;)
+  out &lt;- data %&gt;%
+         pull(fare) %&gt;%
+         mean(na.rm = TRUE)
+  print(out)
+}
+
+main()
+</pre></div>
+</div>
+<section id="saving-things-from-scripts">
+<h3>Saving things from scripts<a class="headerlink" href="#saving-things-from-scripts" title="Permalink to this heading">#</a></h3>
+<p>Above we just printed the mean to the terminal.
+That is was done because the purpose of that script
+was to have a very simple illustration of how to create and run scripts in R.
+However, in practice, we typically want to save our analysis artifacts (figures, tables, values, etc)
+to disc so that we can load them into other files
+(e.g., our final reports to communicate our analysis findings).</p>
+<p>Below we show an example of how we would use <code class="docutils literal notranslate"><span class="pre">readr::write_csv</span></code>
+to save the mean value we calculated to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean horsepower of the cars from the built-in 
+# R data frame `mtcars` and saves it to `results/mean_hp_col.csv`. 
+# This script takes no arguments.
+#
+# Usage: Rscript print_mean_hp.R
+
+library(readr)
+
+main &lt;- function() {
+  mean_hp &lt;- mean(mtcars$hp)
+  mean_hp &lt;- data.frame(value = mean_hp)
+  write_csv(mean_hp, &quot;results/mean_hp_col.csv&quot;)
+}
+
+main()
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: in this script we are saving the file to the results directory.
+There needs to be a results directory created before this script would work.</p>
+</div></blockquote>
+</section>
+<section id="using-command-line-arguments-in-r">
+<h3>Using command line arguments in R<a class="headerlink" href="#using-command-line-arguments-in-r" title="Permalink to this heading">#</a></h3>
+<p>Let’s make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.</p>
+<p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">docopt</span></code> R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.</p>
+<p>When we run <code class="docutils literal notranslate"><span class="pre">docopt</span></code> it takes the text we entered at the command line and gives it to us as a named list of the text provided after the script name. The names of the items in the list come from the documentation. Whitespace at the command line is what is used to parse the text into separate items in the vector.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_titanic_col_mean.R &lt;var&gt;
+&quot; -&gt; doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(var) {
+
+  # read in data
+  data &lt;- read_csv(&#39;data/titanic.csv&#39;)
+
+  # print out statistic of variable of interest
+  out &lt;- data |&gt;
+    pull(!!var) |&gt;
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$var)
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: we use <code class="docutils literal notranslate"><span class="pre">!!</span></code> in front of <code class="docutils literal notranslate"><span class="pre">opt$col</span></code> because all command line arguments are passed into R
+as strings, and are thus quoted. However, <code class="docutils literal notranslate"><span class="pre">pull</span></code> is a function from the <code class="docutils literal notranslate"><span class="pre">tidyverse</span></code> that expects
+an unquoted column name of a data frame. <code class="docutils literal notranslate"><span class="pre">!!</span></code> does this unquoting.
+This is similar to <code class="docutils literal notranslate"><span class="pre">{{</span></code> that we saw before with functions
+(which quotes and unquotes values when they are passed into functions).
+However here we use <code class="docutils literal notranslate"><span class="pre">!!</span></code> as we have no indirection and just need to perform unquoting.</p>
+</div></blockquote>
+<p>And we would run a script like this from the command line as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_titanic_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="n">fare</span>
+</pre></div>
+</div>
+<p>Let’s make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the Gapminder <code class="docutils literal notranslate"><span class="pre">.csv</span></code>’s we saw in Block 1).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_titanic_col_mean.R &lt;file_path&gt; &lt;var&gt;
+&quot; -&gt; doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(file_path, var) {
+
+  # read in data
+  data &lt;- read_csv(opt$file_path)
+
+  # print out statistic of variable of interest
+  out &lt;- data |&gt;
+    pull(!!var) |&gt;
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$file_path, opt$var)
+</pre></div>
+</div>
+<p>Now we would run a script like this from the command line as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span> <span class="n">fare</span>
+</pre></div>
+</div>
+</section>
+<section id="positional-arguments-vs-options">
+<h3>Positional arguments vs options<a class="headerlink" href="#positional-arguments-vs-options" title="Permalink to this heading">#</a></h3>
+<p>In the examples above, we used <code class="docutils literal notranslate"><span class="pre">docopt</span></code> to specify positional arguments. This means that the order matters! If we change the order of the values of the arguments at the command line, our script will likely throw an error, because it will try to perform the wrong operations on the wrong values.</p>
+<p>Another downside to positional arguments, is that without good documentation, they can be less readable. And certainly the call to the script to is less readable. We can instead give the arguments names using <code class="docutils literal notranslate"><span class="pre">--ARGUMENT_NAME</span></code> syntax. We call these “options”. Below is the same script but specified using options as opposed to positional arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># author: Tiffany Timbers
+# date: 2020-01-15
+
+&quot;This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_csv_col_mean.R --file_path=&lt;file_path&gt; --var=&lt;var&gt;
+
+Options:
+--file_path=&lt;file_path&gt;   Path to the data file
+--var=&lt;var&gt;               Unquoted column name of the numerical vector for which to calculate the mean
+&quot; -&gt; doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt &lt;- docopt(doc)
+
+main &lt;- function(file_path, var) {
+  
+  # read in data
+  data &lt;- read_csv(opt$file_path)
+  
+  # print out statistic of variable of interest
+  out &lt;- data |&gt;
+    pull(!!var) |&gt;
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$file_path, opt$var)
+</pre></div>
+</div>
+<p>And we would run a script like this that uses options like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span> <span class="o">--</span><span class="n">col</span><span class="o">=</span><span class="n">fare</span>
+</pre></div>
+</div>
+<p>or like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">quick_csv_col_mean</span><span class="o">.</span><span class="n">R</span> <span class="o">--</span><span class="n">col</span><span class="o">=</span><span class="n">fare</span> <span class="o">--</span><span class="n">file_path</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">titanic</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>because we gave the arguments names, and thus their position no longer matters!</p>
+<section id="some-tips-for-rstudio-ide">
+<h4>Some tips for RStudio IDE:<a class="headerlink" href="#some-tips-for-rstudio-ide" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>To indent a block of text, highlight and use tab</p></li>
+<li><p>To fix indenting in general to R code standards, use Command/Cntrl + I</p></li>
+<li><p>To get multiple cursors, hold alt/option and highlight lines using cursor</p></li>
+<li><p>To get multiple cursors to the beginning of the line, use control A</p></li>
+<li><p>To get multiple cursors to the end of the line, use control E</p></li>
+</ul>
+</section>
+</section>
+<section id="demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">
+<h3>Demo: building a Data Analysis pipeline using a Shell script tutorial<a class="headerlink" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial" title="Permalink to this heading">#</a></h3>
+<p>adapted from <a class="reference external" href="http://software-carpentry.org/">Software Carpentry</a></p>
+<p>To illustrate how to make a data analysis pipeline using a shell script to drive other scripts, we will work through an example together. Here are some set-up instructions so that we can do this together:</p>
+<section id="set-up-instructions">
+<h4>Set-up instructions<a class="headerlink" href="#set-up-instructions" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v1.0.zip">data_analysis_pipeline_eg-1.0.zip</a></p></li>
+<li><p>Unzip it and change into the <code class="docutils literal notranslate"><span class="pre">data_analysis_pipeline_eg-1.0</span></code> directory.</p></li>
+</ul>
+</section>
+<section id="let-s-do-some-analysis">
+<h4>Let’s do some analysis!<a class="headerlink" href="#let-s-do-some-analysis" title="Permalink to this heading">#</a></h4>
+<p>Suppose we have a script, <code class="docutils literal notranslate"><span class="pre">wordcount.py</span></code>, that reads in a text file,
+counts the words in this text file, and outputs a data file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/wordcount.py data/isles.txt results/isles.dat
+</pre></div>
+</div>
+<p>If we view the first 5 rows of the data file using <code class="docutils literal notranslate"><span class="pre">head</span></code>,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ head -5 results/isles.dat
+</pre></div>
+</div>
+<p>we can see that the file consists of one row per word. Each row shows the word itself,
+the number of occurrences of that word, and the number of occurrences as a percentage of
+the total number of words in the text file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">the</span> <span class="mi">3822</span> <span class="mf">6.7371760973</span>
+<span class="n">of</span> <span class="mi">2460</span> <span class="mf">4.33632998414</span>
+<span class="ow">and</span> <span class="mi">1723</span> <span class="mf">3.03719372466</span>
+<span class="n">to</span> <span class="mi">1479</span> <span class="mf">2.60708619778</span>
+<span class="n">a</span> <span class="mi">1308</span> <span class="mf">2.30565838181</span>
+</pre></div>
+</div>
+<p>Suppose we also have a script, <code class="docutils literal notranslate"><span class="pre">plotcount.py</span></code>, that reads in a data
+file and save a plot of the 10 most frequently occurring words:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/plotcount.py results/isles.dat results/figure/isles.png
+</pre></div>
+</div>
+<p>Together these scripts implement a data analysis pipeline:</p>
+<ol class="arabic simple">
+<li><p>Read a data file.</p></li>
+<li><p>Perform an analysis on this data file.</p></li>
+<li><p>Write the analysis results to a new file.</p></li>
+<li><p>Plot a graph of the analysis results.</p></li>
+</ol>
+<p>To document how we’d like the analysis to be run, so we (and others) have a record and
+can replicate it, we will build a shell script called <code class="docutils literal notranslate"><span class="pre">run_all.sh</span></code>. Let’s work to try
+to build this pipeline so it does all that!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Nov 2017</span>
+<span class="c1">#</span>
+<span class="c1"># This driver script completes the textual analysis of</span>
+<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
+<span class="c1"># occuring words from each of the 3 novels. This script</span>
+<span class="c1"># takes no arguments.</span>
+<span class="c1">#</span>
+<span class="c1"># Usage: bash run_all.sh</span>
+
+<span class="c1"># perform wordcout on novels</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="c1"># create plots</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+<p>We actually have 4 books that we want to analyze, and then put the figures in a report.</p>
+<ol class="arabic simple">
+<li><p>Read a data file.</p></li>
+<li><p>Perform an analysis on this data file.</p></li>
+<li><p>Write the analysis results to a new file.</p></li>
+<li><p>Plot a graph of the analysis results.</p></li>
+<li><p>Save the graph as an image, so we can put it in a paper.</p></li>
+</ol>
+<p>Let’s extend our shell script to do that!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Nov 2018</span>
+
+<span class="c1"># This driver script completes the textual analysis of</span>
+<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
+<span class="c1"># occuring words from each of the 3 novels. This script</span>
+<span class="c1"># takes no arguments.</span>
+
+<span class="c1"># example usage:</span>
+<span class="c1"># bash run_all.sh</span>
+
+<span class="c1"># count the words</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="c1"># create the plots</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+
+<span class="c1"># write the report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="another-example">
+<h3>Another example:<a class="headerlink" href="#another-example" title="Permalink to this heading">#</a></h3>
+<p>From the <a class="reference external" href="https://github.com/ttimbers/breast_cancer_predictor">breast cancer prediction example analysis repo</a>, here is a data analysis pipeline using a shell script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
+<span class="c1"># Tiffany Timbers, Jan 2020</span>
+
+<span class="c1"># download data</span>
+<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">download_data</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">out_type</span><span class="o">=</span><span class="n">feather</span> <span class="o">--</span><span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">archive</span><span class="o">.</span><span class="n">ics</span><span class="o">.</span><span class="n">uci</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">ml</span><span class="o">/</span><span class="n">machine</span><span class="o">-</span><span class="n">learning</span><span class="o">-</span><span class="n">databases</span><span class="o">/</span><span class="n">breast</span><span class="o">-</span><span class="n">cancer</span><span class="o">-</span><span class="n">wisconsin</span><span class="o">/</span><span class="n">wpbc</span><span class="o">.</span><span class="n">data</span> <span class="o">--</span><span class="n">out_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span>
+
+<span class="c1"># run eda report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;src/breast_cancer_eda.Rmd&#39;)&quot;</span>
+
+<span class="c1"># pre-process data </span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">pre_process_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="nb">input</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span> 
+
+<span class="c1"># create exploratory data analysis figure and write to file </span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">eda_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># tune model</span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">fit_breast_cancer_predict_model</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># test model</span>
+<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">breast_cancer_test_results</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">test</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
+
+<span class="c1"># render final report</span>
+<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/breast_cancer_predict_report.Rmd&#39;, output_format = &#39;github_document&#39;)&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="scripts-in-python">
+<h2>Scripts in Python<a class="headerlink" href="#scripts-in-python" title="Permalink to this heading">#</a></h2>
+<section id="example-python-script-organization">
+<h3>Example Python script organization:<a class="headerlink" href="#example-python-script-organization" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># documentation comments</span>
+
+<span class="c1"># import libraries/packages</span>
+
+<span class="c1"># parse/define command line arguments here</span>
+
+<span class="c1"># define main function</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># code for &quot;guts&quot; of script goes here</span>
+
+<span class="c1"># code for other functions &amp; tests goes here</span>
+
+<span class="c1"># call main function</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span> <span class="c1"># pass any command line args to main here</span>
+</pre></div>
+</div>
+<p><em>You can see that R and Python scripts should have roughly the same style. There is the difference of <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> in Python scripts, and R does not really have an equivalent. The benefit of some control flow around <code class="docutils literal notranslate"><span class="pre">main</span></code>, as is done in Python, is so that you could import or source the other functions in the script without running the <code class="docutils literal notranslate"><span class="pre">main</span></code> function.</em></p>
+<p><em>It is still worthwhile however to have a main function in your R scripts, as it helps with organization and readability.</em></p>
+</section>
+<section id="using-command-line-arguments-in-python">
+<h3>Using command line arguments in Python<a class="headerlink" href="#using-command-line-arguments-in-python" title="Permalink to this heading">#</a></h3>
+<p>Although <code class="docutils literal notranslate"><span class="pre">docopt</span></code> for Python exists, it is not currently being supported by an active development community.
+Thus, we will use the <a class="reference external" href="https://click.palletsprojects.com/en/8.1.x/"><code class="docutils literal notranslate"><span class="pre">click</span></code></a> Python package instead. It is widely used, has a healthy and active development community,
+and excellent functionality.</p>
+<p>Below is an example of using <code class="docutils literal notranslate"><span class="pre">click</span></code> for a simple Python script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">click</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;num1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s1">&#39;num2&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple program that adds two numbers.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum of </span><span class="si">{</span><span class="n">num1</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">num2</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Running this script via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="nb">sum</span><span class="o">.</span><span class="n">py</span> <span class="mi">5</span> <span class="mi">7</span>
+</pre></div>
+</div>
+<p>Would result in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="nb">sum</span> <span class="n">of</span> <span class="mi">5</span> <span class="ow">and</span> <span class="mi">7</span> <span class="ow">is</span> <span class="mi">12</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note that we do not need to pass the variables into <code class="docutils literal notranslate"><span class="pre">main()</span></code>. The <code class="docutils literal notranslate"><span class="pre">click</span></code> decorators take care of that for us! How nice!!!</p>
+</div></blockquote>
+</section>
+<section id="positional-arguments-vs-options-in-python">
+<h3>Positional arguments vs options in Python<a class="headerlink" href="#positional-arguments-vs-options-in-python" title="Permalink to this heading">#</a></h3>
+<p>If we instead wanted to use options in the script above, we swap the <code class="docutils literal notranslate"><span class="pre">argument</span></code> method for the <code class="docutils literal notranslate"><span class="pre">option</span></code> method and add <code class="docutils literal notranslate"><span class="pre">--</span></code> to the prefix of our options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">click</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--num1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--num2&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple program that adds two numbers.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum of </span><span class="si">{</span><span class="n">num1</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">num2</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Running this script, we now add the names of the options as shown below via:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="nb">sum</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">num1</span><span class="o">=</span><span class="mi">5</span> <span class="o">--</span><span class="n">num2</span><span class="o">=</span><span class="mi">7</span>
+</pre></div>
+</div>
+<p>Would result in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="nb">sum</span> <span class="n">of</span> <span class="mi">5</span> <span class="ow">and</span> <span class="mi">7</span> <span class="ow">is</span> <span class="mi">12</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="saving-objects-from-scripts">
+<h2>Saving objects from scripts<a class="headerlink" href="#saving-objects-from-scripts" title="Permalink to this heading">#</a></h2>
+<section id="tables">
+<h3>Tables<a class="headerlink" href="#tables" title="Permalink to this heading">#</a></h3>
+<p>As mentioned already, it is important you save results from your scripts so that you can import
+them into your reports (or other other data products).
+For data frame objects that will be presented as tables, writing the objects to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file
+through <code class="docutils literal notranslate"><span class="pre">readr</span></code> (in R) or <code class="docutils literal notranslate"><span class="pre">pandas</span></code> (in Python) is great.</p>
+</section>
+<section id="figures">
+<h3>Figures<a class="headerlink" href="#figures" title="Permalink to this heading">#</a></h3>
+<p>For figures, saving images as <code class="docutils literal notranslate"><span class="pre">.png</span></code> is also a good choice. Although the downstream usage of the figure can sometimes change this recommendation. For a brief but more thorough discussion of this topic, see the <a class="reference external" href="https://datasciencebook.ca/viz.html#saving-the-visualization">“Saving the visualization” chapter</a> from <em>Data Science: An Introduction</em> by Timbers, Campbell &amp; Lee (2020).</p>
+</section>
+<section id="model-objects">
+<h3>Model objects<a class="headerlink" href="#model-objects" title="Permalink to this heading">#</a></h3>
+<p>Model objects that are trained/fit in one script, and then need to be used again later in another script can and should be saved as binary files. In R, the format is <code class="docutils literal notranslate"><span class="pre">.RDS</span></code> and we use the functions <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code> and <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code> to do this. In python, the format is <code class="docutils literal notranslate"><span class="pre">.pickle</span></code> and we use the functions <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code> and <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code> from the <code class="docutils literal notranslate"><span class="pre">pickle</span></code> package.</p>
+<section id="example-of-saverds">
+<h4>example of <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code><a class="headerlink" href="#example-of-saverds" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">saveRDS</span><span class="p">(</span><span class="n">final_knn_model</span><span class="p">,</span> <span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-of-readrds">
+<h4>example of <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code><a class="headerlink" href="#example-of-readrds" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">final_knn_model</span> <span class="o">&lt;-</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="example-of-pickle-dump">
+<h4>example of <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code><a class="headerlink" href="#example-of-pickle-dump" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">final_knn_model</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="example-of-pickle-load">
+<h4>example of <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code><a class="headerlink" href="#example-of-pickle-load" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">final_knn_model</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06-intro-to-testing-code.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to testing code for data science</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08-reproducible-reports.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Reproducible reports</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-eval-print-loop-repl-framework-i-e-interactive-mode-versus-scripts">Read-eval-print-loop (REPL) framework (<em>i.e.,</em> interactive mode) versus Scripts</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-script">What is a script?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-write-scripts">Why write scripts?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-r">Scripts in R</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#our-first-r-script">Our first R script:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-our-first-r-script">Running our first R script</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-couple-notes-about-scripts">A couple notes about scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-structure-and-organization">Script structure and organization</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-r-script-organization">Example R script organization:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Scripts in R:</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-things-from-scripts">Saving things from scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-r">Using command line arguments in R</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options">Positional arguments vs options</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example">Another example:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-python">Scripts in Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-python-script-organization">Example Python script organization:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-command-line-arguments-in-python">Using command line arguments in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#positional-arguments-vs-options-in-python">Positional arguments vs options in Python</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-objects-from-scripts">Saving objects from scripts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-objects">Model objects</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saverds">example of <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-readrds">example of <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-pickle-dump">example of <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-pickle-load">example of <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
