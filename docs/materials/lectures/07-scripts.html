@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Non-interactive scripts and data analysis pipelines &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+    <title>Non-interactive scripts &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
   
   
   
@@ -174,7 +174,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Non-interactive scripts and data analysis pipelines</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Non-interactive scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
@@ -365,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Non-interactive scripts and data analysis pipelines</h1>
+    <h1>Non-interactive scripts</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -420,8 +420,16 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-objects">Model objects</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-saverds">example of saving a model using <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-readrds">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-pickle-dump">example of saving a model using <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-pickle-load">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-pickle-dump">example of saving a model using <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#for-very-simple-objects-like-preprocessor">for very simple objects (like preprocessor)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#for-more-complex-objects-like-a-fit-model">for more complex objects (like a fit model)</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-pickle-load">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">for very simple objects (like preprocessor)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">for more complex objects (like a fit model)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -437,8 +445,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="non-interactive-scripts-and-data-analysis-pipelines">
-<h1>Non-interactive scripts and data analysis pipelines<a class="headerlink" href="#non-interactive-scripts-and-data-analysis-pipelines" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="non-interactive-scripts">
+<h1>Non-interactive scripts<a class="headerlink" href="#non-interactive-scripts" title="Permalink to this heading">#</a></h1>
 <section id="topic-learning-objectives">
 <h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
@@ -979,29 +987,51 @@ through <code class="docutils literal notranslate"><span class="pre">readr</span
 <p>Model objects that are trained/fit in one script, and then need to be used again later in another script can and should be saved as binary files. In R, the format is <code class="docutils literal notranslate"><span class="pre">.RDS</span></code> and we use the functions <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code> and <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code> to do this. In python, the format is <code class="docutils literal notranslate"><span class="pre">.pickle</span></code> and we use the functions <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code> and <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code> from the <code class="docutils literal notranslate"><span class="pre">pickle</span></code> package.</p>
 <section id="example-of-saving-a-model-using-saverds">
 <h4>example of saving a model using <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code><a class="headerlink" href="#example-of-saving-a-model-using-saverds" title="Permalink to this heading">#</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">saveRDS</span><span class="p">(</span><span class="n">final_knn_model</span><span class="p">,</span> <span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">saveRDS</span><span class="p">(</span><span class="n">final_knn_model</span><span class="p">,</span> <span class="s2">&quot;final_knn_model.rds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="example-of-loading-a-saved-model-using-readrds">
 <h4>example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code><a class="headerlink" href="#example-of-loading-a-saved-model-using-readrds" title="Permalink to this heading">#</a></h4>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">final_knn_model</span> <span class="o">&lt;-</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.rds&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">final_knn_model</span> <span class="o">&lt;-</span> <span class="n">readRDS</span><span class="p">(</span><span class="s2">&quot;final_knn_model.rds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="example-of-saving-a-model-using-pickle-dump">
 <h4>example of saving a model using <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code><a class="headerlink" href="#example-of-saving-a-model-using-pickle-dump" title="Permalink to this heading">#</a></h4>
+<section id="for-very-simple-objects-like-preprocessor">
+<h5>for very simple objects (like preprocessor)<a class="headerlink" href="#for-very-simple-objects-like-preprocessor" title="Permalink to this heading">#</a></h5>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">final_knn_model</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
+<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">knn_preprocessor</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;knn_preprocessor.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </section>
-<section id="example-of-loading-a-saved-model-using-pickle-load">
-<h4>example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code><a class="headerlink" href="#example-of-loading-a-saved-model-using-pickle-load" title="Permalink to this heading">#</a></h4>
+<section id="for-more-complex-objects-like-a-fit-model">
+<h5>for more complex objects (like a fit model)<a class="headerlink" href="#for-more-complex-objects-like-a-fit-model" title="Permalink to this heading">#</a></h5>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
-<span class="n">final_knn_model</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;results/final_knn_model.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;knn_fit.pickle&quot;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">knn_fit</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+</section>
+<section id="example-of-loading-a-saved-model-using-pickle-load">
+<h4>example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code><a class="headerlink" href="#example-of-loading-a-saved-model-using-pickle-load" title="Permalink to this heading">#</a></h4>
+<section id="id2">
+<h5>for very simple objects (like preprocessor)<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">knn_preprocessor</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;knn_preprocessor.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h5>for more complex objects (like a fit model)<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;knn_fit.pickle&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">knn_fit</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 </section>
@@ -1115,8 +1145,16 @@ through <code class="docutils literal notranslate"><span class="pre">readr</span
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-objects">Model objects</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-saverds">example of saving a model using <code class="docutils literal notranslate"><span class="pre">saveRDS()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-readrds">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">readRDS()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-pickle-dump">example of saving a model using <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-pickle-load">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-saving-a-model-using-pickle-dump">example of saving a model using <code class="docutils literal notranslate"><span class="pre">pickle.dump()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#for-very-simple-objects-like-preprocessor">for very simple objects (like preprocessor)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#for-more-complex-objects-like-a-fit-model">for more complex objects (like a fit model)</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-loading-a-saved-model-using-pickle-load">example of loading a saved model using <code class="docutils literal notranslate"><span class="pre">pickle.load()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">for very simple objects (like preprocessor)</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">for more complex objects (like a fit model)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
