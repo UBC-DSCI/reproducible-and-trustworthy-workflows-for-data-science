@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction to the Bash Shell &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/02-intro-to-bash';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Version control for transparency and collaboration" href="02-version-control-1.html" />
+    <link rel="prev" title="How do reproducible and trustworthy workflows impact data science?" href="01-intro-to-ds-workflows.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction to the Bash Shell</a></li>
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control for transparency and collaboration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/02-intro-to-bash.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/02-intro-to-bash.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction to the Bash Shell</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction to the Bash Shell</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-bash-shell-and-why-do-we-use-it">What is the Bash shell and why do we use it?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computer-communication">Computer communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-based-communication">Text-based communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bash">Bash</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-bash-shell">Using the bash shell</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-your-location-in-the-filesystem">Finding your location in the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-the-filesystem">Viewing the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-filesystem">Navigating the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-table-of-bash-commands-and-special-characters">Summary table of Bash commands and special characters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands-for-viewing-and-navigating-the-filesystem">Commands for viewing and navigating the filesystem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#special-characters">Special characters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="introduction-to-the-bash-shell">
+<h1>Introduction to the Bash Shell<a class="headerlink" href="#introduction-to-the-bash-shell" title="Permalink to this heading">#</a></h1>
+</section>
+<section id="topic-learning-objectives">
+<h1>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h1>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="arabic simple">
+<li><p>Explain what the Bash shell is and why we use it in data science computing.</p></li>
+<li><p>Recognize the directory hierarchy as it is commonly represented in diagrams, paths and in the file explorer software.</p></li>
+<li><p>Distinguish common operators and representations of the different filesystem elements typically used in the Bash shell.</p></li>
+<li><p>Explore the filesystem using Bash commands as <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and <code class="docutils literal notranslate"><span class="pre">cd</span></code>.</p></li>
+</ol>
+</section>
+<section id="what-is-the-bash-shell-and-why-do-we-use-it">
+<h1>What is the Bash shell and why do we use it?<a class="headerlink" href="#what-is-the-bash-shell-and-why-do-we-use-it" title="Permalink to this heading">#</a></h1>
+<p>In this section we will begin by discussing how we communicate with computers,
+and end with describing the Bash shell and our rationale for using it in data science computing.</p>
+<section id="computer-communication">
+<h2>Computer communication<a class="headerlink" href="#computer-communication" title="Permalink to this heading">#</a></h2>
+<p>Before we get into practically doing things,
+I want to give some background
+to the idea of computing.
+Essentially, computing is about humans communicating
+with machines to modulate flows of current in the hardware.
+Early examples of human computer communication were quite primitive
+and included actually disconnecting a wire
+and connecting it again in a different spot.</p>
+<p>Luckily,
+we are not doing this anymore;
+instead we have graphical user interface with menus and buttons,
+which is what you are commonly using on your laptop.</p>
+<p>These graphical interface can be thought of as a layer (or <em>shell</em>)
+around the internal components of your operating system.
+Shells exist as an intermediate that both makes it easy for us to express our thoughts,
+and for computers to interpret them.</p>
+</section>
+<section id="text-based-communication">
+<h2>Text-based communication<a class="headerlink" href="#text-based-communication" title="Permalink to this heading">#</a></h2>
+<p>We will learn how to communicate to a computer via a text-based shell,
+rather than a graphical one.</p>
+<p>Using a text-based shell might at first seems counter-intuitive,
+since the reason for creating a shell in the first place
+was to facilitate user interaction with the computer.
+So now that we have these easy to use graphical user interfaces (GUIs),
+why would anyone in their right mind go back to using a text based interface?</p>
+<p>Well,
+it’s partly a misconception,
+GUIs are nice when you are new to something,
+but text based interfaces are actually faster
+and easier to use when you know what you are doing.</p>
+<p>We can compare it to learning a language,
+in the beginning it’s nice to look things up in a dictionary (or a menu on the computer),
+but once I know what I want to say,
+it is just easer to say or type it directly,
+instead of looking in submenues.</p>
+<p>And by extension,
+it would be even faster to speak or even just think of what you want to do and have it executed by the computer,
+this is what speech- and brain-computer interfaces are concerned with.</p>
+</section>
+<section id="bash">
+<h2>Bash<a class="headerlink" href="#bash" title="Permalink to this heading">#</a></h2>
+<p>Bash is the most commonly used text shell.
+You have it installed on your computer by default if you are using Mac or Linux machine,
+and if you are on a Windows machine you downloaded bash as part of the setup instructions.
+Sometimes we might use “prompt”,
+“command line”,
+or “terminal”,
+which for the purposes of this lecture,
+refers to the same thing.</p>
+<p>The abbreviation BASH stands for Bourne Again SHell.
+Other shells existed before Bash,
+and one of the most successful early shells was invented by Stephen Bourne at Bell Labs in 1977,
+which he called the Bourne Shell.
+In 1989,
+the Free Software Foundation improved the Bourne Shell and as a pun named it the Bourne Again Shell,
+to symbolize it was now “reborn” with new features.</p>
+<p>Text-based shells are also called command-line interfaces (CLI).
+The heart of every CLI is a read-evaluate-print loop (REPL).
+When we type a command and press Return (also called Enter) the CLI reads the command,
+evaluates it (i.e.,
+executes it),
+prints the command’s output,
+and loops around to wait for another command.
+Let’s see how to do that next!</p>
+</section>
+</section>
+<section id="using-the-bash-shell">
+<h1>Using the bash shell<a class="headerlink" href="#using-the-bash-shell" title="Permalink to this heading">#</a></h1>
+<p>When you open the Bash shell you should see <code class="docutils literal notranslate"><span class="pre">$</span></code>, which is the default prompt character.
+By default, the prompt character is usually prefixed by several other pieces of information:</p>
+<ul class="simple">
+<li><p>the current username</p></li>
+<li><p>hostname of the computer’s system (follows the <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> symbol)</p></li>
+<li><p>the current working directory (where you are currently in the computers operating system)</p></li>
+</ul>
+<p>It often looks like this:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>username@hostname:~$
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note:  <code class="docutils literal notranslate"><span class="pre">~</span></code> in the example above indicates the current location is the user’s home directory.
+This is the default location the Bash shell opens to.</p>
+</div></blockquote>
+<p>Sometimes the name of the computational environment also prefixes the prompt character.
+This name usually comes first and is surrounded by parentheses:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>base<span class="o">)</span><span class="w"> </span><span class="o">[</span>username@localhost<span class="w"> </span>~<span class="o">]</span>$
+</pre></div>
+</div>
+<section id="finding-your-location-in-the-filesystem">
+<h2>Finding your location in the filesystem<a class="headerlink" href="#finding-your-location-in-the-filesystem" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pwd</span></code> command stands for “print wording directory”.
+We use this command to find out where our Bash shell
+is in the computers filesystem</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>/home/username
+</pre></div>
+</div>
+<p>Each user has a <code class="docutils literal notranslate"><span class="pre">home</span></code> directory;
+the function and location of this directory differs a little bit between operating systems.
+On Linux it is usually <code class="docutils literal notranslate"><span class="pre">/home/username</span></code>,
+on MacOS it is <code class="docutils literal notranslate"><span class="pre">/Users/username</span></code>,
+and on Windows it will show up as <code class="docutils literal notranslate"><span class="pre">/c/Users/username</span></code>
+(if you have Git Bash installed).
+Our examples in this module shows the Linux directory structure,
+but you will see that some of the other modules
+show what we would see on MacOS or Windows.</p>
+</section>
+<section id="viewing-the-filesystem">
+<h2>Viewing the filesystem<a class="headerlink" href="#viewing-the-filesystem" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ls</span></code> command stands for “listing”.
+We use this command to see what files and folders
+exist somewhere on our computer using the Bash shell.
+If we want to see the files and folders that exist
+in our current working directory all we need to type is <code class="docutils literal notranslate"><span class="pre">ls</span></code>.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ls
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>Downloads     Music
+Documents     todo.txt
+Pictures      my_program
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: our results may be different depending on our operating system and what files or directories we have.</p>
+</div></blockquote>
+<p>We can also use <code class="docutils literal notranslate"><span class="pre">ls</span></code> to see what files and folders exist in other directories in the computers filesystem
+by giving <code class="docutils literal notranslate"><span class="pre">ls</span></code> a path to the directory of interest.
+For example, imagine we are in the computer’s home directory (as shown above)
+and we want to see what files and directories are in the <code class="docutils literal notranslate"><span class="pre">Documents</span></code> directory.
+To do this we would type:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>Documents
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>dsci-310-student
+letters
+sample-team-work-doc.pdf
+textbooks
+ubc-mds
+</pre></div>
+</div>
+<p>Sometimes there are files in our computer’s filesystem that are prefixed with <code class="docutils literal notranslate"><span class="pre">.</span></code>,
+for example <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>, <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> and <code class="docutils literal notranslate"><span class="pre">.ipynb_checkpoints</span></code>.
+These are known as hidden files, and your computer’s default is to hide them from you,
+regardless of whether you use a graphical user interface (e.g., Finder, Explorer, Nautilus)
+or the Bash shell to explore our computer’s filesystem.
+To force the Bash shell to show us these files we can use the <code class="docutils literal notranslate"><span class="pre">-a</span></code> flag/option.
+For example, if we do this to look in the <code class="docutils literal notranslate"><span class="pre">Documents</span></code> directory, we see a few new things!</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ls<span class="w"> </span>-a<span class="w"> </span>Documents
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>.
+..
+.DS_Store
+dsci-310-student
+letters
+sample-team-work-doc.pdf
+textbooks
+ubc-mds
+</pre></div>
+</div>
+<p>Some of these are quite uninteresting, for example the <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code> file,
+which is a file only found on Mac operating systems that gets created
+whenever a directory is viewed with the Finder program.
+However, <code class="docutils literal notranslate"><span class="pre">.</span></code> and <code class="docutils literal notranslate"><span class="pre">..</span></code> are quite interesting and special to the Bash shell.
+The first, <code class="docutils literal notranslate"><span class="pre">.</span></code>, indicates the Bash shell’s current working directory.
+The second, <code class="docutils literal notranslate"><span class="pre">..</span></code>, indicates the Bash shell’s parent directory of the current working directory.</p>
+</section>
+<section id="navigating-the-filesystem">
+<h2>Navigating the filesystem<a class="headerlink" href="#navigating-the-filesystem" title="Permalink to this heading">#</a></h2>
+<p>Just as we can view the computer’s filesystem using the Bash shell,
+we can also navigate the filesystem.
+To do this we use the <code class="docutils literal notranslate"><span class="pre">cd</span></code> command.
+The <code class="docutils literal notranslate"><span class="pre">cd</span></code> command stands for change directory.
+We use it similar to <code class="docutils literal notranslate"><span class="pre">ls</span></code>, in that we say the command
+and then we provide a file path indicating to where we want to navigate to.</p>
+<p>For example if we wish to move from the home directory
+into the Documents directory,
+we would type:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Documents
+</pre></div>
+</div>
+<p>When we move directories,
+the shell does not output anything to tell us where we have landed.
+So its good to remember the <code class="docutils literal notranslate"><span class="pre">pwd</span></code> (print workding directory) command
+so that we can check where we are from time to time:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>/home/username/Documents
+</pre></div>
+</div>
+<p>If we want to move up the filesystem,
+this is where we need to use the special
+characters to refer to the parent directory (<code class="docutils literal notranslate"><span class="pre">..</span></code>).
+To move from the <code class="docutils literal notranslate"><span class="pre">Documents</span></code> directory
+back into the <code class="docutils literal notranslate"><span class="pre">home</span></code> directory we need to type:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>..
+</pre></div>
+</div>
+<p>Again, we can use <code class="docutils literal notranslate"><span class="pre">pwd</span></code> to probe whether we arrived where we hoped to!</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">pwd</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">username</span>
+</pre></div>
+</div>
+<p>Phew! We made it!
+There are a few other <code class="docutils literal notranslate"><span class="pre">cd</span></code> shortcuts that are useful to know
+to help us efficiently navigate the filesystem.
+These include <code class="docutils literal notranslate"><span class="pre">cd</span></code> or <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~</span></code>,
+which takes you from any location back to the computer’s home directory.
+As well as <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">-</span></code>, which takes you to the previous directory you were in.</p>
+</section>
+<section id="summary-table-of-bash-commands-and-special-characters">
+<h2>Summary table of Bash commands and special characters<a class="headerlink" href="#summary-table-of-bash-commands-and-special-characters" title="Permalink to this heading">#</a></h2>
+<section id="commands-for-viewing-and-navigating-the-filesystem">
+<h3>Commands for viewing and navigating the filesystem<a class="headerlink" href="#commands-for-viewing-and-navigating-the-filesystem" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Purpose</p></th>
+<th class="head"><p>Example use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pwd</span></code></p></td>
+<td><p>Print Working Directory</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pwd</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ls</span></code></p></td>
+<td><p>LiSt contents</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">Documents</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cd</span></code></p></td>
+<td><p>Change Directory</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">Desktop</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="special-characters">
+<h3>Special characters<a class="headerlink" href="#special-characters" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Definition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code></p></td>
+<td><p>Current working directory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">..</span></code></p></td>
+<td><p>Parent directory</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">~</span></code></p></td>
+<td><p>HOME directory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$</span></code></p></td>
+<td><p>Bash shell prompt</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="attribution">
+<h1>Attribution<a class="headerlink" href="#attribution" title="Permalink to this heading">#</a></h1>
+<p>This chapter is derived from lecture notes created by Joel Ostblom, Florencia D’Andrea and Daniel Chen for the University of British Columbia’s Master of Data Science <a class="reference external" href="https://github.com/UBC-MDS/DSCI_521_platforms-dsci">DSCI 521 course</a>.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-intro-to-ds-workflows.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">How do reproducible and trustworthy workflows impact data science?</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-version-control-1.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Version control for transparency and collaboration</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Introduction to the Bash Shell</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-bash-shell-and-why-do-we-use-it">What is the Bash shell and why do we use it?</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computer-communication">Computer communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#text-based-communication">Text-based communication</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bash">Bash</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-bash-shell">Using the bash shell</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-your-location-in-the-filesystem">Finding your location in the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#viewing-the-filesystem">Viewing the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigating-the-filesystem">Navigating the filesystem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-table-of-bash-commands-and-special-characters">Summary table of Bash commands and special characters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#commands-for-viewing-and-navigating-the-filesystem">Commands for viewing and navigating the filesystem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#special-characters">Special characters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
