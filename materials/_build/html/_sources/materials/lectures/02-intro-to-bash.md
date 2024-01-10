@@ -12,12 +12,12 @@ By the end of this topic, students should be able to:
 
 3. Explore the filesystem using Bash commands as `ls`, `pwd` and `cd`.
 
-## What is the Bash shell and why do we use it?
+### What is the Bash shell and why do we use it?
 
 In this section we will begin by discussing how we communicate with computers,
 and end with describing the Bash shell and our rationale for using it in data science computing.
 
-#### Computer communication
+##### Computer communication
 
 Before we get into practically doing things,
 I want to give some background 
@@ -286,6 +286,32 @@ As well as `cd -`, which takes you to the previous directory you were in.
 | `..` | Parent directory |
 | `~` | HOME directory |
 | `$` | Bash shell prompt |
+
+### Common bash diagrams
+
+In previous courses you may have seen filesystem diagrams 
+represented as a tree structure with icons representing 
+the files and folders contained within the filesystem.
+An example of one such diagram is shown below:
+
+<img src="img/diagram-files-activity.png" width=400>
+
+Another common way a filesystem is often represented in 
+computational documentation is using plain text.
+Below we recreate the same filesystem using a text-style diagram:
+
+```
+/
+├── Users                      
+│   ├── Varada
+│   │   ├── 571_lectures 
+│   │   └── 571_labs
+│   └── Florencia          
+│       ├── dashboards 
+│       └── notes
+└── Data                        
+    └── mds_2022
+```
 
 ## Attribution
 
