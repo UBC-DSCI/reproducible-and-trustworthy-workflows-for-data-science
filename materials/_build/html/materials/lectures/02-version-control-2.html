@@ -1,0 +1,1156 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Version control (for transparency and collaboration) II &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/02-version-control-2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Filenames and data science project organization, Integrated development environments" href="03-filenames-project-organization.html" />
+    <link rel="prev" title="Version control (for transparency and collaboration) I" href="02-version-control-1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-intro-to-bash.html">Introduction to the Bash Shell</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control (for transparency and collaboration) I</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Version control (for transparency and collaboration) II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/02-version-control-2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/02-version-control-2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Version control (for transparency and collaboration) II</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-branches">Git Branches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-branch-using-the-jupyterlab-git-extension">Creating a branch using the JupyterLab Git extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-branch-using-the-command-line">Creating a branch using the command line</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-branches-that-already-exist">Switching to branches that already exist</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-remote-branches-you-did-not-create-locally">Getting remote branches you did not create locally</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-command-line-git-branching-commands">Useful command line Git branching commands</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-pull-request">Creating a pull request</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Exercise</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-reviews-using-in-line-comments-and-suggested-code-fixes">Code reviews using in-line comments and suggested code fixes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-do-a-code-review">Demo: do a code review:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-accept-suggested-changes-from-a-code-review">Demo: Accept suggested changes from a code review:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-things-you-can-do-with-branches-on-github">Useful things you can do with branches on GitHub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-you-not-accept-a-pull-request">How do you not accept a pull request?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-and-github-flow">Git and GitHub flow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-flow">GitHub Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-flow">Git Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discuss">Discuss:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relevance-to-course-project">Relevance to course project:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-when-my-feature-branch-falls-behind-main">What happens when my feature branch falls behind main?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-boards">Project boards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-project-boards-for-collaborative-software-projects">Why use project boards for collaborative software projects?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-project-boards">Exercise: Getting to know GitHub project boards</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Relevance to course project:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#milestones">Milestones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-milestones">Exercise: Getting to know GitHub milestones</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Relevance to course project:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-for-authentication">SSH for authentication</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remotely-accessing-another-computer-using-ssh">Remotely accessing another computer using SSH</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-key-based-authentication">SSH key-based authentication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-public-key-private-key-concepts">Understanding public key private key concepts</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-lock-works">How the lock works</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#you-can-put-your-lock-at-many-places">You can put your lock at many places</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-your-private-key-safe">Keeping your private key safe</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Next:</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="version-control-for-transparency-and-collaboration-ii">
+<h1>Version control (for transparency and collaboration) II<a class="headerlink" href="#version-control-for-transparency-and-collaboration-ii" title="Permalink to this heading">#</a></h1>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="arabic simple">
+<li><p>Use Git and GitHub to successfully collaborate with others (e.g., handle merge conflicts, use a fork-pull-request and branch-pull-request workflow to contribute to a project, organize tasks through issue milestones and project boards)</p></li>
+</ol>
+</section>
+<section id="git-branches">
+<h2>Git Branches<a class="headerlink" href="#git-branches" title="Permalink to this heading">#</a></h2>
+<p>Branches allow you to have a playground
+for developing and testing new additions to your code,
+as well as fixes.
+This playground lets your explore, experiment and test
+in a safe place - away from others that might be using
+or depending on the current version of your code.
+This is perhaps more obviously useful if your project
+is deployed and has users (e.g., a data visualization dashboard,
+an R or Python package, a phone app, etc),
+but this can also be useful for code that make up a data analyses.
+As, in addition to the reasons stated above for branching,
+branching also lets you organize units of work into smaller,
+more manageable chunks that are easier for collaborators to check over and review.</p>
+<p>Once the new code additions or fixes have been
+finalized in their branch playground,
+they can be merged back to the main code-base.
+Several branch playgrounds can co-exist,
+one for each new code addition or fix being worked on.
+This allows for parallelization of work!</p>
+<p>We can use a construction of a house
+as a metaphor for this kind of development.
+First,
+you need to build the foundation.
+Since everything depends on the foundation being built,
+this would be developed on the main branch.
+When the foundation is finished,
+the construction of other parts of the house that don’t depend on each other
+could take place in parallel,
+e.g. some contributors might start working on the walls and others on the floor.
+When either of these features is finished,
+it can be added back to the house
+(merged into main).
+When depicted graphically,
+this process would look something like this
+(each dot is a commit).</p>
+<a class="reference internal image-reference" href="../../_images/branches-house-analogy.png"><img alt="../../_images/branches-house-analogy.png" src="../../_images/branches-house-analogy.png" style="width: 400px;" /></a>
+<p>A more realistic Git branching example for a data analysis project might look something like this:</p>
+<a class="reference internal image-reference" href="../../_images/git-branch-diagrams.png"><img alt="../../_images/git-branch-diagrams.png" src="../../_images/git-branch-diagrams.png" style="width: 400px;" /></a>
+<section id="creating-a-branch-using-the-jupyterlab-git-extension">
+<h3>Creating a branch using the JupyterLab Git extension<a class="headerlink" href="#creating-a-branch-using-the-jupyterlab-git-extension" title="Permalink to this heading">#</a></h3>
+<p>Using the JupyterLab Git extension, you create a new branch on your local computer by clicking on the up arrow in the “Current Branch” tab, and clicking the blue “New Branch” button.</p>
+<a class="reference internal image-reference" href="../../_images/create-new-branch.png"><img alt="../../_images/create-new-branch.png" src="../../_images/create-new-branch.png" style="width: 500px;" /></a>
+<p>A dialogue box will open, and ask you to name the branch. After you do this, click on the blue “Create Branch” button. Remember to name it after the work you plan to do. Here we plan to fix the documentation a bit, so we will call it <code class="docutils literal notranslate"><span class="pre">patch-docs</span></code>.</p>
+<a class="reference internal image-reference" href="../../_images/name-new-branch.png"><img alt="../../_images/name-new-branch.png" src="../../_images/name-new-branch.png" style="width: 300px;" /></a>
+<p>To finally switch to the new playground (i.e., your new branch) click on the branch name of the new branch you just created in the Branches section of the “Current Branch” tab.</p>
+<a class="reference internal image-reference" href="../../_images/switch-to-new-branch.png"><img alt="../../_images/switch-to-new-branch.png" src="../../_images/switch-to-new-branch.png" style="width: 500px;" /></a>
+<p>As you work here, you can commit your changes to version control locally, and even push your changes to the remote repository. All the changes however will live only on that branch until you do something to move them to another branch. When you want to start discussing your changes with your collaborators to start the process of bringing these changes into the main branch (main code-base) you typically create what is called a pull request. A pull request is a like an asking your collaborators “is it OK to merge my code?” Usually there will be some discussion and a few more revisions to the code, but eventually they will give you the thumbs up when everything looks good and the code can then be merged. We will discuss this more next.</p>
+</section>
+<section id="creating-a-branch-using-the-command-line">
+<h3>Creating a branch using the command line<a class="headerlink" href="#creating-a-branch-using-the-command-line" title="Permalink to this heading">#</a></h3>
+<p>In the terminal, and in the working directory of the project in which you wish to create a branch,
+use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">switch</span></code> with the <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag and specify the branch name.
+This create a new branch and immediately switch to it.
+For example, to create a branch named <code class="docutils literal notranslate"><span class="pre">patch-docs</span></code>
+(a good branch name if we were planning on working on a fix
+in the project’s documentation),
+we would type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">switch</span> <span class="o">-</span><span class="n">c</span> <span class="n">patch</span><span class="o">-</span><span class="n">docs</span>
+</pre></div>
+</div>
+<p>To ask Git what branches now exist and to see where we are,
+we can use the <code class="docutils literal notranslate"><span class="pre">branch</span></code> command with the <code class="docutils literal notranslate"><span class="pre">-v</span></code> flag
+(for “verbose”, meaning tell us everything!):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>And we should see something like the output shown below,
+which lists the branch names in the first column,
+the SHA of the last commit on each branch in the second column,
+and the commit message associated with the last commit in the third column:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">main</span>       <span class="n">f756bbb</span> <span class="n">initial</span>
+<span class="o">*</span> <span class="n">patch</span><span class="o">-</span><span class="n">docs</span> <span class="n">f756bbb</span> <span class="n">initial</span>
+</pre></div>
+</div>
+<p>As you work here on this new branch,
+you can commit your changes to version control locally,
+and even push your changes to the remote repository.
+All the changes however will live only on that branch
+until you do something to move them to another branch.
+When you want to start discussing your changes with your collaborators
+to start the process of bringing these changes into the main branch (main code-base)
+you typically create what is called a pull request.
+A pull request is a like an asking your collaborators “is it OK to merge my code?”
+Usually there will be some discussion and a few more revisions to the code,
+but eventually they will give you the thumbs up when everything looks good
+and the code can then be merged. We will discuss this more next.</p>
+<section id="switching-to-branches-that-already-exist">
+<h4>Switching to branches that already exist<a class="headerlink" href="#switching-to-branches-that-already-exist" title="Permalink to this heading">#</a></h4>
+<p>After you have been working on your new brain for some time,
+you will eventually want to get back to the project’s default branch,
+or some other branch.
+To do this, we use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">switch</span> <span class="pre">&lt;branch_name&gt;</span></code>.
+Note that we do not use the <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag this time, as we are not creating a new branch.</p>
+</section>
+<section id="getting-remote-branches-you-did-not-create-locally">
+<h4>Getting remote branches you did not create locally<a class="headerlink" href="#getting-remote-branches-you-did-not-create-locally" title="Permalink to this heading">#</a></h4>
+<p>If your collaborator creates a branch that you want to
+run or test locally, but it only exists on the remote repository
+you have to tell Git to fetch (go get it) for you first,
+before you can switch to it.
+You can specify which branch you specifically want to grab,
+but for simplicity it is often easy to ask Git
+to fetch all of them for you, using the <code class="docutils literal notranslate"><span class="pre">fetch</span></code> command
+with the <code class="docutils literal notranslate"><span class="pre">--all</span></code> flag:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">fetch</span> <span class="o">--</span><span class="nb">all</span>
+</pre></div>
+</div>
+</section>
+<section id="useful-command-line-git-branching-commands">
+<h4>Useful command line Git branching commands<a class="headerlink" href="#useful-command-line-git-branching-commands" title="Permalink to this heading">#</a></h4>
+<p>Below is a table of the most commonly used
+Git commands for branching.
+This table includes the commands we presented above
+as well as the a few other useful ones.</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Description</p></th>
+<th class="head"><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>list all local branches</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-v</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>create a new branch &amp; immediately switch to it</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">switch</span> <span class="pre">-c</span> <span class="pre">&lt;branch_name&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">&lt;branch_name&gt;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>switch to a branch</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">switch</span> <span class="pre">&lt;branch_name&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span>&#160; <span class="pre">&lt;branch_name&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>fetches all changes to all branches</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span> <span class="pre">--all</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>retrieve a branch you don’t have locally on your laptop from GitHub</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">--track</span> <span class="pre">origin/&lt;branch_name</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>merge changes from another branch</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">&lt;branch_name&gt;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>delete a local branch</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">branch</span> <span class="pre">-d</span> <span class="pre">&lt;branch_name&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>push changes to a remote branch</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">&lt;branch_name&gt;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exercise">
+<h4>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Make your own copy of <a class="reference external" href="https://github.com/ttimbers/sqrt">this GitHub repository</a> by clicking the green “Use this template” button. And then clone your copy of the repository to your computer.</p></li>
+<li><p>Create a new branch named <code class="docutils literal notranslate"><span class="pre">better_error_msg</span></code> in the local repository using Git.</p></li>
+<li><p>On that branch, fix the <code class="docutils literal notranslate"><span class="pre">sqrt.py</span></code> so that if you run this script with a negative number as an argument you do not get an difficult to understand error, but instead throw a helpful exception informing the user that the number should be positive. Fix to add to <code class="docutils literal notranslate"><span class="pre">sqrt.py</span></code>:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">number</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;n should not a positive number&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Add and commit those changes.</p></li>
+<li><p>Switch back to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch and look at the <code class="docutils literal notranslate"><span class="pre">sqrt.py</span></code> file - do you see the change there?</p></li>
+<li><p>Switch back to the <code class="docutils literal notranslate"><span class="pre">better_error_msg</span></code> branch - do you see the change there?</p></li>
+<li><p>Push your change to the remote GitHub repository, and see where you can find it there!</p></li>
+</ol>
+<blockquote>
+<div><p>Note: if you use the Git command line tool and get an error message like the one shown below,
+this is because you did not state the remote (usually it is <code class="docutils literal notranslate"><span class="pre">origin</span></code>).
+Try pushing again using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">&lt;branch_name&gt;</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fatal</span><span class="p">:</span> <span class="n">The</span> <span class="n">current</span> <span class="n">branch</span> <span class="n">better_error_msg</span> <span class="n">has</span> <span class="n">no</span> <span class="n">upstream</span> <span class="n">branch</span><span class="o">.</span>
+<span class="n">To</span> <span class="n">push</span> <span class="n">the</span> <span class="n">current</span> <span class="n">branch</span> <span class="ow">and</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">remote</span> <span class="k">as</span> <span class="n">upstream</span><span class="p">,</span> <span class="n">use</span>
+
+    <span class="n">git</span> <span class="n">push</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span> <span class="n">origin</span> <span class="n">better_error_msg</span>
+
+<span class="n">To</span> <span class="n">have</span> <span class="n">this</span> <span class="n">happen</span> <span class="n">automatically</span> <span class="k">for</span> <span class="n">branches</span> <span class="n">without</span> <span class="n">a</span> <span class="n">tracking</span>
+<span class="n">upstream</span><span class="p">,</span> <span class="n">see</span> <span class="s1">&#39;push.autoSetupRemote&#39;</span> <span class="ow">in</span> <span class="s1">&#39;git help config&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="creating-a-pull-request">
+<h2>Creating a pull request<a class="headerlink" href="#creating-a-pull-request" title="Permalink to this heading">#</a></h2>
+<p>To create a pull request,
+you first need to ensure all the local changes you made on the new branch
+are also available on the remote repository
+(i.e., you need to push them).
+Once that has happened you need to
+go to the remote GitHub repository,
+as pull requests are created from there.</p>
+<p>GitHub often tries to be helpful when a change
+is pushed to a new branch that doesn’t yet exist
+on the default branch by showing you a yellow banner
+listing any recently pushed branches.</p>
+<a class="reference internal image-reference" href="../../_images/create-pr.png"><img alt="../../_images/create-pr.png" src="../../_images/create-pr.png" style="width: 700px;" /></a>
+<p>To create a pull request,
+you click the green button “Compare &amp; pull request”.
+In the new page,
+add a message to describe the changes you have made,
+scroll down to review the changed files,
+and the click the green button that reads “Create pull request”.
+If you are working together in a team,
+you could also designate certain team members to review your work
+and assign relevant labels,
+via the right hand side panel.</p>
+<p>The next step is for a collaborator to review your work
+and merge it in if they approve it.</p>
+<section id="id1">
+<h3>Exercise<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Use the green “Compare &amp; pull request” button on the yellow banner to open a pull request.</p></li>
+<li><p>Go to the “Pull requests” tab on the remote GitHub repository and explore the “Conversation” and “Files changed” sub-tabs there.</p></li>
+</ol>
+</section>
+</section>
+<section id="code-reviews-using-in-line-comments-and-suggested-code-fixes">
+<h2>Code reviews using in-line comments and suggested code fixes<a class="headerlink" href="#code-reviews-using-in-line-comments-and-suggested-code-fixes" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>In the project, you are expected to read and review eachother’s code BEFORE accepting a pull request.</p></li>
+<li><p>Do not expect all (or even most) pull requests to be perfect in their first submission.</p></li>
+<li><p>We very often need to have a conversation to get pull requests into good shape before merging into master, and GitHub has a very nice tool we can utilize to do this: <strong>GitHub code reviews</strong></p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/code-review-suggest-change.png"><img alt="../../_images/code-review-suggest-change.png" src="../../_images/code-review-suggest-change.png" style="width: 600px;" /></a>
+<section id="demo-do-a-code-review">
+<h3>Demo: do a code review:<a class="headerlink" href="#demo-do-a-code-review" title="Permalink to this heading">#</a></h3>
+<p>I am going to demo a code review of a pull request. I have set-up a template GitHub repository for you so that you can easily generate a pull request for you to review if you want to try this later.</p>
+<section id="steps">
+<h4>Steps:<a class="headerlink" href="#steps" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Click the green “Use this template” button in <a class="reference external" href="https://github.com/ttimbers/review-my-pull-request">this repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
+<li><p>Create a remote branch named <code class="docutils literal notranslate"><span class="pre">pr</span></code> (this will use GitHub Actions to create a pull request for you to review in this repository).</p></li>
+<li><p>Click on the Pull Requests tab of your copy of the repository, click on the pull request titled “Report most accomplished pilots”, and then click on “Files Changed”. Next click on the <code class="docutils literal notranslate"><span class="pre">star-wars.Rmd</span></code> file. Review the file and observe the following problems with the R Markdown report that was submitted via the pull request:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Reasoning of the sentence on line 15</p></li>
+<li><p>Incompatibility with the sentence on line 15 with the code in the code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code></p></li>
+<li><p>Incorrect code in code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code> (unested <code class="docutils literal notranslate"><span class="pre">film</span></code> instead of <code class="docutils literal notranslate"><span class="pre">starships</span></code>) leads to naming the wrong pilot as the most accomplished pilot on line 19</p></li>
+<li><p>Incorrect code in code chunk named <code class="docutils literal notranslate"><span class="pre">table-of-most-accomplished-pilots</span></code> (unested <code class="docutils literal notranslate"><span class="pre">film</span></code> instead of <code class="docutils literal notranslate"><span class="pre">starships</span></code>) leads to the use of the wrong character’s picture in the image that is sourced in the code chunk named <code class="docutils literal notranslate"><span class="pre">top-pilot</span></code> (it should be a picture of Obi-Wan Kenobi, you could use this URL for example: <a class="reference external" href="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg">https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg</a>).</p></li>
+</ul>
+<ol class="arabic simple" start="4">
+<li><p>Add comments and suggested changes using the <code class="docutils literal notranslate"><span class="pre">+</span></code> sign beside the line numbers (the first time you do this will trigger the start of your code review. Need help? See <a class="reference external" href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request">GitHub’s how to on reviewing proposed changes in a pull request</a>.</p></li>
+<li><p>After you have made all the comments and suggested changes, then add a general comment for the code review, select “Request Changes” and submit your code review.</p></li>
+</ol>
+</section>
+</section>
+<section id="demo-accept-suggested-changes-from-a-code-review">
+<h3>Demo: Accept suggested changes from a code review:<a class="headerlink" href="#demo-accept-suggested-changes-from-a-code-review" title="Permalink to this heading">#</a></h3>
+<section id="id2">
+<h4>Steps:<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>To accept the code changes that you provided as suggestions, revisit the Pull Requests tab of your copy of the repository and clicking on the pull request titled “Report most accomplished pilots”. Scroll through the pull request comments and find the code suggestions. Then click on the “Commit suggestion button” for each suggestion.</p></li>
+<li><p>Click on the “Show all reviewers” link beside the red “Changes requested”” text. Then click on the <code class="docutils literal notranslate"><span class="pre">...</span></code> beside the reviewer and click “Approve changes”.</p></li>
+<li><p>Finally click on the green buttons (“Merge Pull Request” &amp; “Confirm merge”) to merge the pull request.</p></li>
+</ol>
+</section>
+</section>
+<section id="discussion">
+<h3>Discussion:<a class="headerlink" href="#discussion" title="Permalink to this heading">#</a></h3>
+<p>Could I have done the entire code review well by just reviewing it on GitHub?</p>
+<p><em>Hint: if I didn’t tell you that the top pilot was Obi-Wan Kenobi, how would you have known that?</em></p>
+</section>
+<section id="useful-things-you-can-do-with-branches-on-github">
+<h3>Useful things you can do with branches on GitHub<a class="headerlink" href="#useful-things-you-can-do-with-branches-on-github" title="Permalink to this heading">#</a></h3>
+<p>Create a new branch:</p>
+<a class="reference internal image-reference" href="../../_images/create_branch.png"><img alt="../../_images/create_branch.png" src="../../_images/create_branch.png" style="width: 600px;" /></a>
+<p>Source: <a class="github reference external" href="https://github.com/UBC-DSCI/introduction-to-datascience">UBC-DSCI/introduction-to-datascience</a></p>
+<p>View all branches and their status:</p>
+<a class="reference internal image-reference" href="../../_images/view_branches.png"><img alt="../../_images/view_branches.png" src="../../_images/view_branches.png" style="width: 600px;" /></a>
+<p>Source: <a class="github reference external" href="https://github.com/UBC-DSCI/introduction-to-datascience">UBC-DSCI/introduction-to-datascience</a></p>
+<p>And delete remote branches:</p>
+<a class="reference internal image-reference" href="../../_images/delete_branches.png"><img alt="../../_images/delete_branches.png" src="../../_images/delete_branches.png" style="width: 600px;" /></a>
+<p>Source: <a class="github reference external" href="https://github.com/UBC-DSCI/introduction-to-datascience/branches">UBC-DSCI/introduction-to-datascience</a></p>
+</section>
+<section id="how-do-you-not-accept-a-pull-request">
+<h3>How do you not accept a pull request?<a class="headerlink" href="#how-do-you-not-accept-a-pull-request" title="Permalink to this heading">#</a></h3>
+<p>In some cases, it might not make sense to merge a pull request. To close a pull request that should not be merged, scroll to the bottom of the pull request page, and look for a gray “Closes pull request” button. This will end move the pull request to the closed pull requests section (similar to closed issues) and does not merge the changes.</p>
+<a class="reference internal image-reference" href="../../_images/close-pr.png"><img alt="../../_images/close-pr.png" src="../../_images/close-pr.png" style="width: 500px;" /></a>
+</section>
+</section>
+<section id="git-and-github-flow">
+<h2>Git and GitHub flow<a class="headerlink" href="#git-and-github-flow" title="Permalink to this heading">#</a></h2>
+<p>Branching generally works well if a team agrees to and follows a consistent workflow. The two leading workflows used in industry are Git flow and GitHub flow. We will describe and discuss both here so you are aware of both, and we will employ GitHub flow in our projects for this course.</p>
+<section id="github-flow">
+<h3>GitHub Flow<a class="headerlink" href="#github-flow" title="Permalink to this heading">#</a></h3>
+<p>Key features:</p>
+<ul class="simple">
+<li><p><strong>A single</strong> “main” branch that also serves as the deployment branch, we call this main.</p></li>
+<li><p>Every new contribution is done on a new branch (with a meaningful name) created from main.</p></li>
+<li><p>Contributions from that new branch are sent back to main by means of a pull request, which ideally is reviewd &amp; tested before merging.</p></li>
+</ul>
+<p>(note: at the time this figure was made, the default branch on GitHub as still called the master branch)</p>
+<a class="reference internal image-reference" href="https://files.programster.org/tutorials/git/flows/github-flow.png"><img alt="https://files.programster.org/tutorials/git/flows/github-flow.png" src="https://files.programster.org/tutorials/git/flows/github-flow.png" style="width: 600px;" /></a>
+<p>Source: https://blog.programster.org/git-workflows</p>
+</section>
+<section id="git-flow">
+<h3>Git Flow<a class="headerlink" href="#git-flow" title="Permalink to this heading">#</a></h3>
+<p>Key features:</p>
+<ul class="simple">
+<li><p><strong>Two</strong> “main” branches that last forever, main for deployment and develop where things are tested before they are released to main.</p></li>
+<li><p>Three supporting branches: feature, release &amp; hotfix. Both feature &amp; release branches are created from develop. feature branches should be merged into develop before they are incorporated into a release. release branches eventually get merged into main after adequate review and testing.</p></li>
+</ul>
+<p>(note: at the time this figure was made, the default branch on GitHub as still called the master branch)</p>
+<a class="reference internal image-reference" href="https://files.programster.org/tutorials/git/flows/git-flow.png"><img alt="https://files.programster.org/tutorials/git/flows/git-flow.png" src="https://files.programster.org/tutorials/git/flows/git-flow.png" style="width: 600px;" /></a>
+<p>Source: https://blog.programster.org/git-workflows</p>
+</section>
+<section id="discuss">
+<h3>Discuss:<a class="headerlink" href="#discuss" title="Permalink to this heading">#</a></h3>
+<p>What do you think are pros &amp; cons of each of these branching workflows?</p>
+</section>
+<section id="relevance-to-course-project">
+<h3>Relevance to course project:<a class="headerlink" href="#relevance-to-course-project" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>You will be expected to work using the GitHub flow workflow for your projects in this course.</p></li>
+</ul>
+</section>
+<section id="what-happens-when-my-feature-branch-falls-behind-main">
+<h3>What happens when my feature branch falls behind main?<a class="headerlink" href="#what-happens-when-my-feature-branch-falls-behind-main" title="Permalink to this heading">#</a></h3>
+<blockquote>
+<div><p>How to catch up a branch that has fallen behind the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch using the command line:</p>
+<ul class="simple">
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">main</span></code> to pull any changes from the remote version of main that we might not have</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">switch</span> <span class="pre">&lt;branch&gt;</span></code> to make sure we are on the branch we want to catch up</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">merge</span> <span class="pre">main</span></code> to merge the changes</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">&lt;branch&gt;</span></code> to push our updated branch to the remote</p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="project-boards">
+<h2>Project boards<a class="headerlink" href="#project-boards" title="Permalink to this heading">#</a></h2>
+<p>Example of a physical <a class="reference external" href="https://en.wikipedia.org/wiki/Kanban_board">Kanban board</a>:</p>
+<a class="reference internal image-reference" href="https://miro.medium.com/max/1300/1*9xfpL1ercY-JA7BzEiLpjA.jpeg"><img alt="https://miro.medium.com/max/1300/1*9xfpL1ercY-JA7BzEiLpjA.jpeg" src="https://miro.medium.com/max/1300/1*9xfpL1ercY-JA7BzEiLpjA.jpeg" style="width: 500px;" /></a>
+<p>Source: <a class="reference external" href="https://medium.com/&#64;mli/lets-get-physical-task-boards-f9d08383e667">https://medium.com/&#64;mli/lets-get-physical-task-boards-f9d08383e667</a></p>
+<p>Example of a digital project board from GitHub:</p>
+<p>Reading: <a class="reference external" href="https://help.github.com/en/github/managing-your-work-on-github/about-project-boards">About project boards - GitHub Help</a></p>
+<a class="reference internal image-reference" href="../../_images/github_kanban.png"><img alt="../../_images/github_kanban.png" src="../../_images/github_kanban.png" style="width: 800px;" /></a>
+<p>Source: <a class="github reference external" href="https://github.com/CodeDoesGood/org-website/projects/1">CodeDoesGood/org-website</a></p>
+<section id="why-use-project-boards-for-collaborative-software-projects">
+<h3>Why use project boards for collaborative software projects?<a class="headerlink" href="#why-use-project-boards-for-collaborative-software-projects" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Transparency:</strong> everyone knows what everyone is doing</p></li>
+<li><p><strong>Motivation:</strong> emphasis on task completion</p></li>
+<li><p><strong>Flexibility:</strong> board columns and tasks are customized to each project</p></li>
+</ul>
+</section>
+<section id="exercise-getting-to-know-github-project-boards">
+<h3>Exercise: Getting to know GitHub project boards<a class="headerlink" href="#exercise-getting-to-know-github-project-boards" title="Permalink to this heading">#</a></h3>
+<p>We are going to each create our own project board for our MDS homework. I have set-up a template GitHub repository for you so that you can easily populate it with relevant issues for your homework this block. You will use these issues to create your MDS homework project board.</p>
+<section id="id3">
+<h4>Steps:<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Click the green “<strong>Use this template</strong>” button from <a class="reference external" href="https://github.com/UBC-DSCI/dsci-310-homework">this GitHub repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
+<li><p>Using the GitHub webpage, make a new branch called <code class="docutils literal notranslate"><span class="pre">create</span></code> in your copy of that repository (this will generate the issues for you).</p></li>
+<li><p>Click on the Projects tab, and then click “Create a project”. Give it a name, and select “Basic kanban” as the template option.</p></li>
+<li><p>Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of “group-work” or “individual-work”.</p></li>
+</ol>
+<p>Additional Resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://help.github.com/en/github/managing-your-work-on-github/assigning-issues-and-pull-requests-to-other-github-users">Assigning issues and pull requests to other GitHub users</a></p></li>
+<li><p><a class="reference external" href="https://help.github.com/en/github/managing-your-work-on-github/applying-labels-to-issues-and-pull-requests">Applying labels to issues and pull requests</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h3>Relevance to course project:<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>You will be expected to create a project board for each of your groups projects and update it each milestone (at a minimum)</p></li>
+<li><p>We expect that each issue should have at least one person assigned to it</p></li>
+</ul>
+</section>
+</section>
+<section id="milestones">
+<h2>Milestones<a class="headerlink" href="#milestones" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Group related issues together that are needed to hit a given target (e.g., new release version of a software package)</p></li>
+<li><p>Can assign a due date to a milestone</p></li>
+<li><p>From the milestone page you can see list of statistics that are relevant to each milestone set in that repository</p></li>
+</ul>
+<p>Reading: <a class="reference external" href="https://help.github.com/en/github/managing-your-work-on-github/about-milestones">About milestones - GitHub Help</a></p>
+<p>Example of the <code class="docutils literal notranslate"><span class="pre">readr</span></code> package milestones:</p>
+<a class="reference internal image-reference" href="../../_images/readr-milestones.png"><img alt="../../_images/readr-milestones.png" src="../../_images/readr-milestones.png" style="width: 600px;" /></a>
+<p>Source: https://github.com/tidyverse/readr/milestones</p>
+<section id="exercise-getting-to-know-github-milestones">
+<h3>Exercise: Getting to know GitHub milestones<a class="headerlink" href="#exercise-getting-to-know-github-milestones" title="Permalink to this heading">#</a></h3>
+<p>We are going to practice creating milestones and associating issues with them. To do this we will continue working with the same repository that you just created a project board for.</p>
+<section id="id5">
+<h4>Steps:<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Click on the Issues tab, and then click on “Milestones”.</p></li>
+<li><p>Click “New milestone” and name it “month 1” and set the due date to be the end of January. Click “Create milestone”.</p></li>
+<li><p>Go to the Issues tab, and for each issue that should be associated with the month 1 milestone (i.e., things due before the end of January), click on their checkbox. Then click “Milestone” and select “month 1”</p></li>
+<li><p>Once you are done, go back to the Milestones page to view what the month 1 milestone looks like.</p></li>
+<li><p>If you finish early, do this for  month 2.</p></li>
+</ol>
+</section>
+</section>
+<section id="id6">
+<h3>Relevance to course project:<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>You will be expected to create a milestone on each of your project repositories for each course assigned milestone. You must link the relevant issues needed to complete that milestone to it on GitHub.</p></li>
+</ul>
+</section>
+</section>
+<section id="ssh-for-authentication">
+<h2>SSH for authentication<a class="headerlink" href="#ssh-for-authentication" title="Permalink to this heading">#</a></h2>
+<p>So far you have likely been using a personal access token to authenticate to GitHub.
+This works, however there is another very secure and more convenient method of authentication
+that is widely used: secure shell protocol (SSH).
+SSH can be use for other forms of authentication as well (beyond GitHub),
+including logging into remote machines in the cloud.
+So for many these reasons it is worthwhile learning.
+Thus, we will spend some time explaining it here,
+and setup our computers to use this for authenticating with GitHub going forward.</p>
+<section id="remotely-accessing-another-computer-using-ssh">
+<h3>Remotely accessing another computer using SSH<a class="headerlink" href="#remotely-accessing-another-computer-using-ssh" title="Permalink to this heading">#</a></h3>
+<p>Let’s start with some definitions:</p>
+<section id="definitions">
+<h4>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">#</a></h4>
+<p><strong>Secure SHell (SSH)</strong> - a common method for remote login to another computer which is secure.</p>
+<p><strong>server</strong> - a machine you are SSHing into. The server sits and waits to be contacted.</p>
+<p><strong>client</strong> - usually your machine. The client initiates contact with the server.</p>
+</section>
+<section id="ssh-key-based-authentication">
+<h4>SSH key-based authentication<a class="headerlink" href="#ssh-key-based-authentication" title="Permalink to this heading">#</a></h4>
+<p>Two components:</p>
+<ol class="arabic simple">
+<li><p>public key</p></li>
+<li><p>private key</p></li>
+</ol>
+<p>These files have an asymmetrical relationship:</p>
+<ul class="simple">
+<li><p>the public key CANNOT decrypt messages generated by the private key</p></li>
+<li><p>the private key CAN decrypt messages generated by the public key</p></li>
+</ul>
+</section>
+<section id="understanding-public-key-private-key-concepts">
+<h4>Understanding public key private key concepts<a class="headerlink" href="#understanding-public-key-private-key-concepts" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Think of a public key, not as a key, but as a padlock that you can make copies of and put anywhere you want.</p></li>
+<li><p>To put your ‘padlock’ on an another machine, you would copy it to <code class="docutils literal notranslate"><span class="pre">authorized_keys</span></code> in the <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code> folder.</p></li>
+<li><p>Think of a private key as an actual key, it can open the padlock that is stored on the other machine.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/keys_1.png"><img alt="../../_images/keys_1.png" src="../../_images/keys_1.png" style="width: 600px;" /></a>
+<p><em>source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html</em></p>
+</section>
+<section id="how-the-lock-works">
+<h4>How the lock works<a class="headerlink" href="#how-the-lock-works" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Keys are generated using <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, to make private key (usually called <code class="docutils literal notranslate"><span class="pre">id_ed25519</span></code>) and a public key (usually called <code class="docutils literal notranslate"><span class="pre">id_ed25519.pub</span></code>)</p></li>
+<li><p>You can make copies of <code class="docutils literal notranslate"><span class="pre">id_ed25519.pub</span></code> (public key/padlock) and distribute them to other machines</p></li>
+<li><p>The other machine uses the public key to encrypt a challenge message to you</p></li>
+<li><p>You need to show that you can decrypt the message to demonstrate that you are in possesion of the associated private key</p></li>
+</ul>
+<p>_Note: GitHub has changed recently the SSH key generation instructions to use <a class="reference external" href="https://github.com/github/docs/issues/876">Ed25519 algoritm</a>.</p>
+</section>
+<section id="you-can-put-your-lock-at-many-places">
+<h4>You can put your lock at many places<a class="headerlink" href="#you-can-put-your-lock-at-many-places" title="Permalink to this heading">#</a></h4>
+<p>As long as you are using the same lock (public key),
+you will be able to open it with the same private key.</p>
+<a class="reference internal image-reference" href="../../_images/keys_2.png"><img alt="../../_images/keys_2.png" src="../../_images/keys_2.png" style="width: 600px;" /></a>
+<p><em>source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html</em></p>
+</section>
+<section id="keeping-your-private-key-safe">
+<h4>Keeping your private key safe<a class="headerlink" href="#keeping-your-private-key-safe" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code> allows you to put a password or passphrase on the private key</p></li>
+<li><p>this should be shared with NO ONE!</p></li>
+<li><p>if your private key does fall into the wrong hands, the person must still know the password or passphrase to use the private key</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/password_strength.png"><img alt="../../_images/password_strength.png" src="../../_images/password_strength.png" style="width: 600px;" /></a>
+<p><em>source - https://xkcd.com/936/</em></p>
+</section>
+<section id="id7">
+<h4>Exercise<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<p>Setting up SSH for authentication on GitHub! Follow the docs linked below here to accomplish each step to set this up.
+At the top of each of the documentation sections, be sure to select the tab for your operating system.</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys">Checking for existing SSH keys on your computer</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key">Generating a new SSH key</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent">Adding your SSH key to the ssh-agent</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your GitHub account</a></p></li>
+<li><p>Test it out! Create a private GitHub.com repository and try to clone it using the SSH code URL (instead of the HTTPS one), it should look something like this: <code class="docutils literal notranslate"><span class="pre">git&#64;github.com:username/repo-name.git</span></code></p></li>
+</ol>
+<p><em>(whereas HTTPS code URLs look like: <code class="docutils literal notranslate"><span class="pre">https://github.com/username/repo-name.git</span></code>)</em></p>
+</section>
+</section>
+</section>
+<section id="next">
+<h2>Next:<a class="headerlink" href="#next" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>file and directory structure for data analysis projects</p></li>
+<li><p>integrated development environments for data science</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-version-control-1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Version control (for transparency and collaboration) I</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-filenames-project-organization.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Filenames and data science project organization, Integrated development environments</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-branches">Git Branches</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-branch-using-the-jupyterlab-git-extension">Creating a branch using the JupyterLab Git extension</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-branch-using-the-command-line">Creating a branch using the command line</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-branches-that-already-exist">Switching to branches that already exist</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-remote-branches-you-did-not-create-locally">Getting remote branches you did not create locally</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-command-line-git-branching-commands">Useful command line Git branching commands</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-pull-request">Creating a pull request</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Exercise</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-reviews-using-in-line-comments-and-suggested-code-fixes">Code reviews using in-line comments and suggested code fixes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-do-a-code-review">Demo: do a code review:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-accept-suggested-changes-from-a-code-review">Demo: Accept suggested changes from a code review:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">Discussion:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-things-you-can-do-with-branches-on-github">Useful things you can do with branches on GitHub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-you-not-accept-a-pull-request">How do you not accept a pull request?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-and-github-flow">Git and GitHub flow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github-flow">GitHub Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git-flow">Git Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discuss">Discuss:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relevance-to-course-project">Relevance to course project:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-when-my-feature-branch-falls-behind-main">What happens when my feature branch falls behind main?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-boards">Project boards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-project-boards-for-collaborative-software-projects">Why use project boards for collaborative software projects?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-project-boards">Exercise: Getting to know GitHub project boards</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Relevance to course project:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#milestones">Milestones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-getting-to-know-github-milestones">Exercise: Getting to know GitHub milestones</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Steps:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Relevance to course project:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-for-authentication">SSH for authentication</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remotely-accessing-another-computer-using-ssh">Remotely accessing another computer using SSH</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-key-based-authentication">SSH key-based authentication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-public-key-private-key-concepts">Understanding public key private key concepts</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-lock-works">How the lock works</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#you-can-put-your-lock-at-many-places">You can put your lock at many places</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-your-private-key-safe">Keeping your private key safe</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Next:</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
