@@ -1,0 +1,1313 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>How do reproducible and trustworthy workflows impact data science? &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/01-intro-to-ds-workflows-Copy1';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-intro-to-bash.html">Introduction to the Bash Shell</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control (for transparency and collaboration) I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-2.html">Version control (for transparency and collaboration) II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization.html">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/01-intro-to-ds-workflows-Copy1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/01-intro-to-ds-workflows-Copy1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How do reproducible and trustworthy workflows impact data science?</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-science">Data science</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-analysis">Reproducible analysis:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auditable-transparent-analysis">Auditable/transparent analysis,</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-adopt-this-definition-of-data-science">Why adopt this definition of data science?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#we-cannot-trust-non-reproducible-and-non-auditable-analyses-because-they">We cannot trust non-reproducible and non-auditable analyses because they:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-trustworthy-data-science">What makes trustworthy data science?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-with-large-impact">An example with large impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-big-is-this-problem">How big is this problem?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#does-this-just-impact-academia">Does this just impact academia?</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-with-relatable-impact">Examples with relatable impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2">Part 2:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3">Part 3:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-reasons-to-worry-about-workflows">More reasons to worry about workflows?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-1">Reason 1:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-2">Reason 2:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflows-complex-projects">Workflows &amp; complex projects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-complex-projects">What are complex projects?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#complex-projects-without-intentional-data-science-workflows">Complex projects without intentional Data Science workflows…</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#concrete-examples-of-problems-that-can-occur-in-complex-analyses">Concrete examples of problems that can occur in complex analyses</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-avoid-such-problems-and-chaos">How can we avoid such problems and chaos?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-features-to-mitigate-chaos">Workflow features to mitigate chaos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control">1. Version Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-version-control">Example problem solved by version control</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#going-back-in-time-via-commits">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#going-back-in-time-via-releases">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Example problem solved by version control</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#github-issues-for-project-related-communications">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control-contributes-to-better-communication-team-work">Version control contributes to better communication &amp; team work</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#executable-analysis-scripts-pipelines">2. Executable analysis scripts &amp; pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-executable-analysis-scripts-pipelines">Example problem solved by executable analysis scripts &amp; pipelines</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-recipe-for-your-analysis">Create a recipe for your analysis</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Example problem solved by executable analysis scripts &amp; pipelines</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#make-one-possible-smart-dependency-tree-tool">Make - one possible smart dependency tree tool</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-makefile">Example Makefile:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#makefile-dependency-tree">Makefile dependency tree</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#executable-analysis-scripts-pipelines-contribute-to-better-collaboration">Executable analysis scripts &amp; pipelines contribute to better collaboration</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-shippable-dependencies">3. Defined &amp; shippable dependencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-defined-shippable-dependencies">Example problem solved by defined &amp; shippable dependencies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-containers">What are containers?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">What are containers?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions-needed-to-run-analysis-on-almost-any-machine">Instructions needed to run analysis on <em>almost</em> any machine:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-shippable-dependencies-contribute-to-democratization-of-data-science">Defined &amp; shippable dependencies contribute to democratization of Data Science</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-add-these-workflow-features">When to add these workflow features:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-cycle-of-a-data-analysis-project">Life cycle of a data analysis project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revisiting-the-definition-of-data-science-what-is-the-question">Revisiting the definition of data science &amp; what is the question?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive">1. Descriptive</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory">2. Exploratory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inferential">3. Inferential</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive">4. Predictive</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#causal">5. Causal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mechanistic">6. Mechanistic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-1">Challenge #1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-2">Challenge #2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Challenge #2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-4">Challenge #4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so-you-know-the-type-of-question-now-what">So you know the type of question, now what?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-statistical-workflow">General statistical workflow:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap-up">Wrap up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="how-do-reproducible-and-trustworthy-workflows-impact-data-science">
+<h1>How do reproducible and trustworthy workflows impact data science?<a class="headerlink" href="#how-do-reproducible-and-trustworthy-workflows-impact-data-science" title="Permalink to this heading">#</a></h1>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="arabic simple">
+<li><p>Define data science, and the related terms reproducibile and audible analysis</p></li>
+<li><p>Give examples of workflows that are considered reproducible and trustworthy in the context of a data analysis</p></li>
+<li><p>Explain why data analysis benefit from reproducibile and audible workflows</p></li>
+<li><p>Provide real-life examples of how a failure in reproducible and trustworthy workflows has negatively impacted the outcome of a data analysis project</p></li>
+<li><p>List three useful tools for facilitating organization and collaboration in complex data analysis projects</p></li>
+<li><p>Describe the data analysis cycle</p></li>
+<li><p>Explain how to mechanistically start a data analysis project</p></li>
+<li><p>State and refine a data analysis question</p></li>
+<li><p>List other potential sources of untrustworthiness in a data analysis (e.g., data source, mapping question to analysis, interpretation of results), and discuss how a data analysis that employs reproducible and trustworthy workflows can still be flawed</p></li>
+</ol>
+</section>
+<section id="data-science">
+<h2>Data science<a class="headerlink" href="#data-science" title="Permalink to this heading">#</a></h2>
+<p><em>the study, development and practice of <strong>reproducible and auditable processes</strong> to obtain <strong>insight from data.</strong></em></p>
+<p>From this definition, we must also define reproducible and auditable analysis:</p>
+<section id="reproducible-analysis">
+<h3>Reproducible analysis:<a class="headerlink" href="#reproducible-analysis" title="Permalink to this heading">#</a></h3>
+<p><em>reaching the same result given the same input, computational methods and conditions <span class="math notranslate nohighlight">\(^1\)</span>.</em></p>
+<ul class="simple">
+<li><p>input = data</p></li>
+<li><p>computational methods = computer code</p></li>
+<li><p>conditions = computational environment (e.g., programming language &amp; it’s dependencies)</p></li>
+</ul>
+</section>
+<section id="auditable-transparent-analysis">
+<h3>Auditable/transparent analysis,<a class="headerlink" href="#auditable-transparent-analysis" title="Permalink to this heading">#</a></h3>
+<p><em>a readable record of the steps used to carry out the analysis as well as a record of how the analysis methods evolved <span class="math notranslate nohighlight">\(^2\)</span>.</em></p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.nap.edu/catalog/25303/reproducibility-and-replicability-in-science">National Academies of Sciences, 2019</a></p></li>
+<li><p><a class="reference external" href="https://peerj.com/preprints/3210/">Parker, 2017</a> and <a class="reference external" href="https://scfbm.biomedcentral.com/articles/10.1186/1751-0473-8-7">Ram, 2013</a></p></li>
+</ol>
+</section>
+<section id="why-adopt-this-definition-of-data-science">
+<h3>Why adopt this definition of data science?<a class="headerlink" href="#why-adopt-this-definition-of-data-science" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>It is important that insights from data science are trustworthy!</p></li>
+</ul>
+<p>To quote <a class="reference external" href="https://as.nyu.edu/faculty/russell-hardin.html">Russel Hardin</a>,
+“Trust involves giving discretion to another to affect one’s interests.”
+Data science insights are very often used to make important,
+real-life decisions that impact people and the environment
+(e.g., loan/credit approval, access to certain medical treatments,
+job applicant interview selection, criminal justice sentencing recommendations, etc).
+<strong>It is important that such analyses be trustworthy!</strong></p>
+<ul class="simple">
+<li><p>Reproducible and auditable methods are one of the expectations for trustworthy data science!</p></li>
+</ul>
+<p>Don Tapscott, one of the authors of <em>The Naked Corporation</em>,
+describes trust as: “honest, considerate, accountable, and transparent”.
+Accountability and transparency are not sufficienct for trust,
+but they are necessary.</p>
+</section>
+<section id="we-cannot-trust-non-reproducible-and-non-auditable-analyses-because-they">
+<h3>We cannot trust non-reproducible and non-auditable analyses because they:<a class="headerlink" href="#we-cannot-trust-non-reproducible-and-non-auditable-analyses-because-they" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>lack evidence that the results could be regenerated (<em>is the analysis is reliable?</em>)</p></li>
+<li><p>we don’t know enough details of how they were created (<em>is the analysis correct?</em>)</p></li>
+<li><p>there is an insufficient record of how and why analysis decisions were made (<em>was a complete analysis performed?</em>)</p></li>
+</ol>
+</section>
+<section id="what-makes-trustworthy-data-science">
+<h3>What makes trustworthy data science?<a class="headerlink" href="#what-makes-trustworthy-data-science" title="Permalink to this heading">#</a></h3>
+<p>Some possible criteria:</p>
+<ol class="arabic simple">
+<li><p>It should be reproducible and auditable</p></li>
+<li><p>It should be correct (in the context of both statistics and software)</p></li>
+<li><p>It should be complete</p></li>
+<li><p>It should be fair, equitable and honest</p></li>
+</ol>
+<blockquote>
+<div><p>There are many ways a data science can be untrustworthy… In this course we will focus on workflows that can help build trust. More training in data science ethics will be needed to help round out your education in how to do this. Further training in statistics and machine learning will also help with making sure your analysis is correct.</p>
+</div></blockquote>
+<p><strong>Is this really important?</strong></p>
+<p>Yes! There are both small and big ways this can impact your work.</p>
+</section>
+<section id="an-example-with-large-impact">
+<h3>An example with large impact<a class="headerlink" href="#an-example-with-large-impact" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://www.nature.com/articles/s41598-021-98683-5"><em>RETRACTED ARTICLE: Safety and efficacy of favipiravir versus hydroxychloroquine in management of COVID-19: A randomised controlled trial</em></a></p>
+<a class="reference internal image-reference" href="../../_images/covid-19-retraction.png"><img alt="../../_images/covid-19-retraction.png" src="../../_images/covid-19-retraction.png" style="width: 500px;" /></a>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.nature.com/articles/s41598-021-85227-0">A research paper was published in March 2021</a> that claimed that a drug, Favipiravir, was a safe and effective alternative to another drug, hydroxychloroquine (a medication commonly used to prevent or treat malaria), in mild or moderate COVID-19 infected patients.</p></li>
+<li><p>In September, 2021 the paper we retracted by the editors - in part due to reproducibility issues:</p></li>
+</ul>
+<p><em>“After concerns were brought to the Editors’ attention after publication, the raw data underlying the study were requested. The authors provided several versions of their dataset. Post-publication peer review confirmed that none of these versions fully recapitulates the results presented in the cohort background comparisons, casting doubt on the reliability of the data. Additional concerns were raised about the randomisation procedure, as the equal distribution of male and female patients is unlikely unless sex is a parameter considered during randomisation. However, based on the clarification provided by the authors, sex was not considered during this process. The Editors therefore no longer have confidence in the results and conclusions presented.”</em></p>
+<p>The problem doesn’t just stop once the article is retracted… Between the time the article was published and retracted, the article was cited 17 times!</p>
+<a class="reference internal image-reference" href="../../_images/covid-retraction-citations.png"><img alt="../../_images/covid-retraction-citations.png" src="../../_images/covid-retraction-citations.png" style="width: 700px;" /></a>
+<section id="how-big-is-this-problem">
+<h4>How big is this problem?<a class="headerlink" href="#how-big-is-this-problem" title="Permalink to this heading">#</a></h4>
+<p>Searching the <a class="reference external" href="http://retractiondatabase.org/">Retraction Watch Database</a> for “Results Not Reproducible” we find 635 records that match!</p>
+<a class="reference internal image-reference" href="../../_images/retraction-watch.png"><img alt="../../_images/retraction-watch.png" src="../../_images/retraction-watch.png" style="width: 800px;" /></a>
+</section>
+<section id="does-this-just-impact-academia">
+<h4>Does this just impact academia?<a class="headerlink" href="#does-this-just-impact-academia" title="Permalink to this heading">#</a></h4>
+<p>No! The use of non-reproducible tools can impact government and industry as well! Consider this case:</p>
+<a class="reference internal image-reference" href="../../_images/bbc.png"><img alt="../../_images/bbc.png" src="../../_images/bbc.png" style="width: 500px;" /></a>
+<p>Source: https://www.bbc.com/news/uk-scotland-edinburgh-east-fife-53893101</p>
+<p>What went wrong?</p>
+<p>An audit found that the wrong spreadsheet matrix was copied over, and the calculation for only 4 air changes per hour, instead of the required 10 per hour, was done. This error was missed several times by human review of the spreadsheet.</p>
+<p>How could this have been prevented via using reproducible tools?</p>
+<p>If code instead of a spreadsheet was used for calculations, then unit tests could have been written to check the calculations. Also, the code could be abstracted to a well named function, or a function with well named arguments, that could have been more easily detected than a hidden formula in a spreadsheet.</p>
+</section>
+</section>
+<section id="examples-with-relatable-impact">
+<h3>Examples with relatable impact<a class="headerlink" href="#examples-with-relatable-impact" title="Permalink to this heading">#</a></h3>
+<p>Let’s talk about some of these by sharing data-related workflows from the trenches:</p>
+<section id="part-1">
+<h4>Part 1:<a class="headerlink" href="#part-1" title="Permalink to this heading">#</a></h4>
+<ol class="arabic">
+<li><p>Think and write down a non-reproducible, or non-auditable, workflow
+you have used before at work, on a personal project, or in course work,
+that negatively impacted your work somehow
+(make sure to include this in the story).</p>
+<p><em>As a Masters student, I started to use R to do my statistical analysis. I obtained the results I needed from running my code in the R console and copying the results into the word document that was my manuscript. Six months later we were working on revisions requested by the reviewers and I could not remember which version of the code I ran to get my results. I eventually figured it out through much trial and error, but the process was inefficient and very stressful.</em></p>
+<p><em>–Tiffany Timbers</em></p>
+</li>
+<li><p>When prompted, paste your story in the Google doc (link to be shared in class)</p></li>
+</ol>
+</section>
+<section id="part-2">
+<h4>Part 2:<a class="headerlink" href="#part-2" title="Permalink to this heading">#</a></h4>
+<p>Follow the instructions below
+for each story share in the class stories from the trenches Google document.</p>
+<ul class="simple">
+<li><p>Read the story and reflect on which of the themes listed below
+was likely the biggest cause of the reproducibility
+or transparency failure described in the story.</p></li>
+<li><p>Label the story with the emoji
+corresponding to the chosen theme from the table below:</p></li>
+</ul>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Reproducibility and transparency themes</p></th>
+<th class="head"><p>Emoji label</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Code</p></td>
+<td><p>⌨️ (keyboard)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Computational environments</p></td>
+<td><p>💻 (laptop)</p></td>
+</tr>
+<tr class="row-even"><td><p>Software design</p></td>
+<td><p>💾 (floppy disk)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Data analysis pipeline</p></td>
+<td><p>➡️ (right arrow)</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation</p></td>
+<td><p>📄 (page facing up)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Project organization</p></td>
+<td><p>🗃 (card file box)</p></td>
+</tr>
+<tr class="row-even"><td><p>Randomness</p></td>
+<td><p>🎲 (game die)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Version control</p></td>
+<td><p>📜 (scroll)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="part-3">
+<h4>Part 3:<a class="headerlink" href="#part-3" title="Permalink to this heading">#</a></h4>
+<p>Follow the instructions below
+for each story share in the class stories from the trenches Google document.</p>
+<ul class="simple">
+<li><p>Re-read the story and reflect on what the primary cost was
+from the reproducibility or transparency failure described in the story.</p></li>
+<li><p>Label the story with the emoji
+corresponding to the chosen cost from the table below:</p></li>
+</ul>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Reproducibility and transparency failure cost</p></th>
+<th class="head"><p>Emoji label</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Financial</p></td>
+<td><p>💸 (money with wings)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reputational</p></td>
+<td><p>🎖 (military medal)</p></td>
+</tr>
+<tr class="row-even"><td><p>Time</p></td>
+<td><p>🕰 (mantelpiece clock)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Unfixable error</p></td>
+<td><p>💥 (collision)</p></td>
+</tr>
+<tr class="row-even"><td><p>Work discarded.</p></td>
+<td><p>🗑️(wastebasket)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="more-reasons-to-worry-about-workflows">
+<h2>More reasons to worry about workflows?<a class="headerlink" href="#more-reasons-to-worry-about-workflows" title="Permalink to this heading">#</a></h2>
+<section id="reason-1">
+<h3>Reason 1:<a class="headerlink" href="#reason-1" title="Permalink to this heading">#</a></h3>
+<p>It makes it easier to collaborate with your most imporant collaborator - YOU in 6 months!</p>
+<a class="reference internal image-reference" href="../../_images/2011.11.15_life_of_a_swe.png"><img alt="../../_images/2011.11.15_life_of_a_swe.png" src="../../_images/2011.11.15_life_of_a_swe.png" style="width: 500px;" /></a>
+<p><em>Source: http://www.bonkersworld.net/building-software/</em></p>
+</section>
+<section id="reason-2">
+<h3>Reason 2:<a class="headerlink" href="#reason-2" title="Permalink to this heading">#</a></h3>
+<p>It makes others think you know what you are doing…</p>
+<a class="reference internal image-reference" href="../../_images/business_suit.gif"><img alt="../../_images/business_suit.gif" src="../../_images/business_suit.gif" style="width: 400px;" /></a>
+<p><em>Source: https://giphy.com/</em></p>
+</section>
+</section>
+<section id="workflows-complex-projects">
+<h2>Workflows &amp; complex projects<a class="headerlink" href="#workflows-complex-projects" title="Permalink to this heading">#</a></h2>
+<section id="what-are-complex-projects">
+<h3>What are complex projects?<a class="headerlink" href="#what-are-complex-projects" title="Permalink to this heading">#</a></h3>
+<p>I define complex projects as one that has <strong><em>at least one</em></strong> of the following:</p>
+<ul class="simple">
+<li><p>two, or more, people directly working on the analysis</p></li>
+</ul>
+<ul class="simple">
+<li><p>projects that involve two or more coding documents</p></li>
+</ul>
+<ul class="simple">
+<li><p>projects that involve analysis of medium/large data</p></li>
+</ul>
+<ul class="simple">
+<li><p>projects where you are working on a remote machine</p></li>
+</ul>
+<ul class="simple">
+<li><p>projects that have many software or environment dependencies, or ones that are difficult or take a long time to install</p></li>
+</ul>
+<p><em>As a project accumulates more of these features it grows further in complexity.</em></p>
+<section id="complex-projects-without-intentional-data-science-workflows">
+<h4>Complex projects without intentional Data Science workflows…<a class="headerlink" href="#complex-projects-without-intentional-data-science-workflows" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="https://upload.wikimedia.org/wikipedia/en/a/a3/Escher%27s_Relativity.jpg"><img alt="https://upload.wikimedia.org/wikipedia/en/a/a3/Escher%27s_Relativity.jpg" src="https://upload.wikimedia.org/wikipedia/en/a/a3/Escher%27s_Relativity.jpg" style="width: 450px;" /></a>
+<p>– <em>Relativity by Maurits Cornelis Escher</em></p>
+</section>
+<section id="concrete-examples-of-problems-that-can-occur-in-complex-analyses">
+<h4>Concrete examples of problems that can occur in complex analyses<a class="headerlink" href="#concrete-examples-of-problems-that-can-occur-in-complex-analyses" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>An interesting result that you cannot recreate 😞</p></li>
+</ul>
+<ul class="simple">
+<li><p>Your email inbox is full of information related to the project that only you have access too 😫</p></li>
+</ul>
+<ul class="simple">
+<li><p>A small change to the analysis code requires re-running the entire thing, <em>and takes hours…</em> 😧</p></li>
+</ul>
+<ul class="simple">
+<li><p>Activation time to becoming productive after taking a break from the project is hours to days 😴</p></li>
+</ul>
+<ul class="simple">
+<li><p>Code that can only be run on one machine, <em>and you don’t know why…</em> 😵</p></li>
+</ul>
+</section>
+</section>
+<section id="how-can-we-avoid-such-problems-and-chaos">
+<h3>How can we avoid such problems and chaos?<a class="headerlink" href="#how-can-we-avoid-such-problems-and-chaos" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+<section id="workflow-features-to-mitigate-chaos">
+<h2>Workflow features to mitigate chaos<a class="headerlink" href="#workflow-features-to-mitigate-chaos" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Version Control (<em>Git &amp; GitHub</em>)</p></li>
+<li><p>Executable analysis scripts &amp; pipelines (<em>Python/R scripts &amp; Make</em>)</p></li>
+<li><p>Defined &amp; shippable dependencies (<em>Docker</em>)</p></li>
+</ol>
+<p><em>All of these features are a subset of those recommended by Hilary Parker in her 2016 <a class="reference external" href="https://peerj.com/preprints/3210/">Opinionated Analysis Development</a> paper</em></p>
+<section id="version-control">
+<h3>1. Version Control<a class="headerlink" href="#version-control" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Version control is a tool which archives changes to file(s) over time.</p></li>
+<li><p>These changes are archived in a way that you can later revisit different time points in the project.</p></li>
+</ul>
+<img alt="http://swcarpentry.github.io/git-novice/fig/play-changes.svg" src="http://swcarpentry.github.io/git-novice/fig/play-changes.svg" /><p><em>source: http://swcarpentry.github.io/git-novice/</em></p>
+<ul class="simple">
+<li><p>Many version control tools also have features that facilitate collaboration.</p></li>
+<li><p>Git + GitHub are two of the most common softwares for version control (<em>and so this is where I draw my examples from</em>)</p></li>
+</ul>
+<a class="reference internal image-reference" href="http://faisalweb.com/wp-content/uploads/2017/07/git.jpg"><img alt="http://faisalweb.com/wp-content/uploads/2017/07/git.jpg" src="http://faisalweb.com/wp-content/uploads/2017/07/git.jpg" style="width: 600px;" /></a>
+<section id="example-problem-solved-by-version-control">
+<h4>Example problem solved by version control<a class="headerlink" href="#example-problem-solved-by-version-control" title="Permalink to this heading">#</a></h4>
+<p><strong>Problem:</strong> An extremely interesting result that you cannot recreate 😞</p>
+<p><strong>Solution</strong>: Version the code <strong>and</strong> the output of the analysis</p>
+</section>
+<section id="going-back-in-time-via-commits">
+<h4>Going back in time via commits<a class="headerlink" href="#going-back-in-time-via-commits" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/releases.png"><img alt="../../_images/releases.png" src="../../_images/releases.png" style="width: 800px;" /></a>
+</section>
+<section id="id1">
+<h4>Going back in time via commits<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/commits_eg.png"><img alt="../../_images/commits_eg.png" src="../../_images/commits_eg.png" style="width: 800px;" /></a>
+</section>
+<section id="id2">
+<h4>Going back in time via commits<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/commit-visit.png"><img alt="../../_images/commit-visit.png" src="../../_images/commit-visit.png" style="width: 800px;" /></a>
+</section>
+<section id="going-back-in-time-via-releases">
+<h4>Going back in time via releases<a class="headerlink" href="#going-back-in-time-via-releases" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/commits.png"><img alt="../../_images/commits.png" src="../../_images/commits.png" style="width: 800px;" /></a>
+</section>
+<section id="id3">
+<h4>Going back in time via releases<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/release_eg.png"><img alt="../../_images/release_eg.png" src="../../_images/release_eg.png" style="width: 800px;" /></a>
+</section>
+<section id="id4">
+<h4>Going back in time via releases<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/release-visit.png"><img alt="../../_images/release-visit.png" src="../../_images/release-visit.png" style="width: 800px;" /></a>
+</section>
+<section id="id5">
+<h4>Example problem solved by version control<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<p><strong>Problem:</strong> Your email inbox is full of information related to the project that only you have access too 😫</p>
+<p><strong>Solution</strong>: Use GitHub Issues for communications related to the project</p>
+</section>
+<section id="github-issues-for-project-related-communications">
+<h4>GitHub Issues for project-related communications<a class="headerlink" href="#github-issues-for-project-related-communications" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/issue_thread.png"><img alt="../../_images/issue_thread.png" src="../../_images/issue_thread.png" style="width: 800px;" /></a>
+</section>
+<section id="id6">
+<h4>GitHub Issues for project-related communications<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/inbox-notification.png"><img alt="../../_images/inbox-notification.png" src="../../_images/inbox-notification.png" style="width: 800px;" /></a>
+</section>
+<section id="id7">
+<h4>GitHub Issues for project-related communications<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<img alt="../../_images/open_issues.png" src="../../_images/open_issues.png" />
+<p>source: https://github.com/LerouxLab/Celegans_wild_isolate_behaviour/issues</p>
+</section>
+<section id="version-control-contributes-to-better-communication-team-work">
+<h4>Version control contributes to better communication &amp; team work<a class="headerlink" href="#version-control-contributes-to-better-communication-team-work" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>All collaborators/team members know where to find the latest (or earlier) version of the analysis (code and output)</p></li>
+<li><p>All collaborators/team members have access to all communications associated with the analysis</p></li>
+</ul>
+</section>
+</section>
+<section id="executable-analysis-scripts-pipelines">
+<h3>2. Executable analysis scripts &amp; pipelines<a class="headerlink" href="#executable-analysis-scripts-pipelines" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>As analysis grows in length and complexity, one literate code document generally is not enough</p></li>
+<li><p>To improve code report readability (and code reproducibility and modularity) it is better to abstract at least parts of the code away (e.g, to scripts)</p></li>
+<li><p>These scripts save figures and tables that will be imported into the final report</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/scripts.png"><img alt="../../_images/scripts.png" src="../../_images/scripts.png" style="width: 800px;" /></a>
+<section id="example-problem-solved-by-executable-analysis-scripts-pipelines">
+<h4>Example problem solved by executable analysis scripts &amp; pipelines<a class="headerlink" href="#example-problem-solved-by-executable-analysis-scripts-pipelines" title="Permalink to this heading">#</a></h4>
+<p><strong>Problem:</strong> Activation time to becoming productive after taking a break from the project is hours to days 😴</p>
+<p><strong>Solution:</strong> Record the order scripts need to be run in, and their arguments in one “driver” script/pipeline file.</p>
+</section>
+<section id="create-a-recipe-for-your-analysis">
+<h4>Create a recipe for your analysis<a class="headerlink" href="#create-a-recipe-for-your-analysis" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="../../_images/pipeline.png"><img alt="../../_images/pipeline.png" src="../../_images/pipeline.png" style="width: 800px;" /></a>
+</section>
+<section id="id8">
+<h4>Example problem solved by executable analysis scripts &amp; pipelines<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
+<p><strong>Problem:</strong> A small change to the analysis code requires re-running the entire thing, <em>and takes hours…</em> 😧</p>
+<p><strong>Solution:</strong> Use a smart dependency tree tool to only re-run the parts that needs to be updated.</p>
+</section>
+<section id="make-one-possible-smart-dependency-tree-tool">
+<h4>Make - one possible smart dependency tree tool<a class="headerlink" href="#make-one-possible-smart-dependency-tree-tool" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>special file called a Makefile that contains the recipe for your analysis</p></li>
+</ul>
+<ul class="simple">
+<li><p>Makefiles are “smart” and after changes, only run the parts of the analysis that has changed (as well as the parts that depend on the parts that changed)</p></li>
+</ul>
+<ul class="simple">
+<li><p>Each block of code in a Makefile is called a rule, it looks something like this:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">file_to_create</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">data_it_depends_on</span><span class="o">.</span><span class="n">dat</span> <span class="n">script_it_depends_on</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">script_it_depends_on</span><span class="o">.</span><span class="n">py</span> <span class="n">data_it_depends_on</span><span class="o">.</span><span class="n">dat</span> <span class="n">file_to_create</span><span class="o">.</span><span class="n">png</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Makefiles are made of many rules, typically one rule for each time you run an analysis script</p></li>
+</ul>
+<p><em>Make is not the only smart dependency tree tool - Apache Airflow, Prefect, <code class="docutils literal notranslate"><span class="pre">snakemake</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">targets</span></code> are also great options!</em></p>
+</section>
+<section id="example-makefile">
+<h4>Example Makefile:<a class="headerlink" href="#example-makefile" title="Permalink to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run all analysis</span>
+<span class="nb">all</span><span class="p">:</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">md</span>
+
+<span class="c1"># make dat files</span>
+<span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span><span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="c1">#create figures</span>
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span><span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span><span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+
+<span class="c1"># render report</span>
+<span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">md</span><span class="p">:</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">Rmd</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+	<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="makefile-dependency-tree">
+<h3>Makefile dependency tree<a class="headerlink" href="#makefile-dependency-tree" title="Permalink to this heading">#</a></h3>
+<a class="reference internal image-reference" href="../../_images/Makefile.png"><img alt="../../_images/Makefile.png" src="../../_images/Makefile.png" style="width: 800px;" /></a>
+<section id="executable-analysis-scripts-pipelines-contribute-to-better-collaboration">
+<h4>Executable analysis scripts &amp; pipelines contribute to better collaboration<a class="headerlink" href="#executable-analysis-scripts-pipelines-contribute-to-better-collaboration" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Can be used by others to run/replicate the analysis</p></li>
+<li><p>Makes it easier to understand the landscape of the project and for others to contribute</p></li>
+<li><p>Reduces <em>some</em> of the challenges/frustrations of working with larger data sets</p></li>
+</ul>
+</section>
+</section>
+<section id="defined-shippable-dependencies">
+<h3>3. Defined &amp; shippable dependencies<a class="headerlink" href="#defined-shippable-dependencies" title="Permalink to this heading">#</a></h3>
+<p>Dependencies are other things one need to install to run your code, and includes:</p>
+<ul class="simple">
+<li><p>programming languages (e.g., R, Python, Julia, etc)</p></li>
+<li><p>packages from programming languates (e.g., tidyverse, scikit-learn)</p></li>
+<li><p>other tools you rely on (e.g., Make)</p></li>
+<li><p>legacy code (e.g., perl scripts, fortran, etc)</p></li>
+</ul>
+<p><em><strong>Dependencies include versions as well as names!</strong></em></p>
+<section id="example-problem-solved-by-defined-shippable-dependencies">
+<h4>Example problem solved by defined &amp; shippable dependencies<a class="headerlink" href="#example-problem-solved-by-defined-shippable-dependencies" title="Permalink to this heading">#</a></h4>
+<p><strong>Problem:</strong> Code that can only be run on one machine, <em>you don’t know why…</em> 😵</p>
+<p><strong>Problem:</strong> Long install times when setting up a remote machine for analysis 🙄</p>
+<p><strong>One possible solution:</strong> Containerizing your software and environmental dependencies</p>
+</section>
+<section id="what-are-containers">
+<h4>What are containers?<a class="headerlink" href="#what-are-containers" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Containers are <em>like</em> a light-weight virtual machine, they allow you to share:</p></li>
+<li><p>Python/R versions</p></li>
+<li><p>package versions</p></li>
+<li><p>other tools you rely on (e.g., Make)</p></li>
+<li><p>legacy code (e.g., perl scripts, fortran, etc)</p></li>
+<li><p>The most popular tool for this is Docker</p></li>
+<li><p>Containers can be shared on <a class="reference external" href="https://hub.docker.com/">DockerHub</a> (similar to how code can be shared on GitHub)</p></li>
+</ul>
+</section>
+<section id="id9">
+<h4>What are containers?<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<a class="reference internal image-reference" href="https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13742-016-0135-4/MediaObjects/13742_2016_135_Fig7_HTML.gif?as=webp"><img alt="https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13742-016-0135-4/MediaObjects/13742_2016_135_Fig7_HTML.gif?as=webp" src="https://media.springernature.com/full/springer-static/image/art%3A10.1186%2Fs13742-016-0135-4/MediaObjects/13742_2016_135_Fig7_HTML.gif?as=webp" style="width: 300px;" /></a>
+<p>source: <a class="reference external" href="https://gigascience.biomedcentral.com/articles/10.1186/s13742-016-0135-4">Tools and techniques for computational reproducibility</a> by Stephen R. Piccolo &amp; Michael B. Frampton</p>
+<a class="reference internal image-reference" href="../../_images/dockerfile.png"><img alt="../../_images/dockerfile.png" src="../../_images/dockerfile.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../_images/docker-hub-eg.png"><img alt="../../_images/docker-hub-eg.png" src="../../_images/docker-hub-eg.png" style="width: 800px;" /></a>
+</section>
+<section id="instructions-needed-to-run-analysis-on-almost-any-machine">
+<h4>Instructions needed to run analysis on <em>almost</em> any machine:<a class="headerlink" href="#instructions-needed-to-run-analysis-on-almost-any-machine" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://docs.docker.com/v17.12/install/">Docker</a></p></li>
+<li><p>Clone or download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg">this GitHub repository</a></p></li>
+<li><p>From the root of the cloned repository, type:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v $(pwd):/home/rstudio/data_analysis_eg \
+ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
+</pre></div>
+</div>
+</section>
+<section id="defined-shippable-dependencies-contribute-to-democratization-of-data-science">
+<h4>Defined &amp; shippable dependencies contribute to democratization of Data Science<a class="headerlink" href="#defined-shippable-dependencies-contribute-to-democratization-of-data-science" title="Permalink to this heading">#</a></h4>
+<p>If you take care of packaging dependencies in a Docker container and distribute the container on DockerHub, you can add one line to your run instructions to your analysis to take away any installation pain your collaborators may face.</p>
+</section>
+</section>
+<section id="when-to-add-these-workflow-features">
+<h3>When to add these workflow features:<a class="headerlink" href="#when-to-add-these-workflow-features" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Version Control</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>ALWAYS</strong></p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Executable analysis scripts &amp; pipelines</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>When you start hiding code chunks/cells in your Rmd/Jupter notebook</strong></p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>Defined &amp; shippable dependencies</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>When doing remote computing or when you have tricky dependencies</strong></p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/2011.11.15_life_of_a_swe.png"><img alt="../../_images/2011.11.15_life_of_a_swe.png" src="../../_images/2011.11.15_life_of_a_swe.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/imp_life_ds.png"><img alt="../../_images/imp_life_ds.png" src="../../_images/imp_life_ds.png" style="width: 600px;" /></a>
+</section>
+</section>
+<section id="life-cycle-of-a-data-analysis-project">
+<h2>Life cycle of a data analysis project<a class="headerlink" href="#life-cycle-of-a-data-analysis-project" title="Permalink to this heading">#</a></h2>
+<p><img alt="alt tag" src="../../_images/data-science-workflow.png" />
+<em>Source: <a class="reference external" href="http://r4ds.had.co.nz/introduction.html">R for Data Science</a> by Grolemund &amp; Wickham</em></p>
+<a class="reference internal image-reference" href="../../_images/art_of_ds_cycle.png"><img alt="../../_images/art_of_ds_cycle.png" src="../../_images/art_of_ds_cycle.png" style="width: 400px;" /></a>
+<p><em>Source: <a class="reference external" href="https://leanpub.com/artofdatascience">Art of Data Science</a> by Peng &amp; Matsui</em></p>
+</section>
+<section id="revisiting-the-definition-of-data-science-what-is-the-question">
+<h2>Revisiting the definition of data science &amp; what is the question?<a class="headerlink" href="#revisiting-the-definition-of-data-science-what-is-the-question" title="Permalink to this heading">#</a></h2>
+<p>(we need to talk about this for your project)</p>
+<p><em>the study, development and practice of reproducible and auditable processes to obtain <strong>insight from data</strong>.</em></p>
+<p>For the latter part of this definition, it is critical that you match the correct data science methods to the type of statistical question you are asking.</p>
+<a class="reference internal image-reference" href="http://jtleek.com/ads2020/images/week1/questions.png"><img alt="http://jtleek.com/ads2020/images/week1/questions.png" src="http://jtleek.com/ads2020/images/week1/questions.png" style="width: 600px;" /></a>
+<section id="descriptive">
+<h3>1. Descriptive<a class="headerlink" href="#descriptive" title="Permalink to this heading">#</a></h3>
+<p>One that seeks to summarize a characteristic of a set of data. No interpretation of the result itself as the result is a fact, an attribute of the data set you are working with.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>What is the frequency of viral illnesses in a set of data collected from a group of individuals?</p></li>
+<li><p>How many people live in each US state?</p></li>
+</ul>
+</section>
+<section id="exploratory">
+<h3>2. Exploratory<a class="headerlink" href="#exploratory" title="Permalink to this heading">#</a></h3>
+<p>One in which you analyze the data to see if there are patterns, trends, or relationships between variables looking for patterns that would support proposing a hypothesis to test in a future study.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Do diets rich in certain foods have differing frequencies of viral illnesses <strong>in a set of data</strong> collected from a group of individuals?</p></li>
+<li><p>Does air pollution correlate with life expectancy <strong>in a set of data</strong> collected from groups of individuals from several regions in the United States?</p></li>
+</ul>
+</section>
+<section id="inferential">
+<h3>3. Inferential<a class="headerlink" href="#inferential" title="Permalink to this heading">#</a></h3>
+<p>One in which you analyze the data to see if there are patterns, trends, or relationships between variables in a representative sample. We want to quantify how much the patterns, trends, or relationships between variables is applicable to all individuals units in the population.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Is eating at least 5 servings a day of fresh fruit and vegetables is associated with fewer viral illnesses per year?</p></li>
+<li><p>Is the gestational length of first born babies the same as that of non-first borns?</p></li>
+</ul>
+</section>
+<section id="predictive">
+<h3>4. Predictive<a class="headerlink" href="#predictive" title="Permalink to this heading">#</a></h3>
+<p>One where you are trying to predict measurements or labels for individuals (people or things). Less interested in what causes the predicted outcome, just what predicts it.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>How many viral illnesses will someone have next year?</p></li>
+<li><p>What political party will someone vote for in the next US election?</p></li>
+</ul>
+</section>
+<section id="causal">
+<h3>5. Causal<a class="headerlink" href="#causal" title="Permalink to this heading">#</a></h3>
+<p>Asks about whether changing one factor will change another factor, on average, in a population. Sometimes the underlying design of the data collection, by default, allows for the question that you ask to be causal (e.g., randomized experiment or trial)</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Does eating at least 5 servings a day of fresh fruit and vegetables cause fewer viral illnesses per year?</p></li>
+<li><p>Does smoking lead to cancer?</p></li>
+</ul>
+</section>
+<section id="mechanistic">
+<h3>6. Mechanistic<a class="headerlink" href="#mechanistic" title="Permalink to this heading">#</a></h3>
+<p>One that tries to explain the underlying mechanism of the observed patterns, trends, or relationship (how does it happen?)</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>How do changes in diet lead to a reduction in the number of viral illnesses?</p></li>
+<li><p>How does how airplane wing design changes air flow over a wing, leading to decreased drag?</p></li>
+</ul>
+</section>
+<section id="challenge-1">
+<h3>Challenge #1<a class="headerlink" href="#challenge-1" title="Permalink to this heading">#</a></h3>
+<p>What kind of statistical question is this?</p>
+<p><em>Is a yet undiagnosed patient’s breast cancer tumor malignant or benign?</em></p>
+</section>
+<section id="challenge-2">
+<h3>Challenge #2<a class="headerlink" href="#challenge-2" title="Permalink to this heading">#</a></h3>
+<p>What kind of statistical question is this?</p>
+<p><em>Is inhalation of marijuana associated with lung cancer?</em></p>
+</section>
+<section id="id10">
+<h3>Challenge #2<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<p>What kind of statistical question is this?</p>
+<p><em>Does a truncation of the BRCA2 gene cause cancer?</em></p>
+</section>
+<section id="challenge-4">
+<h3>Challenge #4<a class="headerlink" href="#challenge-4" title="Permalink to this heading">#</a></h3>
+<p>What kind of statistical question is this?</p>
+<p><em>Are there sub-types of ovarian tumors?</em></p>
+</section>
+<section id="so-you-know-the-type-of-question-now-what">
+<h3>So you know the type of question, now what?<a class="headerlink" href="#so-you-know-the-type-of-question-now-what" title="Permalink to this heading">#</a></h3>
+<p>This helps narrow down the possibilities
+of the kind of analysis you might want to do!</p>
+<p>For example, if you have the question: <strong>“How many viral illnesses will someone have next year?”</strong>
+and you identify that it is <strong>predictive.</strong>
+You could narrow down that some kind of statistical or machine learning model
+might help you answer that.</p>
+<p>Then you need to go a step deeper and look at the data that you have,
+and see which kind of statistical
+or machine learning model is most suitable for your data.</p>
+<a class="reference internal image-reference" href="https://scikit-learn.org/stable/_static/ml_map.png"><img alt="https://scikit-learn.org/stable/_static/ml_map.png" src="https://scikit-learn.org/stable/_static/ml_map.png" style="width: 700px;" /></a>
+<p>Source: <a class="reference external" href="https://scikit-learn.org/stable/tutorial/machine_learning_map/index.html">scikit-learn algorithm cheat sheet</a></p>
+<section id="general-statistical-workflow">
+<h4>General statistical workflow:<a class="headerlink" href="#general-statistical-workflow" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Identify the kind of question</p></li>
+<li><p>Identify or collect the data, and then look at the data</p></li>
+<li><p>Identify a suitable statistical method for your question and data</p></li>
+<li><p>Create a visualization</p></li>
+<li><p>Apply your statistical method</p></li>
+<li><p>(maybe create another visualization)</p></li>
+<li><p>Interpret and communicate your assumptions and results</p></li>
+</ol>
+<p><em>Note 1: in your project you might swap 1 &amp; 2 as we are restricting ourselves to existing, public data sets.</em></p>
+<p><em>Note 2: Sometimes you will consider #3 with or before #2, in particular when you are running an experiment or collecting the data.</em></p>
+</section>
+</section>
+</section>
+<section id="wrap-up">
+<h2>Wrap up<a class="headerlink" href="#wrap-up" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>We define data science as <em>the study, development and practice of <strong>reproducible and auditable processes</strong> to obtain <strong>insight from data.</strong></em></p></li>
+<li><p>Both bolded parts of the definition are important! This course will primarily focus on the first part, but you will get the opportunity to practice the second part in your group projects for this course.</p></li>
+<li><p>Many ways a data analysis can be untrustworthy… just because a data analysis is reproducible and auditable, doesn’t mean it is fully trustworthy. But a data analysis is not trustworthy if it cannot be reproduced or studied…</p></li>
+</ul>
+<section id="what-s-next">
+<h3>What’s next?<a class="headerlink" href="#what-s-next" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Version control for transparency and collaboration!</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-science">Data science</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-analysis">Reproducible analysis:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#auditable-transparent-analysis">Auditable/transparent analysis,</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-adopt-this-definition-of-data-science">Why adopt this definition of data science?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#we-cannot-trust-non-reproducible-and-non-auditable-analyses-because-they">We cannot trust non-reproducible and non-auditable analyses because they:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-makes-trustworthy-data-science">What makes trustworthy data science?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-with-large-impact">An example with large impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-big-is-this-problem">How big is this problem?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#does-this-just-impact-academia">Does this just impact academia?</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-with-relatable-impact">Examples with relatable impact</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-1">Part 1:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-2">Part 2:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#part-3">Part 3:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-reasons-to-worry-about-workflows">More reasons to worry about workflows?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-1">Reason 1:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reason-2">Reason 2:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflows-complex-projects">Workflows &amp; complex projects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-complex-projects">What are complex projects?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#complex-projects-without-intentional-data-science-workflows">Complex projects without intentional Data Science workflows…</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#concrete-examples-of-problems-that-can-occur-in-complex-analyses">Concrete examples of problems that can occur in complex analyses</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-avoid-such-problems-and-chaos">How can we avoid such problems and chaos?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-features-to-mitigate-chaos">Workflow features to mitigate chaos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control">1. Version Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-version-control">Example problem solved by version control</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#going-back-in-time-via-commits">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Going back in time via commits</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#going-back-in-time-via-releases">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Going back in time via releases</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Example problem solved by version control</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#github-issues-for-project-related-communications">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">GitHub Issues for project-related communications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#version-control-contributes-to-better-communication-team-work">Version control contributes to better communication &amp; team work</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#executable-analysis-scripts-pipelines">2. Executable analysis scripts &amp; pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-executable-analysis-scripts-pipelines">Example problem solved by executable analysis scripts &amp; pipelines</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-recipe-for-your-analysis">Create a recipe for your analysis</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Example problem solved by executable analysis scripts &amp; pipelines</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#make-one-possible-smart-dependency-tree-tool">Make - one possible smart dependency tree tool</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-makefile">Example Makefile:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#makefile-dependency-tree">Makefile dependency tree</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#executable-analysis-scripts-pipelines-contribute-to-better-collaboration">Executable analysis scripts &amp; pipelines contribute to better collaboration</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-shippable-dependencies">3. Defined &amp; shippable dependencies</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-problem-solved-by-defined-shippable-dependencies">Example problem solved by defined &amp; shippable dependencies</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-containers">What are containers?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">What are containers?</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#instructions-needed-to-run-analysis-on-almost-any-machine">Instructions needed to run analysis on <em>almost</em> any machine:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#defined-shippable-dependencies-contribute-to-democratization-of-data-science">Defined &amp; shippable dependencies contribute to democratization of Data Science</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-add-these-workflow-features">When to add these workflow features:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#life-cycle-of-a-data-analysis-project">Life cycle of a data analysis project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revisiting-the-definition-of-data-science-what-is-the-question">Revisiting the definition of data science &amp; what is the question?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#descriptive">1. Descriptive</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploratory">2. Exploratory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inferential">3. Inferential</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictive">4. Predictive</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#causal">5. Causal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mechanistic">6. Mechanistic</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-1">Challenge #1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-2">Challenge #2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Challenge #2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#challenge-4">Challenge #4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so-you-know-the-type-of-question-now-what">So you know the type of question, now what?</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-statistical-workflow">General statistical workflow:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrap-up">Wrap up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-next">What’s next?</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
