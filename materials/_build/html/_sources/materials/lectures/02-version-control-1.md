@@ -198,13 +198,89 @@ Then we can view the history, along with the commit messages. To view the state 
 
 Sometimes you want to be able to explore and run the files from the past, or bring a past version of a file to the future. When we need to do either of those things, we should be working with Git in our local repository. 
 
-Here's the same history as viewed above, but using the JupyterLab Git extension:
+Here's the same history as viewed above, but using the Git command line:
 
-<img src="img/jupyter-git-history.png" width=800>
+```sh
+git log
+```
 
-To see what was changed at a given point in history, click the down arrow associated with the commit. You can then diff the file (see what was changed for a particular file by clicking the file icon beside it.
+```out
+commit cab2e6a93f113602974390f64e88dad0a5d6eae3 (HEAD -> master, origin/master, origin/HEAD)
+Author: Tiffany Timbers <tiffany.timbers@gmail.com>
+Date:   Thu Dec 9 10:33:39 2021 -0800
 
-<img src="img/jupyter-view-changes.png">
+    added example using docker-compose.yml
+
+commit b9c1bdcdc0cf8f7bce3fd3874cce0e76b6c474e3 (tag: v4.0)
+Merge: 238dbcb 9b4af1d
+Author: Tiffany A. Timbers <tiffany.timbers@gmail.com>
+Date:   Tue Feb 4 10:49:23 2020 -0800
+
+    Merge pull request #1 from kguidonimartins/master
+    
+    Update README.md
+
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers <tiffany.timbers@stat.ubc.ca>
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+commit 9b4af1d03c282a2d747d642a0c8847fd53b4f1d7
+:
+```
+
+The `:` at the end tells us there are more commits than shown. 
+You can navigate this log by scrolling with the mouse, arrow keys,
+`b` key, or by pressing the spacebar.
+
+This log is also searchable.
+Press `/` + search term + enter to search for a word.
+`n`/`N` goes to next/previous match for the search term.
+
+To exit from the Git history log, we press the `q` 
+(short for "quit") character.
+
+To see what was changed at a given point in history, 
+we can use the `git show` command.
+For example we can view what was changed 
+in the commit with the message
+"added conda to path of Dockerfile"
+which has the long SHA `238dbcb02a77acb21b251aff7ff954f8c22a91bc`
+we would type: 
+
+```sh
+git show 238dbcb
+```
+
+```out
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers <tiffany.timbers@stat.ubc.ca>
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+diff --git a/Dockerfile b/Dockerfile
+index 05ad853..faf3918 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -20,7 +20,11 @@ RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_6
+     echo "conda activate base" >> ~/.bashrc && \
+     find /opt/conda/ -follow -type f -name '*.a' -delete && \
+     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
+-    /opt/conda/bin/conda clean -afy
++    /opt/conda/bin/conda clean -afy && \
++    /opt/conda/bin/conda update -n base -c defaults conda
+ 
+ # install docopt python package
+ RUN /opt/conda/bin/conda install -y -c anaconda docopt
++
++# put anaconda python in path
++ENV PATH="/opt/conda/bin:${PATH}"
+```
+### Reflection point
+
+How similar are the local and webpage log views?? Do you get the same information from both? Which seems easier to read/navigate?
 
 #### Travelling in time to the past
 
