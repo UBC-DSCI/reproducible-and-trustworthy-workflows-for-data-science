@@ -407,6 +407,9 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reflection-point">Reflection point</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#travelling-in-time-to-the-past">Travelling in time to the past</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Reflection point</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bringing-something-something-from-the-back-from-the-past">Bringing something something from the back from the past</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#what-git-tool-to-use">What Git tool to use?</a></li>
 </ul>
@@ -645,6 +648,11 @@ we would type:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>show<span class="w"> </span>238dbcb
 </pre></div>
 </div>
+<blockquote>
+<div><p>Note: we only used the first 7 digits of the long SHA
+(we call this the short SHA).
+This is usually unique enough for Git to autofill in the rest for us.</p>
+</div></blockquote>
 <div class="highlight-out notranslate"><div class="highlight"><pre><span></span>commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
 Author: ttimbers &lt;tiffany.timbers@stat.ubc.ca&gt;
 Date:   Tue Feb 4 10:47:03 2020 -0800
@@ -673,29 +681,84 @@ index 05ad853..faf3918 100644
 </section>
 <section id="reflection-point">
 <h3>Reflection point<a class="headerlink" href="#reflection-point" title="Permalink to this heading">#</a></h3>
-<p>How similar are the local and webpage log views?? Do you get the same information from both? Which seems easier to read/navigate?</p>
+<p>Here’s the website view of the same commit:</p>
+<a class="reference internal image-reference" href="../../_images/238dbcb0.png"><img alt="../../_images/238dbcb0.png" src="../../_images/238dbcb0.png" style="width: 500px;" /></a>
+<p><a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/commit/238dbcb02a77acb21b251aff7ff954f8c22a91bc">Source</a></p>
+<p>How similar are the local and webpage log views??
+Do you get the same information from both? Which seems easier to read/navigate?
+Which would be more useful for testing out your code?</p>
 <section id="travelling-in-time-to-the-past">
 <h4>Travelling in time to the past<a class="headerlink" href="#travelling-in-time-to-the-past" title="Permalink to this heading">#</a></h4>
-<p>If you wanted to move your project’s file and directories (so entire state) back to this point in time you can do that by clicking the clock icon. <strong>NOTE: If you do this, be sure you pushed your changes, as it will discard anything more recent than this commit on your local computer (i.e., this is a hard reset).</strong></p>
-<a class="reference internal image-reference" href="../../_images/jupyter-hard-reset.png"><img alt="../../_images/jupyter-hard-reset.png" src="../../_images/jupyter-hard-reset.png" style="width: 500px;" /></a>
-<p>Again, because this is a hard reset, Git will warn you about the consequences:</p>
-<a class="reference internal image-reference" href="../../_images/jupyter-hard-reset-warning.png"><img alt="../../_images/jupyter-hard-reset-warning.png" src="../../_images/jupyter-hard-reset-warning.png" style="width: 500px;" /></a>
-<p>Once, you have done this, you will see the more recent commits in your history are GONE!</p>
-<a class="reference internal image-reference" href="../../_images/jupyter-after-hard-reset.png"><img alt="../../_images/jupyter-after-hard-reset.png" src="../../_images/jupyter-after-hard-reset.png" style="width: 500px;" /></a>
+<p>If you wanted to move your project’s file and directories (so entire state) back to this point in time you can do that by running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">&lt;commit-id&gt;</span> <span class="pre">.</span></code>. The last <code class="docutils literal notranslate"><span class="pre">.</span></code> is really important, so don’t forget it!</p>
+<p>Let’s do this now to go back to the point just before
+the changes we explored above:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="mi">9</span><span class="n">b4af1d</span> <span class="o">.</span>
+</pre></div>
+</div>
+<p>When we look at the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> (the file that was changed in the commit after this)
+we see it does not have the changes we viewed in the <code class="docutils literal notranslate"><span class="pre">238dbcb</span></code>!
+Also, if you run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">log</span></code> you will see the more recent commits in your history are GONE!</p>
+<p>Don’t panic! We can go back to the future!
+To get there (where we were before we started time travelling,
+we can use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span></code> the <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> commit nickname:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">HEAD</span> <span class="o">.</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> is the nickname for the most recent commit in a GitHub repository.</p>
+</div></blockquote>
+<p>Now, let’s check our <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">log</span></code> to make sure we returned safely!</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>log
+</pre></div>
+</div>
+<div class="highlight-out notranslate"><div class="highlight"><pre><span></span>commit cab2e6a93f113602974390f64e88dad0a5d6eae3 (HEAD -&gt; master, origin/master, origin/HEAD)
+Author: Tiffany Timbers &lt;tiffany.timbers@gmail.com&gt;
+Date:   Thu Dec 9 10:33:39 2021 -0800
+
+    added example using docker-compose.yml
+
+commit b9c1bdcdc0cf8f7bce3fd3874cce0e76b6c474e3 (tag: v4.0)
+Merge: 238dbcb 9b4af1d
+Author: Tiffany A. Timbers &lt;tiffany.timbers@gmail.com&gt;
+Date:   Tue Feb 4 10:49:23 2020 -0800
+
+    Merge pull request #1 from kguidonimartins/master
+    
+    Update README.md
+
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers &lt;tiffany.timbers@stat.ubc.ca&gt;
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+commit 9b4af1d03c282a2d747d642a0c8847fd53b4f1d7
+Author: Karlo Guidoni Martins &lt;kguidonimartins@gmail.com&gt;
+Date:   Tue Feb 4 13:04:39 2020 -0300
+
+    Update README.md
+    
+    Remove the duplicate `### Usage:` header.
+:
+</pre></div>
+</div>
 </section>
 <section id="exercise">
 <h4>Exercise:<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Clone <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg">this GitHub repository</a> to your computer.</p></li>
 <li><p>View the names of the files that were changed in commit <code class="docutils literal notranslate"><span class="pre">44c17be</span></code>, and the specific changes made to the file <code class="docutils literal notranslate"><span class="pre">doc/count_report.Rmd</span></code>.</p></li>
-<li><p>Do a hard reset to the state of the repository as it was in commit <code class="docutils literal notranslate"><span class="pre">44c17be</span></code>.</p></li>
-<li><p>Then pull the Git remote repository to go back to where you started.</p></li>
+<li><p>Checkout the  <code class="docutils literal notranslate"><span class="pre">44c17be</span></code> commit and explore it locally.</p></li>
+<li><p>Then go back to where you started (remember to use the nickname <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>).</p></li>
 </ol>
-<p><em>Question - could you have gone back to where you started if the work was not stored in the remote repository?</em></p>
 </section>
+</section>
+<section id="id1">
+<h3>Reflection point<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Say we decided to return to a point in the past, and restart our work from there? How would we do that?</p>
 <section id="bringing-something-something-from-the-back-from-the-past">
 <h4>Bringing something something from the back from the past<a class="headerlink" href="#bringing-something-something-from-the-back-from-the-past" title="Permalink to this heading">#</a></h4>
-<p>There is not a nice and easy way (that I am aware of) of cherry-picking a version of single file from the past using the JupyterLab Git extension. To do this, I resort to the Git command line tool in the terminal. The general command is:</p>
+<p>SThere is not a nice and easy way (that I am aware of) of cherry-picking a version of single file from the past using the JupyterLab Git extension. To do this, I resort to the Git command line tool in the terminal. The general command is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">&lt;</span><span class="n">HASH</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">FILE</span><span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -808,6 +871,9 @@ and then go back to primarily using your tool of choice.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reflection-point">Reflection point</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#travelling-in-time-to-the-past">Travelling in time to the past</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Reflection point</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bringing-something-something-from-the-back-from-the-past">Bringing something something from the back from the past</a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#what-git-tool-to-use">What Git tool to use?</a></li>
 </ul>
