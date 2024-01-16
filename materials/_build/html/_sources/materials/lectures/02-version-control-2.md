@@ -52,22 +52,6 @@ A more realistic Git branching example for a data analysis project might look so
 
 <img src="img/git-branch-diagrams.png" width=400>
 
-### Creating a branch using the JupyterLab Git extension
-
-Using the JupyterLab Git extension, you create a new branch on your local computer by clicking on the up arrow in the "Current Branch" tab, and clicking the blue "New Branch" button.
-
-<img src="img/create-new-branch.png" width=500>
-
-A dialogue box will open, and ask you to name the branch. After you do this, click on the blue "Create Branch" button. Remember to name it after the work you plan to do. Here we plan to fix the documentation a bit, so we will call it `patch-docs`.
-
-<img src="img/name-new-branch.png" width=300>
-
-To finally switch to the new playground (i.e., your new branch) click on the branch name of the new branch you just created in the Branches section of the "Current Branch" tab.
-
-<img src="img/switch-to-new-branch.png" width=500>
-
-As you work here, you can commit your changes to version control locally, and even push your changes to the remote repository. All the changes however will live only on that branch until you do something to move them to another branch. When you want to start discussing your changes with your collaborators to start the process of bringing these changes into the main branch (main code-base) you typically create what is called a pull request. A pull request is a like an asking your collaborators "is it OK to merge my code?" Usually there will be some discussion and a few more revisions to the code, but eventually they will give you the thumbs up when everything looks good and the code can then be merged. We will discuss this more next.
-
 ### Creating a branch using the command line
 
 In the terminal, and in the working directory of the project in which you wish to create a branch,
