@@ -362,11 +362,13 @@ We are going to each create our own project board for our MDS homework. I have s
 
 1. Click the green "**Use this template**" button from [this GitHub repository](https://github.com/UBC-DSCI/dsci-310-homework) to obtain a copy of it for yourself (do not fork it).
 
-2. Using the GitHub webpage, make a new branch called `create` in your copy of that repository (this will generate the issues for you).
+2. Click on the Actions tab, and then click on the workflow `.github/workflows/create_issues.yml`. You then should see a **“Run workflow”** button with a drop down menu, from that menu select **“Run workflow”**.
 
-3. Click on the Projects tab, and then click "Create a project". Give it a name, and select "Basic kanban" as the template option.
+3. Wait patiently while GitHub Actions to create 24 issues for you in your copy of this repository.
 
-4. Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of "group-work" or "individual-work".
+4. Click on the Projects tab, and then click **“Link a project”** and then select **“Create a new Project”**. Select **“Board”** as the template option and give the project a a name.
+
+5. Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of "group-work" or "individual-work".
 
 Additional Resources:
 - [Assigning issues and pull requests to other GitHub users](https://help.github.com/en/github/managing-your-work-on-github/assigning-issues-and-pull-requests-to-other-github-users)
