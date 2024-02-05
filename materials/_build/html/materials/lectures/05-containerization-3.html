@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Managing dependencies using containerization &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+    <title>Customizing and building containers &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
   
   
   
@@ -62,11 +62,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/05-containerization';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/05-containerization-3';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Introduction to testing code for data science" href="06-intro-to-testing-code.html" />
-    <link rel="prev" title="Virtual environments" href="04-virtual-environments.html" />
+    <link rel="prev" title="Using and running containers" href="05-containerization-2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -177,7 +177,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="02-version-control-2.html">Version control (for transparency and collaboration) II</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Managing dependencies using containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization-1.html">Introduction to containerization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization-2.html">Using and running containers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Customizing and building containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
@@ -258,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/05-containerization.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/05-containerization-3.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -288,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="../../_sources/materials/lectures/05-containerization.ipynb" target="_blank"
+      <li><a href="../../_sources/materials/lectures/05-containerization-3.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -370,7 +372,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Managing dependencies using containerization</h1>
+    <h1>Customizing and building containers</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -380,9 +382,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-containerization">Introduction to containerization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documenting-and-loading-dependencies">Documenting and loading dependencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container">What is a container?</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-simple-container">Exercise - running a simple container</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-rstudio-as-a-web-app">Exercise - running a container with RStudio as a web app</a></li>
@@ -391,58 +391,6 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrasting-containers-with-virtual-machines">Contrasting containers with virtual machines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrasting-common-computational-environment-virtualization-strategies">Contrasting common computational environment virtualization strategies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#virtualization-strategy-advantages-and-disadvantages-for-reproducibility">Virtualization strategy advantages and disadvantages for reproducibility</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-environment">Virtual environment</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#disadvantages">Disadvantages</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#containers">Containers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Disadvantages</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-machine">Virtual machine</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Disadvantages</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#container-useage-workflow">Container useage workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-vs-container">Image vs container?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container-registry">What is a container registry</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-specify-a-container-image">How do we specify a container image?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-of-container-images-being-built-from-layers">Demonstration of container images being built from layers</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mounting-volumes-to-containers">Mounting volumes to containers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-notes-for-mounting-volumes">Windows notes for mounting volumes:</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-command-line-commands">Docker command line commands</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-command-line">Running a Docker container non-interactively using the Docker command line</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
@@ -473,13 +421,10 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-rocker-team-s-strategy">The Rocker team’s strategy</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-newer-thing-that-might-be-useful">A newer thing that might be useful!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-in-python">How to in Python:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-messages">Take home messages:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose">Docker compose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-to-next">Where to next?</a></li>
 </ul>
             </nav>
         </div>
@@ -491,22 +436,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="managing-dependencies-using-containerization">
-<h1>Managing dependencies using containerization<a class="headerlink" href="#managing-dependencies-using-containerization" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="customizing-and-building-containers">
+<h1>Customizing and building containers<a class="headerlink" href="#customizing-and-building-containers" title="Permalink to this heading">#</a></h1>
 <section id="topic-learning-objectives">
 <h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
 <ol class="arabic simple">
-<li><p>Explain what containers are, and why they can be useful for reproducible data
-analyses</p></li>
-<li><p>Discuss the advantages and limitations of containerization (e.g., Docker) in the
-context of reproducible data analyses</p></li>
-<li><p>Compare and contrast the difference between running software/scripts in a virtual
-environment, a virtual machine and a container</p></li>
-<li><p>Evaluate, choose and justify an appropriate environment management solution based
-on the data analysis project’s complexity, expected usage and longevity.</p></li>
-<li><p>Use a containerization software (e.g., Docker) to run the software needed for your
-analysis</p></li>
 <li><p>Write a container file (e.g., Dockerfile) that can be used to reproducibly build a
 container image that would contain the needed software and environment
 dependencies of your Data Science project</p></li>
@@ -514,13 +449,6 @@ dependencies of your Data Science project</p></li>
 container images</p></li>
 <li><p>List good container base images for Data Science projects</p></li>
 </ol>
-</section>
-<section id="introduction-to-containerization">
-<h2>Introduction to containerization<a class="headerlink" href="#introduction-to-containerization" title="Permalink to this heading">#</a></h2>
-<section id="documenting-and-loading-dependencies">
-<h3>Documenting and loading dependencies<a class="headerlink" href="#documenting-and-loading-dependencies" title="Permalink to this heading">#</a></h3>
-<p>You’ve made some beautiful data analysis pipeline/project using make, R, and/or Python. It runs on your machine, but how easily can you, or someone else, get it working on theirs? The answer usually is, it depends…</p>
-<p>What does it depend on?</p>
 <ol class="arabic simple">
 <li><p>Does your <code class="docutils literal notranslate"><span class="pre">README</span></code> and your scripts make it blatantly obvious what programming languages and packages need to run your data analysis pipeline/project?</p></li>
 </ol>
@@ -529,7 +457,6 @@ container images</p></li>
 <li><p>Did you document what other software (beyond the the programming languages and packages used) and operating system dependencies are needed to run your data analysis pipeline/project?</p></li>
 </ol>
 <p><em>Virtual environments can be tremendously helpful with #1 &amp; #2, however, they may or may not be helpful to manage #3…</em> <strong><em>Enter containerization as a possible solution!</em></strong></p>
-</section>
 <section id="what-is-a-container">
 <h3>What is a container?<a class="headerlink" href="#what-is-a-container" title="Permalink to this heading">#</a></h3>
 <p>Containers are another way to generate (and share!) isolated computational environments. They differ from virtual environments (which we discussed previously) in that they are even more isolated from the computers operating system, as well as they can be used share many other types of software, applications and operating system dependencies.</p>
@@ -594,486 +521,6 @@ Copy and paste that URL into your browser.</p>
 to quit Jupyter and exit the container.</p>
 </section>
 </section>
-</section>
-<section id="contrasting-containers-with-virtual-machines">
-<h2>Contrasting containers with virtual machines<a class="headerlink" href="#contrasting-containers-with-virtual-machines" title="Permalink to this heading">#</a></h2>
-<p>Virtual machines are another technology that can be used to generate (and share) isolated computational environments. Virtual machines emulate the functionality an entire computer on a another physical computer. With virtual machine the virtualization occurs at the layer of software that sits between the computer’s hardware and the operating system(s). This software is called a hypervisor. For example, on a Mac laptop, you could install a program called <a class="reference external" href="https://www.virtualbox.org/">Oracle Virtual Box</a> to run a virtual machine whose operating system was Windows 10, as the screen shot below shows:</p>
-<img alt="https://www.virtualbox.org/raw-attachment/wiki/Screenshots/Windows_8.1_on_OSX.png" src="https://www.virtualbox.org/raw-attachment/wiki/Screenshots/Windows_8.1_on_OSX.png" />
-<p><strong>A screenshot of a Mac OS computer running a Windows virtual machine.</strong> Source: <a class="reference external" href="https://www.virtualbox.org/wiki/Screenshots">https://www.virtualbox.org/wiki/Screenshots</a></p>
-<p>Below, we share an illustration that compares where virtualization happens in containers compared to virtual machines. This difference, leads to containers being more light-weight and portable compared to virtual machines, and also less isolated.</p>
-<a class="reference internal image-reference" href="../../_images/container_v_vm.png"><img alt="../../_images/container_v_vm.png" src="../../_images/container_v_vm.png" style="width: 600px;" /></a>
-<p><em>Source: https://www.docker.com/resources/what-container</em></p>
-<p><strong>Key take home:</strong> - Containerization software shares the host’s operating system, whereas virtual machines have a completely separate, additional operating system. This can make containers lighter (smaller in terms of size) and more resource and time-efficient than using a virtual machine.*</p>
-</section>
-<section id="contrasting-common-computational-environment-virtualization-strategies">
-<h2>Contrasting common computational environment virtualization strategies<a class="headerlink" href="#contrasting-common-computational-environment-virtualization-strategies" title="Permalink to this heading">#</a></h2>
-<table class="colwidths-auto table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Feature</p></th>
-<th class="head"><p>Virtual environment</p></th>
-<th class="head"><p>Container</p></th>
-<th class="head"><p>Virtual machine</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Virtualization level</p></td>
-<td><p>Application</p></td>
-<td><p>Operating system user-space</p></td>
-<td><p>Hardware</p></td>
-</tr>
-<tr class="row-odd"><td><p>Isolation</p></td>
-<td><p>Programming languages, packages</p></td>
-<td><p>Programming languages, packages, <strong>other software, operating system dependencies, filesystems, networks</strong></p></td>
-<td><p>Programming languages, packages, other software, operating system dependencies, filesystems, networks, <strong>operating systems</strong></p></td>
-</tr>
-<tr class="row-even"><td><p>Size</p></td>
-<td><p>Extremely light-weight</p></td>
-<td><p>light-weight</p></td>
-<td><p>heavy-weight</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="virtualization-strategy-advantages-and-disadvantages-for-reproducibility">
-<h2>Virtualization strategy advantages and disadvantages for reproducibility<a class="headerlink" href="#virtualization-strategy-advantages-and-disadvantages-for-reproducibility" title="Permalink to this heading">#</a></h2>
-<p>Let’s collaboratively generate a list of advantages and disadvantages of each virtualization strategy in the context of reproducibility:</p>
-<section id="virtual-environment">
-<h3>Virtual environment<a class="headerlink" href="#virtual-environment" title="Permalink to this heading">#</a></h3>
-<section id="advantages">
-<h4>Advantages<a class="headerlink" href="#advantages" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Extremely small size</p></li>
-<li><p>Porous (less isolated) - makes it easy to pair the virtualized computational environment with files on your computer</p></li>
-<li><p>Specify these with a single text file</p></li>
-</ul>
-</section>
-<section id="disadvantages">
-<h4>Disadvantages<a class="headerlink" href="#disadvantages" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Not always possible to capture and share operating system dependencies, and other software your analysis depends upon</p></li>
-<li><p>Computational environment is not fully isolated, and so silent missed dependencies</p></li>
-</ul>
-</section>
-</section>
-<section id="containers">
-<h3>Containers<a class="headerlink" href="#containers" title="Permalink to this heading">#</a></h3>
-<section id="id1">
-<h4>Advantages<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Somewhat light-weight in size (manageable for easy sharing - there are tools and software to facilitate this)</p></li>
-<li><p>Possible to capture and share operating system dependencies, and other software your analysis depends upon</p></li>
-<li><p>Computational environment is fully isolated, and errors will occur if dependencies are missing</p></li>
-<li><p>Specify these with a single text file</p></li>
-<li><p>Can share volumes and ports (advantage compared to virtual machines)</p></li>
-</ul>
-</section>
-<section id="id2">
-<h4>Disadvantages<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Possible security issues - running software on your computer that you may allow to be less isolated (i.e., mount volumes, expose ports)</p></li>
-<li><p>Takes some effort to share volumes and ports (disadvantage compared to virtual environments)</p></li>
-</ul>
-</section>
-</section>
-<section id="virtual-machine">
-<h3>Virtual machine<a class="headerlink" href="#virtual-machine" title="Permalink to this heading">#</a></h3>
-<section id="id3">
-<h4>Advantages<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>High security, because these are much more isolated (filesystem, ports, etc)</p></li>
-<li><p>Can share an entirely different operating system (might not so useful in the context of reproducibility however…)</p></li>
-</ul>
-</section>
-<section id="id4">
-<h4>Disadvantages<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Very big in size, which can make it prohibitive to share them</p></li>
-<li><p>Takes great effort to share volumes and ports - which makes it hard to give access to data on your computer</p></li>
-</ul>
-</section>
-</section>
-</section>
-<section id="container-useage-workflow">
-<h2>Container useage workflow<a class="headerlink" href="#container-useage-workflow" title="Permalink to this heading">#</a></h2>
-<p>A schematic of Container useage workflow from a <a class="reference external" href="https://blog.octo.com/en/docker-registry-first-steps/">blog post</a> by Arnaud Mazin:</p>
-<a class="reference internal image-reference" href="../../_images/docker-stages.png"><img alt="../../_images/docker-stages.png" src="../../_images/docker-stages.png" style="width: 600px;" /></a>
-<p><em>Source: <a class="reference external" href="https://blog.octo.com/en/docker-registry-first-steps/">OctoTalks</a></em></p>
-</section>
-<section id="image-vs-container">
-<h2>Image vs container?<a class="headerlink" href="#image-vs-container" title="Permalink to this heading">#</a></h2>
-<p>Analogy: The program Chrome is like a Docker image, whereas a Chrome window is like a Docker container.</p>
-<a class="reference internal image-reference" href="../../_images/instance_analogy.png"><img alt="../../_images/instance_analogy.png" src="../../_images/instance_analogy.png" style="width: 600px;" /></a>
-<p>You can list the container <strong>images</strong> on your computer that you pulled using Docker via: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>. You should see a list like this when you do this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker images
-REPOSITORY                 TAG                    IMAGE ID       CREATED        SIZE
-rocker/rstudio             4.3.2                  bc76e0dbd6db   9 days ago     1.87GB
-rocker/r-ver               4.3.2                  c9569cbc2eb0   9 days ago     744MB
-continuumio/miniconda3     23.9.0-0               55e8b7e3206b   3 weeks ago    457MB
-jupyter/minimal-notebook   notebook-7.0.6         e04c3bedc133   3 weeks ago    1.45GB
-hello-world                latest                 b038788ddb22   6 months ago   9.14kB
-</pre></div>
-</div>
-<p>You can list the states of containers that have been started by Docker on your computer (and not yet removed) via: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>   <span class="n">IMAGE</span>                  <span class="n">COMMAND</span>   <span class="n">CREATED</span>          <span class="n">STATUS</span>          <span class="n">PORTS</span>                                       <span class="n">NAMES</span>
-<span class="mi">9160100</span><span class="n">c7d4b</span>   <span class="n">rocker</span><span class="o">/</span><span class="n">r</span><span class="o">-</span><span class="n">ver</span><span class="p">:</span><span class="mf">4.3.2</span>     <span class="s2">&quot;R&quot;</span>       <span class="mi">5</span> <span class="n">seconds</span> <span class="n">ago</span>    <span class="n">Up</span> <span class="mi">4</span> <span class="n">seconds</span>                                                <span class="n">friendly_merkle</span>
-<span class="mi">0</span><span class="n">d0871c90313</span>   <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>   <span class="s2">&quot;/init&quot;</span>   <span class="mi">33</span> <span class="n">minutes</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="mi">33</span> <span class="n">minutes</span>   <span class="mf">0.0.0.0</span><span class="p">:</span><span class="mi">8787</span><span class="o">-&gt;</span><span class="mi">8787</span><span class="o">/</span><span class="n">tcp</span><span class="p">,</span> <span class="p">:::</span><span class="mi">8787</span><span class="o">-&gt;</span><span class="mi">8787</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">exciting_kepler</span>
-</pre></div>
-</div>
-</section>
-<section id="what-is-a-container-registry">
-<h2>What is a container registry<a class="headerlink" href="#what-is-a-container-registry" title="Permalink to this heading">#</a></h2>
-<p>A container registry is a remote repository, or collection of repositories,
-used to share container images.
-This is similar to remote version control repositories for sharing code.
-Instead of code however,
-it is container images that are pushed and pulled to/from there.
-For this course we will focus on the widely-used DockerHub container registry:
-<a class="reference external" href="https://hub.docker.com/">https://hub.docker.com/</a>.</p>
-<p>However, there are many container registries that can be used, including:</p>
-<ul class="simple">
-<li><p><a class="github reference external" href="https://github.com/"></a>
-(yes! GitHub now also hosts container images in addition to code!)</p></li>
-<li><p><a class="reference external" href="https://quay.io/">https://quay.io/</a></p></li>
-<li><p><a class="reference external" href="https://aws.amazon.com/ecr/">https://aws.amazon.com/ecr/</a> (yes! Amazon now also hosts container images too!)</p></li>
-</ul>
-<section id="demonstration">
-<h3>Demonstration<a class="headerlink" href="#demonstration" title="Permalink to this heading">#</a></h3>
-<p>Let’s visit the repositories for the two container images that we used in the exercise earlier in class:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">rocker/rstudio</a></p></li>
-<li><p><a class="reference external" href="https://hub.docker.com/r/jupyter/minimal-notebook">jupyter/minimal-notebook</a></p></li>
-</ul>
-<p>Question: how did we get the images for the exercise earlier in class?
-We were just prompted to type <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run...</span></code></p>
-<p>Answer: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></code> will first look for images you have locally,
-and run those if they exist.
-If they do not exist, it then attempts to pull the image from DockerHub.</p>
-</section>
-</section>
-<section id="how-do-we-specify-a-container-image">
-<h2>How do we specify a container image?<a class="headerlink" href="#how-do-we-specify-a-container-image" title="Permalink to this heading">#</a></h2>
-<p>Container images are specified from plain text files! In the case of the Docker containerization software, we call these <code class="docutils literal notranslate"><span class="pre">Dockerfiles</span></code>. We will explain these in more detail later, however for now it is useful to look at one to get a general idea of their structure:</p>
-<p>Example <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span>
-
-<span class="c1"># Install Jupyter, JupterLab, R &amp; the IRkernel</span>
-<span class="n">RUN</span> <span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="o">--</span><span class="n">quiet</span> \
-    <span class="n">jupyter</span> \
-    <span class="n">jupyterlab</span><span class="o">=</span><span class="mf">3.</span><span class="o">*</span> \
-    <span class="n">r</span><span class="o">-</span><span class="n">base</span><span class="o">=</span><span class="mf">4.1</span><span class="o">.*</span> \
-    <span class="n">r</span><span class="o">-</span><span class="n">irkernel</span>
-
-<span class="c1"># Install JupyterLab Git Extension</span>
-<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">jupyterlab</span><span class="o">-</span><span class="n">git</span>
-
-<span class="c1"># Create working directory for mounting volumes</span>
-<span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">notebooks</span>
-
-<span class="c1"># Make port 8888 available for JupyterLab</span>
-<span class="n">EXPOSE</span> <span class="mi">8888</span>
-
-<span class="c1"># Install Git, the nano-tiny text editor and less (needed for R help)</span>
-<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
-    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">--</span><span class="n">yes</span> \
-    <span class="n">git</span> \
-    <span class="n">nano</span><span class="o">-</span><span class="n">tiny</span> \
-    <span class="n">less</span>
-
-<span class="c1"># Copy JupyterLab start-up script into container</span>
-<span class="n">COPY</span> <span class="n">start</span><span class="o">-</span><span class="n">notebook</span><span class="o">.</span><span class="n">sh</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span>
-
-<span class="c1"># Change permission of startup script and execute it</span>
-<span class="n">RUN</span> <span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">start</span><span class="o">-</span><span class="n">notebook</span><span class="o">.</span><span class="n">sh</span>
-<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;/usr/local/bin/start-notebook.sh&quot;</span><span class="p">]</span>
-
-<span class="c1"># Switch to staring in directory where volumes will be mounted</span>
-<span class="n">WORKDIR</span> <span class="s2">&quot;/opt/notebooks&quot;</span>
-</pre></div>
-</div>
-<p>The commands in all capitals are Docker commands. <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>s typically start with a <code class="docutils literal notranslate"><span class="pre">FROM</span></code> command that specifies which base image the new image should be built off. Docker images are built in layers - this helps make them more light-weight. The <code class="docutils literal notranslate"><span class="pre">FROM</span></code> command is usually followed by <code class="docutils literal notranslate"><span class="pre">RUN</span></code> commands that usually install new software, or execute configuration commands. Other commands in this example copy in needed configuration files, expose ports, specify the working directory, and specify programs to execute at start-up.</p>
-<section id="demonstration-of-container-images-being-built-from-layers">
-<h3>Demonstration of container images being built from layers<a class="headerlink" href="#demonstration-of-container-images-being-built-from-layers" title="Permalink to this heading">#</a></h3>
-<p>Let’s take a look at the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> for the <code class="docutils literal notranslate"><span class="pre">jupyter/docker-stacks</span></code> <code class="docutils literal notranslate"><span class="pre">r-notebook</span></code> container image:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/jupyter/docker-stacks/blob/master/r-notebook/Dockerfile">Dockerfile</a></p></li>
-</ul>
-<p><em>Question: What images does it build off?</em></p>
-</section>
-</section>
-<section id="launching-containers-using-docker-at-the-command-line">
-<h2>Launching containers using Docker at the command line<a class="headerlink" href="#launching-containers-using-docker-at-the-command-line" title="Permalink to this heading">#</a></h2>
-<p>Below we demonstrate how to launch and run containers using the <a class="reference external" href="https://hub.docker.com/r/continuumio/miniconda3"><code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image</a> as an example:</p>
-<section id="step-1-launch-the-docker-app-for-osx-windows-only">
-<h3>Step 1 - launch the Docker app (for OSX &amp; Windows only)<a class="headerlink" href="#step-1-launch-the-docker-app-for-osx-windows-only" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Use launchpad/Finder/Start menu/etc to find and launch Docker</p></li>
-</ul>
-<blockquote>
-<div><p>Note: Docker might already be running, if so great, but if its not, the commands below will not work. So it is always good to check!</p>
-</div></blockquote>
-</section>
-<section id="step-2-get-container-image-from-dockerhub">
-<h3>Step 2 - get container image from Dockerhub<a class="headerlink" href="#step-2-get-container-image-from-dockerhub" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>open the terminal</p></li>
-<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
-<li><p>verify that it successfully pulled by typing: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>, you should see something like:</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">REPOSITORY</span>                 <span class="n">TAG</span>       <span class="n">IMAGE</span> <span class="n">ID</span>       <span class="n">CREATED</span>         <span class="n">SIZE</span>
-<span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span>     <span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>  <span class="mf">55e8</span><span class="n">b7e3206b</span>   <span class="mi">3</span> <span class="n">weeks</span> <span class="n">ago</span>    <span class="mi">457</span><span class="n">MB</span>
-</pre></div>
-</div>
-<blockquote>
-<div><p>Note 1: You can skip this step and just got onto <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></code> as that command will pull the image if you do not have it locally.</p>
-<p>Note 2: If you ever need to delete a container image from your computer, you can run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rmi</span> <span class="pre">&lt;IMAGE_ID&gt;</span></code> to do so.</p>
-</div></blockquote>
-</section>
-<section id="step-3-launch-a-container-from-the-image-and-poke-around">
-<h3>Step 3 - launch a container from the image and poke around!<a class="headerlink" href="#step-3-launch-a-container-from-the-image-and-poke-around" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
-<li><p>If it worked, then your command line prompt should now look something like this:</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">@</span><span class="mi">5</span><span class="n">d8e6fff1b12</span><span class="p">:</span><span class="o">/</span><span class="c1"># </span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>use <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span></code>, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and explore the container</p></li>
-<li><p>type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave when you are done (your prompt will look normal again)!</p></li>
-</ul>
-</section>
-<section id="step-4-clean-up-your-container">
-<h3>Step 4 - clean up your container!<a class="headerlink" href="#step-4-clean-up-your-container" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>After you close a container it still “hangs” around…</p></li>
-<li><p>View any existing containers using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p></li>
-<li><p>Remove the container by typing <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;container_id&gt;</span></code></p></li>
-<li><p>Prove to yourself that the container is no longer “hanging around” via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>, but that you still have the image installed (via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>)</p></li>
-</ul>
-<blockquote>
-<div><p>Note: to remove running containers, you will need to first stop them via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code></p>
-</div></blockquote>
-</section>
-<section id="that-s-a-lot-of-work">
-<h3>That’s a lot of work…<a class="headerlink" href="#that-s-a-lot-of-work" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p>We can tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p></li>
-<li><p>Type the command below to run the container again, exit it and prove to yourself that the container was deleted (but not the image!):</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
-</pre></div>
-</div>
-</section>
-<section id="mounting-volumes-to-containers">
-<h3>Mounting volumes to containers<a class="headerlink" href="#mounting-volumes-to-containers" title="Permalink to this heading">#</a></h3>
-<p>Often times we want to use the software made available to us in containers on files on our computers.
-To do this, we need to explicitly tell Docker to mount a volume to the container.
-We can do this via: <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">&lt;path_to_computer_directory&gt;:&lt;absolute_path_to_container_directory&gt;</span></code></p>
-<p>Often, we want to mount the volume from our current directory (where we are working) and we can do that with a short-form of <code class="docutils literal notranslate"><span class="pre">/$(pwd)</span></code> in place of the path to our computer’s directory.</p>
-<p>To mount our current directory to a container from the <code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image we type the following on your laptop:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v /$(pwd):/home/my_mounted_volume continuumio/miniconda3
-</pre></div>
-</div>
-<p>Navigate to the directory where you mounted your files via: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/my_mounted_volume</span></code> and type <code class="docutils literal notranslate"><span class="pre">ls</span></code> to ensure you can see them.</p>
-<blockquote>
-<div><p>Note: if you are mounting volumes to a container from a Docker image that runs a web app, be sure to read the documentation to see where you should mount that volume. Usually the web apps are only exposed to certain directories and you will only be able to access the files in the mounted volume if you mount them to the correct place. For example, in the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> image that we loaded earlier, volumes need to be mounted within <code class="docutils literal notranslate"><span class="pre">/home/rstudio/</span></code> to be able to access them via the RStudio server web app.</p>
-</div></blockquote>
-<section id="windows-notes-for-mounting-volumes">
-<h4>Windows notes for mounting volumes:<a class="headerlink" href="#windows-notes-for-mounting-volumes" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Windows machines need to explicitly share drives with Docker - this should be part of your computer setup!</p></li>
-<li><p>On Windows, the laptop path depends what shell you are using, here are some details:</p>
-<ul>
-<li><p>If you are going to run it in Windows terminal, then the command should be: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">/$(pwd):&lt;PATH_ON_CONTAINER&gt;</span> <span class="pre">&lt;IMAGE_NAME&gt;</span></code> to share the current directory.</p></li>
-<li><p>If you are going to run it in Power Shell, then the command should be: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">&lt;ABSOLUTE_PATH_TO_CONTAINER&gt;:&lt;PATH_ON_CONTAINER&gt;</span> <span class="pre">&lt;IMAGE_NAME&gt;</span></code> (<code class="docutils literal notranslate"><span class="pre">pwd</span></code> and variants do not seem to work). And the path must be formatted like: <code class="docutils literal notranslate"><span class="pre">C:\Users\tiffany.timbers\Documents\project\:/home/project</span></code></p></li>
-</ul>
-</li>
-</ul>
-</section>
-</section>
-<section id="mapping-ports-to-containers-with-web-apps">
-<h3>Mapping ports to containers with web apps<a class="headerlink" href="#mapping-ports-to-containers-with-web-apps" title="Permalink to this heading">#</a></h3>
-<p><a class="reference external" href="https://docs.docker.com/config/containers/container-networking/">Docker documentation on Container networking</a></p>
-<p>If we want to use a graphical user interface (GUI) with our containers, for example to be able to use the computational environment in the container in an integrated development environment (IDE) such as RStudio or JupyterLab, then we need to map the correct port from the container to a port on our computer.</p>
-<p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>, specifying the port in the container on the left-hand side, and the port on your computer (the container/Docker host) on the right-hand side of <code class="docutils literal notranslate"><span class="pre">:</span></code>. For example, to run the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image we would type <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">8787:8787</span></code> to map the ports as shown in the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8787</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
-</pre></div>
-</div>
-<p>Then to access the web app, we need to navigate a browser url to <code class="docutils literal notranslate"><span class="pre">http://localhost:&lt;COMPUTER_PORT&gt;</span></code>. In this case we would navigate to <a class="reference external" href="http://localhost:8787">http://localhost:8787</a> to use the RStudio server web app from the container.</p>
-<p>Note that we can only map one port on our computer (the container/Docker host) to a container at any given time. However,
-our computer (the container/Docker host) has many ports we can choose from to map. So if we wanted to run a second <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container, then we could map it to a different port as shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8788</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
-</pre></div>
-</div>
-<p>When we do this, to run the app in a browser on our computer, we need to go to <a class="reference external" href="http://localhost:8788">http://localhost:8788</a> (instead of <a class="reference external" href="http://localhost:8787">http://localhost:8787</a>) to access this container as we mapped it to the <code class="docutils literal notranslate"><span class="pre">8788</span></code> port on our computer (and not <code class="docutils literal notranslate"><span class="pre">8787</span></code>).</p>
-<p>Another important note is that the container port is specific to the container, and the web app installed therein. So we cannot change that without changing the container image, and/or application installed therein. Where do you learn what port is exposed in a container image? The image documentation should specify this. For example, in the <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio"><code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image documentation</a> it states:</p>
-<a class="reference internal image-reference" href="../../_images/rocker-rstudio-port-docs.png"><img alt="../../_images/rocker-rstudio-port-docs.png" src="../../_images/rocker-rstudio-port-docs.png" style="width: 600px;" /></a>
-<p><em>Source: <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">https://hub.docker.com/r/rocker/rstudio</a></em></p>
-</section>
-<section id="docker-command-line-commands">
-<h3>Docker command line commands<a class="headerlink" href="#docker-command-line-commands" title="Permalink to this heading">#</a></h3>
-<p>The table below summarizes the Docker commands we have learned so far and can serve as a useful reference when we are using Docker:</p>
-<table class="colwidths-auto table">
-<thead>
-<tr class="row-odd"><th class="head"><p>command/flag</p></th>
-<th class="head"><p>What it does</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pull</span></code></p></td>
-<td><p>Downloads a Docker image from Docker Hub</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">images</span></code></p></td>
-<td><p>Tells you what container images are installed on your machine</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rmi</span></code></p></td>
-<td><p>Deletes a specified container image from your machine</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ps</span> <span class="pre">-a</span></code></p></td>
-<td><p>Tells you what containers are running on your machine</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code></p></td>
-<td><p>Stops a specified running container</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rm</span></code></p></td>
-<td><p>Removes a specified stopped container</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run</span></code></p></td>
-<td><p>Launches a container from an image</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-it</span></code></p></td>
-<td><p>Tells Docker to run the container interactively</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--rm</span></code></p></td>
-<td><p>Makes a container ephemeral (deletes it upon exit)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-v</span></code></p></td>
-<td><p>Mounts a volume of your computer to the Docker container</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
-<td><p>Specifies the ports to map a web app to</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-e</span></code></p></td>
-<td><p>Sets environment variables in the container (<em>e.g.</em>, PASSWORD=”apassword”)</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">exit</span></code></p></td>
-<td><p>Exits a Docker container</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="using-docker-desktop-to-launch-containers">
-<h2>Using Docker Desktop to launch containers<a class="headerlink" href="#using-docker-desktop-to-launch-containers" title="Permalink to this heading">#</a></h2>
-<p>The Docker Desktop app can also be used to launch containers,
-specify the ports and volume mapping.
-This can be more user friendly than the command line.
-For an example of how to do this see the
-<a class="reference external" href="https://datasciencebook.ca/setup.html#working-with-docker">“Working with Docker” chapter</a>
-from <a class="reference external" href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em></a>
-by Timbers, Campbell and Lee.</p>
-</section>
-<section id="docker-compose-to-launch-containers">
-<h2>Docker compose to launch containers<a class="headerlink" href="#docker-compose-to-launch-containers" title="Permalink to this heading">#</a></h2>
-<p>It can be fiddly and error prone to type long commands into the terminal,
-or a GUI everytime you want to launch a container.
-A better approach is to use Docker compose
-to specify how you want to launch the container.</p>
-<p>Docker compose uses a YAML file,
-specifically named <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>,
-to record how the container should be launched.
-This file can include details including:</p>
-<ul class="simple">
-<li><p>the docker image and version to use</p></li>
-<li><p>how to mount volumes</p></li>
-<li><p>what ports to map</p></li>
-<li><p>what environment variables to set.</p></li>
-</ul>
-<p>Here is an example of a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
-for use with the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
-  <span class="n">analysis</span><span class="o">-</span><span class="n">env</span><span class="p">:</span>
-    <span class="n">image</span><span class="p">:</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
-    <span class="n">ports</span><span class="p">:</span>
-      <span class="o">-</span> <span class="s2">&quot;8787:8787&quot;</span>
-    <span class="n">volumes</span><span class="p">:</span>
-      <span class="o">-</span> <span class="o">.</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">project</span>
-    <span class="n">environment</span><span class="p">:</span>
-      <span class="n">PASSWORD</span><span class="p">:</span> <span class="n">password</span>
-</pre></div>
-</div>
-<p>To launch the container interactively using this file,
-you would type the <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> command shown below.
-The <code class="docutils literal notranslate"><span class="pre">-d</span></code> flag with the up command tells Docker compose
-to run the container in the background.
-This allows for you to continue to use the terminal
-and easily stop the container when you are done.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
-</pre></div>
-</div>
-<p>If you are using a web app, as in the case of the
-<code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> or <code class="docutils literal notranslate"><span class="pre">jupyter/minimal-notebook</span></code> container images,
-you still need to manually navigate to the web app in your browser
-and enter the correct URL to access it.</p>
-<p>To stop the container, you would type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">down</span>
-</pre></div>
-</div>
-</section>
-<section id="running-a-docker-container-non-interactively-using-the-docker-command-line">
-<h2>Running a Docker container non-interactively using the Docker command line<a class="headerlink" href="#running-a-docker-container-non-interactively-using-the-docker-command-line" title="Permalink to this heading">#</a></h2>
-<p>So far we have been running our containers interactively, but sometimes we want to automate further and run things non interactively. We do this be dropping the <code class="docutils literal notranslate"><span class="pre">-it</span></code> flag from our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command as well as calling a command or a script after the docker image is specified.</p>
-<p>The general form for for running things non-interactively is this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
-</pre></div>
-</div>
-<p>For example, let’s use the container run a <code class="docutils literal notranslate"><span class="pre">cowsay::say</span></code> function call to print some asci art with a cute message!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run --rm ttimbers/dockerfile-practice:v0.1.0 Rscript -e &quot;library(cowsay); say(&#39;Snow again this week?&#39;, &#39;snowman&#39;)&quot;
-</pre></div>
-</div>
-<p>And if succesfful, we should get:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>----- 
-Snow again this week? 
- ------ 
-    \   
-     \
-     _[_]_
-      (&quot;)
-  &gt;--( : )--&lt;
-    (__:__) [nosig]
-</pre></div>
-</div>
-<p>Now that was a silly example, but this can be made powerful so that we can run an analysis pipeline, such as a Makefile non-interactively using Docker! Here’s a demo we can try: https://github.com/ttimbers/data_analysis_pipeline_eg/tree/v4.0</p>
-<section id="exercise-1-fix-me">
-<h3>Exercise 1: FIX ME!<a class="headerlink" href="#exercise-1-fix-me" title="Permalink to this heading">#</a></h3>
-<p>Download https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v4.0.zip, unzip it and navigate to the root of the project directory, try to run the analysis via <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code>.</p>
-</section>
-<section id="exercise-2-fix-me">
-<h3>Exercise 2: FIX ME!<a class="headerlink" href="#exercise-2-fix-me" title="Permalink to this heading">#</a></h3>
-<p>Now try to run the analysis using Docker via:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v /$(pwd):/home/rstudio/data_analysis_eg ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
-</pre></div>
-</div>
-<p><em>note - windows users must use Git Bash, set Docker to use Linux containers, and have shared their drives with Docker (see docs <a class="reference external" href="https://token2shell.com/howto/docker/sharing-windows-folders-with-containers/">here</a>) for this to work</em></p>
-</section>
-</section>
-<section id="running-a-docker-container-non-interactively-using-the-docker-compose">
-<h2>Running a Docker container non-interactively using the Docker Compose<a class="headerlink" href="#running-a-docker-container-non-interactively-using-the-docker-compose" title="Permalink to this heading">#</a></h2>
-<p>We can also use Docker Compose to run containers non-interactively!
-We can do this by specifying that we want to <code class="docutils literal notranslate"><span class="pre">run</span></code> the container
-(instead of <code class="docutils literal notranslate"><span class="pre">up</span></code> to launch in interactively).
-We use the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag with the <code class="docutils literal notranslate"><span class="pre">run</span></code> command to make the container ephemeral
-(delete it upon exit).
-Then we specify the name of the service from the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
-that we want to run
-(in our <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> files so far we only have one service,
-the environment for running the analysis).
-And finally we add the command we want to run non-interactively
-using the container
-(in the example below we use <code class="docutils literal notranslate"><span class="pre">make</span></code> to run the data analysis pipeline script).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">breast_cancer_predictor</span> <span class="nb">all</span>
-</pre></div>
-</div>
 </section>
 <section id="building-container-images-from-dockerfile-s">
 <h2>Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s<a class="headerlink" href="#building-container-images-from-dockerfile-s" title="Permalink to this heading">#</a></h2>
@@ -1377,10 +824,6 @@ For example, to reduce the long line below which uses <code class="docutils lite
 </div>
 </section>
 </section>
-<section id="a-newer-thing-that-might-be-useful">
-<h3>A newer thing that might be useful!<a class="headerlink" href="#a-newer-thing-that-might-be-useful" title="Permalink to this heading">#</a></h3>
-<p>You can pair <a class="reference external" href="https://rstudio.github.io/renv/articles/docker.html?q=docker#running-docker-containers-with-renv">renv</a> with Docker - this is new and will be covered in tutorial this week! 🎉</p>
-</section>
 <section id="how-to-in-python">
 <h3>How to in Python:<a class="headerlink" href="#how-to-in-python" title="Permalink to this heading">#</a></h3>
 <p>Python version:</p>
@@ -1401,53 +844,6 @@ For example, to reduce the long line below which uses <code class="docutils lite
 <li><p>If you want to version installs inside the container, use base images that version R &amp; Python, and add what you need on top in a versioned manner!</p></li>
 </ul>
 </section>
-</section>
-<section id="docker-compose">
-<h2>Docker compose<a class="headerlink" href="#docker-compose" title="Permalink to this heading">#</a></h2>
-<p>Docker compose is a tool that uses a <code class="docutils literal notranslate"><span class="pre">YAML</span></code> file to configure/specify how you want to run one or more Docker containers. To use Docker compose, we create a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file that specifies things such as:</p>
-<ul class="simple">
-<li><p>the Docker images (and version)</p></li>
-<li><p>the ports</p></li>
-<li><p>volume mapping</p></li>
-<li><p>any environment variables</p></li>
-</ul>
-<p>Then to run the Docker container using the specifications in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file, we run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">service</span> <span class="n">command</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">service</span></code> is a name you give to your application configurations in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">command</span></code> is some command or script you would like to run (e.g., <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code>)</p></li>
-</ul>
-<p>Here is an example <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
-  <span class="n">analysis</span><span class="o">-</span><span class="n">env</span><span class="p">:</span>
-    <span class="n">image</span><span class="p">:</span> <span class="n">ttimbers</span><span class="o">/</span><span class="n">bc_predictor</span><span class="p">:</span><span class="n">v4</span><span class="mf">.0</span>
-    <span class="n">ports</span><span class="p">:</span>
-      <span class="o">-</span> <span class="s2">&quot;8787:8787&quot;</span>
-    <span class="n">volumes</span><span class="p">:</span>
-      <span class="o">-</span> <span class="o">.</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">introduction</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">datascience</span>
-    <span class="n">environment</span><span class="p">:</span>
-      <span class="n">PASSWORD</span><span class="p">:</span> <span class="n">password</span>
-</pre></div>
-</div>
-<p>And to run the container and the analysis we would type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">breast_cancer_predictor</span> <span class="nb">all</span>
-</pre></div>
-</div>
-<p>This means we do not have to type out the:</p>
-<ul class="simple">
-<li><p>ports</p></li>
-<li><p>volume mapping</p></li>
-<li><p>environment variables</p></li>
-<li><p>and potentially more!</p></li>
-</ul>
-</section>
-<section id="where-to-next">
-<h2>Where to next?<a class="headerlink" href="#where-to-next" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Testing code written for data science</p></li>
-</ul>
 </section>
 </section>
 
@@ -1482,12 +878,12 @@ For example, to reduce the long line below which uses <code class="docutils lite
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="04-virtual-environments.html"
+       href="05-containerization-2.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Virtual environments</p>
+        <p class="prev-next-title">Using and running containers</p>
       </div>
     </a>
     <a class="right-next"
@@ -1514,9 +910,7 @@ For example, to reduce the long line below which uses <code class="docutils lite
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-containerization">Introduction to containerization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documenting-and-loading-dependencies">Documenting and loading dependencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container">What is a container?</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-simple-container">Exercise - running a simple container</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-rstudio-as-a-web-app">Exercise - running a container with RStudio as a web app</a></li>
@@ -1525,58 +919,6 @@ For example, to reduce the long line below which uses <code class="docutils lite
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrasting-containers-with-virtual-machines">Contrasting containers with virtual machines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contrasting-common-computational-environment-virtualization-strategies">Contrasting common computational environment virtualization strategies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#virtualization-strategy-advantages-and-disadvantages-for-reproducibility">Virtualization strategy advantages and disadvantages for reproducibility</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-environment">Virtual environment</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#disadvantages">Disadvantages</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#containers">Containers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Disadvantages</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#virtual-machine">Virtual machine</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Advantages</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Disadvantages</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#container-useage-workflow">Container useage workflow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-vs-container">Image vs container?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container-registry">What is a container registry</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-specify-a-container-image">How do we specify a container image?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-of-container-images-being-built-from-layers">Demonstration of container images being built from layers</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mounting-volumes-to-containers">Mounting volumes to containers</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-notes-for-mounting-volumes">Windows notes for mounting volumes:</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-command-line-commands">Docker command line commands</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-command-line">Running a Docker container non-interactively using the Docker command line</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-fix-me">Exercise 1: FIX ME!</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-fix-me">Exercise 2: FIX ME!</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
@@ -1607,13 +949,10 @@ For example, to reduce the long line below which uses <code class="docutils lite
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-rocker-team-s-strategy">The Rocker team’s strategy</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-newer-thing-that-might-be-useful">A newer thing that might be useful!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-in-python">How to in Python:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#take-home-messages">Take home messages:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose">Docker compose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-to-next">Where to next?</a></li>
 </ul>
   </nav></div>
 

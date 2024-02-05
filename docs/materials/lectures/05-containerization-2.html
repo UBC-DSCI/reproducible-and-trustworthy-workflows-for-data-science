@@ -1,0 +1,883 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Using and running containers &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/05-containerization-2';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Customizing and building containers" href="05-containerization-3.html" />
+    <link rel="prev" title="Introduction to containerization" href="05-containerization-1.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../README.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dsci-310-logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/dsci-310-logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../README.html">
+                    Reproducible and Trustworthy Workflows for Data Science
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Course notes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-intro-to-ds-workflows.html">How do reproducible and trustworthy workflows impact data science?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-intro-to-bash.html">Introduction to the Bash Shell</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control (for transparency and collaboration) I</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-version-control-2.html">Version control (for transparency and collaboration) II</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-filenames-project-organization.html">Filenames and data science project organization, Integrated development environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-virtual-environments.html">Virtual environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization-1.html">Introduction to containerization</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Using and running containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-containerization-3.html">Customizing and building containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/05-containerization-2.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/materials/lectures/05-containerization-2.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Using and running containers</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mounting-volumes-to-containers">Mounting volumes to containers</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-notes-for-mounting-volumes">Windows notes for mounting volumes:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-containers-default-command">Changing the containers default command</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-command-line-commands">Docker command line commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run-commands">Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> commands</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="using-and-running-containers">
+<h1>Using and running containers<a class="headerlink" href="#using-and-running-containers" title="Permalink to this heading">#</a></h1>
+<section id="topic-learning-objectives">
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Permalink to this heading">#</a></h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol class="arabic simple">
+<li><p>Use a containerization software (e.g., Docker) to run the software needed for your
+analysis</p></li>
+</ol>
+</section>
+<section id="launching-containers-using-docker-at-the-command-line">
+<h2>Launching containers using Docker at the command line<a class="headerlink" href="#launching-containers-using-docker-at-the-command-line" title="Permalink to this heading">#</a></h2>
+<p>Below we demonstrate how to launch and run containers using the <a class="reference external" href="https://hub.docker.com/r/continuumio/miniconda3"><code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image</a> as an example:</p>
+<section id="step-1-launch-the-docker-app-for-osx-windows-only">
+<h3>Step 1 - launch the Docker app (for OSX &amp; Windows only)<a class="headerlink" href="#step-1-launch-the-docker-app-for-osx-windows-only" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use launchpad/Finder/Start menu/etc to find and launch Docker</p></li>
+</ul>
+<blockquote>
+<div><p>Note: Docker might already be running, if so great, but if its not, the commands below will not work. So it is always good to check!</p>
+</div></blockquote>
+</section>
+<section id="step-2-get-container-image-from-dockerhub">
+<h3>Step 2 - get container image from Dockerhub<a class="headerlink" href="#step-2-get-container-image-from-dockerhub" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>open the terminal</p></li>
+<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
+<li><p>verify that it successfully pulled by typing: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>, you should see something like:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">REPOSITORY</span>                 <span class="n">TAG</span>       <span class="n">IMAGE</span> <span class="n">ID</span>       <span class="n">CREATED</span>         <span class="n">SIZE</span>
+<span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span>     <span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>  <span class="mf">55e8</span><span class="n">b7e3206b</span>   <span class="mi">3</span> <span class="n">weeks</span> <span class="n">ago</span>    <span class="mi">457</span><span class="n">MB</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note 1: You can skip this step and just got onto <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">...</span></code> as that command will pull the image if you do not have it locally.</p>
+<p>Note 2: If you ever need to delete a container image from your computer, you can run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rmi</span> <span class="pre">&lt;IMAGE_ID&gt;</span></code> to do so.</p>
+</div></blockquote>
+</section>
+<section id="step-3-launch-a-container-from-the-image-and-poke-around">
+<h3>Step 3 - launch a container from the image and poke around!<a class="headerlink" href="#step-3-launch-a-container-from-the-image-and-poke-around" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
+<li><p>If it worked, then your command line prompt should now look something like this:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">@</span><span class="mi">5</span><span class="n">d8e6fff1b12</span><span class="p">:</span><span class="o">/</span><span class="c1"># </span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>use <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span></code>, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and explore the container</p></li>
+<li><p>type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave when you are done (your prompt will look normal again)!</p></li>
+</ul>
+</section>
+<section id="step-4-clean-up-your-container">
+<h3>Step 4 - clean up your container!<a class="headerlink" href="#step-4-clean-up-your-container" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>After you close a container it still “hangs” around…</p></li>
+<li><p>View any existing containers using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p></li>
+<li><p>Remove the container by typing <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;container_id&gt;</span></code></p></li>
+<li><p>Prove to yourself that the container is no longer “hanging around” via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>, but that you still have the image installed (via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>)</p></li>
+</ul>
+<blockquote>
+<div><p>Note: to remove running containers, you will need to first stop them via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code></p>
+</div></blockquote>
+</section>
+<section id="that-s-a-lot-of-work">
+<h3>That’s a lot of work…<a class="headerlink" href="#that-s-a-lot-of-work" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>We can tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p></li>
+<li><p>Type the command below to run the container again, exit it and prove to yourself that the container was deleted (but not the image!):</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+<section id="mounting-volumes-to-containers">
+<h3>Mounting volumes to containers<a class="headerlink" href="#mounting-volumes-to-containers" title="Permalink to this heading">#</a></h3>
+<p>Often times we want to use the software made available to us in containers on files on our computers.
+To do this, we need to explicitly tell Docker to mount a volume to the container.
+We can do this via: <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">&lt;path_to_computer_directory&gt;:&lt;absolute_path_to_container_directory&gt;</span></code></p>
+<p>Often, we want to mount the volume from our current directory (where we are working) and we can do that with a short-form of <code class="docutils literal notranslate"><span class="pre">/$(pwd)</span></code> in place of the path to our computer’s directory.</p>
+<p>To mount our current directory to a container from the <code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image we type the following on your laptop:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v /$(pwd):/home/my_mounted_volume continuumio/miniconda3
+</pre></div>
+</div>
+<p>Navigate to the directory where you mounted your files via: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/my_mounted_volume</span></code> and type <code class="docutils literal notranslate"><span class="pre">ls</span></code> to ensure you can see them.</p>
+<blockquote>
+<div><p>Note: if you are mounting volumes to a container from a Docker image that runs a web app, be sure to read the documentation to see where you should mount that volume. Usually the web apps are only exposed to certain directories and you will only be able to access the files in the mounted volume if you mount them to the correct place. For example, in the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> image that we loaded earlier, volumes need to be mounted within <code class="docutils literal notranslate"><span class="pre">/home/rstudio/</span></code> to be able to access them via the RStudio server web app.</p>
+</div></blockquote>
+<section id="windows-notes-for-mounting-volumes">
+<h4>Windows notes for mounting volumes:<a class="headerlink" href="#windows-notes-for-mounting-volumes" title="Permalink to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Windows machines need to explicitly share drives with Docker - this should be part of your computer setup!</p></li>
+<li><p>On Windows, the laptop path depends what shell you are using, here are some details:</p>
+<ul>
+<li><p>If you are going to run it in Windows terminal, then the command should be: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">/$(pwd):&lt;PATH_ON_CONTAINER&gt;</span> <span class="pre">&lt;IMAGE_NAME&gt;</span></code> to share the current directory.</p></li>
+<li><p>If you are going to run it in Power Shell, then the command should be: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">-it</span> <span class="pre">-v</span> <span class="pre">&lt;ABSOLUTE_PATH_TO_CONTAINER&gt;:&lt;PATH_ON_CONTAINER&gt;</span> <span class="pre">&lt;IMAGE_NAME&gt;</span></code> (<code class="docutils literal notranslate"><span class="pre">pwd</span></code> and variants do not seem to work). And the path must be formatted like: <code class="docutils literal notranslate"><span class="pre">C:\Users\tiffany.timbers\Documents\project\:/home/project</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="mapping-ports-to-containers-with-web-apps">
+<h3>Mapping ports to containers with web apps<a class="headerlink" href="#mapping-ports-to-containers-with-web-apps" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://docs.docker.com/config/containers/container-networking/">Docker documentation on Container networking</a></p>
+<p>If we want to use a graphical user interface (GUI) with our containers, for example to be able to use the computational environment in the container in an integrated development environment (IDE) such as RStudio or JupyterLab, then we need to map the correct port from the container to a port on our computer.</p>
+<p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>, specifying the port in the container on the left-hand side, and the port on your computer (the container/Docker host) on the right-hand side of <code class="docutils literal notranslate"><span class="pre">:</span></code>. For example, to run the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image we would type <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">8787:8787</span></code> to map the ports as shown in the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8787</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
+</pre></div>
+</div>
+<p>Then to access the web app, we need to navigate a browser url to <code class="docutils literal notranslate"><span class="pre">http://localhost:&lt;COMPUTER_PORT&gt;</span></code>. In this case we would navigate to <a class="reference external" href="http://localhost:8787">http://localhost:8787</a> to use the RStudio server web app from the container.</p>
+<p>Note that we can only map one port on our computer (the container/Docker host) to a container at any given time. However,
+our computer (the container/Docker host) has many ports we can choose from to map. So if we wanted to run a second <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container, then we could map it to a different port as shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8788</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
+</pre></div>
+</div>
+<p>When we do this, to run the app in a browser on our computer, we need to go to <a class="reference external" href="http://localhost:8788">http://localhost:8788</a> (instead of <a class="reference external" href="http://localhost:8787">http://localhost:8787</a>) to access this container as we mapped it to the <code class="docutils literal notranslate"><span class="pre">8788</span></code> port on our computer (and not <code class="docutils literal notranslate"><span class="pre">8787</span></code>).</p>
+<p>Another important note is that the container port is specific to the container, and the web app installed therein. So we cannot change that without changing the container image, and/or application installed therein. Where do you learn what port is exposed in a container image? The image documentation should specify this. For example, in the <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio"><code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image documentation</a> it states:</p>
+<a class="reference internal image-reference" href="../../_images/rocker-rstudio-port-docs.png"><img alt="../../_images/rocker-rstudio-port-docs.png" src="../../_images/rocker-rstudio-port-docs.png" style="width: 600px;" /></a>
+<p><em>Source: <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">https://hub.docker.com/r/rocker/rstudio</a></em></p>
+</section>
+<section id="changing-the-containers-default-command">
+<h3>Changing the containers default command<a class="headerlink" href="#changing-the-containers-default-command" title="Permalink to this heading">#</a></h3>
+<p>When we launch containers, they execute the command at runtime
+that was specified in their <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>.
+For example, in the case of the Rocker and Juypter images,
+this default behaviour is to run a web app.
+Sometimes the default container behaviour is not what we want to do.
+Instead we want to do something different,
+like run the container as a Bash shell to test out some installation commands
+(common when we are building and customizing our own containers)
+or using the container to run a script non-interactively
+(like executing a data analysis pipeline from beginning to end).</p>
+<p>To do this, we can append a new command to the end of our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> commands.
+For example to open the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio:4.3.2</span></code> image in an interactive bash shell,
+we would run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">it</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span> <span class="n">bash</span>
+</pre></div>
+</div>
+<p>Notice the command above does not specify the ports,
+nor does it set the password.
+This is because in this instance,
+we are not using this container to run it as a web app,
+we are just running it as a bash shell (which needs no ports,
+nor authentication).</p>
+<p>The general form for for running things non-interactively is this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
+</pre></div>
+</div>
+<p>What of instead running the container insteractively, we wanted to run a script?
+Let’s take this R script, named <code class="docutils literal notranslate"><span class="pre">snowman.R</span></code>, shown below,
+which uses the <code class="docutils literal notranslate"><span class="pre">cowsay::say</span></code> function to print some asci art with a cute message!</p>
+<p>Assuming that script is in our current working directory,
+we can mount volumes and then run the script as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run \
+    --rm \
+    -v /$(pwd):/home/rstudio \
+    ttimbers/dockerfile-practice:v0.1.0 \
+    Rscript /home/rstudio/snowman.R
+</pre></div>
+</div>
+<p>Which should result in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>----- 
+Snow again this week? 
+ ------ 
+    \   
+     \
+     _[_]_
+      (&quot;)
+  &gt;--( : )--&lt;
+    (__:__) [nosig]
+</pre></div>
+</div>
+<p>Now that was a silly example, but this can be made powerful so that we can run an analysis pipeline, such as a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> non-interactively using Docker!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v /$(pwd):/home/rstudio/data_analysis_eg ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
+</pre></div>
+</div>
+</section>
+</section>
+<section id="docker-command-line-commands">
+<h2>Docker command line commands<a class="headerlink" href="#docker-command-line-commands" title="Permalink to this heading">#</a></h2>
+<p>The table below summarizes the Docker commands we have learned so far and can serve as a useful reference when we are using Docker:</p>
+<section id="docker-commands">
+<h3>Docker commands<a class="headerlink" href="#docker-commands" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>command/flag</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pull</span></code></p></td>
+<td><p>Downloads a Docker image from Docker Hub</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">images</span></code></p></td>
+<td><p>Tells you what container images are installed on your machine</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rmi</span></code></p></td>
+<td><p>Deletes a specified container image from your machine</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ps</span> <span class="pre">-a</span></code></p></td>
+<td><p>Tells you what containers are running on your machine</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code></p></td>
+<td><p>Stops a specified running container</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rm</span></code></p></td>
+<td><p>Removes a specified stopped container</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run</span></code></p></td>
+<td><p>Launches a container from an image</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exit</span></code></p></td>
+<td><p>Exits a Docker container</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="docker-run-commands">
+<h3>Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> commands<a class="headerlink" href="#docker-run-commands" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>command/flag</p></th>
+<th class="head"><p>What it does</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-it</span></code></p></td>
+<td><p>Tells Docker to run the container interactively</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--rm</span></code></p></td>
+<td><p>Makes a container ephemeral (deletes it upon exit)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-v</span></code></p></td>
+<td><p>Mounts a volume of your computer to the Docker container</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-p</span></code></p></td>
+<td><p>Specifies the ports to map a web app to</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-e</span></code></p></td>
+<td><p>Sets environment variables in the container (<em>e.g.</em>, PASSWORD=”apassword”)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--platform</span></code></p></td>
+<td><p>Specifies the image architecture, commonly used on M1/M2 Macs to set it to <code class="docutils literal notranslate"><span class="pre">linux/amd64</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="using-docker-desktop-to-launch-containers">
+<h2>Using Docker Desktop to launch containers<a class="headerlink" href="#using-docker-desktop-to-launch-containers" title="Permalink to this heading">#</a></h2>
+<p>The Docker Desktop app can also be used to launch containers,
+specify the ports and volume mapping.
+This can be more user friendly than the command line.
+For an example of how to do this see the
+<a class="reference external" href="https://datasciencebook.ca/setup.html#working-with-docker">“Working with Docker” chapter</a>
+from <a class="reference external" href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em></a>
+by Timbers, Campbell and Lee.</p>
+</section>
+<section id="docker-compose-to-launch-containers">
+<h2>Docker compose to launch containers<a class="headerlink" href="#docker-compose-to-launch-containers" title="Permalink to this heading">#</a></h2>
+<p>It can be fiddly and error prone to type long commands into the terminal,
+or a GUI everytime you want to launch a container.
+A better approach is to use Docker compose
+to specify how you want to launch the container.</p>
+<p>Docker compose uses a YAML file,
+specifically named <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>,
+to record how the container should be launched.
+This file can include details including:</p>
+<ul class="simple">
+<li><p>the docker image and version to use</p></li>
+<li><p>how to mount volumes</p></li>
+<li><p>what ports to map</p></li>
+<li><p>what environment variables to set.</p></li>
+</ul>
+<p>Here is an example of a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
+for use with the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">:</span>
+  <span class="n">analysis</span><span class="o">-</span><span class="n">env</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="s2">&quot;8787:8787&quot;</span>
+    <span class="n">volumes</span><span class="p">:</span>
+      <span class="o">-</span> <span class="o">.</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">project</span>
+    <span class="n">environment</span><span class="p">:</span>
+      <span class="n">PASSWORD</span><span class="p">:</span> <span class="n">password</span>
+</pre></div>
+</div>
+<p>To launch the container interactively using this file,
+you would type the <code class="docutils literal notranslate"><span class="pre">docker-compose</span></code> command shown below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span>
+</pre></div>
+</div>
+<p>If you are using a web app, as in the case of the
+<code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> or <code class="docutils literal notranslate"><span class="pre">jupyter/minimal-notebook</span></code> container images,
+you still need to manually navigate to the web app in your browser
+and enter the correct URL to access it.</p>
+<p>To stop and clean up the container, you would type <code class="docutils literal notranslate"><span class="pre">Cntrl</span> <span class="pre">+</span> <span class="pre">C</span></code> in the terminal where you launched the container, and then type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">rm</span>
+</pre></div>
+</div>
+<p>Let’s take a look at an example <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> being used in a project:</p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/ttimbers/breast_cancer_predictor_py">ttimbers/breast_cancer_predictor_py</a></p></li>
+</ul>
+</section>
+<section id="running-a-docker-container-non-interactively-using-the-docker-compose">
+<h2>Running a Docker container non-interactively using the Docker Compose<a class="headerlink" href="#running-a-docker-container-non-interactively-using-the-docker-compose" title="Permalink to this heading">#</a></h2>
+<p>We can also use Docker Compose to run containers non-interactively!
+We can do this by specifying that we want to <code class="docutils literal notranslate"><span class="pre">run</span></code> the container
+(instead of <code class="docutils literal notranslate"><span class="pre">up</span></code> to launch in interactively).
+We use the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag with the <code class="docutils literal notranslate"><span class="pre">run</span></code> command to make the container ephemeral
+(delete it upon exit).
+Then we specify the name of the service from the <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> file
+that we want to run
+(in our <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> files so far we only have one service,
+the environment for running the analysis).
+And finally we add the command we want to run non-interactively
+using the container
+(in the example below we use <code class="docutils literal notranslate"><span class="pre">make</span></code> to run the data analysis pipeline script).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">breast_cancer_predictor</span> <span class="nb">all</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./materials/lectures"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-containerization-1.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to containerization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-containerization-3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Customizing and building containers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mounting-volumes-to-containers">Mounting volumes to containers</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-notes-for-mounting-volumes">Windows notes for mounting volumes:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-containers-default-command">Changing the containers default command</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-command-line-commands">Docker command line commands</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-commands">Docker commands</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run-commands">Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> commands</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Tiffany Timbers
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
