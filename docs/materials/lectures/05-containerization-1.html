@@ -691,6 +691,13 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
 <p>Example <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span>
 
+<span class="c1"># Install Git, the nano-tiny text editor and less (needed for R help)</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
+    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">--</span><span class="n">yes</span> \
+    <span class="n">git</span> \
+    <span class="n">nano</span><span class="o">-</span><span class="n">tiny</span> \
+    <span class="n">less</span>
+
 <span class="c1"># Install Jupyter, JupterLab, R &amp; the IRkernel</span>
 <span class="n">RUN</span> <span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="o">--</span><span class="n">quiet</span> \
     <span class="n">jupyter</span> \
@@ -706,13 +713,6 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
 
 <span class="c1"># Make port 8888 available for JupyterLab</span>
 <span class="n">EXPOSE</span> <span class="mi">8888</span>
-
-<span class="c1"># Install Git, the nano-tiny text editor and less (needed for R help)</span>
-<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
-    <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="o">--</span><span class="n">yes</span> \
-    <span class="n">git</span> \
-    <span class="n">nano</span><span class="o">-</span><span class="n">tiny</span> \
-    <span class="n">less</span>
 
 <span class="c1"># Copy JupyterLab start-up script into container</span>
 <span class="n">COPY</span> <span class="n">start</span><span class="o">-</span><span class="n">notebook</span><span class="o">.</span><span class="n">sh</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span>

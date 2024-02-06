@@ -394,6 +394,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-the-image-architecture-platform">Specifying the image architecture/platform</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-containers-default-command">Changing the containers default command</a></li>
 </ul>
 </li>
@@ -486,9 +487,15 @@ analysis</p></li>
 <li><p>We can tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p></li>
 <li><p>Type the command below to run the container again, exit it and prove to yourself that the container was deleted (but not the image!):</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="o">--</span><span class="n">rm</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">--</span><span class="n">it</span> \
+    <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
 </pre></div>
 </div>
+<blockquote>
+<div><p><em>Note: we are using <code class="docutils literal notranslate"><span class="pre">\</span></code> above to split a bash command across lines to make it more readable. YOu will see that throughout this chapter.</em></p>
+</div></blockquote>
 </section>
 <section id="mounting-volumes-to-containers">
 <h3>Mounting volumes to containers<a class="headerlink" href="#mounting-volumes-to-containers" title="Permalink to this heading">#</a></h3>
@@ -497,7 +504,11 @@ To do this, we need to explicitly tell Docker to mount a volume to the container
 We can do this via: <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">&lt;path_to_computer_directory&gt;:&lt;absolute_path_to_container_directory&gt;</span></code></p>
 <p>Often, we want to mount the volume from our current directory (where we are working) and we can do that with a short-form of <code class="docutils literal notranslate"><span class="pre">/$(pwd)</span></code> in place of the path to our computer’s directory.</p>
 <p>To mount our current directory to a container from the <code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image we type the following on your laptop:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v /$(pwd):/home/my_mounted_volume continuumio/miniconda3
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run \
+    --rm \
+    -it \
+    -v /$(pwd):/home/my_mounted_volume \
+    continuumio/miniconda3
 </pre></div>
 </div>
 <p>Navigate to the directory where you mounted your files via: <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/my_mounted_volume</span></code> and type <code class="docutils literal notranslate"><span class="pre">ls</span></code> to ensure you can see them.</p>
@@ -521,20 +532,57 @@ We can do this via: <code class="docutils literal notranslate"><span class="pre"
 <h3>Mapping ports to containers with web apps<a class="headerlink" href="#mapping-ports-to-containers-with-web-apps" title="Permalink to this heading">#</a></h3>
 <p><a class="reference external" href="https://docs.docker.com/config/containers/container-networking/">Docker documentation on Container networking</a></p>
 <p>If we want to use a graphical user interface (GUI) with our containers, for example to be able to use the computational environment in the container in an integrated development environment (IDE) such as RStudio or JupyterLab, then we need to map the correct port from the container to a port on our computer.</p>
+<blockquote>
+<div><p>Note: In computer science, ports are points where network connections start and end. They can be physical (e.g., USB ports, Ethernet ports, etc) or virtual. In the case of virtual ports, they are really a software-based addressing mechanism that identifies points to connect specific processes or types of network services. When we are discussing ports in the context of containerization, we are referring to virtual ports.</p>
+</div></blockquote>
 <p>To do this, we use the <code class="docutils literal notranslate"><span class="pre">-p</span></code> flag with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>, specifying the port in the container on the left-hand side, and the port on your computer (the container/Docker host) on the right-hand side of <code class="docutils literal notranslate"><span class="pre">:</span></code>. For example, to run the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image we would type <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">8787:8787</span></code> to map the ports as shown in the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8787</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">p</span> <span class="mi">8787</span><span class="p">:</span><span class="mi">8787</span> \
+    <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> \
+    <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
 </pre></div>
 </div>
 <p>Then to access the web app, we need to navigate a browser url to <code class="docutils literal notranslate"><span class="pre">http://localhost:&lt;COMPUTER_PORT&gt;</span></code>. In this case we would navigate to <a class="reference external" href="http://localhost:8787">http://localhost:8787</a> to use the RStudio server web app from the container.</p>
 <p>Note that we can only map one port on our computer (the container/Docker host) to a container at any given time. However,
 our computer (the container/Docker host) has many ports we can choose from to map. So if we wanted to run a second <code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container, then we could map it to a different port as shown below:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8788</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">p</span> <span class="mi">8788</span><span class="p">:</span><span class="mi">8787</span> \
+    <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> \
+    <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
 </pre></div>
 </div>
 <p>When we do this, to run the app in a browser on our computer, we need to go to <a class="reference external" href="http://localhost:8788">http://localhost:8788</a> (instead of <a class="reference external" href="http://localhost:8787">http://localhost:8787</a>) to access this container as we mapped it to the <code class="docutils literal notranslate"><span class="pre">8788</span></code> port on our computer (and not <code class="docutils literal notranslate"><span class="pre">8787</span></code>).</p>
 <p>Another important note is that the container port is specific to the container, and the web app installed therein. So we cannot change that without changing the container image, and/or application installed therein. Where do you learn what port is exposed in a container image? The image documentation should specify this. For example, in the <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio"><code class="docutils literal notranslate"><span class="pre">rocker/rstudio</span></code> container image documentation</a> it states:</p>
 <a class="reference internal image-reference" href="../../_images/rocker-rstudio-port-docs.png"><img alt="../../_images/rocker-rstudio-port-docs.png" src="../../_images/rocker-rstudio-port-docs.png" style="width: 600px;" /></a>
 <p><em>Source: <a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">https://hub.docker.com/r/rocker/rstudio</a></em></p>
+</section>
+<section id="specifying-the-image-architecture-platform">
+<h3>Specifying the image architecture/platform<a class="headerlink" href="#specifying-the-image-architecture-platform" title="Permalink to this heading">#</a></h3>
+<p>Newer M1 and M2 Macs use a new processor chip, called ARM,
+that is a different architecture compared to the previous
+Macs, and current Windows and Linux machines (which use Intel Processors).
+Given that containerization software virtualizes
+at the level of the operating system user space,
+these different architectures lead to building containers with different architectures.</p>
+<p>Also given that Newer M1 and M2 Macs are still the minority of computers
+in use, it is a better practice to work with container architectures that
+work for the majority of in use computers, which are those that have Intel Processors.
+To tell Docker to do this,
+we add the <code class="docutils literal notranslate"><span class="pre">--platform=linux/amd64</span></code> argument to our Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> and <code class="docutils literal notranslate"><span class="pre">build</span></code>
+commands.</p>
+<p>To make this process even smoother and less error prone,
+we should also set our Docker Desktop
+to use Rosetta 2 x86/AMD64 emulation on M1/M2 Macs .
+To use this, you must:</p>
+<ul class="simple">
+<li><p>make sure Rosetta 2 is installed on your Mac (instructions to install it <a class="reference external" href="https://support.apple.com/en-ca/HT211861">here</a>)</p></li>
+<li><p>Select “Use Virtualization framework” and “Use Rosetta for x86/amd64 emulation on Apple Silicon” in the General settings tab of Docker Desktop.</p></li>
+</ul>
+<p><em>Note 1: In computer science, emulation works to let you run run software and execute programs originally designed one computer system on another computer system. Emulation is similar to virtualization in concept, but differs from it in that it focuses on enabling software designed for entirely different architectures to be executed.</em></p>
+<p><em>Note 2: You must also be using macOS Ventura or later to use this feature.</em></p>
+<p><em>Note 3: You will still need to use the <code class="docutils literal notranslate"><span class="pre">--platform</span> <span class="pre">linux/amd64</span></code> command when building or running images even when using Rosetta 2 emulation, because your computer can run and build both <code class="docutils literal notranslate"><span class="pre">linux/arm64</span></code> and <code class="docutils literal notranslate"><span class="pre">linux/amd64</span></code> images. So you have to be clear which architecture you want to work with.</em></p>
 </section>
 <section id="changing-the-containers-default-command">
 <h3>Changing the containers default command<a class="headerlink" href="#changing-the-containers-default-command" title="Permalink to this heading">#</a></h3>
@@ -551,7 +599,11 @@ or using the container to run a script non-interactively
 <p>To do this, we can append a new command to the end of our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> commands.
 For example to open the <code class="docutils literal notranslate"><span class="pre">rocker/rstudio:4.3.2</span></code> image in an interactive bash shell,
 we would run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">it</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span> <span class="n">bash</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">it</span> \
+    <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span> \
+    <span class="n">bash</span>
 </pre></div>
 </div>
 <p>Notice the command above does not specify the ports,
@@ -561,12 +613,22 @@ we are not using this container to run it as a web app,
 we are just running it as a bash shell (which needs no ports,
 nor authentication).</p>
 <p>The general form for for running things non-interactively is this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> <span class="n">PROGRAM_ARGUMENTS</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">v</span> <span class="n">PATH_ON_YOUR_COMPUTER</span><span class="p">:</span><span class="n">VOLUME_ON_CONTAINER</span> <span class="n">DOCKER_IMAGE</span> <span class="n">PROGRAM_TO_RUN</span> \
+    <span class="n">PROGRAM_ARGUMENTS</span>
 </pre></div>
 </div>
 <p>What of instead running the container insteractively, we wanted to run a script?
 Let’s take this R script, named <code class="docutils literal notranslate"><span class="pre">snowman.R</span></code>, shown below,
 which uses the <code class="docutils literal notranslate"><span class="pre">cowsay::say</span></code> function to print some asci art with a cute message!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># snowman.R</span>
+
+<span class="n">library</span><span class="p">(</span><span class="n">cowsay</span><span class="p">)</span>
+
+<span class="n">say</span><span class="p">(</span><span class="s2">&quot;Snow again this week?&quot;</span><span class="p">,</span> <span class="s2">&quot;snowman&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Assuming that script is in our current working directory,
 we can mount volumes and then run the script as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ docker run \
@@ -589,9 +651,29 @@ Snow again this week?
 </pre></div>
 </div>
 <p>Now that was a silly example, but this can be made powerful so that we can run an analysis pipeline, such as a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> non-interactively using Docker!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run --rm -v /$(pwd):/home/rstudio/data_analysis_eg ttimbers/data_analysis_pipeline_eg make -C /home/rstudio/data_analysis_eg all
+<p>Let’s do this exercise to demonstrate:</p>
+<ol class="arabic simple">
+<li><p>Clone this GitHub repository: <a class="github reference external" href="https://github.com/ttimbers/breast_cancer_predictor_py">ttimbers/breast_cancer_predictor_py</a></p></li>
+<li><p>Navigate into the root of the <code class="docutils literal notranslate"><span class="pre">breast_cancer_predictor_py</span></code> project on your computer using the command line and enter the following command to reset the project to a clean state (i.e., remove all files generated by previous runs of the analysis):</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">v</span> <span class="o">.</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">jovyan</span> \
+    <span class="n">ttimbers</span><span class="o">/</span><span class="n">breast_cancer_predictor_py</span><span class="p">:</span><span class="n">d285fc9</span> \
+    <span class="n">make</span> <span class="n">clean</span>
 </pre></div>
 </div>
+<ol class="arabic simple" start="3">
+<li><p>To run the analysis in its entirety, enter the following command in the terminal in the project root:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
+    <span class="o">--</span><span class="n">rm</span> \
+    <span class="o">-</span><span class="n">v</span> <span class="o">.</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">jovyan</span> \
+    <span class="n">ttimbers</span><span class="o">/</span><span class="n">breast_cancer_predictor_py</span><span class="p">:</span><span class="n">d285fc9</span> \
+    <span class="n">make</span> <span class="nb">all</span>
+</pre></div>
+</div>
+<p>Note: If you are on a M1/M2 Mac, don’t forget to include <code class="docutils literal notranslate"><span class="pre">--platform=linux/amd64</span></code> in your run command.</p>
 </section>
 </section>
 <section id="docker-command-line-commands">
@@ -735,7 +817,7 @@ the environment for running the analysis).
 And finally we add the command we want to run non-interactively
 using the container
 (in the example below we use <code class="docutils literal notranslate"><span class="pre">make</span></code> to run the data analysis pipeline script).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">rstudio</span><span class="o">/</span><span class="n">breast_cancer_predictor</span> <span class="nb">all</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="n">analysis</span><span class="o">-</span><span class="n">env</span> <span class="n">make</span> <span class="nb">all</span>
 </pre></div>
 </div>
 </section>
@@ -816,6 +898,7 @@ using the container
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mapping-ports-to-containers-with-web-apps">Mapping ports to containers with web apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-the-image-architecture-platform">Specifying the image architecture/platform</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-containers-default-command">Changing the containers default command</a></li>
 </ul>
 </li>
