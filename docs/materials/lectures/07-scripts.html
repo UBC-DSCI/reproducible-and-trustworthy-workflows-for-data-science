@@ -66,7 +66,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Reproducible reports" href="08-reproducible-reports.html" />
-    <link rel="prev" title="Introduction to testing code for data science" href="06-intro-to-testing-code.html" />
+    <link rel="prev" title="Customizing and building containers" href="05-containerization-3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -180,15 +180,16 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-1.html">Introduction to containerization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-2.html">Using and running containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-3.html">Customizing and building containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Non-interactive scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reproducible-reports.html">Appendix - Reproducible reports</a></li>
 </ul>
 
     </div>
@@ -407,12 +408,6 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example">Another example:</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-python">Scripts in Python</a><ul class="nav section-nav flex-column">
@@ -761,137 +756,6 @@ main(opt$file_path, opt$var)
 </ul>
 </section>
 </section>
-<section id="demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">
-<h3>Demo: building a Data Analysis pipeline using a Shell script tutorial<a class="headerlink" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial" title="Permalink to this heading">#</a></h3>
-<p>adapted from <a class="reference external" href="http://software-carpentry.org/">Software Carpentry</a></p>
-<p>To illustrate how to make a data analysis pipeline using a shell script to drive other scripts, we will work through an example together. Here are some set-up instructions so that we can do this together:</p>
-<section id="set-up-instructions">
-<h4>Set-up instructions<a class="headerlink" href="#set-up-instructions" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v1.0.zip">data_analysis_pipeline_eg-1.0.zip</a></p></li>
-<li><p>Unzip it and change into the <code class="docutils literal notranslate"><span class="pre">data_analysis_pipeline_eg-1.0</span></code> directory.</p></li>
-</ul>
-</section>
-<section id="let-s-do-some-analysis">
-<h4>Let’s do some analysis!<a class="headerlink" href="#let-s-do-some-analysis" title="Permalink to this heading">#</a></h4>
-<p>Suppose we have a script, <code class="docutils literal notranslate"><span class="pre">wordcount.py</span></code>, that reads in a text file,
-counts the words in this text file, and outputs a data file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/wordcount.py data/isles.txt results/isles.dat
-</pre></div>
-</div>
-<p>If we view the first 5 rows of the data file using <code class="docutils literal notranslate"><span class="pre">head</span></code>,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ head -5 results/isles.dat
-</pre></div>
-</div>
-<p>we can see that the file consists of one row per word. Each row shows the word itself,
-the number of occurrences of that word, and the number of occurrences as a percentage of
-the total number of words in the text file.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">the</span> <span class="mi">3822</span> <span class="mf">6.7371760973</span>
-<span class="n">of</span> <span class="mi">2460</span> <span class="mf">4.33632998414</span>
-<span class="ow">and</span> <span class="mi">1723</span> <span class="mf">3.03719372466</span>
-<span class="n">to</span> <span class="mi">1479</span> <span class="mf">2.60708619778</span>
-<span class="n">a</span> <span class="mi">1308</span> <span class="mf">2.30565838181</span>
-</pre></div>
-</div>
-<p>Suppose we also have a script, <code class="docutils literal notranslate"><span class="pre">plotcount.py</span></code>, that reads in a data
-file and save a plot of the 10 most frequently occurring words:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/plotcount.py results/isles.dat results/figure/isles.png
-</pre></div>
-</div>
-<p>Together these scripts implement a data analysis pipeline:</p>
-<ol class="arabic simple">
-<li><p>Read a data file.</p></li>
-<li><p>Perform an analysis on this data file.</p></li>
-<li><p>Write the analysis results to a new file.</p></li>
-<li><p>Plot a graph of the analysis results.</p></li>
-</ol>
-<p>To document how we’d like the analysis to be run, so we (and others) have a record and
-can replicate it, we will build a shell script called <code class="docutils literal notranslate"><span class="pre">run_all.sh</span></code>. Let’s work to try
-to build this pipeline so it does all that!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
-<span class="c1"># Tiffany Timbers, Nov 2017</span>
-<span class="c1">#</span>
-<span class="c1"># This driver script completes the textual analysis of</span>
-<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
-<span class="c1"># occuring words from each of the 3 novels. This script</span>
-<span class="c1"># takes no arguments.</span>
-<span class="c1">#</span>
-<span class="c1"># Usage: bash run_all.sh</span>
-
-<span class="c1"># perform wordcout on novels</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
-
-<span class="c1"># create plots</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
-</pre></div>
-</div>
-<p>We actually have 4 books that we want to analyze, and then put the figures in a report.</p>
-<ol class="arabic simple">
-<li><p>Read a data file.</p></li>
-<li><p>Perform an analysis on this data file.</p></li>
-<li><p>Write the analysis results to a new file.</p></li>
-<li><p>Plot a graph of the analysis results.</p></li>
-<li><p>Save the graph as an image, so we can put it in a paper.</p></li>
-</ol>
-<p>Let’s extend our shell script to do that!</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
-<span class="c1"># Tiffany Timbers, Nov 2018</span>
-
-<span class="c1"># This driver script completes the textual analysis of</span>
-<span class="c1"># 3 novels and creates figures on the 10 most frequently</span>
-<span class="c1"># occuring words from each of the 3 novels. This script</span>
-<span class="c1"># takes no arguments.</span>
-
-<span class="c1"># example usage:</span>
-<span class="c1"># bash run_all.sh</span>
-
-<span class="c1"># count the words</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
-
-<span class="c1"># create the plots</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
-
-<span class="c1"># write the report</span>
-<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="another-example">
-<h3>Another example:<a class="headerlink" href="#another-example" title="Permalink to this heading">#</a></h3>
-<p>From the <a class="reference external" href="https://github.com/ttimbers/breast_cancer_predictor">breast cancer prediction example analysis repo</a>, here is a data analysis pipeline using a shell script:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run_all.sh</span>
-<span class="c1"># Tiffany Timbers, Jan 2020</span>
-
-<span class="c1"># download data</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">download_data</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">out_type</span><span class="o">=</span><span class="n">feather</span> <span class="o">--</span><span class="n">url</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">archive</span><span class="o">.</span><span class="n">ics</span><span class="o">.</span><span class="n">uci</span><span class="o">.</span><span class="n">edu</span><span class="o">/</span><span class="n">ml</span><span class="o">/</span><span class="n">machine</span><span class="o">-</span><span class="n">learning</span><span class="o">-</span><span class="n">databases</span><span class="o">/</span><span class="n">breast</span><span class="o">-</span><span class="n">cancer</span><span class="o">-</span><span class="n">wisconsin</span><span class="o">/</span><span class="n">wpbc</span><span class="o">.</span><span class="n">data</span> <span class="o">--</span><span class="n">out_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span>
-
-<span class="c1"># run eda report</span>
-<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;src/breast_cancer_eda.Rmd&#39;)&quot;</span>
-
-<span class="c1"># pre-process data </span>
-<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">pre_process_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="nb">input</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">raw</span><span class="o">/</span><span class="n">wdbc</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span> 
-
-<span class="c1"># create exploratory data analysis figure and write to file </span>
-<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">eda_wisc</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
-
-<span class="c1"># tune model</span>
-<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">fit_breast_cancer_predict_model</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">train</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">training</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
-
-<span class="c1"># test model</span>
-<span class="n">Rscript</span> <span class="n">src</span><span class="o">/</span><span class="n">breast_cancer_test_results</span><span class="o">.</span><span class="n">r</span> <span class="o">--</span><span class="n">test</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">processed</span><span class="o">/</span><span class="n">test</span><span class="o">.</span><span class="n">feather</span> <span class="o">--</span><span class="n">out_dir</span><span class="o">=</span><span class="n">results</span>
-
-<span class="c1"># render final report</span>
-<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/breast_cancer_predict_report.Rmd&#39;, output_format = &#39;github_document&#39;)&quot;</span>
-</pre></div>
-</div>
-</section>
 </section>
 <section id="scripts-in-python">
 <h2>Scripts in Python<a class="headerlink" href="#scripts-in-python" title="Permalink to this heading">#</a></h2>
@@ -1075,12 +939,12 @@ through <code class="docutils literal notranslate"><span class="pre">readr</span
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="06-intro-to-testing-code.html"
+       href="05-containerization-3.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to testing code for data science</p>
+        <p class="prev-next-title">Customizing and building containers</p>
       </div>
     </a>
     <a class="right-next"
@@ -1132,12 +996,6 @@ through <code class="docutils literal notranslate"><span class="pre">readr</span
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#some-tips-for-rstudio-ide">Some tips for RStudio IDE:</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-building-a-data-analysis-pipeline-using-a-shell-script-tutorial">Demo: building a Data Analysis pipeline using a Shell script tutorial</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-instructions">Set-up instructions</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-do-some-analysis">Let’s do some analysis!</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example">Another example:</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scripts-in-python">Scripts in Python</a><ul class="nav section-nav flex-column">

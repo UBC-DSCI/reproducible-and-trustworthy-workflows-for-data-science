@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/05-containerization-3';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Introduction to testing code for data science" href="06-intro-to-testing-code.html" />
+    <link rel="next" title="Non-interactive scripts" href="07-scripts.html" />
     <link rel="prev" title="Using and running containers" href="05-containerization-2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -180,15 +180,16 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-1.html">Introduction to containerization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-2.html">Using and running containers</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Customizing and building containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11-continuous-integration.html">Automated testing and continuous integration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="12-deploy-and-publish.html">Deploying and publishing packages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="13-licenses-and-copyright.html">Copyright and licenses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="14-reproducibility-wrap-up.html">Workflows for reproducibile and trustworthy data science wrap-up</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-reproducible-reports.html">Appendix - Reproducible reports</a></li>
 </ul>
 
     </div>
@@ -382,15 +383,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container">What is a container?</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-simple-container">Exercise - running a simple container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-rstudio-as-a-web-app">Exercise - running a container with RStudio as a web app</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-jupyter-as-a-web-app">Exercise - running a container with Jupyter as a web app</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
@@ -449,78 +442,6 @@ dependencies of your Data Science project</p></li>
 container images</p></li>
 <li><p>List good container base images for Data Science projects</p></li>
 </ol>
-<ol class="arabic simple">
-<li><p>Does your <code class="docutils literal notranslate"><span class="pre">README</span></code> and your scripts make it blatantly obvious what programming languages and packages need to run your data analysis pipeline/project?</p></li>
-</ol>
-<ol class="arabic simple" start="2">
-<li><p>Do you also document the version numbers of the programming languages and packages you used? This can have big consequences when it comes to reproducibility… (<em>e.g.</em>,the <a class="reference external" href="https://blog.revolutionanalytics.com/2019/05/whats-new-in-r-360.html">change to random number generation</a> in R in 2019?)</p></li>
-<li><p>Did you document what other software (beyond the the programming languages and packages used) and operating system dependencies are needed to run your data analysis pipeline/project?</p></li>
-</ol>
-<p><em>Virtual environments can be tremendously helpful with #1 &amp; #2, however, they may or may not be helpful to manage #3…</em> <strong><em>Enter containerization as a possible solution!</em></strong></p>
-<section id="what-is-a-container">
-<h3>What is a container?<a class="headerlink" href="#what-is-a-container" title="Permalink to this heading">#</a></h3>
-<p>Containers are another way to generate (and share!) isolated computational environments. They differ from virtual environments (which we discussed previously) in that they are even more isolated from the computers operating system, as well as they can be used share many other types of software, applications and operating system dependencies.</p>
-<p>Before we can fully define containers, however, we need to define <strong>virtualization</strong>. Virtualization is a process that allows us to divide the the elements of a single computer into several virtual elements. These elements can include computer hardware platforms, storage devices, and computer network resources, and even operating system user spaces (e.g., graphical tools, utilities, and programming languages).</p>
-<p>Containers virtualize operating system user spaces so that they can isolate the processes they contain, as well as control the processes’ access to computer resources (e.g., CPUs, memory and desk space). What this means in practice, is that an operating system user space can be carved up into multiple containers running the same, or different processes, in isolation. Below we show the schematic of a container whose virtual user space contains the:</p>
-<ul class="simple">
-<li><p>R programming language, the Bioconductor package manager, and two Bioconductor packages</p></li>
-<li><p>Galaxy workflow software and two toolboxes that can be used with it</p></li>
-<li><p>Python programming language, iPython interpreter and Jupyter notebook package</p></li>
-</ul>
-<a class="reference internal image-reference" href="../../_images/13742_2016_article_135_f7.jpeg"><img alt="../../_images/13742_2016_article_135_f7.jpeg" src="../../_images/13742_2016_article_135_f7.jpeg" style="width: 250px;" /></a>
-<p><strong>Schematic of a container for genomics research.</strong> Source: <a class="reference external" href="https://doi.org/10.1186/s13742-016-0135-4">https://doi.org/10.1186/s13742-016-0135-4</a></p>
-<section id="exercise-running-a-simple-container">
-<h4>Exercise - running a simple container<a class="headerlink" href="#exercise-running-a-simple-container" title="Permalink to this heading">#</a></h4>
-<p>To further illustrate what a container looks like, and feels like,
-we can use Docker (containerization software) to run one and explore.
-First we will run an linux (debian-flavoured) container that has R installed.
-To run this type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">it</span> <span class="n">rocker</span><span class="o">/</span><span class="n">r</span><span class="o">-</span><span class="n">ver</span><span class="p">:</span><span class="mf">4.3.2</span>
-</pre></div>
-</div>
-<p>When you successfully launch the container, R should have started.
-Check the version of R - is it the same as your computer’s version of R?
-Use <code class="docutils literal notranslate"><span class="pre">getwd()</span></code> and <code class="docutils literal notranslate"><span class="pre">list.files()</span></code> to explore the containers filesystem from R.
-Does this look like your computer’s filesystem or something else?</p>
-<p>Type <code class="docutils literal notranslate"><span class="pre">q()</span></code> to quit R and exit the container.</p>
-</section>
-<section id="exercise-running-a-container-with-rstudio-as-a-web-app">
-<h4>Exercise - running a container with RStudio as a web app<a class="headerlink" href="#exercise-running-a-container-with-rstudio-as-a-web-app" title="Permalink to this heading">#</a></h4>
-<p>Next, try to use Docker to run a container
-that contains the RStudio server web-application installed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8787</span><span class="p">:</span><span class="mi">8787</span> <span class="o">-</span><span class="n">e</span> <span class="n">PASSWORD</span><span class="o">=</span><span class="s2">&quot;apassword&quot;</span> <span class="n">rocker</span><span class="o">/</span><span class="n">rstudio</span><span class="p">:</span><span class="mf">4.3.2</span>
-</pre></div>
-</div>
-<p>Then visit a web browser on your computer and type: <a class="reference external" href="http://localhost:8787">http://localhost:8787</a></p>
-<p>If it worked, then you should be at an RStudio Sign In page.
-To sign in, use the following credentials:</p>
-<ul class="simple">
-<li><p><strong>username:</strong> rstudio</p></li>
-<li><p><strong>password:</strong> apassword</p></li>
-</ul>
-<p>The RStudio server web app being run by the container
-should look something like this:</p>
-<a class="reference internal image-reference" href="../../_images/rstudio-container-web-app.png"><img alt="../../_images/rstudio-container-web-app.png" src="../../_images/rstudio-container-web-app.png" style="width: 600px;" /></a>
-<p>Type <code class="docutils literal notranslate"><span class="pre">Cntrl</span></code> + <code class="docutils literal notranslate"><span class="pre">C</span></code> in the terminal where you launched the container
-to quit R and RStudio and exit the container.</p>
-</section>
-<section id="exercise-running-a-container-with-jupyter-as-a-web-app">
-<h4>Exercise - running a container with Jupyter as a web app<a class="headerlink" href="#exercise-running-a-container-with-jupyter-as-a-web-app" title="Permalink to this heading">#</a></h4>
-<p>Next, try to use Docker to run a container that contains the Jupyter web-application installed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8888</span><span class="p">:</span><span class="mi">8888</span>  <span class="n">jupyter</span><span class="o">/</span><span class="n">minimal</span><span class="o">-</span><span class="n">notebook</span><span class="p">:</span><span class="n">notebook</span><span class="o">-</span><span class="mf">7.0.6</span>
-</pre></div>
-</div>
-<p>In the terminal, look for a URL that starts with
-<code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8888/lab?token=</span></code>
-(for an example, see the highlighted text in the terminal below).
-Copy and paste that URL into your browser.</p>
-<a class="reference internal image-reference" href="../../_images/jupyter-container-web-app-launch-url.png"><img alt="../../_images/jupyter-container-web-app-launch-url.png" src="../../_images/jupyter-container-web-app-launch-url.png" style="width: 600px;" /></a>
-<p>The Jupyter web-application being run by the container should look something like this:</p>
-<a class="reference internal image-reference" href="../../_images/jupyter-container-web-app.png"><img alt="../../_images/jupyter-container-web-app.png" src="../../_images/jupyter-container-web-app.png" style="width: 600px;" /></a>
-<p>Type <code class="docutils literal notranslate"><span class="pre">Cntrl</span></code> + <code class="docutils literal notranslate"><span class="pre">C</span></code> in the terminal where you launched the container
-to quit Jupyter and exit the container.</p>
-</section>
-</section>
 </section>
 <section id="building-container-images-from-dockerfile-s">
 <h2>Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s<a class="headerlink" href="#building-container-images-from-dockerfile-s" title="Permalink to this heading">#</a></h2>
@@ -887,11 +808,11 @@ For example, to reduce the long line below which uses <code class="docutils lite
       </div>
     </a>
     <a class="right-next"
-       href="06-intro-to-testing-code.html"
+       href="07-scripts.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to testing code for data science</p>
+        <p class="prev-next-title">Non-interactive scripts</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -910,15 +831,7 @@ For example, to reduce the long line below which uses <code class="docutils lite
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container">What is a container?</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-simple-container">Exercise - running a simple container</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-rstudio-as-a-web-app">Exercise - running a container with RStudio as a web app</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-running-a-container-with-jupyter-as-a-web-app">Exercise - running a container with Jupyter as a web app</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-container-images-from-dockerfile-s">Building container images from <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>’s</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-for-building-a-dockerfile">Workflow for building a Dockerfile</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-workflow-for-creating-a-dockfile-locally">Demo workflow for creating a <code class="docutils literal notranslate"><span class="pre">Dockfile</span></code> locally</a></li>
