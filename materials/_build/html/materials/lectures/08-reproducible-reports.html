@@ -385,6 +385,12 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-quarto">Introduction to Quarto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-get-to-know-quarto">Exercise - get to know Quarto</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-render-your-first-document">Exercise - render your first document</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -427,6 +433,70 @@ bibliographies in a reproducible and automatted manner</p></li>
 <a class="reference internal image-reference" href="../../_images/render-report.png"><img alt="../../_images/render-report.png" src="../../_images/render-report.png" style="width: 700px;" /></a>
 <p>This contrasts from What You See Is What You Get (WYSIWYG) software or editors (e.g., Microsoft Word, Google Docs, etc), where the document that is being edited looks exactly like the final document - there is no rendering process. WYSIWYG reports are typically easier to get started with and use. However, they are usually quite limited in their ability to automatically update a report when changes to data or data analysis methods lead to changes in data analysis artifacts. This makes them less reproducible, and can lead to errors when repeated manual updating of data analysis artifacts is needed when analysis is iterated on during development.</p>
 <a class="reference internal image-reference" href="../../_images/word.png"><img alt="../../_images/word.png" src="../../_images/word.png" style="width: 300px;" /></a>
+</section>
+<section id="introduction-to-quarto">
+<h2>Introduction to Quarto<a class="headerlink" href="#introduction-to-quarto" title="Permalink to this heading">#</a></h2>
+<p>Quarto is one implementation of a reproducible reporting tool.
+It is very user friendly and has become very powerful -
+allowing a great deal of control over formatting
+with the ability to render to many different outputs.</p>
+<p>Including:</p>
+<ul class="simple">
+<li><p>PDF</p></li>
+<li><p>html</p></li>
+<li><p>Word</p></li>
+<li><p>Powerpoint presentation</p></li>
+<li><p>many more!</p></li>
+</ul>
+<p>It is a mix of markdown primarily used for narrative text,
+and code chunks where code can be executed in an engine.
+It works very well with either R or Python as the coding engine.
+It has many more advanced features for customizing document
+outputs compared to Jupyter notebooks on their own,
+which is why we recommend shifting to this tool when the audience
+of your analysis moves beyond you and your data science team.</p>
+<p>Quarto also can very easily convert between
+different kinds of reproducible report documents,
+making it easy to shift from working in an Jupyter notebook
+to this different reproducible report tool.
+For example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">quarto</span> <span class="n">convert</span> <span class="n">your_notebook</span><span class="o">.</span><span class="n">ipynb</span>
+</pre></div>
+</div>
+<p>There is a wonderful online guide for getting to know Quarto,
+we link to it below.
+In these notes, we will generally introduce this tool,
+and demonstrate how to:</p>
+<ul class="simple">
+<li><p>Create document sections and a table of contents.</p></li>
+<li><p>Add citations and a bibliography.</p></li>
+<li><p>Format figures and figure captions, as well as automatically number them and cross reference them in the narrative text.</p></li>
+<li><p>Format tables and table descriptions, as well as automatically number them and cross reference them in the narrative text.</p></li>
+<li><p>Execute code inline in the report narrative, so that the text will be automatically updated with the correct value when the report is rendered.</p></li>
+<li><p>Set the global and local code chunk options so that no code is viewable in the rendered report, just the code outputs where needed (e.g., figures and tables).</p></li>
+</ul>
+<p>Quarto can do all this and so much more, and so if you are interested in learning more
+be sure to refer to the <a class="reference external" href="https://quarto.org/docs/guide/">Quarto Guide</a>.</p>
+<section id="exercise-get-to-know-quarto">
+<h3>Exercise - get to know Quarto<a class="headerlink" href="#exercise-get-to-know-quarto" title="Permalink to this heading">#</a></h3>
+<p>Let’s get to know Quarto! Open RStudio and create a new Quarto document, choosing HTML as the output format.
+Look at the source document that is created, where is the narrative text written? Where is the code written? How does this differ from Jupyter?</p>
+</section>
+<section id="exercise-render-your-first-document">
+<h3>Exercise - render your first document<a class="headerlink" href="#exercise-render-your-first-document" title="Permalink to this heading">#</a></h3>
+<p>There are two ways to render a document from the <code class="docutils literal notranslate"><span class="pre">qmd</span></code> source to the desired output. One is using a button in RStudio - the <strong>“Render”</strong> button that looks like this:</p>
+<a class="reference internal image-reference" href="../../_images/render.png"><img alt="../../_images/render.png" src="../../_images/render.png" style="width: 200px;" /></a>
+<p>Try clicking that button and see what happens!</p>
+<p>Another way you can do this is through code! Try running this in the terminal (replacing <code class="docutils literal notranslate"><span class="pre">&quot;FILEPATH/FILE.qmd&quot;</span></code> with the file path to where you saved this Quarto document:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">quarto</span> <span class="n">render</span> <span class="n">your_report</span><span class="o">.</span><span class="n">qmd</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
+</pre></div>
+</div>
+</section>
+<section id="exercise-checkout-the-new-visual-markdown-editor">
+<h3>Exercise - checkout the new visual markdown editor<a class="headerlink" href="#exercise-checkout-the-new-visual-markdown-editor" title="Permalink to this heading">#</a></h3>
+<p>RStudio has implemented a new feature for working with Quarto to make it more similar to working with Jupyter - it is called the visual markdown editor. Checkout this feature by clicking the visual markdown editor button when you have an R Markdown file open in the editor. The button looks like this:</p>
+<a class="reference internal image-reference" href="../../_images/viz-md-button.png"><img alt="../../_images/viz-md-button.png" src="../../_images/viz-md-button.png" style="width: 250px;" /></a>
+</section>
 </section>
 </section>
 
@@ -495,6 +565,12 @@ bibliographies in a reproducible and automatted manner</p></li>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-quarto">Introduction to Quarto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-get-to-know-quarto">Exercise - get to know Quarto</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-render-your-first-document">Exercise - render your first document</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
