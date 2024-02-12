@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/08-reproducible-reports';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -182,6 +184,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-3.html">Customizing and building containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Reproducible reports</a></li>
+
+
 <li class="toctree-l1"><a class="reference internal" href="09-pipelines.html">Data analysis pipelines</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-intro-to-testing-code.html">Introduction to testing code for data science</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10-packaging-and-documenting.html">Packaging and documenting code</a></li>
@@ -383,6 +387,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Reproducible reports</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-quarto">Introduction to Quarto</a><ul class="nav section-nav flex-column">
@@ -391,7 +396,26 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-quarto-document">Anatomy of a Quarto document</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaml-frontmatter">Yaml frontmatter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#markdown-text">Markdown text</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunks">Code chunks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-sections-and-a-table-of-contents">Document sections and a table of contents.</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#first-level-header">First level header</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#second-level-header">Second level header</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations-and-a-bibliographies">Citations and a bibliographies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-formatting-options">Code chunk formatting options</a></li>
+</ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -468,6 +492,7 @@ we link to it below.
 In these notes, we will generally introduce this tool,
 and demonstrate how to:</p>
 <ul class="simple">
+<li><p>Anatomy of a Quarto document</p></li>
 <li><p>Create document sections and a table of contents.</p></li>
 <li><p>Add citations and a bibliography.</p></li>
 <li><p>Format figures and figure captions, as well as automatically number them and cross reference them in the narrative text.</p></li>
@@ -485,7 +510,7 @@ Look at the source document that is created, where is the narrative text written
 <section id="exercise-render-your-first-document">
 <h3>Exercise - render your first document<a class="headerlink" href="#exercise-render-your-first-document" title="Permalink to this heading">#</a></h3>
 <p>There are two ways to render a document from the <code class="docutils literal notranslate"><span class="pre">qmd</span></code> source to the desired output. One is using a button in RStudio - the <strong>“Render”</strong> button that looks like this:</p>
-<a class="reference internal image-reference" href="../../_images/render.png"><img alt="../../_images/render.png" src="../../_images/render.png" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../../_images/render.png"><img alt="../../_images/render.png" src="../../_images/render.png" style="width: 100px;" /></a>
 <p>Try clicking that button and see what happens!</p>
 <p>Another way you can do this is through code! Try running this in the terminal (replacing <code class="docutils literal notranslate"><span class="pre">&quot;FILEPATH/FILE.qmd&quot;</span></code> with the file path to where you saved this Quarto document:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">quarto</span> <span class="n">render</span> <span class="n">your_report</span><span class="o">.</span><span class="n">qmd</span> <span class="o">--</span><span class="n">to</span> <span class="n">html</span>
@@ -495,8 +520,168 @@ Look at the source document that is created, where is the narrative text written
 <section id="exercise-checkout-the-new-visual-markdown-editor">
 <h3>Exercise - checkout the new visual markdown editor<a class="headerlink" href="#exercise-checkout-the-new-visual-markdown-editor" title="Permalink to this heading">#</a></h3>
 <p>RStudio has implemented a new feature for working with Quarto to make it more similar to working with Jupyter - it is called the visual markdown editor. Checkout this feature by clicking the visual markdown editor button when you have an R Markdown file open in the editor. The button looks like this:</p>
-<a class="reference internal image-reference" href="../../_images/viz-md-button.png"><img alt="../../_images/viz-md-button.png" src="../../_images/viz-md-button.png" style="width: 250px;" /></a>
+<a class="reference internal image-reference" href="../../_images/viz-md-button.png"><img alt="../../_images/viz-md-button.png" src="../../_images/viz-md-button.png" style="width: 125px;" /></a>
 </section>
+</section>
+<section id="anatomy-of-a-quarto-document">
+<h2>Anatomy of a Quarto document<a class="headerlink" href="#anatomy-of-a-quarto-document" title="Permalink to this heading">#</a></h2>
+<p>At a basic level, a Quarto document has three parts:</p>
+<ol class="arabic simple">
+<li><p>Yaml frontmatter</p></li>
+<li><p>Markdown text</p></li>
+<li><p>Code chunks</p></li>
+</ol>
+<p>TBD - add figure of Quarto doc, highlighting each part.</p>
+<section id="yaml-frontmatter">
+<h3>Yaml frontmatter<a class="headerlink" href="#yaml-frontmatter" title="Permalink to this heading">#</a></h3>
+<p>The yaml frontmatter controls global settings for the report
+(document output types, code display defaults, table of contents presence and depth),
+as well as houses document metadata (e.g., author, date, etc).
+Below is an example yaml frontmatter which sets the:</p>
+<ul class="simple">
+<li><p>Title</p></li>
+<li><p>Author</p></li>
+<li><p>Date of report rendering</p></li>
+<li><p>Document render format to HTML</p></li>
+<li><p>Document have a references section and the source file for the references</p></li>
+<li><p>Source code to be hidden in the rendered report</p></li>
+<li><p>RStudio editor to show the source code view instead of the visual markdown view</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span>
+<span class="n">title</span><span class="p">:</span> <span class="s2">&quot;Historical Horse Population in Canada&quot;</span>
+<span class="n">author</span><span class="p">:</span> <span class="s2">&quot;Tiffany Timbers&quot;</span>
+<span class="n">date</span><span class="p">:</span> <span class="n">Sys</span><span class="o">.</span><span class="n">Date</span><span class="p">()</span>
+<span class="nb">format</span><span class="p">:</span> <span class="n">html</span>
+<span class="n">bibliography</span><span class="p">:</span> <span class="n">references</span><span class="o">.</span><span class="n">bib</span>
+<span class="n">execute</span><span class="p">:</span>
+  <span class="n">echo</span><span class="p">:</span> <span class="n">false</span>
+<span class="n">editor</span><span class="p">:</span> <span class="n">visual</span>
+<span class="o">---</span>
+</pre></div>
+</div>
+</section>
+<section id="markdown-text">
+<h3>Markdown text<a class="headerlink" href="#markdown-text" title="Permalink to this heading">#</a></h3>
+<p>Following the yaml frontmatter section, by default,
+the rest of the document is considered Markdown text.
+If no markdown syntax is used,
+the text will be rendered as unformatted text.
+Here is a table of very common markdown formatting that you might find useful:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Description</p></th>
+<th class="head"><p>Markdown syntax</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Bold text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">**Bold</span> <span class="pre">text**</span></code></p></td>
+<td><p><strong>Bold text</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Italic text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">*Italic</span> <span class="pre">text*</span></code></p></td>
+<td><p><em>Italic text</em></p></td>
+</tr>
+<tr class="row-even"><td><p>Bold Italic text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">***Bold</span> <span class="pre">Italic</span> <span class="pre">text***</span></code></p></td>
+<td><p><em><strong>Bold Italic text</strong></em></p></td>
+</tr>
+<tr class="row-odd"><td><p>verbatim code (not executed)</p></td>
+<td><p>`verbatim code\</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">verbatim</span> <span class="pre">code</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Inline math</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$E</span> <span class="pre">=</span> <span class="pre">mc^{2}$</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(E = mc^{2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Display math</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$$E</span> <span class="pre">=</span> <span class="pre">mc^{2}$$</span></code></p></td>
+<td><p>$<span class="math notranslate nohighlight">\(E = mc^{2}\)</span>$</p></td>
+</tr>
+</tbody>
+</table>
+<p>See the Quarto Mardown docs for additional formatting that you might need to do:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto Markdown basics</a></p></li>
+</ul>
+</section>
+</section>
+<section id="code-chunks">
+<h2>Code chunks<a class="headerlink" href="#code-chunks" title="Permalink to this heading">#</a></h2>
+<p>Just like Jupyter notebooks,
+Quarto has code cells,
+although they’re more commonly referred to as code “chunks” or “blocks”.
+These are based off fenced Markdown code blocks
+and always start and end with 3 backticks (```),
+just like in Markdown.
+Unique to Quarto
+is that the leading three backticks are followed by curly braces
+containing the language engine you want to run,
+which for r looks like this <code class="docutils literal notranslate"><span class="pre">{r}</span></code>.
+For Python, they would look like <code class="docutils literal notranslate"><span class="pre">{python}</span></code>.
+Additional metadata can be included,
+for example a name to reference the code chunk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r my-first-code-chunk}
+x &lt;- 5
+x
+```
+</pre></div>
+</div>
+<p>All code cells are run when you render the entire document
+(like pressing “Run all” in JupyterLab).
+By default,
+the code in the chunk and the code output will be included in your rendered document.
+You can also run the code by clicking the green play button on the right-hand side of the code chunk.</p>
+</section>
+<section id="document-sections-and-a-table-of-contents">
+<h2>Document sections and a table of contents.<a class="headerlink" href="#document-sections-and-a-table-of-contents" title="Permalink to this heading">#</a></h2>
+<p>By using Markdown formatted headers,
+we can create document sections that we can link to,
+as well as easily create linkable table of contents.
+This is especially important in longer documents,
+that without such features are hard to navigate.</p>
+<p>Markdown headers are specified by staring the line with
+one or more <code class="docutils literal notranslate"><span class="pre">#</span></code> characters.</p>
+<p>A single <code class="docutils literal notranslate"><span class="pre">#</span></code> results in a first level header,
+two <code class="docutils literal notranslate"><span class="pre">#</span></code>’s results in a second level header,
+three <code class="docutils literal notranslate"><span class="pre">#'s</span></code> results in a third level header,
+and so on.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># First level header</span>
+</pre></div>
+</div>
+<p>results in:</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="first-level-header">
+<h1>First level header<a class="headerlink" href="#first-level-header" title="Permalink to this heading">#</a></h1>
+<p>while:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Second level header</span>
+</pre></div>
+</div>
+<p>results in:</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="second-level-header">
+<h1>Second level header<a class="headerlink" href="#second-level-header" title="Permalink to this heading">#</a></h1>
+<p>Once the headers have been created in the document,
+the yaml frontmatter can be edited to specify that
+you would like a table of contents, and to what depth
+of header level you would like to include in it.</p>
+<section id="citations-and-a-bibliographies">
+<h2>Citations and a bibliographies<a class="headerlink" href="#citations-and-a-bibliographies" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="figures">
+<h2>Figures<a class="headerlink" href="#figures" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="tables">
+<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="inline-code">
+<h2>Inline code<a class="headerlink" href="#inline-code" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="code-chunk-formatting-options">
+<h2>Code chunk formatting options<a class="headerlink" href="#code-chunk-formatting-options" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -563,6 +748,7 @@ Look at the source document that is created, where is the narrative text written
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Reproducible reports</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors">Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-quarto">Introduction to Quarto</a><ul class="nav section-nav flex-column">
@@ -571,7 +757,26 @@ Look at the source document that is created, where is the narrative text written
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-quarto-document">Anatomy of a Quarto document</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yaml-frontmatter">Yaml frontmatter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#markdown-text">Markdown text</a></li>
 </ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunks">Code chunks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#document-sections-and-a-table-of-contents">Document sections and a table of contents.</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#first-level-header">First level header</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#second-level-header">Second level header</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations-and-a-bibliographies">Citations and a bibliographies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-formatting-options">Code chunk formatting options</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>
