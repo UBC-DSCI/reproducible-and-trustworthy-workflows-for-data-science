@@ -421,7 +421,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-formatting-options">Code chunk formatting options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-execution-options">Code chunk execution options</a></li>
 </ul>
 </li>
 </ul>
@@ -793,16 +793,114 @@ to 2 for both of these:</p>
 </div>
 <a class="reference internal image-reference" href="../../_images/banff.png"><img alt="../../_images/banff.png" src="../../_images/banff.png" style="width: 200px;" /></a>
 <p>Figure 1. The Banff International Research Station campus in February 2024.</p>
-<p>To cross reference the figure in the narrative of the report, we write <code class="docutils literal notranslate"><span class="pre">&#64;fig-banff</span></code> when we want to refer to it. That will change the Figure 1 in the rendered report, if the figure named <code class="docutils literal notranslate"><span class="pre">fig-banff</span></code> is the first figure embedded in the report. This works in both R and Python.</p>
+<p>To cross reference the figure in the narrative of the report, we write <code class="docutils literal notranslate"><span class="pre">&#64;fig-banff</span></code> when we want to refer to it. That will change to Figure 1 in the rendered report, if the figure named <code class="docutils literal notranslate"><span class="pre">fig-banff</span></code> is the first figure embedded in the report. This works in both R and Python.</p>
 </section>
 <section id="tables">
 <h2>Tables<a class="headerlink" href="#tables" title="Permalink to this heading">#</a></h2>
+<p>There are several ways to add tables to Quarto documents,
+but the most consistent way that works across many data set sizes
+is to use code from the programming language you are working with
+to load your data into the Quarto document as a data frame object
+and then use the appropriate functions from your programming language
+to display them as a nicely formatted table.
+This should happen within a code chunk,
+specifying the code engine you are using (either R or Python).
+In R, that combination is usually a function from the <code class="docutils literal notranslate"><span class="pre">readr</span></code> package
+in combination with the <code class="docutils literal notranslate"><span class="pre">knitr::kable</span></code> function.
+In python, that combination is usually a reading data method
+from the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package (e.g., <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code>)
+in combination with the <code class="docutils literal notranslate"><span class="pre">Markdown</span></code> function from the <code class="docutils literal notranslate"><span class="pre">IPython</span></code> package.</p>
+<p>R example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r}
+table_to_display &lt;- read_csv(&quot;my_data.csv&quot;)
+knitr::kable( table_to_display)
+```
+</pre></div>
+</div>
+<p>Python example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{python}
+table_to_display = pd.read_csv(&quot;my_data.csv&quot;)
+Markdown(table_to_display.to_markdown(index = False))
+```
+</pre></div>
+</div>
+<p>As with figures, with tables we usually want to do a few things to our figures in reports to make them more understandable and easier to refer to and discuss. These include:</p>
+<ul class="simple">
+<li><p>adding table descriptions</p></li>
+<li><p>give them table numbers so we can cross reference them in the text</p></li>
+</ul>
+<p>Similar to with the assigning figure numbers, when assigning table numbers,
+we want to do this in a automated way so that if you change the order that tables show up in your report during the editing process, you do not have to manually renumber them.</p>
+<p>Since we loaded the table data into the report using R or Python code in a code chunk,
+we will this time use code chunk formatting options to add the table descriptions and
+to gives it a label so that Quarto will do automated numbering of the tables and allow
+us to cross refernece them in the text (via <code class="docutils literal notranslate"><span class="pre">#tab-some_name</span></code>).</p>
+<p>R example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r}
+#| label: tbl-my_data
+#| tbl-cap: Some relevant description about the data in my table.
+
+table_to_display &lt;- read_csv(&quot;my_data.csv&quot;)
+knitr::kable( table_to_display)
+```
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note that we only showed the example in one language because the code chunk options for this are the same in both R and Python.</p>
+</div></blockquote>
+<p>To cross reference the table in the narrative of the report, we write <code class="docutils literal notranslate"><span class="pre">&#64;tbl-my_data</span></code> when we want to refer to it. That will change to Table 1 in the rendered report, if the table named <code class="docutils literal notranslate"><span class="pre">tbl-my_data</span></code> is the first table embedded in the report. This works in both R and Python.</p>
 </section>
 <section id="inline-code">
 <h2>Inline code<a class="headerlink" href="#inline-code" title="Permalink to this heading">#</a></h2>
+<p>If you are wanting to include a value your code calculates in the narrative of your Quarto report, you ideally should not hard-code this value, as it may change if you change something in your analysis. Instead you want to use inline code to embed the appropriate value when your render your document. You can do this via</p>
+<p>You can refer to values stored in code inside your markdown text using the <code class="docutils literal notranslate"><span class="pre">{language_engine}</span> <span class="pre">code_object</span></code> surrounded by backticks. For example in R you would include this in your narrative text to embed the sample mean inside the report:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>`{r} sample_mean`
+</pre></div>
+</div>
+<p>In Python, you would replace the <code class="docutils literal notranslate"><span class="pre">r</span></code> with <code class="docutils literal notranslate"><span class="pre">python</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>`{python} sample_mean`
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note the value for this must be a vector of length one in R, or a scalar in Python.</p>
+</div></blockquote>
 </section>
-<section id="code-chunk-formatting-options">
-<h2>Code chunk formatting options<a class="headerlink" href="#code-chunk-formatting-options" title="Permalink to this heading">#</a></h2>
+<section id="code-chunk-execution-options">
+<h2>Code chunk execution options<a class="headerlink" href="#code-chunk-execution-options" title="Permalink to this heading">#</a></h2>
+<p>There are many code chunk options that you can set.
+These options let you customize chunk behavior,
+including whether a chunk is evaluated,
+whether to include the output in the rendered document,
+etc.</p>
+<p>A short list of code chunk options is shown below,
+but you can find an extensive list in the Quarto docs:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://quarto.org/docs/computations/execution-options.html">Quarto Execution Options</a></p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/quarto-execute-options.png"><img alt="../../_images/quarto-execute-options.png" src="../../_images/quarto-execute-options.png" style="width: 700px;" /></a>
+<p><em>Source: <a class="reference external" href="https://quarto.org/docs/computations/execution-options.html#output-options">https://quarto.org/docs/computations/execution-options.html#output-options</a></em></p>
+<p>You can set the chunk options at either a global level
+(once set they will be applied to all code chunks in the <code class="docutils literal notranslate"><span class="pre">.qmd</span></code> file)
+or locally for a specific chunk
+(these will override the global chunk options if they are contradictory).</p>
+<p>Global options are set in the YAML front matter at the top of the document.
+Setting the code chunk options so that the source code (<code class="docutils literal notranslate"><span class="pre">echo</span></code>) is hidden in the
+rendered document and that warnings (<code class="docutils literal notranslate"><span class="pre">warning</span></code> are suppressed) looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">execute</span><span class="p">:</span>
+  <span class="n">echo</span><span class="p">:</span> <span class="n">false</span>
+  <span class="n">warning</span><span class="p">:</span> <span class="n">false</span>
+</pre></div>
+</div>
+<p>Local chunk options are set by adding the options at the top of the code chunk.
+To not display warnings in a single code chunk
+we would use the <code class="docutils literal notranslate"><span class="pre">warning:</span> <span class="pre">FALSE</span></code> code chunk as follows:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">```{r}</span>
+<span class="n">#| warning: false</span>
+
+<span class="n">cor( c( 1 , 1 ), c( 2 , 3 ) )</span>
+<span class="n">```</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -903,7 +1001,7 @@ to 2 for both of these:</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figures">Figures</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-formatting-options">Code chunk formatting options</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-execution-options">Code chunk execution options</a></li>
 </ul>
 </li>
 </ul>
