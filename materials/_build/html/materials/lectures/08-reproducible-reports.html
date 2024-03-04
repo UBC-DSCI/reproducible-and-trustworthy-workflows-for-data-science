@@ -394,6 +394,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-get-to-know-quarto">Exercise - get to know Quarto</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-render-your-first-document">Exercise - render your first document</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quarto-in-vs-code">Quarto in VS Code</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-quarto-document">Anatomy of a Quarto document</a><ul class="nav section-nav flex-column">
@@ -422,7 +423,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-execution-options">Code chunk execution options</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents">A helpful hint for successfully working with R Markdown documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-quarto-documents">A helpful hint for successfully working with Quarto documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quarto-reports-in-subdirectories">Quarto reports in subdirectories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strategies-for-collaborative-writing-with-quarto">Strategies for collaborative writing with Quarto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#child-documents">Child documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing">Smoothing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
 </li>
 </ul>
@@ -532,6 +540,11 @@ Look at the source document that is created, where is the narrative text written
 <h3>Exercise - checkout the new visual markdown editor<a class="headerlink" href="#exercise-checkout-the-new-visual-markdown-editor" title="Permalink to this heading">#</a></h3>
 <p>RStudio has implemented a new feature for working with Quarto to make it more similar to working with Jupyter - it is called the visual markdown editor. Checkout this feature by clicking the visual markdown editor button when you have an R Markdown file open in the editor. The button looks like this:</p>
 <a class="reference internal image-reference" href="../../_images/viz-md-button.png"><img alt="../../_images/viz-md-button.png" src="../../_images/viz-md-button.png" style="width: 125px;" /></a>
+</section>
+<section id="quarto-in-vs-code">
+<h3>Quarto in VS Code<a class="headerlink" href="#quarto-in-vs-code" title="Permalink to this heading">#</a></h3>
+<p>You can also use Quarto in VS Code with R or Python. If you decide to use this editor, it is highly recommended that you use the <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">VS Code Quarto extension</a>. This will allow you to preview the rendered document, similar to how this can be done in RStudio.
+In VS Code, to preview the rendered document you click “Preview” (instead of “Render” as in RStudio), which is located at the top right-hand side of the document you are working on.</p>
 </section>
 </section>
 <section id="anatomy-of-a-quarto-document">
@@ -788,7 +801,7 @@ to 2 for both of these:</p>
 <li><p>adjust their size so they are just big enough to understand, but also small enough to read the surrounding report text</p></li>
 </ul>
 <p>In particular, with the assigning figure numbers, we want to do this in a automated way so that if you change the order that figures show up in your report during the editing process, you do not have to manually renumber them.</p>
-<p>The syntax below takes our Markdown figure and gives it a caption (via adding the caption between the <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>), gives it a label so that Quarto will do automated numbering of the figure and so you can cross reference it in the text (via <code class="docutils literal notranslate"><span class="pre">#fig-some_name</span></code>), and specifies the size of the figure to be 50% (via <code class="docutils literal notranslate"><span class="pre">width=50%</span></code>).</p>
+<p>The syntax below takes our Markdown figure and gives it a caption (via adding the caption between the <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code>), gives it a label so that Quarto will do automated numbering of the figure and so you can cross reference it in the text (via <code class="docutils literal notranslate"><span class="pre">#fig-some-name</span></code>), and specifies the size of the figure to be 50% (via <code class="docutils literal notranslate"><span class="pre">width=50%</span></code>).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>![The Banff International Research Station campus in February 2024.](img/banff.png){#fig-banff width=50%}
 </pre></div>
 </div>
@@ -838,7 +851,7 @@ to gives it a label so that Quarto will do automated numbering of the tables and
 us to cross refernece them in the text (via <code class="docutils literal notranslate"><span class="pre">#tab-some_name</span></code>).</p>
 <p>R example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>```{r}
-#| label: tbl-my_data
+#| label: tbl-my-data
 #| tbl-cap: Some relevant description about the data in my table.
 
 table_to_display &lt;- read_csv(&quot;my_data.csv&quot;)
@@ -849,7 +862,7 @@ knitr::kable( table_to_display)
 <blockquote>
 <div><p>Note that we only showed the example in one language because the code chunk options for this are the same in both R and Python.</p>
 </div></blockquote>
-<p>To cross reference the table in the narrative of the report, we write <code class="docutils literal notranslate"><span class="pre">&#64;tbl-my_data</span></code> when we want to refer to it. That will change to Table 1 in the rendered report, if the table named <code class="docutils literal notranslate"><span class="pre">tbl-my_data</span></code> is the first table embedded in the report. This works in both R and Python.</p>
+<p>To cross reference the table in the narrative of the report, we write <code class="docutils literal notranslate"><span class="pre">&#64;tbl-my-data</span></code> when we want to refer to it. That will change to Table 1 in the rendered report, if the table named <code class="docutils literal notranslate"><span class="pre">tbl-my-data</span></code> is the first table embedded in the report. This works in both R and Python.</p>
 </section>
 <section id="inline-code">
 <h2>Inline code<a class="headerlink" href="#inline-code" title="Permalink to this heading">#</a></h2>
@@ -903,8 +916,8 @@ we would use the <code class="docutils literal notranslate"><span class="pre">wa
 </pre></div>
 </div>
 </section>
-<section id="a-helpful-hint-for-successfully-working-with-r-markdown-documents">
-<h2>A helpful hint for successfully working with R Markdown documents<a class="headerlink" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents" title="Permalink to this heading">#</a></h2>
+<section id="a-helpful-hint-for-successfully-working-with-quarto-documents">
+<h2>A helpful hint for successfully working with Quarto documents<a class="headerlink" href="#a-helpful-hint-for-successfully-working-with-quarto-documents" title="Permalink to this heading">#</a></h2>
 <p>Given that you need to render the entire document to see your Markdown and LaTeX rendered,
 it is important to render often as you make changes.
 If you make an error in a LaTeX equation for example,
@@ -913,6 +926,147 @@ and you will not get to see the rendered document.
 So by rendering often
 you will know where the last changes you made are
 and then will be able to easily identify and fix your errors.</p>
+</section>
+<section id="quarto-reports-in-subdirectories">
+<h2>Quarto reports in subdirectories<a class="headerlink" href="#quarto-reports-in-subdirectories" title="Permalink to this heading">#</a></h2>
+<p>When working with a more complex project,
+it is a good practice to split our files up into subdirectories.
+This means that our Quarto documents often end up in a directory
+called <code class="docutils literal notranslate"><span class="pre">reports</span></code> or <code class="docutils literal notranslate"><span class="pre">analysis</span></code> or something similar.
+This best practice can lead to headaches when rendering the document,
+as the relative paths for loading in data artifacts (figures and tables)
+can change depending on where the document is executed from.</p>
+<p>In this course we will adopt the strategy that Quarto documents
+will be executed from the subdirectory that live in
+(e.g., <code class="docutils literal notranslate"><span class="pre">reports</span></code> or <code class="docutils literal notranslate"><span class="pre">analysis</span></code> or something similar).
+This is actually Quarto’s default when using the <code class="docutils literal notranslate"><span class="pre">quarto</span> <span class="pre">render</span> <span class="pre">...</span></code> command.
+To ensure that the preview works correctly with this setup, however,
+we need to add an empty <code class="docutils literal notranslate"><span class="pre">_quarto.yml</span></code> file to our project root directory.
+This can be done by running <code class="docutils literal notranslate"><span class="pre">touch</span> <span class="pre">_quarto.yml</span></code> in the terminal in your project root.
+This document can be used to set many kinds of Quarto configurations
+(see all <a class="reference external" href="https://quarto.org/docs/projects/quarto-projects.html#project-metadata">here</a>),
+including saving the rendered documents to different directories
+(which can be useful if you plan to serve up your report as a nice,
+human readable HTML document on the web as <a class="reference external" href="https://quarto.org/docs/publishing/github-pages.html">documented here</a>).</p>
+</section>
+<section id="strategies-for-collaborative-writing-with-quarto">
+<h2>Strategies for collaborative writing with Quarto<a class="headerlink" href="#strategies-for-collaborative-writing-with-quarto" title="Permalink to this heading">#</a></h2>
+<p>Although Quarto is wonderful for incorporating code,
+and code-generated research artifacts in a reproducible manner,
+it is not as user-friendly for collaborative writing as other tools
+(e.g., Google docs).
+In particular, the lack of real-time collaboration
+and possibilities for merge conflicts that cannot be automatically resolved
+are the greatest challenges.
+Thus, to make collaborative writing efficient and effective with Quarto,
+we need to take a thoughtful approach to using it for this purpose.
+Clear communication helps, in particular with avoiding merge conflicts,
+however we can do more than that to make this work even better.
+We outline below, two strategies we can incorporate,
+which function to help reduce the number of merge conflicts
+that cannot be automatically resolved,
+and create a cohesive document, even with multiple authors.</p>
+<section id="child-documents">
+<h3>Child documents<a class="headerlink" href="#child-documents" title="Permalink to this heading">#</a></h3>
+<p>When multiple authors are editing a Quarto document
+at the same time in collaborative writing,
+there ends up being a good chance that a merge conflict will occur,
+and potentially one that cannot be automatically resolved.
+One way to avoid this is using communication to assign different authors
+to work on different sections of the document -
+reducing the chance that they will be editing the same lines at the same time.
+With this strategy however,
+this still can happen with sections that are adjacent to each other
+as Git uses the line numbers,
+not section headers to decide which changes are overappling changes.</p>
+<p>Thus, an even better strategy is the use of child documents.
+Child documents are documents that are sourced into the main (parent)
+document when the document is rendered (you get one single document rendered,
+which includes all the content from the parent and child documents).
+A good idea in collaborative writing is to split each section into a
+separate child document. That way, each person working on a section is working on a separate document - minimizing greatly the number of potential merge conflicts.</p>
+<p>The <a class="reference external" href="https://quarto.org/docs/authoring/includes.html">Includes syntax</a> is the way to incorporate a child document
+into a parent document in Quarto.
+Below we show an example parent document (<code class="docutils literal notranslate"><span class="pre">breast_cancer_predictor_report.qmd</span></code>)
+which uses child documents to split the sections of the report into separate documents.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---</span>
+<span class="n">title</span><span class="p">:</span> <span class="s2">&quot;Predicting breast cancer from digitized images of breast mass&quot;</span>
+<span class="n">author</span><span class="p">:</span> <span class="s2">&quot;Tiffany A. Timbers, Joel Ostblom &amp; Melissa Lee&quot;</span>
+<span class="nb">format</span><span class="p">:</span>
+    <span class="n">pdf</span>
+        <span class="n">toc</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">toc</span><span class="o">-</span><span class="n">depth</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">bibliography</span><span class="p">:</span> <span class="n">references</span><span class="o">.</span><span class="n">bib</span>
+<span class="n">execute</span><span class="p">:</span>
+  <span class="n">echo</span><span class="p">:</span> <span class="n">false</span>
+  <span class="n">warning</span><span class="p">:</span> <span class="n">false</span>
+<span class="o">---</span>
+
+<span class="c1">## Abstract</span>
+
+<span class="p">{{</span><span class="o">&lt;</span> <span class="n">include</span> <span class="n">_abstract</span><span class="o">.</span><span class="n">qmd</span> <span class="o">&gt;</span><span class="p">}}</span>
+
+<span class="c1">## Introduction</span>
+
+<span class="p">{{</span><span class="o">&lt;</span> <span class="n">include</span> <span class="n">_introduction</span><span class="o">.</span><span class="n">qmd</span> <span class="o">&gt;</span><span class="p">}}</span>
+
+<span class="c1">## Methods</span>
+
+<span class="p">{{</span><span class="o">&lt;</span> <span class="n">include</span> <span class="n">_methods</span><span class="o">.</span><span class="n">qmd</span> <span class="o">&gt;</span><span class="p">}}</span>
+
+<span class="c1">## Results &amp; Discussion</span>
+
+<span class="p">{{</span><span class="o">&lt;</span> <span class="n">include</span> <span class="n">_results</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">discussion</span><span class="o">.</span><span class="n">qmd</span> <span class="o">&gt;</span><span class="p">}}</span>
+
+<span class="c1">## References</span>
+</pre></div>
+</div>
+<p>This document would live in a project structure something like this
+(only zooming in on the reports sub-directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project/          
+├── data/                        
+├── reports/
+│   ├── _abstract.qmd
+│   ├── _introduction.qmd
+│   ├── _methods.qmd
+│   ├── _results-and-discussion.qmd
+│   └── breast_cancer_predictor_report.qmd         
+├── src/               
+├── doc/               
+├── README.md
+└── Dockerfile
+</pre></div>
+</div>
+<p>And when rendered,
+(by running <code class="docutils literal notranslate"><span class="pre">quarto</span> <span class="pre">render</span> <span class="pre">reports/breast_cancer_predicotr_report.qmd</span></code>)
+a single PDF document would be rendered from the 5 separate <code class="docutils literal notranslate"><span class="pre">.qmd</span></code> files.</p>
+</section>
+<section id="smoothing">
+<h3>Smoothing<a class="headerlink" href="#smoothing" title="Permalink to this heading">#</a></h3>
+<p>One downside to splitting collaborative writing into sections,
+is the the resulting document reads like it was written by several authors
+(because it was)!
+Additionally,
+the transitions between different sections of the report are often quite disjoint and abrupt (Stout, 2022).
+This is really undesirable
+as it makes it more difficult for the reader to understand the report.
+To counteract this effect of drafting a manuscript collaboratively by sections,
+we need to employ a smoothing process to blend the writing styles from the various
+authors, so that in the end, it will read as one consistently styled document,
+similar to documents written by a single author (Stout, 2022).</p>
+<p>Smoothing is a step, after the initial draft is generated by separate authors,
+where the authors trade section assignments and edit and revise a different section
+than which they initially drafted.
+It is also advisable after this step of smoothing,
+to do another step, where the entire manuscript is read by at least 2-3 authors
+where they pay particular attention to section transitions.
+This extra work, results in a more cohesive, clear and easy to read document,
+and should be used in any collaborative writing project (Stout, 2022).</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<p>Sara Stoudt (2022) Collaborative Writing Workflows in the Data-Driven Classroom: A Conversation Starter, Journal of Statistics and Data Science Education, 30:3, 282-288, DOI: 10.1080/26939169.2022.2082602</p>
 </section>
 </section>
 
@@ -986,6 +1140,7 @@ and then will be able to easily identify and fix your errors.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-get-to-know-quarto">Exercise - get to know Quarto</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-render-your-first-document">Exercise - render your first document</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-checkout-the-new-visual-markdown-editor">Exercise - checkout the new visual markdown editor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quarto-in-vs-code">Quarto in VS Code</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#anatomy-of-a-quarto-document">Anatomy of a Quarto document</a><ul class="nav section-nav flex-column">
@@ -1014,7 +1169,14 @@ and then will be able to easily identify and fix your errors.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tables">Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inline-code">Inline code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-chunk-execution-options">Code chunk execution options</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-r-markdown-documents">A helpful hint for successfully working with R Markdown documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-helpful-hint-for-successfully-working-with-quarto-documents">A helpful hint for successfully working with Quarto documents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quarto-reports-in-subdirectories">Quarto reports in subdirectories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strategies-for-collaborative-writing-with-quarto">Strategies for collaborative writing with Quarto</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#child-documents">Child documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smoothing">Smoothing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
 </li>
 </ul>

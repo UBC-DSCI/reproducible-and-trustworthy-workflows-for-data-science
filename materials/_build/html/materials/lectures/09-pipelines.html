@@ -446,20 +446,22 @@ pipelines compared to software that does not.</p></li>
 <p>To illustrate how to make a data analysis pipeline using a shell script to drive other scripts, we will work through an example together. Here are some set-up instructions so that we can do this together:</p>
 <section id="set-up-instructions">
 <h4>Set-up instructions<a class="headerlink" href="#set-up-instructions" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v1.0.zip">data_analysis_pipeline_eg-1.0.zip</a></p></li>
-<li><p>Unzip it and change into the <code class="docutils literal notranslate"><span class="pre">data_analysis_pipeline_eg-1.0</span></code> directory.</p></li>
-</ul>
+<ol class="arabic simple">
+<li><p>Click the green “Use this template” button from <a class="reference external" href="https://github.com/ttimbers/data-analysis-pipeline-bash-practice">this GitHub repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
+<li><p>Clone this repository to your computer.</p></li>
+</ol>
 </section>
 <section id="let-s-do-some-analysis">
 <h4>Let’s do some analysis!<a class="headerlink" href="#let-s-do-some-analysis" title="Permalink to this heading">#</a></h4>
 <p>Suppose we have a script, <code class="docutils literal notranslate"><span class="pre">wordcount.py</span></code>, that reads in a text file,
 counts the words in this text file, and outputs a data file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/wordcount.py data/isles.txt results/isles.dat
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 </pre></div>
 </div>
 <p>If we view the first 5 rows of the data file using <code class="docutils literal notranslate"><span class="pre">head</span></code>,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ head -5 results/isles.dat
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">head</span> <span class="o">-</span><span class="mi">5</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 </pre></div>
 </div>
 <p>we can see that the file consists of one row per word. Each row shows the word itself,
@@ -474,7 +476,9 @@ the total number of words in the text file.</p>
 </div>
 <p>Suppose we also have a script, <code class="docutils literal notranslate"><span class="pre">plotcount.py</span></code>, that reads in a data
 file and save a plot of the 10 most frequently occurring words:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python src/plotcount.py results/isles.dat results/figure/isles.png
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 <p>Together these scripts implement a data analysis pipeline:</p>
@@ -498,10 +502,14 @@ to build this pipeline so it does all that!</p>
 <span class="c1"># Usage: bash run_all.sh</span>
 
 <span class="c1"># perform wordcout on novels</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 
 <span class="c1"># create plots</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 <p>We actually have 4 books that we want to analyze, and then put the figures in a report.</p>
@@ -525,19 +533,35 @@ to build this pipeline so it does all that!</p>
 <span class="c1"># bash run_all.sh</span>
 
 <span class="c1"># count the words</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
 
 <span class="c1"># create the plots</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
-<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
 
 <span class="c1"># write the report</span>
-<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
+<span class="n">quarto</span> <span class="n">render</span> <span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">qmd</span>
 </pre></div>
 </div>
 </section>
@@ -615,31 +639,32 @@ data analysis pipeline.</p>
 <p>adapted from <a class="reference external" href="http://software-carpentry.org/">Software Carpentry</a></p>
 <section id="id2">
 <h4>Set-up instructions<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
-<ul class="simple">
-<li><p>Download <a class="reference external" href="https://github.com/ttimbers/data_analysis_pipeline_eg/archive/v2.0.zip">data_analysis_pipeline_eg-2.0.zip</a></p></li>
-<li><p>Unzip it and change into the <code class="docutils literal notranslate"><span class="pre">data_analysis_pipeline_eg-2.0</span></code> directory.</p></li>
-<li><p>note - the tutorial in <span class="xref myst">lecture 4</span> is a prerequisite</p></li>
-</ul>
+<ol class="arabic simple">
+<li><p>Click the green “Use this template” button from <a class="reference external" href="https://github.com/ttimbers/data-analysis-pipeline-make-practice">this GitHub repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
+<li><p>Clone this repository to your computer.</p></li>
+</ol>
 <p>Good reference: http://swcarpentry.github.io/make-novice/reference</p>
 <p>Create a file, called <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, with the following content:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count words.</span>
 <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 </pre></div>
 </div>
 <p>This is a simple build file, which for
-Make is called a Makefile - a file executed
-by Make. Let us go through each line in turn:</p>
+GNU Make is called a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> - a file executed
+by GNU Make. Let us go through each line in turn:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">#</span></code> denotes a <em>comment</em>. Any text from <code class="docutils literal notranslate"><span class="pre">#</span></code> to the end of the line is
 ignored by Make.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">results/isles.dat</span></code> is a <a class="reference external" href="http://swcarpentry.github.io/make-novice/reference#target">target</a>, a file to be
 created, or built.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">data/isles.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">src/wordcount.py</span></code> are <a class="reference external" href="http://swcarpentry.github.io/make-novice/reference#dependency">dependencies</a>, a
+<li><p><code class="docutils literal notranslate"><span class="pre">data/isles.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">scripts/wordcount.py</span></code> are <a class="reference external" href="http://swcarpentry.github.io/make-novice/reference#dependency">dependencies</a>, a
 file that is needed to build or update the target. Targets can have
 zero or more dependencies.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">:</span></code> separates targets from dependencies.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/wordcount.py</span> <span class="pre">data/isles.txt</span> <span class="pre">isles.dat</span></code> is an
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/wordcount.py</span> <span class="pre">--input_file=data/isles.txt</span> <span class="pre">--output_file=results/isles.dat</span></code> is an
 <a class="reference external" href="http://swcarpentry.github.io/make-novice/reference#action">action</a>, a command to run to build or update
 the target using the dependencies. Targets can have zero or more
 actions.</p></li>
@@ -649,14 +674,14 @@ is a legacy of Make’s 1970’s origins.</p></li>
 <a class="reference external" href="http://swcarpentry.github.io/make-novice/reference#rule">rule</a>.</p></li>
 </ul>
 <p>Our rule above describes how to build the target <code class="docutils literal notranslate"><span class="pre">results/isles.dat</span></code> using the
-action <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">src/wordcount.py</span></code> and the dependency <code class="docutils literal notranslate"><span class="pre">data/isles.txt</span></code>.</p>
+action <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scripts/wordcount.py</span></code> and the dependency <code class="docutils literal notranslate"><span class="pre">data/isles.txt</span></code>.</p>
 <p>By default, Make looks for a Makefile, called <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>, and we can
 run Make as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make results/isles.dat
 </pre></div>
 </div>
 <p>Make prints out the actions it executes:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 </pre></div>
 </div>
 <p>If we see,</p>
@@ -668,7 +693,7 @@ our actions.</p>
 <p>We don’t have to call our Makefile <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>. However, if we call it
 something else we need to tell Make where to find it. This we can do
 using <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make -f Makefile
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make -f Makefile results/isles.dat
 </pre></div>
 </div>
 <p>As we have re-run our Makefile, Make now informs us that:</p>
@@ -694,7 +719,7 @@ than<code class="docutils literal notranslate"><span class="pre">data/isles.txt<
 </pre></div>
 </div>
 <p>If we run Make again,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make results/isles.dat
 </pre></div>
 </div>
 <p>then it recreates <code class="docutils literal notranslate"><span class="pre">results/isles.dat</span></code>:</p>
@@ -707,11 +732,14 @@ been updated since the target, then the actions are re-run to update
 the target.</p>
 <p>We may want to remove all our data files so we can explicitly recreate
 them all. We can introduce a new target, and associated rule, <code class="docutils literal notranslate"><span class="pre">clean</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count words.</span>
+<span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 
 <span class="n">clean</span> <span class="p">:</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/*.</span><span class="n">dat</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 </pre></div>
 </div>
 <p>This is an example of a rule that has no dependencies. <code class="docutils literal notranslate"><span class="pre">clean</span></code> has no
@@ -727,86 +755,74 @@ not they exist. If we run Make and specify this target,</p>
 </div>
 <p>There is no actual thing built called <code class="docutils literal notranslate"><span class="pre">clean</span></code>. Rather, it is a
 short-hand that we can use to execute a useful sequence of
-actions. Such targets, though very useful, can lead to problems. For
-example, let us recreate our data files, create a directory called
-<code class="docutils literal notranslate"><span class="pre">clean</span></code>, then run Make:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make results/isles.dat
-$ mkdir clean
-$ make clean
-</pre></div>
-</div>
-<p>We get:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>make: `clean&#39; is up to date.
-</pre></div>
-</div>
+actions.</p>
 <p>Let’s add another rule to the end of <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
 
 <span class="n">clean</span> <span class="p">:</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/*.</span><span class="n">dat</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/*.</span><span class="n">png</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
-<p>the new target isles.png depends on the target isles.dat. So to make both, we can simply
+<p>the new target <code class="docutils literal notranslate"><span class="pre">isles.png</span></code> depends on the target <code class="docutils literal notranslate"><span class="pre">isles.dat</span></code>. So to make both, we can simply
 type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make isles.dat
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make results/figure/isles.png
 $ ls
 </pre></div>
 </div>
 <p>Let’s add another book:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
 
-<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-  <span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
 
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
 
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-  <span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
 
 <span class="n">clean</span> <span class="p">:</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/*.</span><span class="n">dat</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/*.</span><span class="n">png</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
 </pre></div>
 </div>
 <p>To run all of the commands, we need to type make <TARGET> for each one:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make isles.png
-$ make abyss.png
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ make results/figure/isles.png
+$ make results/figure/abyss.png
 </pre></div>
 </div>
-<p>OR we can add a target <code class="docutils literal notranslate"><span class="pre">all</span></code> which will build the last of the dependencies.</p>
+<p>OR we can add a target <code class="docutils literal notranslate"><span class="pre">all</span></code> to the very top of the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>
+which will build the last of the dependencies.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">all</span><span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
-
-<span class="c1"># count words</span>
-<span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
-	
-<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
-
-<span class="c1"># plot word count</span>
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">isles</span><span class="o">.</span><span class="n">png</span>
-
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
-
-<span class="n">clean</span> <span class="p">:</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/*.</span><span class="n">dat</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/*.</span><span class="n">png</span>
-
 </pre></div>
 </div>
 </section>
 </section>
 <section id="finish-off-the-makefile">
 <h3>Finish off the Makefile!<a class="headerlink" href="#finish-off-the-makefile" title="Permalink to this heading">#</a></h3>
+<p>Since we will also combine the figures into a report in the end,
+we will change our all target to being the rendered report file,
+and add a target for the rendered report file at the end:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile</span>
 <span class="c1"># Tiffany Timbers, Nov 2018</span>
 
@@ -818,36 +834,68 @@ $ make abyss.png
 <span class="c1"># example usage:</span>
 <span class="c1"># make all</span>
 
-<span class="nb">all</span> <span class="p">:</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">md</span>
+<span class="nb">all</span> <span class="p">:</span> <span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">html</span>
 
 <span class="c1"># count the words</span>
-<span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
-<span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
-	
+<span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="p">:</span> <span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">wordcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">data</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
+
 <span class="c1"># create the plots</span>
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>	
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>	
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
-<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>	
-	<span class="n">python</span> <span class="n">src</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
-	
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+	<span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span>
+
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span> <span class="p">:</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span>
+    <span class="n">python</span> <span class="n">scripts</span><span class="o">/</span><span class="n">plotcount</span><span class="o">.</span><span class="n">py</span> \
+        <span class="o">--</span><span class="n">input_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="o">--</span><span class="n">output_file</span><span class="o">=</span><span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+
 <span class="c1"># write the report</span>
-<span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">md</span> <span class="p">:</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">Rmd</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
-	<span class="n">Rscript</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;rmarkdown::render(&#39;doc/count_report.Rmd&#39;)&quot;</span>
-	
+<span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">html</span> <span class="p">:</span> <span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">qmd</span> \
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> \
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> \
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> \
+<span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+    <span class="n">quarto</span> <span class="n">render</span> <span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">qmd</span>
+
 <span class="n">clean</span> <span class="p">:</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
-	<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">md</span> <span class="n">doc</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">html</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">dat</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">dat</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">isles</span><span class="o">.</span><span class="n">png</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">abyss</span><span class="o">.</span><span class="n">png</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">last</span><span class="o">.</span><span class="n">png</span> \
+        <span class="n">results</span><span class="o">/</span><span class="n">figure</span><span class="o">/</span><span class="n">sierra</span><span class="o">.</span><span class="n">png</span>
+	<span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="n">report</span><span class="o">/</span><span class="n">count_report</span><span class="o">.</span><span class="n">html</span>
 </pre></div>
 </div>
 </section>
