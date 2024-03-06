@@ -362,7 +362,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -378,6 +380,18 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default-function-arguments">Default function arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function-documentation">Function documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-documentation-in-python">Function documentation in Python</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -413,6 +427,132 @@ document.write(`
 </div>
 </div>
 <p>Note that functions in Python are objects.</p>
+<section id="default-function-arguments">
+<h2>Default function arguments<a class="headerlink" href="#default-function-arguments" title="Permalink to this heading">#</a></h2>
+<p>Default values can be specified in the function definition:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">math_two_numbers</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">operation</span> <span class="o">=</span> <span class="s2">&quot;add&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">math_two_numbers</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">math_two_numbers</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;subtract&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="function-documentation">
+<h2>Function documentation<a class="headerlink" href="#function-documentation" title="Permalink to this heading">#</a></h2>
+<p>Function documentation is extremely useful at both the time of function creation/development, as well as at the time of function usage by the user. At the time of creation/development, it is useful for clearly delineating and communication the planned function’s specifications. At the time of usage, it is often the primary documentation a user will refer to in order to understand how to use the function. If a function is not well documented, it will not be well understood or widely used.</p>
+<section id="function-documentation-in-python">
+<h3>Function documentation in Python<a class="headerlink" href="#function-documentation-in-python" title="Permalink to this heading">#</a></h3>
+<p>In Python, we write function documentation using docstrings. These come after the function definition and are denoted by three apostrophes (<code class="docutils literal notranslate"><span class="pre">'''</span> <span class="pre">...</span> <span class="pre">'''</span></code>). There are many ways to write and format the content of the docstrings. For the purpose of this course, we will adopt the numpy style docstrings as they are easy to read and following by many data scientists.</p>
+<p>Example numpy style docstrings for math_two_numbers function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">math_two_numbers</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">operation</span> <span class="o">=</span> <span class="s2">&quot;add&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Perform a mathematical operation (addition or subtraction) on two numbers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : float or int</span>
+<span class="sd">        The first number to use in the operation.</span>
+<span class="sd">    y : float or int</span>
+<span class="sd">        The second number to use in the operation.</span>
+<span class="sd">    operation : str, optional</span>
+<span class="sd">        The operation to perform on the two numbers. </span>
+<span class="sd">        Can be &#39;add&#39; for addition (default) or &#39;sub&#39; for subtraction.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float or int</span>
+<span class="sd">        The result of the mathematical operation performed on `x` and `y`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; math_two_numbers(4, 5)</span>
+<span class="sd">    9</span>
+
+<span class="sd">    &gt;&gt;&gt; math_two_numbers(10, 3, operation=&quot;sub&quot;)</span>
+<span class="sd">    7</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s2">&quot;add&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once we define a function with docstrings,
+we (and other users) can get it as as part of the help documentation
+via <code class="docutils literal notranslate"><span class="pre">help(math_two_numbers)</span></code> or <code class="docutils literal notranslate"><span class="pre">?math_two_numbers</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">math_two_numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function math_two_numbers in module __main__:
+
+math_two_numbers(x, y, operation=&#39;add&#39;)
+    Perform a mathematical operation (addition or subtraction) on two numbers.
+    
+    Parameters
+    ----------
+    x : float or int
+        The first number to use in the operation.
+    y : float or int
+        The second number to use in the operation.
+    operation : str, optional
+        The operation to perform on the two numbers. 
+        Can be &#39;add&#39; for addition (default) or &#39;sub&#39; for subtraction.
+    
+    Returns
+    -------
+    float or int
+        The result of the mathematical operation performed on `x` and `y`.
+    
+    Examples
+    --------
+    &gt;&gt;&gt; math_two_numbers(4, 5)
+    9
+    
+    &gt;&gt;&gt; math_two_numbers(10, 3, operation=&quot;sub&quot;)
+    7
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -460,6 +600,24 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default-function-arguments">Default function arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#function-documentation">Function documentation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-documentation-in-python">Function documentation in Python</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
