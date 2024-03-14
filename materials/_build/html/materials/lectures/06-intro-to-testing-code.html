@@ -450,6 +450,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-coverage-in-r">Calculating coverage in R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-coverage-in-python">Calculating coverage in Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculating coverage in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-coverage-in-python-actually-count-line-coverage">How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually count line coverage?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-coverage-in-python-actually-branch-coverage">How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually branch coverage?</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-in-python-resources">Testing in Python resources</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution:</a></li>
 </ul>
@@ -1260,82 +1266,91 @@ function source:</p>
 <section id="how-are-line-and-branch-coverage-different">
 <h2>How are line and branch coverage different?<a class="headerlink" href="#how-are-line-and-branch-coverage-different" title="Permalink to this heading">#</a></h2>
 <p>Consider the same example we just saw and the unit test below, let’s manually calculate the coverage using line and branch coverage metrics:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_function</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1"># Branch 1</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">condition_met</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">function_a</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-  <span class="p">}</span>
-  <span class="c1"># Branch 2</span>
-  <span class="k">else</span> <span class="p">{</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">function_c</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-  <span class="p">}</span>
-  <span class="n">z</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_that</span><span class="p">(</span><span class="s2">&quot;ponies are actually unicorns&quot;</span><span class="p">,</span> <span class="p">{</span>
-  <span class="n">expect_equal</span><span class="p">(</span><span class="n">my_function</span><span class="p">(</span><span class="s2">&quot;pony&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Actually a unicorn&quot;</span><span class="p">))</span>
-<span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>  <span class="o">|</span>  <span class="n">my_function</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+<span class="mi">2</span>  <span class="o">|</span>  <span class="c1"># Branch 1</span>
+<span class="mi">3</span>  <span class="o">|</span>    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;pony&quot;</span><span class="p">)</span> <span class="p">{</span>
+<span class="mi">4</span>  <span class="o">|</span>      <span class="n">y</span> <span class="o">=</span> <span class="n">function_a</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">5</span>  <span class="o">|</span>      <span class="n">z</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="mi">6</span>  <span class="o">|</span>    <span class="p">}</span>
+<span class="mi">7</span>  <span class="o">|</span>    <span class="c1"># Branch 2</span>
+<span class="mi">8</span>  <span class="o">|</span>    <span class="k">else</span> <span class="p">{</span> 
+<span class="mi">9</span>  <span class="o">|</span>      <span class="n">y</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">10</span> <span class="o">|</span>      <span class="n">z</span> <span class="o">=</span> <span class="n">function_c</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="mi">11</span> <span class="o">|</span>    <span class="p">}</span>
+<span class="mi">12</span> <span class="o">|</span>    <span class="n">z</span>
+<span class="mi">13</span> <span class="o">|</span>  <span class="p">}</span>
+<span class="mi">14</span> <span class="o">|</span>
+<span class="mi">15</span> <span class="o">|</span>  <span class="n">test_that</span><span class="p">(</span><span class="s2">&quot;ponies are actually unicorns&quot;</span><span class="p">,</span> <span class="p">{</span>
+<span class="mi">16</span> <span class="o">|</span>    <span class="n">expect_equal</span><span class="p">(</span><span class="n">my_function</span><span class="p">(</span><span class="s2">&quot;pony&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Actually a unicorn&quot;</span><span class="p">))</span>
+<span class="mi">17</span> <span class="o">|</span>  <span class="p">})</span>
 </pre></div>
 </div>
 <p><em>Note: function definitions are not counted as lines when calculating coverage</em></p>
 <section id="using-branch-as-the-coverage-metric">
 <h3>Using branch as the coverage metric:<a class="headerlink" href="#using-branch-as-the-coverage-metric" title="Permalink to this heading">#</a></h3>
+<p>Branch 1 (lines 3-5) is covered by the test, because <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(x</span> <span class="pre">==</span> <span class="pre">&quot;pony&quot;)</span></code> evaluates to true.
+Therefore we have one branch covered, and one branch uncovered (lines 8-10),
+resulting in 50% branch coverage when we plug these numbers into our formula.</p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
 <p><span class="math notranslate nohighlight">\(Coverage = 50\%\)</span></p>
 </section>
 <section id="using-line-as-the-coverage-metric">
 <h3>Using line as the coverage metric:<a class="headerlink" href="#using-line-as-the-coverage-metric" title="Permalink to this heading">#</a></h3>
+<p>Lines 3-5 and 12 are executed, and lines 8-10 are not (function definitions are not typically counted in line coverage).
+There fore we have 4 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
-<p><span class="math notranslate nohighlight">\(Coverage = \frac{4}{(4 + 4)} * 100\)</span></p>
-<p><span class="math notranslate nohighlight">\(Coverage = 50\%\)</span></p>
+<p><span class="math notranslate nohighlight">\(Coverage = \frac{4}{(4 + 3)} * 100\)</span></p>
+<p><span class="math notranslate nohighlight">\(Coverage = 57\%\)</span></p>
+<p>In this case, both metrics give us relatively similar estimates of code coverage.</p>
 </section>
 <section id="but-wait-line-coverage-can-be-misleading">
 <h3>But wait, line coverage can be misleading…<a class="headerlink" href="#but-wait-line-coverage-can-be-misleading" title="Permalink to this heading">#</a></h3>
 <p>Let’s alter our function and re-calculate line and branch coverage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_function</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-  <span class="c1"># Branch 1</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">condition_met</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">function_a</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;some important message&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;another important message&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a less important message&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;just makin&#39; stuff up here...&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;out of things to say...&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;how creative can I be...&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I guess not very...&quot;</span><span class="p">)</span>
-  <span class="p">}</span>
-  <span class="c1"># Branch 2</span>
-  <span class="k">else</span> <span class="p">{</span> 
-    <span class="n">y</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">function_c</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-  <span class="p">}</span>
-  <span class="n">z</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_that</span><span class="p">(</span><span class="s2">&quot;ponies are actually unicorns&quot;</span><span class="p">,</span> <span class="p">{</span>
-  <span class="n">expect_equal</span><span class="p">(</span><span class="n">my_function</span><span class="p">(</span><span class="s2">&quot;pony&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Actually a unicorn&quot;</span><span class="p">))</span>
-<span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>  <span class="o">|</span>  <span class="n">my_function</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+<span class="mi">2</span>  <span class="o">|</span>  <span class="c1"># Branch 1</span>
+<span class="mi">3</span>  <span class="o">|</span>    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;pony&quot;</span><span class="p">)</span> <span class="p">{</span>
+<span class="mi">4</span>  <span class="o">|</span>      <span class="n">y</span> <span class="o">=</span> <span class="n">function_a</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">5</span>  <span class="o">|</span>      <span class="n">z</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="mi">6</span>  <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="mi">7</span>  <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;some important message&quot;</span><span class="p">)</span>
+<span class="mi">8</span>  <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;another important message&quot;</span><span class="p">)</span>
+<span class="mi">9</span>  <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a less important message&quot;</span><span class="p">)</span>
+<span class="mi">10</span> <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;just makin&#39; stuff up here...&quot;</span><span class="p">)</span>
+<span class="mi">11</span> <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;out of things to say...&quot;</span><span class="p">)</span>
+<span class="mi">12</span> <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;how creative can I be...&quot;</span><span class="p">)</span>
+<span class="mi">13</span> <span class="o">|</span>      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;I guess not very...&quot;</span><span class="p">)</span>
+<span class="mi">14</span> <span class="o">|</span>    <span class="p">}</span>
+<span class="mi">15</span> <span class="o">|</span>    <span class="c1"># Branch 2</span>
+<span class="mi">16</span> <span class="o">|</span>    <span class="k">else</span> <span class="p">{</span> 
+<span class="mi">17</span> <span class="o">|</span>      <span class="n">y</span> <span class="o">=</span> <span class="n">function_b</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="mi">18</span> <span class="o">|</span>      <span class="n">z</span> <span class="o">=</span> <span class="n">function_c</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="mi">19</span> <span class="o">|</span>    <span class="p">}</span>
+<span class="mi">20</span> <span class="o">|</span>    <span class="n">z</span>
+<span class="mi">21</span> <span class="o">|</span>  <span class="p">}</span>
+<span class="mi">22</span> <span class="o">|</span>
+<span class="mi">23</span> <span class="o">|</span>  <span class="n">test_that</span><span class="p">(</span><span class="s2">&quot;ponies are actually unicorns&quot;</span><span class="p">,</span> <span class="p">{</span>
+<span class="mi">24</span> <span class="o">|</span>    <span class="n">expect_equal</span><span class="p">(</span><span class="n">my_function</span><span class="p">(</span><span class="s2">&quot;pony&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Actually a unicorn&quot;</span><span class="p">))</span>
+<span class="mi">25</span> <span class="o">|</span>  <span class="p">})</span>
 </pre></div>
 </div>
 <section id="id1">
 <h4>Using branch as the coverage metric:<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<p>Branch 1 (lines 3-13) is covered by the test, because <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(x</span> <span class="pre">==</span> <span class="pre">&quot;pony&quot;)</span></code> evaluates to true.
+Therefore we have one branch covered, and one branch uncovered (lines 16-18),
+resulting in 50% branch coverage when we plug these numbers into our formula.</p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
 <p><span class="math notranslate nohighlight">\(Coverage = 50\%\)</span></p>
 </section>
 <section id="id2">
 <h4>Using line as the coverage metric:<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<p>Lines 3-13 and 20 are executed, and lines 16-18 are not (function definitions are not typically counted in line coverage).
+There fore we have 12 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
 <p><span class="math notranslate nohighlight">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
-<p><span class="math notranslate nohighlight">\(Coverage = \frac{12}{(12 + 4)} * 100\)</span></p>
-<p><span class="math notranslate nohighlight">\(Coverage = 75\%\)</span></p>
-<p>🤯</p>
+<p><span class="math notranslate nohighlight">\(Coverage = \frac{12}{(12 + 3)} * 100\)</span></p>
+<p><span class="math notranslate nohighlight">\(Coverage = 80\%\)</span></p>
+<p>In this case, the different metrics give us very different estimates of code coverage! 🤯</p>
 </section>
 </section>
 <section id="take-home-message">
@@ -1358,6 +1373,79 @@ function source:</p>
 <blockquote>
 <div><p>Why has this not been implemented? It has been in an now unsupported package (see <a class="reference external" href="https://github.com/MangoTheCat/testCoverage">here</a>), but its implementation was too complicated for others to understand. Automating the calculation of branch coverage is non-trivial, and this is a perfect demonstration of that.</p>
 </div></blockquote>
+</section>
+<section id="calculating-coverage-in-python">
+<h2>Calculating coverage in Python<a class="headerlink" href="#calculating-coverage-in-python" title="Permalink to this heading">#</a></h2>
+<p>We use the plugin  tool <a class="reference external" href="https://github.com/pytest-dev/pytest-cov"><code class="docutils literal notranslate"><span class="pre">pytest-cov</span></code></a> to do this.</p>
+<p>Install as a package via conda:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">pytest</span><span class="o">-</span><span class="n">cov</span>
+</pre></div>
+</div>
+<section id="id3">
+<h3>Calculating coverage in Python<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">--</span><span class="n">cov</span><span class="o">=&lt;</span><span class="n">directory</span><span class="o">&gt;</span> 
+</pre></div>
+</div>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span> <span class="o">--</span><span class="n">cov</span><span class="o">-</span><span class="n">branch</span> <span class="o">--</span><span class="n">cov</span><span class="o">=&lt;</span><span class="n">directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="how-does-coverage-in-python-actually-count-line-coverage">
+<h3>How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually count line coverage?<a class="headerlink" href="#how-does-coverage-in-python-actually-count-line-coverage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>the output from <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">--cov=src</span></code> gives a table that looks like this:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">----------</span> <span class="n">coverage</span><span class="p">:</span> <span class="n">platform</span> <span class="n">darwin</span><span class="p">,</span> <span class="n">python</span> <span class="mf">3.7.6</span><span class="o">-</span><span class="n">final</span><span class="o">-</span><span class="mi">0</span> <span class="o">-----------</span>
+<span class="n">Name</span>                  <span class="n">Stmts</span>   <span class="n">Miss</span>  <span class="n">Cover</span>
+<span class="o">-----------------------------------------</span>
+<span class="n">big_abs</span><span class="o">/</span><span class="n">big_abs</span><span class="o">.</span><span class="n">py</span>        <span class="mi">8</span>      <span class="mi">2</span>    <span class="mi">75</span><span class="o">%</span>
+<span class="o">-----------------------------------------</span>
+<span class="n">TOTAL</span>                     <span class="mi">9</span>      <span class="mi">2</span>    <span class="mi">78</span><span class="o">%</span>
+</pre></div>
+</div>
+<p>In the column labelled as “Stmts”, coverage is calculating all possible line jumps that could have been executed (these line jumps are sometimes called arcs). This is essentially covered + uncovered lines of code.</p>
+<blockquote>
+<div><p>Note - this leads coverage to count two statements on one line that are separated by a “;” (e.g., print(“hello”); print(“there”)) as one statement, as well as calculating a single statement that is spread across two lines as one statement.</p>
+</div></blockquote>
+<p>In the column labelled as “Miss”, this is the number of line jumps not executed by the tests.
+So our covered lines of code is “Stmts” - “Miss”.</p>
+<p>The coverage percentage in this scenario is calculated by:
+$<span class="math notranslate nohighlight">\(Coverage = \frac{(Stmts - Miss)}{Stmts}\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(Coverage = \frac{8 - 2}{8} * 100 = 75\%\)</span>$</p>
+</section>
+<section id="how-does-coverage-in-python-actually-branch-coverage">
+<h3>How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually branch coverage?<a class="headerlink" href="#how-does-coverage-in-python-actually-branch-coverage" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>the output from <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">pytest</span> <span class="pre">--cov-branch</span> <span class="pre">--cov=src</span></code> gives a table that looks like this:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">----------</span> <span class="n">coverage</span><span class="p">:</span> <span class="n">platform</span> <span class="n">darwin</span><span class="p">,</span> <span class="n">python</span> <span class="mf">3.7.6</span><span class="o">-</span><span class="n">final</span><span class="o">-</span><span class="mi">0</span> <span class="o">-----------</span>
+<span class="n">Name</span>                  <span class="n">Stmts</span>   <span class="n">Miss</span> <span class="n">Branch</span> <span class="n">BrPart</span>  <span class="n">Cover</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">big_abs</span><span class="o">/</span><span class="n">big_abs</span><span class="o">.</span><span class="n">py</span>        <span class="mi">8</span>      <span class="mi">2</span>      <span class="mi">6</span>      <span class="mi">3</span>    <span class="mi">64</span><span class="o">%</span>
+<span class="o">-------------------------------------------------------</span>
+<span class="n">TOTAL</span>                     <span class="mi">9</span>      <span class="mi">2</span>      <span class="mi">6</span>      <span class="mi">3</span>    <span class="mi">67</span><span class="o">%</span>
+</pre></div>
+</div>
+<p>In the column labelled as “Branch”, coverage is actually counting the number of possible jumps from branch points.
+This is essentially covered + uncovered branches of code.</p>
+<blockquote>
+<div><p>Note: because coverage is using line jumps to count branches, each <code class="docutils literal notranslate"><span class="pre">if</span></code> inherently has an <code class="docutils literal notranslate"><span class="pre">else</span></code> even if its not explicitly written in the code.</p>
+</div></blockquote>
+<p>In the column labelled as “BrPart”, this is the number of of possible jumps from branch points executed by the tests.
+This is essentially our covered branches of code.</p>
+<p>The branch coverage percentage in this tool is calculated by:</p>
+<div class="math notranslate nohighlight">
+\[Coverage = \frac{(Stmts\:executed + BrPart)}{(Stmts + Branch)}\]</div>
+<div class="math notranslate nohighlight">
+\[Coverage = \frac{((Stmts - Miss) + BrPart)}{(Stmts + Branch)}\]</div>
+<blockquote>
+<div><p>Note: You can see this formula actually includes both line and branch coverage in this calculation.</p>
+</div></blockquote>
+<p>So for <code class="docutils literal notranslate"><span class="pre">big_abs/big_abs.py</span></code> 64% was calculated from:
+$<span class="math notranslate nohighlight">\(Coverage = \frac{((8 - 2) + 3)}{(8 + 6)} * 100 = 64\%\)</span>$</p>
+</section>
 </section>
 <section id="testing-in-python-resources">
 <h2>Testing in Python resources<a class="headerlink" href="#testing-in-python-resources" title="Permalink to this heading">#</a></h2>
@@ -1501,6 +1589,12 @@ function source:</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-coverage-in-r">Calculating coverage in R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-coverage-in-python">Calculating coverage in Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculating coverage in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-coverage-in-python-actually-count-line-coverage">How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually count line coverage?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-does-coverage-in-python-actually-branch-coverage">How does <code class="docutils literal notranslate"><span class="pre">coverage</span></code> in Python actually branch coverage?</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-in-python-resources">Testing in Python resources</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution:</a></li>
 </ul>
