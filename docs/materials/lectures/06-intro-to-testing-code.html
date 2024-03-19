@@ -429,6 +429,7 @@ document.write(`
 </li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing">Example tests for altair plots (using object attributes not visual regression testing)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-test-suite-quality">Evaluate test suite quality</a></li>
@@ -1201,6 +1202,46 @@ function source:</p>
 </section>
 </section>
 </section>
+<section id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing">
+<h3>Example tests for altair plots (using object attributes not visual regression testing)<a class="headerlink" href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" title="Permalink to this heading">#</a></h3>
+<p>Here’s a function that creates a scatter plot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x_axis</span><span class="p">,</span> <span class="n">y_axis</span><span class="p">):</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">mark_line</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">alt</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="n">x_axis</span> <span class="o">+</span> <span class="s1">&#39;:Q&#39;</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="n">zero</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+              <span class="n">axis</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Axis</span><span class="p">(</span><span class="n">tickMinStep</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">y</span><span class="o">=</span><span class="n">y_axis</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">chart</span>
+</pre></div>
+</div>
+<p>Here’s some small data to test it on:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">small_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1901</span><span class="p">,</span> <span class="mi">1902</span><span class="p">,</span> <span class="mi">1903</span><span class="p">,</span> <span class="mi">1904</span><span class="p">,</span> <span class="mi">1905</span><span class="p">]),</span>
+        <span class="s1">&#39;measure&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+    <span class="p">})</span>
+<span class="n">small_data</span>
+</pre></div>
+</div>
+<p>Here’s the plot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">small_scatter</span> <span class="o">=</span> <span class="n">scatter</span><span class="p">(</span><span class="n">small_data</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;measure&#39;</span><span class="p">)</span>
+<span class="n">small_scatter</span>
+</pre></div>
+</div>
+<figure class="align-default" id="alt-chart-png">
+<a class="reference internal image-reference" href="../../_images/alt_chart.png"><img alt="../../_images/alt_chart.png" src="../../_images/alt_chart.png" style="height: 500px;" /></a>
+</figure>
+<p>Here’s a unit test for the <code class="docutils literal notranslate"><span class="pre">scatter</span></code> function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_scatter</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">field</span> <span class="o">==</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;x_axis should be mapped to the x axis&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">field</span> <span class="o">==</span> <span class="s1">&#39;measure&#39;</span><span class="p">,</span> <span class="s1">&#39;y_axis should be mapped to the y axis&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">mark</span> <span class="o">==</span> <span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="s1">&#39;mark should be a line&#39;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">zero</span> <span class="o">==</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;x-axis should not start at 0&quot;</span>
+    <span class="k">assert</span> <span class="n">small_scatter</span><span class="o">.</span><span class="n">encoding</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">axis</span><span class="o">.</span><span class="n">tickMinStep</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;x-axis small tick step should be 1&quot;</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="evaluate-test-suite-quality">
 <h2>Evaluate test suite quality<a class="headerlink" href="#evaluate-test-suite-quality" title="Permalink to this heading">#</a></h2>
@@ -1568,6 +1609,7 @@ $<span class="math notranslate nohighlight">\(Coverage = \frac{((8 - 2) + 3)}{(8
 </li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing">Example tests for altair plots (using object attributes not visual regression testing)</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-test-suite-quality">Evaluate test suite quality</a></li>

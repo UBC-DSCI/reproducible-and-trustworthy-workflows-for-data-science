@@ -388,7 +388,10 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-start-writing-an-r-or-python-package">When to start writing an R or Python package</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-start-writing-an-r-or-python-package">When to start writing an R or Python package</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-video">Optional video:</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tour-de-packages">Tour de packages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tour-de-r-packages">Tour de R packages</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usethis-and-the-evolution-of-r-packaging"><code class="docutils literal notranslate"><span class="pre">usethis</span></code> and the evolution of R packaging</a></li>
@@ -401,6 +404,32 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-package-things-for-python-and-r-packages">Key package things for Python and R packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-minimal-viable-software-package">What is a minimal viable software package?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-python-package-files">Essential Python package files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-pyproject-toml-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file’s contents</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-init-py-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file’s contents</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docs-and-github-workflows-ci-cd-yml"><code class="docutils literal notranslate"><span class="pre">docs/*</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#docs"><code class="docutils literal notranslate"><span class="pre">docs/*</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#github-workflows-ci-cd-yml"><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-r-package-files">Essential R package files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-description-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> file’s contents</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#man-rd-files"><code class="docutils literal notranslate"><span class="pre">man/*Rd</span></code> files</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#namespace-file"><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> file</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cookiecutter-project-templates">Cookiecutter project templates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differences-in-package-building-tool-philosophy">Differences in package building tool philosophy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iclicker-question">iClicker question:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#in-class-disucssion">In class disucssion</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-other-package-dependencies-in-your-package">Dealing with other package dependencies in your package</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-package-dependencies-in-r">Dealing with package dependencies in R</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pipe-a-special-dependency">The pipe, <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code>, a special dependency</a></li>
@@ -430,9 +459,32 @@ document.write(`
 <p>By the end of this topic, students will be able to:</p>
 <ol class="arabic simple">
 <li><p>Explain the circumstances in which one should consider creating a package for their code</p></li>
-<li><p>Name the key files and directories in R software packages and describe the function of each</p></li>
 <li><p>Use available package development tools (e.g., <code class="docutils literal notranslate"><span class="pre">usethis</span></code> and <code class="docutils literal notranslate"><span class="pre">devtools</span></code> in R) to create a small, simple software package</p></li>
-<li><p>Generate well formatted function and package-level documentation for software packages using available tools (e.g., <code class="docutils literal notranslate"><span class="pre">Roxygen2</span></code> and <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> in R)</p></li>
+<li><p>Be able to distinguish between essential software package elements (required to make a minimal software package) and those that are not essential but act to improve the user and developer experiences.</p></li>
+<li><p>Define what a namespace is.</p></li>
+<li><p>Explain the role of the code within the following software package files:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Python</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docs/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code></p></li>
+</ul>
+</li>
+<li><p>R</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">man/*.Rd</span></code></p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="7">
+<li><p>Explain at a high level how the Cookiecutter project template tool works.</p></li>
+<li><p>Compare and contrast how the Cookiecutter project template tool sets up a software package structure to how <code class="docutils literal notranslate"><span class="pre">devtools</span></code> and <code class="docutils literal notranslate"><span class="pre">usethis</span></code> set up a software package.</p></li>
+<li><p>Generate well formatted function and package-level documentation for software packages using available tools (e.g., <code class="docutils literal notranslate"><span class="pre">Roxygen2</span></code> and <code class="docutils literal notranslate"><span class="pre">pkgdown</span></code> in R, or numpy-style dosctrings and Sphinx in Python)</p></li>
 </ol>
 </section>
 <section id="when-to-start-writing-an-r-or-python-package">
@@ -449,8 +501,11 @@ document.write(`
 <blockquote>
 <div><p>The R package ecosystem has found great use in packaging data in addition to Software. Packaging data is beyond the scope of this course, but you should know that it is widely done in R and that you can do it if you want or need to.</p>
 </div></blockquote>
-<p>Let’s watch a video from rstudio::conf 2020, called RMarkdown Driven Development by Emily Riederer, because I think it is such a nice narrative on how analysis code can evolve into packages:</p>
-<p><a class="reference external" href="https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/">https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/</a></p>
+<section id="optional-video">
+<h3>Optional video:<a class="headerlink" href="#optional-video" title="Permalink to this heading">#</a></h3>
+<p>I recommend watching a video from rstudio::conf 2020, called RMarkdown Driven Development by Emily Riederer, because I think it is such a nice narrative on how analysis code can evolve into software packages. Despite this talk being focused on R, it really applies to any data science language, and you could easily re-present this as “Jupyter Driven Development” or “Quarto Driven Development”.</p>
+<p><a class="reference external" href="https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/">RMarkdown Driven Development by Emily Riederer (video)</a></p>
+</section>
 </section>
 <section id="tour-de-packages">
 <h2>Tour de packages<a class="headerlink" href="#tour-de-packages" title="Permalink to this heading">#</a></h2>
@@ -596,6 +651,348 @@ document.write(`
 </tr>
 </tbody>
 </table>
+</section>
+<section id="what-is-a-minimal-viable-software-package">
+<h2>What is a minimal viable software package?<a class="headerlink" href="#what-is-a-minimal-viable-software-package" title="Permalink to this heading">#</a></h2>
+<p>In this course, we are learning to build software packages in R and Python to a high standard,
+with regards to:</p>
+<ul class="simple">
+<li><p>code robustness</p></li>
+<li><p>documentation</p></li>
+<li><p>collaboration strategies</p></li>
+</ul>
+<p>This is really great, but that means there are a LOT of files to track and learn about. What can be helpful is to know and be able to identify which files are essential to make a locally installable software package.</p>
+<section id="essential-python-package-files">
+<h3>Essential Python package files<a class="headerlink" href="#essential-python-package-files" title="Permalink to this heading">#</a></h3>
+<p>Using the project layout we recommend for this course,
+here is a Python package structure with only the most essential files.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pkg
+├── pyproject.toml             
+└── src                       
+    └── pkg              
+        ├── __init__.py        
+        └── module.py  
+</pre></div>
+</div>
+<p>What do each of these do?</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> stores all the metadata and install instructions for the package.</p></li>
+<li><p>The presence of the <code class="docutils literal notranslate"><span class="pre">src</span></code> directory defines the code that will form the installable version of your package (meaning that users only get this code when they install the package, and that developers must install the package before running their tests).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> tells Python that a directory is a package. They can be left empty, or they can also be used to add objects to the package’s namespace, provide documentation, and/or run other initialization code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">module.py</span></code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
+</ul>
+<section id="getting-to-know-a-pyproject-toml-file-s-contents">
+<h4>Getting to know a <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file’s contents<a class="headerlink" href="#getting-to-know-a-pyproject-toml-file-s-contents" title="Permalink to this heading">#</a></h4>
+<p>Here is an example <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[tool.poetry]                                          ┐
+name = &quot;pycounts_tt_2024&quot;                              │
+version = &quot;0.1.0&quot;                                      │ Package metadata
+description = &quot;Calculate word counts in a text file!&quot;  │
+authors = [&quot;Tiffany Timbers&quot;]                          │
+license = &quot;MIT&quot;                                        │
+readme = &quot;README.md&quot;                                   ┘
+
+[tool.poetry.dependencies]                             ┐ 
+python = &quot;&gt;=3.9&quot;                                       │ User function dependencies
+matplotlib = &quot;&gt;=3.8.2&quot;                                 ┘
+
+[tool.poetry.dev-dependencies]                         ┐
+                                                       │
+[tool.poetry.group.dev.dependencies]                   │
+pytest = &quot;&gt;=7.4.4&quot;                                     │
+pytest-cov = &quot;&gt;=4.1.0&quot;                                 │ Developer dependencies
+jupyter = &quot;&gt;=1.0.0&quot;                                    │
+myst-nb = {version = &quot;^1.0.0&quot;, python = &quot;^3.9&quot;}        │
+sphinx-autoapi = &quot;^3.0.0&quot;                              │
+sphinx-rtd-theme = &quot;^2.0.0&quot;                            ┘
+
+[build-system]                                         ┐
+requires = [&quot;poetry-core&gt;=1.0.0&quot;]                      │ Package build dependencies
+build-backend = &quot;poetry.core.masonry.api&quot;              ┘
+</pre></div>
+</div>
+<p>Almost everything inside this file is customizable based on your package. Even the build system!
+<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> can also be used with other build tools such as setuptools and flit!
+If you are interested in learning more, checkout the <a class="reference external" href="https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html">Python Packaging Tools guide</a> from PyOpenSci.</p>
+</section>
+<section id="getting-to-know-a-init-py-file-s-contents">
+<h4>Getting to know a <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file’s contents<a class="headerlink" href="#getting-to-know-a-init-py-file-s-contents" title="Permalink to this heading">#</a></h4>
+<p>As mentioned earlier, this file can serve it’s essential package function of telling Python that this directory is a package by just existing and being empty. It can however serve other purposes. Let’s discuss the code that exists in the <code class="docutils literal notranslate"><span class="pre">py-pkgs-cookiecutter</span></code> template:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">py-pkgs-cookiecutter</span></code> we used to create our <code class="docutils literal notranslate"><span class="pre">pycounts</span></code> package (<a class="reference external" href="https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure">Section 3.2.2</a>) already populated our <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file with this code for us:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># read version from installed package</span>
+<span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s2">&quot;pycounts&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Because this code is in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> is executed when the package is imported (this is the case for all <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> files, we can ask for the package version with Python code like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pycounts</span>
+<span class="n">pycounts</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.1.0</span>
+</pre></div>
+</div>
+<p>In the code in <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> we get the version from the package metadata, that is derived from <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>. This allows us to only have to update the version of our package in one place when we bump to a new version.</p>
+<p>What other kinds of interesting things can we do with <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>? Well we can use it to control the import behavior of a package. For example, there are currently only two main functions that users will commonly use from our <code class="docutils literal notranslate"><span class="pre">pycounts</span></code> package: <code class="docutils literal notranslate"><span class="pre">pycounts.count_words()</span></code> and <code class="docutils literal notranslate"><span class="pre">plotting.plot_words()</span></code>. Users have to type the full path to these functions to import them:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pycounts.pycounts</span> <span class="kn">import</span> <span class="n">count_words</span>
+<span class="kn">from</span> <span class="nn">pycounts.plotting</span> <span class="kn">import</span> <span class="n">plot_words</span>
+</pre></div>
+</div>
+<p>If we import those core functions in <code class="docutils literal notranslate"><span class="pre">pycounts</span></code>’s <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file, which would bind them to the package namespace, we can make our user’s experience of loading them easier!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># read version from installed package</span>
+<span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># populate package namespace</span>
+<span class="kn">from</span> <span class="nn">pycounts.pycounts</span> <span class="kn">import</span> <span class="n">count_words</span>
+<span class="kn">from</span> <span class="nn">pycounts.plotting</span> <span class="kn">import</span> <span class="n">plot_words</span>
+</pre></div>
+</div>
+<p>The functions are now bound to the pycounts namespace, so users can access them like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pycounts</span>
+<span class="n">pycounts</span><span class="o">.</span><span class="n">count_words</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">function</span> <span class="n">count_words</span><span class="o">&gt;</span>
+
+</pre></div>
+</div>
+<p>What is a namespace again? A “namespace” is a set of names that are used to identify and refer to objects of various kinds (source: <a class="reference external" href="https://en.wikipedia.org/wiki/Namespace">Wikipedia</a>).</p>
+</section>
+</section>
+<section id="docs-and-github-workflows-ci-cd-yml">
+<h3><code class="docutils literal notranslate"><span class="pre">docs/*</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code><a class="headerlink" href="#docs-and-github-workflows-ci-cd-yml" title="Permalink to this heading">#</a></h3>
+<p>We will cover both these topics in greater detail later (<code class="docutils literal notranslate"><span class="pre">docs/*</span></code> in the documentation chapter/lecture and <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code> in the continuous integration and deployment chapter/lecture), but for now it’s helpful to get a bit better of an idea of these files and what they are doing.</p>
+<section id="docs">
+<h4><code class="docutils literal notranslate"><span class="pre">docs/*</span></code><a class="headerlink" href="#docs" title="Permalink to this heading">#</a></h4>
+<p>To keep things organized, to and to make the package documentation easier to automate, we keep the documentation files in the <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory and use a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> (or <code class="docutils literal notranslate"><span class="pre">make.bat</span></code> on Windows) therein to automate their rendering.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docs
+   ├── changelog.md
+   ├── conduct.md
+   ├── conf.py
+   ├── contributing.md
+   ├── example.ipynb
+   ├── index.md
+   ├── make.bat
+   └── requirements.txt (deprecated)
+</pre></div>
+</div>
+<p>Note that many of these files also commonly exist in the root of projects and people expect to find them there!!! These include:</p>
+<ul class="simple">
+<li><p>changelog.md</p></li>
+<li><p>conduct.md</p></li>
+<li><p>contributing.md</p></li>
+</ul>
+<p>So what we have done is pointed the <code class="docutils literal notranslate"><span class="pre">doc/*.md</span></code>’s of these files to the contents these files in the project root. And at rendering, their content will be used instead! If you look at the raw source of one of these files (e.g., conduct.md) you will see:</p>
+<a class="reference internal image-reference" href="../../_images/python-docs-md-content.png"><img alt="../../_images/python-docs-md-content.png" src="../../_images/python-docs-md-content.png" style="width: 500px;" /></a>
+<p>This helps keep our docs up to date by not having two places to update them!</p>
+<p><code class="docutils literal notranslate"><span class="pre">conf.py</span></code> is a configuration file that specifies style and formatting for the documentation. In this course we will not be modifying it, but if you wanted you can! To do this, please first read the docs for <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html">Sphinx configuration here</a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file in the <code class="docutils literal notranslate"><span class="pre">pypkgs-cookiecutter</span></code> template is now deprecated and will be removed in a future version. All dependencies are now managed by <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+</section>
+<section id="github-workflows-ci-cd-yml">
+<h4><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code><a class="headerlink" href="#github-workflows-ci-cd-yml" title="Permalink to this heading">#</a></h4>
+<p>This file contains automation code for continuous integration and delivery of our Python software package, reading the steps in this file you will see that it does the following:</p>
+<ol class="arabic simple">
+<li><p>Continuous integration tasks:</p></li>
+</ol>
+<ul class="simple">
+<li><p>installs your package</p></li>
+<li><p>runs the test suite</p></li>
+<li><p>calculates test coverage</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Continous deployment tasks:</p></li>
+</ol>
+<ul class="simple">
+<li><p>bumps the package software version, as well as prepares and creates a GitHub release of the package</p></li>
+<li><p>builds the package</p></li>
+<li><p>publishes it to the package repository (i.e., TestPyPI or PyPI, or both)</p></li>
+</ul>
+<p>When we first start building our packages, the GitHub Actions workflows for most of these things will fail. That is to be expected! As you complete the tasks for setting each of these up (e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets, etc) then the GitHub Actions workflows should start passing.
+This is a consequence of the philosophy of the <code class="docutils literal notranslate"><span class="pre">pypkgs-cookiecutter</span></code> template tool.</p>
+</section>
+</section>
+<section id="essential-r-package-files">
+<h3>Essential R package files<a class="headerlink" href="#essential-r-package-files" title="Permalink to this heading">#</a></h3>
+<p>Using the project layout we recommend for this course,
+here is a R package structure with only the most essential files.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pkg
+├── DESCRIPTION
+├── man                       
+│   ├── functionA.Rd
+│   └── functionB.Rd
+├── NAMESPACE                
+└── R                       
+    └── functions.R               
+</pre></div>
+</div>
+<p>What do each of these do?</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> stores all the metadata and dependency installation instructions for the package.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">man</span></code> directory contains the function documentation in <code class="docutils literal notranslate"><span class="pre">.Rd</span></code> files (one per function). The contents are from these are generated from the <code class="docutils literal notranslate"><span class="pre">ROxygen2</span></code> function documentation in the <code class="docutils literal notranslate"><span class="pre">R/*.R</span></code> files.</p></li>
+<li><p>Unsurprisingly, the <code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> file is important in defining your package’s namespace.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">R</span></code> is the directory for the <code class="docutils literal notranslate"><span class="pre">*.R</span></code> files which contain your exported (i.e., user-facing) functions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">functions.R</span></code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
+</ul>
+<section id="getting-to-know-a-description-file-s-contents">
+<h4>Getting to know a <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> file’s contents<a class="headerlink" href="#getting-to-know-a-description-file-s-contents" title="Permalink to this heading">#</a></h4>
+<p>Here is an example <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Package: foofactors                                                         ┐
+Title: Make Factors Less Aggravating                                        │
+Version: 0.0.0.9000                                                         │
+Authors@R:                                                                  │
+    person(given = &quot;Tiffany&quot;,                                               │ Package metadata
+           family = &quot;Timbers&quot;,                                              │
+           role = c(&quot;aut&quot;, &quot;cre&quot;),                                          │
+           email = &quot;tiffany.timbers@gmail.com&quot;,                             │
+           comment = c(ORCID = &quot;0000-0002-2667-376X&quot;))                      │
+Description: Factors have driven people to extreme measures, like ordering  │
+    custom conference ribbons and laptop stickers to express how HELLNO we  │
+    feel about stringsAsFactors. And yet, sometimes you need them. Can they │
+    be made less maddening? Let&#39;s find out.                                 │
+License: MIT + file LICENSE                                                 │
+Encoding: UTF-8                                                             │
+LazyData: true                                                              ┘
+Roxygen: list(markdown = TRUE)                                              ┐
+RoxygenNote: 7.0.2                                                          │ Developer dependencies
+Suggests:                                                                   │
+    testthat (&gt;= 2.1.0),                                                    │
+    covr                                                                    ┘
+Imports:                                                                    ┐ User function depenedencies
+    forcats                                                                 ┘ 
+URL: https://github.com/ttimbers/foofactors                                 ┐ More package metadata
+BugReports: https://github.com/ttimbers/foofactors/issues                   ┘
+</pre></div>
+</div>
+<p>This is equivalent to the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file in Python packages. Again, almost everything in it is customizable based on your package’s specifics.</p>
+</section>
+<section id="man-rd-files">
+<h4><code class="docutils literal notranslate"><span class="pre">man/*Rd</span></code> files<a class="headerlink" href="#man-rd-files" title="Permalink to this heading">#</a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">man</span></code> directory contains the function documentation in <code class="docutils literal notranslate"><span class="pre">.Rd</span></code> files (one per function). These can be created from the function’s <code class="docutils literal notranslate"><span class="pre">roxygen2</span></code> documentation using <code class="docutils literal notranslate"><span class="pre">devtools::document</span></code>. They use a custom syntax that is loosely based on LaTeX, which can be rendered to different formats for sharing with the package users.</p>
+<p>For example, this <code class="docutils literal notranslate"><span class="pre">roxygen2</span></code> documention in <code class="docutils literal notranslate"><span class="pre">R/fbind.R</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#&#39; Bind two factors</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; Create a new factor from two existing factors, where the new factor&#39;s levels</span>
+<span class="c1">#&#39; are the union of the levels of the input factors.</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @param a factor</span>
+<span class="c1">#&#39; @param b factor</span>
+<span class="c1">#&#39;</span>
+<span class="c1">#&#39; @return factor</span>
+<span class="c1">#&#39; @export</span>
+<span class="c1">#&#39; @examples</span>
+<span class="c1">#&#39; fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])</span>
+</pre></div>
+</div>
+<p>gives this syntax (loosely based on LaTeX) in <code class="docutils literal notranslate"><span class="pre">man/bind.Rd</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>% Generated by roxygen2: do not edit by hand
+% Please edit documentation in R/fcount.R
+\name{fcount}
+\alias{fcount}
+\title{Make a sorted frequency table for a factor}
+\usage{
+fcount(x)
+}
+\arguments{
+\item{x}{factor}
+}
+\value{
+A tibble
+}
+\description{
+Make a sorted frequency table for a factor
+}
+\examples{
+fcount(iris$Species)
+}
+</pre></div>
+</div>
+</section>
+<section id="namespace-file">
+<h4><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> file<a class="headerlink" href="#namespace-file" title="Permalink to this heading">#</a></h4>
+<p>In it are commands applied to R objects. Common commands include indicating that a function should be exported from your package, and/or that a another package should be imported to be used internally. The contents of this file are best to be created automatically using <code class="docutils literal notranslate"><span class="pre">devtools</span></code> to pull this information from the package function’s <code class="docutils literal notranslate"><span class="pre">roxygen2</span></code> documentation (exports) and the <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> file (imports).</p>
+<p>Here’s an example <code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generated by roxygen2: do not edit by hand</span>
+
+<span class="n">export</span><span class="p">(</span><span class="n">compare</span><span class="p">)</span>
+<span class="n">export</span><span class="p">(</span><span class="n">expect_equal</span><span class="p">)</span>
+<span class="n">import</span><span class="p">(</span><span class="n">rlang</span><span class="p">)</span>
+<span class="n">importFrom</span><span class="p">(</span><span class="n">brio</span><span class="p">,</span><span class="n">readLines</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cookiecutter-project-templates">
+<h3>Cookiecutter project templates<a class="headerlink" href="#cookiecutter-project-templates" title="Permalink to this heading">#</a></h3>
+<p><a class="reference external" href="https://cookiecutter.readthedocs.io/en/stable/#"><code class="docutils literal notranslate"><span class="pre">Cookiecutter</span></code></a> is a general Python tool for repeatedly generating a desired file and directory structure.</p>
+<p>Many many many Python <a class="reference external" href="https://cookiecutter.readthedocs.io/en/stable/#"><code class="docutils literal notranslate"><span class="pre">Cookiecutter</span></code></a> templates already exist, this search on GitHub (linked to from the <a class="reference external" href="https://cookiecutter.readthedocs.io/en/stable/#"><code class="docutils literal notranslate"><span class="pre">Cookiecutter</span></code></a> documentation) identifies 9000 repositories!!!</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/search?q=cookiecutter&amp;amp;amp%3Btype=Repositories&amp;amp;type=repositories">https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories</a></p></li>
+</ul>
+<p>How does it work? It uses the concept of code templating and uses the <a class="reference external" href="https://jinja.palletsprojects.com/en/3.1.x/"><code class="docutils literal notranslate"><span class="pre">Jinja</span></code></a> templating engine.
+Special syntax (involving <code class="docutils literal notranslate"><span class="pre">{{</span></code>) is used to specify parts of the code that should be
+“filled in” with user input (from a function call if interacting directly with the <code class="docutils literal notranslate"><span class="pre">Jinja</span></code>
+API, or the keyboard if using <code class="docutils literal notranslate"><span class="pre">Cookiecutter</span></code>).
+The input is then used to replace the placeholder text in the code
+(denoted by the special syntax involving <code class="docutils literal notranslate"><span class="pre">{{</span></code>).
+This allows template code to be automatically filled in and reused again and again!</p>
+</section>
+<section id="exercise">
+<h3>Exercise:<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h3>
+<p>Let’s explore the <code class="docutils literal notranslate"><span class="pre">pypkgs-cookiecutter</span></code> to get to know how the Cookiecutter project template tool works in the case of <code class="docutils literal notranslate"><span class="pre">pypkgs-cookiecutter</span></code>, and in general!</p>
+<ul class="simple">
+<li><p>Go to: <a class="github reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter">py-pkgs/py-pkgs-cookiecutter</a></p></li>
+<li><p>Looks at: <a class="github reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json">py-pkgs/py-pkgs-cookiecutter</a></p></li>
+<li><p>Look for all the places you see <code class="docutils literal notranslate"><span class="pre">{{</span> <span class="pre">cookiecutter.__SOMETHING</span> <span class="pre">}}</span></code></p></li>
+</ul>
+</section>
+<section id="differences-in-package-building-tool-philosophy">
+<h3>Differences in package building tool philosophy<a class="headerlink" href="#differences-in-package-building-tool-philosophy" title="Permalink to this heading">#</a></h3>
+<section id="iclicker-question">
+<h4>iClicker question:<a class="headerlink" href="#iclicker-question" title="Permalink to this heading">#</a></h4>
+<p>Setting the programming language differences aside (and the technical issues with the <code class="docutils literal notranslate"><span class="pre">pypkgs-Cookiecutter</span></code> at the beginning of last week), which approach to package building did you prefer?</p>
+<p>A. Adding package components step-by-step as needed, like you did when using <code class="docutils literal notranslate"><span class="pre">devtools</span></code>/<code class="docutils literal notranslate"><span class="pre">usethis</span></code> to create an R package.</p>
+<p>B. Setting up the project template in one fell swoop (i.e., once at the beginning of the project), like you did when using <code class="docutils literal notranslate"><span class="pre">pypkgs-Cookiecutter</span></code> to create an R package.</p>
+</section>
+<section id="in-class-disucssion">
+<h4>In class disucssion<a class="headerlink" href="#in-class-disucssion" title="Permalink to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>What are the advantages and disadvantages of the <code class="docutils literal notranslate"><span class="pre">devtools</span></code>/<code class="docutils literal notranslate"><span class="pre">usethis</span></code> software package building approach in R?</p></li>
+</ol>
+<ul class="simple">
+<li><p>Advantages:</p>
+<ul>
+<li><p>Not overwhelming for beginners, since you just add one thing at a time.</p></li>
+<li><p>Allows you to redo the one thing you made a mistake on.</p></li>
+</ul>
+</li>
+<li><p>Disadvantages:</p>
+<ul>
+<li><p>Easy to forget to add or do somethings, as you need to run a different command each time.</p></li>
+<li><p>Somewhat inefficient as a command needs to be run each time you want to add a new feature to the package.</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>What are the advantages and disadvantages of the <code class="docutils literal notranslate"><span class="pre">pypkgs-Cookiecutter</span></code> software package building approach in Python?</p></li>
+</ol>
+<ul class="simple">
+<li><p>Advantages:</p>
+<ul>
+<li><p>Minimizes forgetting to dd or do somethings, because you just have one setup step at the beginning.</p></li>
+<li><p>Efficient because you just have one setup step at the beginning.</p></li>
+</ul>
+</li>
+<li><p>Disadvantages:</p>
+<ul>
+<li><p>Can be overwhelming for beginners, since you generate a large number of files at one time.</p></li>
+<li><p>Takes a lot of time to when you make a mistake (e.g., typo in package name) because you need to manually got back and fix things.</p></li>
+<li><p>Sets everything up at the beginning, including the things you are not yet ready for (e.g., Continuous integration and deployment workflows on GitHub actions) and there are some annoying consequences of this (e.g., notifications about failed checks).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
 </section>
 <section id="dealing-with-other-package-dependencies-in-your-package">
 <h2>Dealing with other package dependencies in your package<a class="headerlink" href="#dealing-with-other-package-dependencies-in-your-package" title="Permalink to this heading">#</a></h2>
@@ -752,7 +1149,10 @@ We will discuss this later in the course under the topic of continuous deploymen
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-start-writing-an-r-or-python-package">When to start writing an R or Python package</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-start-writing-an-r-or-python-package">When to start writing an R or Python package</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-video">Optional video:</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tour-de-packages">Tour de packages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tour-de-r-packages">Tour de R packages</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usethis-and-the-evolution-of-r-packaging"><code class="docutils literal notranslate"><span class="pre">usethis</span></code> and the evolution of R packaging</a></li>
@@ -765,6 +1165,32 @@ We will discuss this later in the course under the topic of continuous deploymen
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-package-things-for-python-and-r-packages">Key package things for Python and R packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-minimal-viable-software-package">What is a minimal viable software package?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-python-package-files">Essential Python package files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-pyproject-toml-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file’s contents</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-init-py-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file’s contents</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docs-and-github-workflows-ci-cd-yml"><code class="docutils literal notranslate"><span class="pre">docs/*</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#docs"><code class="docutils literal notranslate"><span class="pre">docs/*</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#github-workflows-ci-cd-yml"><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci-cd.yml</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#essential-r-package-files">Essential R package files</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-to-know-a-description-file-s-contents">Getting to know a <code class="docutils literal notranslate"><span class="pre">DESCRIPTION</span></code> file’s contents</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#man-rd-files"><code class="docutils literal notranslate"><span class="pre">man/*Rd</span></code> files</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#namespace-file"><code class="docutils literal notranslate"><span class="pre">NAMESPACE</span></code> file</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cookiecutter-project-templates">Cookiecutter project templates</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differences-in-package-building-tool-philosophy">Differences in package building tool philosophy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iclicker-question">iClicker question:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#in-class-disucssion">In class disucssion</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-other-package-dependencies-in-your-package">Dealing with other package dependencies in your package</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dealing-with-package-dependencies-in-r">Dealing with package dependencies in R</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pipe-a-special-dependency">The pipe, <code class="docutils literal notranslate"><span class="pre">%&gt;%</span></code>, a special dependency</a></li>
