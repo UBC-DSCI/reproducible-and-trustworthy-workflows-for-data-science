@@ -394,10 +394,27 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-cd-being-used-for-data-science">Examples of CD being used for data science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditionals-for-when-to-run-the-job">Conditionals for when to run the job</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-read-the-cd-job-of-ci-cd-yml">Exercise: read the <code class="docutils literal notranslate"><span class="pre">cd</span></code> job of <code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-automate-version-bumping">How can we automate version bumping?</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-versioning">Semantic versioning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Semantic versioning</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-versioning-case-study">Semantic versioning case study</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-name-that-semantic-version-release">Exercise: name that semantic version release</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional-commit-messages">Conventional commit messages</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-of-a-conventional-commit-message">An example of a conventional commit message</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example-of-a-conventional-commit-message">Another example of a conventional commit message</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-practical-notes-for-usage-in-your-packages">Some practical notes for usage in your packages:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Some practical notes for usage in your packages:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-1">Solution 1:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-solution-2">Possible solution 2:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-of-continous-deployment">Demo of Continous Deployment!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-about-cd-with-r-packages">What about CD with R packages</a></li>
 </ul>
 </li>
@@ -497,6 +514,57 @@ document.write(`
 <li><p>Books and websites (e.g., <a class="reference external" href="https://jupyterbook.org/intro.html"><code class="docutils literal notranslate"><span class="pre">jupyter-book</span></code></a>, <a class="reference external" href="https://bookdown.org/"><code class="docutils literal notranslate"><span class="pre">bookdown</span></code></a>, <a class="reference external" href="https://pkgs.rstudio.com/distill/index.html"><code class="docutils literal notranslate"><span class="pre">distill</span></code> websites</a>, etc)</p></li>
 </ul>
 </section>
+<section id="conditionals-for-when-to-run-the-job">
+<h2>Conditionals for when to run the job<a class="headerlink" href="#conditionals-for-when-to-run-the-job" title="Permalink to this heading">#</a></h2>
+<p>We only want our <code class="docutils literal notranslate"><span class="pre">cd</span></code> job to run if certain conditions are true, these are:</p>
+<ol class="arabic simple">
+<li><p>if the <code class="docutils literal notranslate"><span class="pre">ci</span></code> job passes</p></li>
+<li><p>if this is a commit to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch</p></li>
+</ol>
+<p>We can accomplish this in our <code class="docutils literal notranslate"><span class="pre">cd</span></code> job be writing a conditional using the <code class="docutils literal notranslate"><span class="pre">needs</span></code> and <code class="docutils literal notranslate"><span class="pre">if</span></code> keywords at the top of the job, right after we set the permissions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span><span class="p">:</span>
+    <span class="n">permissions</span><span class="p">:</span>
+      <span class="nb">id</span><span class="o">-</span><span class="n">token</span><span class="p">:</span> <span class="n">write</span>
+      <span class="n">contents</span><span class="p">:</span> <span class="n">write</span>
+
+    <span class="c1"># Only run this job if the &quot;ci&quot; job passes</span>
+    <span class="n">needs</span><span class="p">:</span> <span class="n">ci</span>
+
+    <span class="c1"># Only run this job if new work is pushed to &quot;main&quot;</span>
+    <span class="k">if</span><span class="p">:</span> <span class="n">github</span><span class="o">.</span><span class="n">event_name</span> <span class="o">==</span> <span class="s1">&#39;push&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">github</span><span class="o">.</span><span class="n">ref</span> <span class="o">==</span> <span class="s1">&#39;refs/heads/main&#39;</span>
+</pre></div>
+</div>
+<section id="exercise-read-the-cd-job-of-ci-cd-yml">
+<h3>Exercise: read the <code class="docutils literal notranslate"><span class="pre">cd</span></code> job of <a class="reference external" href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci-cd.yml"><code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a><a class="headerlink" href="#exercise-read-the-cd-job-of-ci-cd-yml" title="Permalink to this heading">#</a></h3>
+<p>To make sure we understand what is happening in our workflow that performs CD, let’s convert each <strong>step</strong> to a human-readable explanation:</p>
+<ol class="arabic simple">
+<li><p>Sets up Python on the runner</p></li>
+<li><p>Checkout our repository files from GitHub and put them on the runner</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+</ol>
+<blockquote>
+<div><p>Note: I filled in the steps we went over last class, so you can just fill in the new stuff</p>
+</div></blockquote>
+</section>
+<section id="how-can-we-automate-version-bumping">
+<h3>How can we automate version bumping?<a class="headerlink" href="#how-can-we-automate-version-bumping" title="Permalink to this heading">#</a></h3>
+<p>Let’s look at the first step that works towards accomplishing this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>      - name: Use Python Semantic Release to prepare release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v8.3.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+</pre></div>
+</div>
+<p><a class="reference external" href="https://python-semantic-release.readthedocs.io/en/latest/">Python semantic-release</a> is a Python tool which parses commit messages looking for keywords to indicate how to bump the version. It bumps the version in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+<p>To understand how it works so that we can use it, we need to understand <strong>semantic versioning</strong> and how to write <strong>conventional commit</strong> messages.</p>
+<p>Let’s unpack each of these on its own.</p>
+</section>
+</section>
 <section id="semantic-versioning">
 <h2>Semantic versioning<a class="headerlink" href="#semantic-versioning" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
@@ -539,6 +607,101 @@ document.write(`
 <section id="exercise-name-that-semantic-version-release">
 <h3>Exercise: name that semantic version release<a class="headerlink" href="#exercise-name-that-semantic-version-release" title="Permalink to this heading">#</a></h3>
 <p>Reading the three cases posted above, think about whether each should be a major, minor or patch version bump. Answer the chat when prompted.</p>
+</section>
+</section>
+<section id="conventional-commit-messages">
+<h2>Conventional commit messages<a class="headerlink" href="#conventional-commit-messages" title="Permalink to this heading">#</a></h2>
+<p><a class="reference external" href="https://python-semantic-release.readthedocs.io/en/latest/">Python Semantic Release</a> by default uses a parser that works on the conventional (or Angular) commit message style, which is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">optional</span> <span class="n">scope</span><span class="p">):</span> <span class="n">succinct</span> <span class="n">description</span> <span class="n">of</span> <span class="n">the</span> <span class="n">change</span>
+
+<span class="p">(</span><span class="n">optional</span> <span class="n">body</span><span class="p">:</span> <span class="n">the</span> <span class="n">motivation</span> <span class="k">for</span> <span class="n">the</span> <span class="n">change</span> <span class="ow">and</span> <span class="n">contrast</span> <span class="n">this</span> <span class="k">with</span> <span class="n">previous</span> <span class="n">behavior</span><span class="p">)</span>
+
+<span class="p">(</span><span class="n">optional</span> <span class="n">footer</span><span class="p">:</span> <span class="n">note</span> <span class="n">BREAKING</span> <span class="n">CHANGES</span> <span class="n">here</span><span class="p">,</span> <span class="k">as</span> <span class="n">well</span> <span class="k">as</span> <span class="nb">any</span> <span class="n">issues</span> <span class="n">to</span> <span class="n">be</span> <span class="n">closed</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>How to affect semantic versioning with conventional commit messages:</p>
+<ul class="simple">
+<li><p>a commit with the type <code class="docutils literal notranslate"><span class="pre">fix</span></code> leads to a patch version bump</p></li>
+<li><p>a commit with the type <code class="docutils literal notranslate"><span class="pre">feat</span></code> leads to a minor version bump</p></li>
+<li><p>a commit with a body or footer that starts with <code class="docutils literal notranslate"><span class="pre">BREAKING</span> <span class="pre">CHANGE:</span></code> - these can be of any type (Note: currently Python Semantic release is broken for detecting these on commits with Windows line endings, wich the GitHub pen tool commits also use. The workaround fix is to use <code class="docutils literal notranslate"><span class="pre">!</span></code> after <code class="docutils literal notranslate"><span class="pre">feat</span></code>, for example: <code class="docutils literal notranslate"><span class="pre">feat!:</span> <span class="pre">This</span> <span class="pre">describes</span> <span class="pre">the</span> <span class="pre">new</span> <span class="pre">feature</span> <span class="pre">and</span> <span class="pre">breaking</span> <span class="pre">changes</span></code> in addition to <code class="docutils literal notranslate"><span class="pre">BREAKING</span> <span class="pre">CHANGES:</span> <span class="pre">...</span></code> in the footer.)</p></li>
+</ul>
+<blockquote>
+<div><p>Note - commit types other than <code class="docutils literal notranslate"><span class="pre">fix</span></code> and <code class="docutils literal notranslate"><span class="pre">feat</span></code> are allowed. Recommeneded ones include <code class="docutils literal notranslate"><span class="pre">docs</span></code>, <code class="docutils literal notranslate"><span class="pre">style</span></code>, <code class="docutils literal notranslate"><span class="pre">refactor</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code>, <code class="docutils literal notranslate"><span class="pre">ci</span></code> and <a class="reference external" href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type">others</a>. However, only <code class="docutils literal notranslate"><span class="pre">fix</span></code> and <code class="docutils literal notranslate"><span class="pre">feat</span></code> result in version bumps using Python Semantic Release.</p>
+</div></blockquote>
+<section id="an-example-of-a-conventional-commit-message">
+<h3>An example of a conventional commit message<a class="headerlink" href="#an-example-of-a-conventional-commit-message" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">commit</span> <span class="o">-</span><span class="n">m</span> <span class="s2">&quot;feat(function_x): added the ability to initialize a project even if a pyproject.toml file exists&quot;</span>
+</pre></div>
+</div>
+<p>What kind of version bump would this result in?</p>
+</section>
+<section id="another-example-of-a-conventional-commit-message">
+<h3>Another example of a conventional commit message<a class="headerlink" href="#another-example-of-a-conventional-commit-message" title="Permalink to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git commit -m &quot;feat!: change to use of `%&gt;%` to add new layers to ggplot objects
+
+BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release&quot;
+</pre></div>
+</div>
+<p>What kind of version bump would this result in?</p>
+</section>
+<section id="some-practical-notes-for-usage-in-your-packages">
+<h3>Some practical notes for usage in your packages:<a class="headerlink" href="#some-practical-notes-for-usage-in-your-packages" title="Permalink to this heading">#</a></h3>
+<ol class="arabic">
+<li><p>You must add the following to the tool section of your <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file for this to work (note: the <code class="docutils literal notranslate"><span class="pre">pypkgs-cookiecutter</span></code> adds this table if you choose to add <code class="docutils literal notranslate"><span class="pre">ci-cd</span></code> when you set it up):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tool</span><span class="o">.</span><span class="n">semantic_release</span><span class="p">]</span>
+<span class="n">version_toml</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;pyproject.toml:tool.poetry.version&quot;</span><span class="p">,</span>
+<span class="p">]</span>                                                    <span class="c1"># version location</span>
+<span class="n">branch</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span>                                      <span class="c1"># branch to make releases of</span>
+<span class="n">changelog_file</span> <span class="o">=</span> <span class="s2">&quot;CHANGELOG.md&quot;</span>                      <span class="c1"># changelog file</span>
+<span class="n">build_command</span> <span class="o">=</span> <span class="s2">&quot;pip install poetry &amp;&amp; poetry build&quot;</span> <span class="c1"># build dists</span>
+</pre></div>
+</div>
+</li>
+<li><p>Versions will <strong>not</strong> be bumped if conventional commits are not used.</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3>Some practical notes for usage in your packages:<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Automated version bumping can only work (as currently implemented in our cookiecutter) with versions in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> metadata (line 3). If you add a version elsewhere, it will not get bumped unless you specify the location the the <code class="docutils literal notranslate"><span class="pre">[tool.semantic_release]</span></code> table in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+<li><p>If you have been working with main branch protection, you will need to change something to use <code class="docutils literal notranslate"><span class="pre">ci.yml</span></code> work for continuous deployment. The reason for this, is that this workflow (which bumps versions and deploy the package) is triggered to run <strong>after</strong> the pull request is merged to main. Therefore, when we bump the versions in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file we need to push these changes to the main branch - however this is problematic given that we have set-up main branch protection!</p></li>
+</ol>
+<p>What are we to do about #2?</p>
+<section id="solution-1">
+<h4>Solution 1:<a class="headerlink" href="#solution-1" title="Permalink to this heading">#</a></h4>
+<p>Remove main branch protection. This is not the most idealistic solution, however it is a simple and practical one.</p>
+</section>
+<section id="possible-solution-2">
+<h4>Possible solution 2:<a class="headerlink" href="#possible-solution-2" title="Permalink to this heading">#</a></h4>
+<p>(I say possible because this has yet to be formally documented by PSR, and is still just reported in an issue: <a class="github reference external" href="https://github.com/python-semantic-release/python-semantic-release/issues/311">python-semantic-release/python-semantic-release#311</a>. I have tested it and it works for me, see example here: <a class="github reference external" href="https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml">ttimbers/pycounts_tt_2024</a>)</p>
+<ol class="arabic simple">
+<li><p>Create a new GitHub PAT (see <a class="reference external" href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">these docs</a>) with the <a class="reference external" href="https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes">repo</a> scope.</p></li>
+<li><p>Under <strong>“Secrets”</strong>, click on <strong>“Settings and variables”</strong> &gt; <strong>“Actions”</strong>, and then under <strong>“Repository secrets”</strong> click <strong>“New repository secret”</strong> to create a new repository secret named <code class="docutils literal notranslate"><span class="pre">RELEASE_TOKEN</span></code> and the new GitHub PAT with repo scope as its value.</p></li>
+<li><p>Edit the to <code class="docutils literal notranslate"><span class="pre">cd</span></code> job steps shown below (from <code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code>) use this token:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>...
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.RELEASE_TOKEN }}
+...
+
+    - name: Use Python Semantic Release to prepare release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v8.3.0
+      with:
+        github_token: ${{ secrets.RELEASE_TOKEN }}
+...
+</pre></div>
+</div>
+</section>
+</section>
+<section id="demo-of-continous-deployment">
+<h3>Demo of Continous Deployment!<a class="headerlink" href="#demo-of-continous-deployment" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/ttimbers/pycounts_tt_2024">ttimbers/pycounts_tt_2024</a></p></li>
+</ul>
 </section>
 <section id="what-about-cd-with-r-packages">
 <h3>What about CD with R packages<a class="headerlink" href="#what-about-cd-with-r-packages" title="Permalink to this heading">#</a></h3>
@@ -919,10 +1082,27 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-of-cd-being-used-for-data-science">Examples of CD being used for data science</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conditionals-for-when-to-run-the-job">Conditionals for when to run the job</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-read-the-cd-job-of-ci-cd-yml">Exercise: read the <code class="docutils literal notranslate"><span class="pre">cd</span></code> job of <code class="docutils literal notranslate"><span class="pre">ci-cd.yml</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-can-we-automate-version-bumping">How can we automate version bumping?</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-versioning">Semantic versioning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Semantic versioning</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantic-versioning-case-study">Semantic versioning case study</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-name-that-semantic-version-release">Exercise: name that semantic version release</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conventional-commit-messages">Conventional commit messages</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-of-a-conventional-commit-message">An example of a conventional commit message</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#another-example-of-a-conventional-commit-message">Another example of a conventional commit message</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#some-practical-notes-for-usage-in-your-packages">Some practical notes for usage in your packages:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Some practical notes for usage in your packages:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-1">Solution 1:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-solution-2">Possible solution 2:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demo-of-continous-deployment">Demo of Continous Deployment!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-about-cd-with-r-packages">What about CD with R packages</a></li>
 </ul>
 </li>
