@@ -4,7 +4,10 @@
 
 By the end of this topic, students should be able to:
 
-1. Use Git and GitHub to successfully collaborate with others (e.g., handle merge conflicts, use a fork-pull-request and branch-pull-request workflow to contribute to a project, organize tasks through issue milestones and project boards)
+1. Describe what branches are in Git and explain why they are useful for collaboration.
+2. Explain the two most common Git branching strategies (Git flow and GitHub flow) and list their advantages and disadvantages.
+3. Use Git to create new branches, switch between branches, merge branches locally, and use GitHub pull requests to bring new changes into the projects default branch.
+4. Use GitHub's pull requests tool to perform code reviews.
 
 ## Git Branches
 
@@ -329,182 +332,8 @@ What do you think are pros & cons of each of these branching workflows?
 > - run `git merge main` to merge the changes
 > - run `git push origin <branch>` to push our updated branch to the remote
 
-## Project boards
 
-Example of a physical [Kanban board](https://en.wikipedia.org/wiki/Kanban_board):
 
-<img src="https://miro.medium.com/max/1300/1*9xfpL1ercY-JA7BzEiLpjA.jpeg" width=500>
-
-Source: <https://medium.com/@mli/lets-get-physical-task-boards-f9d08383e667>
-
-Example of a digital project board from GitHub:
-
-Reading: [About project boards - GitHub Help](https://help.github.com/en/github/managing-your-work-on-github/about-project-boards)
-
-<img src="img/github_kanban.png" width=800>
-
-Source: <https://github.com/CodeDoesGood/org-website/projects/1>
-
-
-### Why use project boards for collaborative software projects?
-
-- **Transparency:** everyone knows what everyone is doing
-
-- **Motivation:** emphasis on task completion
-
-- **Flexibility:** board columns and tasks are customized to each project
-
-### Exercise: Getting to know GitHub project boards
-
-We are going to each create our own project board for our MDS homework. I have set-up a template GitHub repository for you so that you can easily populate it with relevant issues for your homework this block. You will use these issues to create your MDS homework project board.
-
-#### Steps:
-
-1. Click the green "**Use this template**" button from [this GitHub repository](https://github.com/UBC-DSCI/dsci-310-homework) to obtain a copy of it for yourself (do not fork it).
-
-2. Click on the Actions tab, and then click on the workflow `.github/workflows/create_issues.yml`. You then should see a **“Run workflow”** button with a drop down menu, from that menu select **“Run workflow”**.
-
-3. Wait patiently while GitHub Actions to create 24 issues for you in your copy of this repository.
-
-4. Click on the Projects tab, and then click **“Link a project”** and then select **“Create a new Project”**. Select **“Board”** as the template option and give the project a a name.
-
-5. Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of "group-work" or "individual-work".
-
-Additional Resources:
-- [Assigning issues and pull requests to other GitHub users](https://help.github.com/en/github/managing-your-work-on-github/assigning-issues-and-pull-requests-to-other-github-users)
-- [Applying labels to issues and pull requests](https://help.github.com/en/github/managing-your-work-on-github/applying-labels-to-issues-and-pull-requests)
-
-### Relevance to course project:
-
-- You will be expected to create a project board for each of your groups projects and update it each milestone (at a minimum)
-
-- We expect that each issue should have at least one person assigned to it
-
-## Milestones
-
-- Group related issues together that are needed to hit a given target (e.g., new release version of a software package)
-
-- Can assign a due date to a milestone
-
-- From the milestone page you can see list of statistics that are relevant to each milestone set in that repository
-
-Reading: [About milestones - GitHub Help](https://help.github.com/en/github/managing-your-work-on-github/about-milestones) 
-
-Example of the `readr` package milestones:
-
-<img src="img/readr-milestones.png" width=600>
-
-Source: https://github.com/tidyverse/readr/milestones
-
-### Exercise: Getting to know GitHub milestones
-
-We are going to practice creating milestones and associating issues with them. To do this we will continue working with the same repository that you just created a project board for.
-
-#### Steps:
-
-1. Click on the Issues tab, and then click on "Milestones". 
-
-2. Click "New milestone" and name it "month 1" and set the due date to be the end of January. Click "Create milestone".
-
-3. Go to the Issues tab, and for each issue that should be associated with the month 1 milestone (i.e., things due before the end of January), click on their checkbox. Then click "Milestone" and select "month 1"
-
-4. Once you are done, go back to the Milestones page to view what the month 1 milestone looks like.
-
-5. If you finish early, do this for  month 2.
-
-### Relevance to course project:
-
-- You will be expected to create a milestone on each of your project repositories for each course assigned milestone. You must link the relevant issues needed to complete that milestone to it on GitHub.
-
-## SSH for authentication
-
-So far you have likely been using a personal access token to authenticate to GitHub. 
-This works, however there is another very secure and more convenient method of authentication
-that is widely used: secure shell protocol (SSH).
-SSH can be use for other forms of authentication as well (beyond GitHub), 
-including logging into remote machines in the cloud. 
-So for many these reasons it is worthwhile learning. 
-Thus, we will spend some time explaining it here, 
-and setup our computers to use this for authenticating with GitHub going forward.
-
-### Remotely accessing another computer using SSH 
-
-Let's start with some definitions:
-
-#### Definitions
-
-**Secure SHell (SSH)** - a common method for remote login to another computer which is secure.
-
-**server** - a machine you are SSHing into. The server sits and waits to be contacted.
- 
-**client** - usually your machine. The client initiates contact with the server.
-
-#### SSH key-based authentication
-
-Two components: 
-
-1. public key
-2. private key
-
-These files have an asymmetrical relationship:
-
-- the public key CANNOT decrypt messages generated by the private key
-- the private key CAN decrypt messages generated by the public key
-
-#### Understanding public key private key concepts
-
-- Think of a public key, not as a key, but as a padlock that you can make copies of and put anywhere you want.
-- To put your ‘padlock’ on an another machine, you would copy it to `authorized_keys` in the `~/.ssh` folder.
-- Think of a private key as an actual key, it can open the padlock that is stored on the other machine.
-
-<img src="img/keys_1.png" width=600>
-
-*source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html*
-
-#### How the lock works
-
-- Keys are generated using `ssh-keygen`, to make private key (usually called `id_ed25519`) and a public key (usually called `id_ed25519.pub`) 
-- You can make copies of `id_ed25519.pub` (public key/padlock) and distribute them to other machines
-- The other machine uses the public key to encrypt a challenge message to you
-- You need to show that you can decrypt the message to demonstrate that you are in possesion of the associated private key
-
-_Note: GitHub has changed recently the SSH key generation instructions to use [Ed25519 algoritm](https://github.com/github/docs/issues/876). 
-
-#### You can put your lock at many places
-
-As long as you are using the same lock (public key),
-you will be able to open it with the same private key.
-
-<img src="img/keys_2.png" width=600>
-
-*source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html*
-
-#### Keeping your private key safe
-
-- `ssh-keygen` allows you to put a password or passphrase on the private key
-- this should be shared with NO ONE!
-- if your private key does fall into the wrong hands, the person must still know the password or passphrase to use the private key 
-
-<img src="img/password_strength.png" width=600>
-
-*source - https://xkcd.com/936/*
-
-#### Exercise
-
-Setting up SSH for authentication on GitHub! Follow the docs linked below here to accomplish each step to set this up.
-At the top of each of the documentation sections, be sure to select the tab for your operating system.
-
-1. [Checking for existing SSH keys on your computer](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys)
-
-2. [Generating a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
-
-3. [Adding your SSH key to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent)
-
-4. [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
-
-5. Test it out! Create a private GitHub.com repository and try to clone it using the SSH code URL (instead of the HTTPS one), it should look something like this: `git@github.com:username/repo-name.git` 
-
-*(whereas HTTPS code URLs look like: `https://github.com/username/repo-name.git`)*
 
 ## Next: 
 
