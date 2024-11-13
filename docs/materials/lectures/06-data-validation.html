@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SSH for authentication &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
+    <title>Data validation &#8212; Reproducible and Trustworthy Workflows for Data Science</title>
   
   
   
@@ -60,11 +60,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/02-ssh-for-authentication';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'materials/lectures/06-data-validation';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Version control (for transparency and collaboration) I" href="02-version-control-1.html" />
-    <link rel="prev" title="Introduction to the Bash Shell" href="02-intro-to-bash.html" />
+    <link rel="next" title="Non-interactive scripts" href="07-scripts.html" />
+    <link rel="prev" title="Customizing and building containers" href="05-containerization-3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -175,7 +175,7 @@
 
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">SSH for authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-ssh-for-authentication.html">SSH for authentication</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="02-version-control-1.html">Version control (for transparency and collaboration) I</a></li>
@@ -187,7 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-1.html">Introduction to containerization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-2.html">Using and running containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-containerization-3.html">Customizing and building containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-data-validation.html">Data validation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Data validation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="07-scripts.html">Non-interactive scripts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-reproducible-reports.html">Reproducible reports</a></li>
 
@@ -273,7 +273,7 @@
       
       
       
-      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/02-ssh-for-authentication.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/issues/new?title=Issue%20on%20page%20%2Fmaterials/lectures/06-data-validation.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -303,7 +303,7 @@
       
       
       
-      <li><a href="../../_sources/materials/lectures/02-ssh-for-authentication.md" target="_blank"
+      <li><a href="../../_sources/materials/lectures/06-data-validation.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -379,7 +379,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>SSH for authentication</h1>
+    <h1>Data validation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,23 +389,21 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">SSH for authentication</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-secure-shell-protocol-ssh-for-authentication">The secure shell protocol (SSH) for authentication</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remotely-accessing-another-computer-using-ssh">Remotely accessing another computer using SSH</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-key-based-authentication">SSH key-based authentication</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-public-key-private-key-concepts">Understanding public key private key concepts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-lock-works">How the lock works</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#you-can-put-your-lock-at-many-places">You can put your lock at many places</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-your-private-key-safe">Keeping your private key safe</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-data-validation-in-data-analysis">The role of data validation in data analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-data-validation-fit-in-data-analysis">Where does data validation fit in data analysis?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-validation-checks">Data validation checks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-python-s-pandera">Introduction to Python’s Pandera</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-data-with-pandera">Validating data with Pandera</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-schema">Dataframe Schema</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data validation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-invalid-rows">Dropping invalid rows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-data-validation-ecosystem">The data validation ecosystem</a></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -416,98 +414,46 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="ssh-for-authentication">
-<h1>SSH for authentication<a class="headerlink" href="#ssh-for-authentication" title="Link to this heading">#</a></h1>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-validation">
+<h1>Data validation<a class="headerlink" href="#data-validation" title="Link to this heading">#</a></h1>
 <section id="topic-learning-objectives">
-<h1>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Link to this heading">#</a></h1>
+<h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Link to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
 <ol class="arabic simple">
-<li><p>Describe how SSH authentication works</p></li>
-<li><p>Setup and use SSH authentication as the authentication method for working with GitHub</p></li>
+<li><p>Explain why it is important to validate data used in a data analysis project,
+and give examples of consequences that might occur with invalid data.</p></li>
+<li><p>Discuss where data validation should happen in a data analysis project.</p></li>
+<li><p>List the major checks that should be performed when validating data for data analysis, and justiy why they should be used.</p></li>
+<li><p>Use the Python Pandera package to create data schema for checking and to validate data.</p></li>
+<li><p>Use the Python Pandera package to drop invalid rows.</p></li>
+<li><p>List other commonly used data validation packages for Python and R.</p></li>
 </ol>
 </section>
-<section id="the-secure-shell-protocol-ssh-for-authentication">
-<h1>The secure shell protocol (SSH) for authentication<a class="headerlink" href="#the-secure-shell-protocol-ssh-for-authentication" title="Link to this heading">#</a></h1>
-<p>So far you have likely been using a personal access token to authenticate to GitHub.
-This works, however there is another very secure and more convenient method of authentication
-that is widely used: secure shell protocol (SSH).
-SSH can be use for other forms of authentication as well (beyond GitHub),
-including logging into remote machines in the cloud.
-So for many these reasons it is worthwhile learning.
-Thus, we will spend some time explaining it here,
-and setup our computers to use this for authenticating with GitHub going forward.</p>
-<section id="remotely-accessing-another-computer-using-ssh">
-<h2>Remotely accessing another computer using SSH<a class="headerlink" href="#remotely-accessing-another-computer-using-ssh" title="Link to this heading">#</a></h2>
-<p>Let’s start with some definitions:</p>
-<section id="definitions">
-<h3>Definitions<a class="headerlink" href="#definitions" title="Link to this heading">#</a></h3>
-<p><strong>Secure SHell (SSH)</strong> - a common method for remote login to another computer which is secure.</p>
-<p><strong>server</strong> - a machine you are SSHing into. The server sits and waits to be contacted.</p>
-<p><strong>client</strong> - usually your machine. The client initiates contact with the server.</p>
+<section id="the-role-of-data-validation-in-data-analysis">
+<h2>The role of data validation in data analysis<a class="headerlink" href="#the-role-of-data-validation-in-data-analysis" title="Link to this heading">#</a></h2>
 </section>
-<section id="ssh-key-based-authentication">
-<h3>SSH key-based authentication<a class="headerlink" href="#ssh-key-based-authentication" title="Link to this heading">#</a></h3>
-<p>Two components:</p>
-<ol class="arabic simple">
-<li><p>public key</p></li>
-<li><p>private key</p></li>
-</ol>
-<p>These files have an asymmetrical relationship:</p>
-<ul class="simple">
-<li><p>the public key CANNOT decrypt messages generated by the private key</p></li>
-<li><p>the private key CAN decrypt messages generated by the public key</p></li>
-</ul>
+<section id="where-does-data-validation-fit-in-data-analysis">
+<h2>Where does data validation fit in data analysis?<a class="headerlink" href="#where-does-data-validation-fit-in-data-analysis" title="Link to this heading">#</a></h2>
 </section>
-<section id="understanding-public-key-private-key-concepts">
-<h3>Understanding public key private key concepts<a class="headerlink" href="#understanding-public-key-private-key-concepts" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Think of a public key, not as a key, but as a padlock that you can make copies of and put anywhere you want.</p></li>
-<li><p>To put your ‘padlock’ on an another machine, you would copy it to <code class="docutils literal notranslate"><span class="pre">authorized_keys</span></code> in the <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code> folder.</p></li>
-<li><p>Think of a private key as an actual key, it can open the padlock that is stored on the other machine.</p></li>
-</ul>
-<a class="reference internal image-reference" href="../../_images/keys_1.png"><img alt="../../_images/keys_1.png" src="../../_images/keys_1.png" style="width: 600px;" /></a>
-<p><em>source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html</em></p>
+<section id="data-validation-checks">
+<h2>Data validation checks<a class="headerlink" href="#data-validation-checks" title="Link to this heading">#</a></h2>
+<section id="introduction-to-python-s-pandera">
+<h3>Introduction to Python’s Pandera<a class="headerlink" href="#introduction-to-python-s-pandera" title="Link to this heading">#</a></h3>
 </section>
-<section id="how-the-lock-works">
-<h3>How the lock works<a class="headerlink" href="#how-the-lock-works" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Keys are generated using <code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code>, to make private key (usually called <code class="docutils literal notranslate"><span class="pre">id_ed25519</span></code>) and a public key (usually called <code class="docutils literal notranslate"><span class="pre">id_ed25519.pub</span></code>)</p></li>
-<li><p>You can make copies of <code class="docutils literal notranslate"><span class="pre">id_ed25519.pub</span></code> (public key/padlock) and distribute them to other machines</p></li>
-<li><p>The other machine uses the public key to encrypt a challenge message to you</p></li>
-<li><p>You need to show that you can decrypt the message to demonstrate that you are in possesion of the associated private key</p></li>
-</ul>
-<p>_Note: GitHub has changed recently the SSH key generation instructions to use <a class="reference external" href="https://github.com/github/docs/issues/876">Ed25519 algoritm</a>.</p>
+<section id="validating-data-with-pandera">
+<h3>Validating data with Pandera<a class="headerlink" href="#validating-data-with-pandera" title="Link to this heading">#</a></h3>
+<section id="dataframe-schema">
+<h4>Dataframe Schema<a class="headerlink" href="#dataframe-schema" title="Link to this heading">#</a></h4>
 </section>
-<section id="you-can-put-your-lock-at-many-places">
-<h3>You can put your lock at many places<a class="headerlink" href="#you-can-put-your-lock-at-many-places" title="Link to this heading">#</a></h3>
-<p>As long as you are using the same lock (public key),
-you will be able to open it with the same private key.</p>
-<a class="reference internal image-reference" href="../../_images/keys_2.png"><img alt="../../_images/keys_2.png" src="../../_images/keys_2.png" style="width: 600px;" /></a>
-<p><em>source: http://blakesmith.me/2010/02/08/understanding-public-key-private-key-concepts.html</em></p>
+<section id="id1">
+<h4>Data validation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
 </section>
-<section id="keeping-your-private-key-safe">
-<h3>Keeping your private key safe<a class="headerlink" href="#keeping-your-private-key-safe" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ssh-keygen</span></code> allows you to put a password or passphrase on the private key</p></li>
-<li><p>this should be shared with NO ONE!</p></li>
-<li><p>if your private key does fall into the wrong hands, the person must still know the password or passphrase to use the private key</p></li>
-</ul>
-<a class="reference internal image-reference" href="../../_images/password_strength.png"><img alt="../../_images/password_strength.png" src="../../_images/password_strength.png" style="width: 600px;" /></a>
-<p><em>source - https://xkcd.com/936/</em></p>
 </section>
-<section id="exercise">
-<h3>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h3>
-<p>Setting up SSH for authentication on GitHub! Follow the docs linked below here to accomplish each step to set this up.
-At the top of each of the documentation sections, be sure to select the tab for your operating system.</p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/checking-for-existing-ssh-keys">Checking for existing SSH keys on your computer</a></p></li>
-<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key">Generating a new SSH key</a></p></li>
-<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#adding-your-ssh-key-to-the-ssh-agent">Adding your SSH key to the ssh-agent</a></p></li>
-<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your GitHub account</a></p></li>
-<li><p>Test it out! Create a private GitHub.com repository and try to clone it using the SSH code URL (instead of the HTTPS one), it should look something like this: <code class="docutils literal notranslate"><span class="pre">git&#64;github.com:username/repo-name.git</span></code></p></li>
-</ol>
-<p><em>(whereas HTTPS code URLs look like: <code class="docutils literal notranslate"><span class="pre">https://github.com/username/repo-name.git</span></code>)</em></p>
+<section id="dropping-invalid-rows">
+<h3>Dropping invalid rows<a class="headerlink" href="#dropping-invalid-rows" title="Link to this heading">#</a></h3>
+</section>
+<section id="the-data-validation-ecosystem">
+<h3>The data validation ecosystem<a class="headerlink" href="#the-data-validation-ecosystem" title="Link to this heading">#</a></h3>
 </section>
 </section>
 </section>
@@ -543,20 +489,20 @@ At the top of each of the documentation sections, be sure to select the tab for 
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="02-intro-to-bash.html"
+       href="05-containerization-3.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introduction to the Bash Shell</p>
+        <p class="prev-next-title">Customizing and building containers</p>
       </div>
     </a>
     <a class="right-next"
-       href="02-version-control-1.html"
+       href="07-scripts.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Version control (for transparency and collaboration) I</p>
+        <p class="prev-next-title">Non-interactive scripts</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -577,23 +523,21 @@ At the top of each of the documentation sections, be sure to select the tab for 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">SSH for authentication</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-secure-shell-protocol-ssh-for-authentication">The secure shell protocol (SSH) for authentication</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#remotely-accessing-another-computer-using-ssh">Remotely accessing another computer using SSH</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definitions">Definitions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssh-key-based-authentication">SSH key-based authentication</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-public-key-private-key-concepts">Understanding public key private key concepts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-lock-works">How the lock works</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#you-can-put-your-lock-at-many-places">You can put your lock at many places</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keeping-your-private-key-safe">Keeping your private key safe</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-role-of-data-validation-in-data-analysis">The role of data validation in data analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-does-data-validation-fit-in-data-analysis">Where does data validation fit in data analysis?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-validation-checks">Data validation checks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction-to-python-s-pandera">Introduction to Python’s Pandera</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-data-with-pandera">Validating data with Pandera</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-schema">Dataframe Schema</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Data validation</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-invalid-rows">Dropping invalid rows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-data-validation-ecosystem">The data validation ecosystem</a></li>
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>
