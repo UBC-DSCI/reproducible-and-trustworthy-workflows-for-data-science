@@ -392,7 +392,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-docker-hub">Step 2 - get container image from Docker Hub</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
@@ -410,7 +410,6 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run-commands">Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> commands</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 </ul>
@@ -430,29 +429,32 @@
 <h2>Topic learning objectives<a class="headerlink" href="#topic-learning-objectives" title="Link to this heading">#</a></h2>
 <p>By the end of this topic, students should be able to:</p>
 <ol class="arabic simple">
-<li><p>Use a containerization software (e.g., Docker) to run the software needed for your
+<li><p>Use the containerization software (e.g., Docker command line and Docker compose) to run the software needed for your
 analysis</p></li>
+<li><p>Use port mapping with the containerization software to run web apps to access IDEs (e.g., Jupyter, RStudio, VSCode)</p></li>
+<li><p>Use volume mounting with the containerization software to allow the container access to local host files (e.g., analysis code and data files)</p></li>
 </ol>
 </section>
 <section id="launching-containers-using-docker-at-the-command-line">
 <h2>Launching containers using Docker at the command line<a class="headerlink" href="#launching-containers-using-docker-at-the-command-line" title="Link to this heading">#</a></h2>
-<p>Below we demonstrate how to launch and run containers using the <a class="reference external" href="https://hub.docker.com/r/continuumio/miniconda3"><code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image</a> as an example:</p>
+<p>Docker has many ways we can run containers (GUI, command line, Docker compose configuration files). Here we will learn how to use the command line interface for running container instances from container images. We will then build on this knowledge to move to using Docker compose configuration files for increased efficiency. We are opting to use command line and configuaration file tools so that we can automate and scale the running of containers. It is also more reproducible.</p>
+<p>Below we demonstrate how to launch and run containers using the <a class="reference external" href="https://hub.docker.com/r/continuumio/miniconda3"><code class="docutils literal notranslate"><span class="pre">continuumio/miniconda3</span></code> image</a> as an example. We will slowly walk through the 4 basic steps need to run a container:</p>
 <section id="step-1-launch-the-docker-app-for-osx-windows-only">
 <h3>Step 1 - launch the Docker app (for OSX &amp; Windows only)<a class="headerlink" href="#step-1-launch-the-docker-app-for-osx-windows-only" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Use launchpad/Finder/Start menu/etc to find and launch Docker</p></li>
-</ul>
+<p>On Mac and Windows, Docker runs in a virtual machine (called Docker Desktop). To run a Docker container, you must have this running. To do this, use launchpad/Finder/Start menu/etc to find and launch Docker Desktop.</p>
 <blockquote>
 <div><p>Note: Docker might already be running, if so great, but if its not, the commands below will not work. So it is always good to check!</p>
 </div></blockquote>
 </section>
-<section id="step-2-get-container-image-from-dockerhub">
-<h3>Step 2 - get container image from Dockerhub<a class="headerlink" href="#step-2-get-container-image-from-dockerhub" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>open the terminal</p></li>
-<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
-<li><p>verify that it successfully pulled by typing: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>, you should see something like:</p></li>
-</ul>
+<section id="step-2-get-container-image-from-docker-hub">
+<h3>Step 2 - get container image from Docker Hub<a class="headerlink" href="#step-2-get-container-image-from-docker-hub" title="Link to this heading">#</a></h3>
+<p>To run a container instance, you need to have a container image locally. One way to get a container image locally is to pull (i.e., download) one from a container registry like Docker Hub. To do this we use the <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">&lt;CONTAINER&gt;</span></code> command. You will commonly see the container to pull written as: <code class="docutils literal notranslate"><span class="pre">container_registry/container_user/container_image:container_image_version_tag</span></code>.</p>
+<p>If you only see <code class="docutils literal notranslate"><span class="pre">container_user/container_image:container_image_version_tag</span></code> Docker will assume you are using Docker Hub as the container registry (this is the default). Sometimes the <code class="docutils literal notranslate"><span class="pre">container_image_version_tag</span></code> is ommitted, when this happens the most recent container is pulled, and has the version tag <code class="docutils literal notranslate"><span class="pre">latest</span></code>. In data analysis projects we try to avoid using this strategy because Docker is lazy and if you already have the <code class="docutils literal notranslate"><span class="pre">latest</span></code> version on your local host machine, it will not update it when you re-run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">container_user/container_image</span></code> even if there is a newer version of the container image on the remote container registry.</p>
+<p>We will now pull the <code class="docutils literal notranslate"><span class="pre">miniconda3</span></code> docker image, container image verion <code class="docutils literal notranslate"><span class="pre">23.9.0-0</span></code>, made and shared by <code class="docutils literal notranslate"><span class="pre">continuumio</span></code>, and hosted on Docker Hub by runnig the following in the terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span><span class="p">:</span><span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p>We can verify that it successfully pulled by typing: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>. When you do that, you should see something like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">REPOSITORY</span>                 <span class="n">TAG</span>       <span class="n">IMAGE</span> <span class="n">ID</span>       <span class="n">CREATED</span>         <span class="n">SIZE</span>
 <span class="n">continuumio</span><span class="o">/</span><span class="n">miniconda3</span>     <span class="mf">23.9.0</span><span class="o">-</span><span class="mi">0</span>  <span class="mf">55e8</span><span class="n">b7e3206b</span>   <span class="mi">3</span> <span class="n">weeks</span> <span class="n">ago</span>    <span class="mi">457</span><span class="n">MB</span>
 </pre></div>
@@ -464,36 +466,27 @@ analysis</p></li>
 </section>
 <section id="step-3-launch-a-container-from-the-image-and-poke-around">
 <h3>Step 3 - launch a container from the image and poke around!<a class="headerlink" href="#step-3-launch-a-container-from-the-image-and-poke-around" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>type: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">-it</span> <span class="pre">continuumio/miniconda3:23.9.0-0</span></code></p></li>
-<li><p>If it worked, then your command line prompt should now look something like this:</p></li>
-</ul>
+<p>We use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> to launch a container instance from a container image. By default the container instance will execute it’s programmed launch behaviour and immediately stop. Thus, if we want to use the container in a more interactive way, we need to tell Docker that by adding the <code class="docutils literal notranslate"><span class="pre">-it</span></code> flag to our <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> command.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docker run -it continuumio/miniconda3:23.9.0-0`
+</pre></div>
+</div>
+<p>If it worked, then your command line prompt should now look something like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">@</span><span class="mi">5</span><span class="n">d8e6fff1b12</span><span class="p">:</span><span class="o">/</span><span class="c1"># </span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>use <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span></code>, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> and explore the container</p></li>
-<li><p>type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave when you are done (your prompt will look normal again)!</p></li>
-</ul>
+<p>You can standard bash shell commands like <code class="docutils literal notranslate"><span class="pre">ls</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span></code>, <code class="docutils literal notranslate"><span class="pre">pwd</span></code> to explore the container. You can type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave when you are done (your prompt will look normal again)!</p>
 </section>
 <section id="step-4-clean-up-your-container">
 <h3>Step 4 - clean up your container!<a class="headerlink" href="#step-4-clean-up-your-container" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>After you close a container it still “hangs” around…</p></li>
-<li><p>View any existing containers using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p></li>
-<li><p>Remove the container by typing <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;container_id&gt;</span></code></p></li>
-<li><p>Prove to yourself that the container is no longer “hanging around” via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>, but that you still have the image installed (via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>)</p></li>
-</ul>
+<p>After you close a container it still “hangs” around… It has stopped running but the container instance still exists in memory (reminder - you can view any existing containers using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>). You can remove the container by typing <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">rm</span> <span class="pre">&lt;container_id&gt;</span></code>. After you remove the container you can prove to yourself that the container is no longer “hanging around” via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span> <span class="pre">-a</span></code>, but that you still have the image installed (which you can see via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">images</span></code>).</p>
 <blockquote>
 <div><p>Note: to remove running containers, you will need to first stop them via <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">stop</span> <span class="pre">&lt;container_id&gt;</span></code></p>
 </div></blockquote>
 </section>
 <section id="that-s-a-lot-of-work">
 <h3>That’s a lot of work…<a class="headerlink" href="#that-s-a-lot-of-work" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>We can tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p></li>
-<li><p>Type the command below to run the container again, exit it and prove to yourself that the container was deleted (but not the image!):</p></li>
-</ul>
+<p>We walked through those steps slowly to that you understand how everything is working. It is not the most efficient way to work with Docker container instances however when using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>. What we typically do is tell Docker to delete the container upon exit using the <code class="docutils literal notranslate"><span class="pre">--rm</span></code> flag in the run command.</p>
+<p>The command below runs a new container instance from the same image. This one command is equivalent to steps 2-4 above!</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> \
     <span class="o">--</span><span class="n">rm</span> \
     <span class="o">--</span><span class="n">it</span> \
@@ -501,7 +494,7 @@ analysis</p></li>
 </pre></div>
 </div>
 <blockquote>
-<div><p><em>Note: we are using <code class="docutils literal notranslate"><span class="pre">\</span></code> above to split a bash command across lines to make it more readable. YOu will see that throughout this chapter.</em></p>
+<div><p><em>Note: we are using <code class="docutils literal notranslate"><span class="pre">\</span></code> above to split a bash command across lines to make it more readable. You will see that throughout this chapter.</em></p>
 </div></blockquote>
 </section>
 <section id="mounting-volumes-to-containers">
@@ -755,16 +748,6 @@ Snow again this week?
 </div>
 </section>
 </section>
-<section id="using-docker-desktop-to-launch-containers">
-<h2>Using Docker Desktop to launch containers<a class="headerlink" href="#using-docker-desktop-to-launch-containers" title="Link to this heading">#</a></h2>
-<p>The Docker Desktop app can also be used to launch containers,
-specify the ports and volume mapping.
-This can be more user friendly than the command line.
-For an example of how to do this see the
-<a class="reference external" href="https://datasciencebook.ca/setup.html#working-with-docker">“Working with Docker” chapter</a>
-from <a class="reference external" href="https://datasciencebook.ca/"><em>Data Science: A First Introduction</em></a>
-by Timbers, Campbell and Lee.</p>
-</section>
 <section id="docker-compose-to-launch-containers">
 <h2>Docker compose to launch containers<a class="headerlink" href="#docker-compose-to-launch-containers" title="Link to this heading">#</a></h2>
 <p>It can be fiddly and error prone to type long commands into the terminal,
@@ -841,16 +824,16 @@ using the container
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "r"
         },
         kernelOptions: {
-            name: "python3",
+            name: "ir",
             path: "./materials/lectures"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'ir'</script>
 
                 </article>
               
@@ -900,7 +883,7 @@ using the container
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topic-learning-objectives">Topic learning objectives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launching-containers-using-docker-at-the-command-line">Launching containers using Docker at the command line</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-dockerhub">Step 2 - get container image from Dockerhub</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-get-container-image-from-docker-hub">Step 2 - get container image from Docker Hub</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-launch-a-container-from-the-image-and-poke-around">Step 3 - launch a container from the image and poke around!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-clean-up-your-container">Step 4 - clean up your container!</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#that-s-a-lot-of-work">That’s a lot of work…</a></li>
@@ -918,7 +901,6 @@ using the container
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-run-commands">Docker <code class="docutils literal notranslate"><span class="pre">run</span></code> commands</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-docker-desktop-to-launch-containers">Using Docker Desktop to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docker-compose-to-launch-containers">Docker compose to launch containers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-docker-container-non-interactively-using-the-docker-compose">Running a Docker container non-interactively using the Docker Compose</a></li>
 </ul>

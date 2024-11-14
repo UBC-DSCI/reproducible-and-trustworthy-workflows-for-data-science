@@ -423,11 +423,11 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#container-useage-workflow">Container useage workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-vs-container">Image vs container?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container-registry">What is a container registry</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-exploring-container-registries">Exercise - Exploring container registries</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-specify-a-container-image">How do we specify a container image?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-of-container-images-being-built-from-layers">Demonstration of container images being built from layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-demonstration-of-container-images-being-built-from-layers">Exercise - Demonstration of container images being built from layers</a></li>
 </ul>
 </li>
 </ul>
@@ -476,7 +476,7 @@ on the data analysis project’s complexity, expected usage and longevity.</p></
 <h3>What is a container?<a class="headerlink" href="#what-is-a-container" title="Link to this heading">#</a></h3>
 <p>Containers are another way to generate (and share!) isolated computational environments. They differ from virtual environments (which we discussed previously) in that they are even more isolated from the computers operating system, as well as they can be used share many other types of software, applications and operating system dependencies.</p>
 <p>Before we can fully define containers, however, we need to define <strong>virtualization</strong>. Virtualization is a process that allows us to divide the the elements of a single computer into several virtual elements. These elements can include computer hardware platforms, storage devices, and computer network resources, and even operating system user spaces (e.g., graphical tools, utilities, and programming languages).</p>
-<p>Containers virtualize operating system user spaces so that they can isolate the processes they contain, as well as control the processes’ access to computer resources (e.g., CPUs, memory and desk space). What this means in practice, is that an operating system user space can be carved up into multiple containers running the same, or different processes, in isolation. Below we show the schematic of a container whose virtual user space contains the:</p>
+<p>Containers virtualize operating system user spaces so that they can isolate the processes they contain, as well as control the processes’ access to computer resources (e.g., CPUs, memory and disk space). What this means in practice, is that an operating system user space can be carved up into multiple containers running the same, or different processes, in isolation. Below we show the schematic of a container whose virtual user space contains the:</p>
 <ul class="simple">
 <li><p>R programming language, the Bioconductor package manager, and two Bioconductor packages</p></li>
 <li><p>Galaxy workflow software and two toolboxes that can be used with it</p></li>
@@ -638,7 +638,7 @@ to quit Jupyter and exit the container.</p>
 </section>
 <section id="container-useage-workflow">
 <h2>Container useage workflow<a class="headerlink" href="#container-useage-workflow" title="Link to this heading">#</a></h2>
-<p>A schematic of Container useage workflow from a <a class="reference external" href="https://blog.octo.com/en/docker-registry-first-steps/">blog post</a> by Arnaud Mazin:</p>
+<p>Below is a schematic of typical container useage workflow from a <a class="reference external" href="https://blog.octo.com/en/docker-registry-first-steps/">blog post</a> by Arnaud Mazin. The source code for container images is stored in a file called a <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>. Similar to an <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file, you would typically version control this with Git and store this in your GitHub repository with your analysis code. From the source <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> we can build a Docker container image. This image is a binary file, from which we can run one, or more, container instances. Container instances are the computational environment in which you would run your analysis. Containers are usually ephemeral - we create them from the image when we want to run the analysis and then stop and remove/delete them after it has run. Docker images can (and should be) versioned and shared via container registries (which are akin to remote code repositories).</p>
 <a class="reference internal image-reference" href="../../_images/docker-stages.png"><img alt="../../_images/docker-stages.png" src="../../_images/docker-stages.png" style="width: 600px;" /></a>
 <p><em>Source: <a class="reference external" href="https://blog.octo.com/en/docker-registry-first-steps/">OctoTalks</a></em></p>
 </section>
@@ -679,8 +679,8 @@ For this course we will focus on the widely-used DockerHub container registry:
 <li><p><a class="reference external" href="https://quay.io/">https://quay.io/</a></p></li>
 <li><p><a class="reference external" href="https://aws.amazon.com/ecr/">https://aws.amazon.com/ecr/</a> (yes! Amazon now also hosts container images too!)</p></li>
 </ul>
-<section id="demonstration">
-<h3>Demonstration<a class="headerlink" href="#demonstration" title="Link to this heading">#</a></h3>
+<section id="exercise-exploring-container-registries">
+<h3>Exercise - Exploring container registries<a class="headerlink" href="#exercise-exploring-container-registries" title="Link to this heading">#</a></h3>
 <p>Let’s visit the repositories for the two container images that we used in the exercise earlier in class:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://hub.docker.com/r/rocker/rstudio">rocker/rstudio</a></p></li>
@@ -734,13 +734,18 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
 </pre></div>
 </div>
 <p>The commands in all capitals are Docker commands. <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>s typically start with a <code class="docutils literal notranslate"><span class="pre">FROM</span></code> command that specifies which base image the new image should be built off. Docker images are built in layers - this helps make them more light-weight. The <code class="docutils literal notranslate"><span class="pre">FROM</span></code> command is usually followed by <code class="docutils literal notranslate"><span class="pre">RUN</span></code> commands that usually install new software, or execute configuration commands. Other commands in this example copy in needed configuration files, expose ports, specify the working directory, and specify programs to execute at start-up.</p>
-<section id="demonstration-of-container-images-being-built-from-layers">
-<h3>Demonstration of container images being built from layers<a class="headerlink" href="#demonstration-of-container-images-being-built-from-layers" title="Link to this heading">#</a></h3>
+<section id="exercise-demonstration-of-container-images-being-built-from-layers">
+<h3>Exercise - Demonstration of container images being built from layers<a class="headerlink" href="#exercise-demonstration-of-container-images-being-built-from-layers" title="Link to this heading">#</a></h3>
 <p>Let’s take a look at the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> for the <code class="docutils literal notranslate"><span class="pre">jupyter/docker-stacks</span></code> <code class="docutils literal notranslate"><span class="pre">r-notebook</span></code> container image:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/jupyter/docker-stacks/blob/master/r-notebook/Dockerfile">Dockerfile</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jupyter/docker-stacks/blob/main/images/r-notebook/Dockerfile">Dockerfile</a></p></li>
 </ul>
-<p><em>Question: What images does it build off?</em></p>
+<p>Questions:</p>
+<ol class="arabic simple">
+<li><p>What image does it build off?</p></li>
+<li><p>What image does that build off?</p></li>
+<li><p>And then the next one?</p></li>
+</ol>
 </section>
 </section>
 </section>
@@ -754,16 +759,16 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "r"
         },
         kernelOptions: {
-            name: "python3",
+            name: "ir",
             path: "./materials/lectures"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'ir'</script>
 
                 </article>
               
@@ -844,11 +849,11 @@ If they do not exist, it then attempts to pull the image from DockerHub.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#container-useage-workflow">Container useage workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#image-vs-container">Image vs container?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-a-container-registry">What is a container registry</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-exploring-container-registries">Exercise - Exploring container registries</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-we-specify-a-container-image">How do we specify a container image?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration-of-container-images-being-built-from-layers">Demonstration of container images being built from layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-demonstration-of-container-images-being-built-from-layers">Exercise - Demonstration of container images being built from layers</a></li>
 </ul>
 </li>
 </ul>
