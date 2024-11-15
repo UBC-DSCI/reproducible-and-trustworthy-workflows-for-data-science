@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>16&nbsp; Reproducible reports – Reproducible and Trustworthy Workflows for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../lectures/170-pipelines-scripts.html" rel="next">
+<link href="../lectures/150-scripts.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-07ba0ad10f5680c660e360ac31d2f3b6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-98f67bc07761c90b1382d524a234aef8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">automation.html</a></li><li class="breadcrumb-item"><a href="../lectures/160-reproducible-reports.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Reproducible and Trustworthy Workflows for Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/chendaniely/staging-reproducible-and-trustworthy-workflows-for-data-science/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">intro.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/010-intro-to-ds-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">How do reproducible and trustworthy workflows impact data science?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/020-intro-to-bash.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to the Bash Shell</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">version-control.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/030-ssh-for-authentication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SSH for authentication</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/040-version-control-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/050-version-control-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/060-version-control-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Project management using GitHub</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/projects-envs-containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">projects-envs-containers.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/070-filenames-project-organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/080-conda-lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/090-virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/100-containerization-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/110-containerization-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/120-containerization-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/data-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">data-testing.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">automation.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/packaging-ci-cd-publish.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">packaging-ci-cd-publish.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/190-packaging-and-documenting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">licenses-copyright-wrapup.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">appendix.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors" id="toc-reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors" class="nav-link" data-scroll-target="#reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors"><span class="header-section-number">16.1</span> Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</a></li>
+  <li><a href="#introduction-to-quarto" id="toc-introduction-to-quarto" class="nav-link" data-scroll-target="#introduction-to-quarto"><span class="header-section-number">16.2</span> Introduction to Quarto</a>
+  <ul class="collapse">
+  <li><a href="#quarto-in-vs-code" id="toc-quarto-in-vs-code" class="nav-link" data-scroll-target="#quarto-in-vs-code"><span class="header-section-number">16.2.1</span> Quarto in VS Code</a></li>
+  </ul></li>
+  <li><a href="#anatomy-of-a-quarto-document" id="toc-anatomy-of-a-quarto-document" class="nav-link" data-scroll-target="#anatomy-of-a-quarto-document"><span class="header-section-number">16.3</span> Anatomy of a Quarto document</a>
+  <ul class="collapse">
+  <li><a href="#yaml-front-matter" id="toc-yaml-front-matter" class="nav-link" data-scroll-target="#yaml-front-matter"><span class="header-section-number">16.3.1</span> YAML front matter</a></li>
+  <li><a href="#markdown-text" id="toc-markdown-text" class="nav-link" data-scroll-target="#markdown-text"><span class="header-section-number">16.3.2</span> Markdown text</a></li>
+  <li><a href="#code-chunks" id="toc-code-chunks" class="nav-link" data-scroll-target="#code-chunks"><span class="header-section-number">16.3.3</span> Code chunks</a></li>
+  </ul></li>
+  <li><a href="#document-sections-and-a-table-of-contents" id="toc-document-sections-and-a-table-of-contents" class="nav-link" data-scroll-target="#document-sections-and-a-table-of-contents"><span class="header-section-number">16.4</span> Document sections and a table of contents</a>
+  <ul class="collapse">
+  <li><a href="#header-3-markdown" id="toc-header-3-markdown" class="nav-link" data-scroll-target="#header-3-markdown"><span class="header-section-number">16.4.1</span> Header 3 markdown</a></li>
+  </ul></li>
+  <li><a href="#specifying-the-table-of-contents-in-the-yaml-front-matter" id="toc-specifying-the-table-of-contents-in-the-yaml-front-matter" class="nav-link" data-scroll-target="#specifying-the-table-of-contents-in-the-yaml-front-matter"><span class="header-section-number">16.5</span> Specifying the table of contents in the YAML front matter</a></li>
+  <li><a href="#citations-and-a-bibliographies" id="toc-citations-and-a-bibliographies" class="nav-link" data-scroll-target="#citations-and-a-bibliographies"><span class="header-section-number">16.6</span> Citations and a bibliographies</a></li>
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures"><span class="header-section-number">16.7</span> Figures</a></li>
+  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables"><span class="header-section-number">16.8</span> Tables</a></li>
+  <li><a href="#inline-code" id="toc-inline-code" class="nav-link" data-scroll-target="#inline-code"><span class="header-section-number">16.9</span> Inline code</a></li>
+  <li><a href="#code-chunk-execution-options" id="toc-code-chunk-execution-options" class="nav-link" data-scroll-target="#code-chunk-execution-options"><span class="header-section-number">16.10</span> Code chunk execution options</a></li>
+  <li><a href="#a-helpful-hint-for-successfully-working-with-quarto-documents" id="toc-a-helpful-hint-for-successfully-working-with-quarto-documents" class="nav-link" data-scroll-target="#a-helpful-hint-for-successfully-working-with-quarto-documents"><span class="header-section-number">16.11</span> A helpful hint for successfully working with Quarto documents</a></li>
+  <li><a href="#quarto-reports-in-subdirectories" id="toc-quarto-reports-in-subdirectories" class="nav-link" data-scroll-target="#quarto-reports-in-subdirectories"><span class="header-section-number">16.12</span> Quarto reports in subdirectories</a></li>
+  <li><a href="#strategies-for-collaborative-writing-with-quarto" id="toc-strategies-for-collaborative-writing-with-quarto" class="nav-link" data-scroll-target="#strategies-for-collaborative-writing-with-quarto"><span class="header-section-number">16.13</span> Strategies for collaborative writing with Quarto</a>
+  <ul class="collapse">
+  <li><a href="#child-documents" id="toc-child-documents" class="nav-link" data-scroll-target="#child-documents"><span class="header-section-number">16.13.1</span> Child documents</a></li>
+  <li><a href="#smoothing" id="toc-smoothing" class="nav-link" data-scroll-target="#smoothing"><span class="header-section-number">16.13.2</span> Smoothing</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">16.14</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">automation.html</a></li><li class="breadcrumb-item"><a href="../lectures/160-reproducible-reports.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ol type="1">
+<li>Discuss the advantages and disadvantages of using literate code documents (e.g., Quarto, Jupyter, R Markdown) for writing analytic reports compared to What You See Is What You Get (WYSIWYG) editors (e.g., Word, Pages)</li>
+<li>Convert <code>.ipynb</code> and <code>.Rmd</code> files to Quarto <code>.qmd</code> files</li>
+<li>Execute and render literate code documents</li>
+<li>Generate tables of contents, label and number figures and tables, and format bibliographies in a reproducible and automatted manner</li>
+</ol>
+</section>
+<section id="reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="reproducible-reports-vs-what-you-see-is-what-you-get-wysiwyg-editors"><span class="header-section-number">16.1</span> Reproducible reports vs What You See Is What You Get (WYSIWYG) editors</h2>
+<p>Reproducible reports are reports where automation is used to update a report when changes to data or data analysis methods lead to changes in data analysis artifacts (e.g., figures, tables, inline text values). This automation is usually specified and controlled by code. In the field of data science, the most common implementations of this are:</p>
+<ul>
+<li>Quarto</li>
+<li>R Markdown</li>
+<li>Jupyter</li>
+<li>LaTeX</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>R Markdown and Jupyter are not completely separable from LaTeX, as they both wrap LaTeX when the desired output is PDF.</p>
+</div>
+</div>
+<p>Most implementations of reproducible reports involve a process called rendering, where a document containing code and/or markup language used to specify the text formatting, document layout, figure and table placement and numbering, bibliography formatting, <em>etc</em>, is converted to an output more suitable for consumption (e.g., beautifully formatted PDF or html document) by some software.</p>
+<p><img src="../img/render-report/render-report.png" width="100%"></p>
+<p>This contrasts from What You See Is What You Get (WYSIWYG) software or editors (e.g., Microsoft Word, Google Docs, etc), where the document that is being edited looks exactly like the final document - there is no rendering process. WYSIWYG reports are typically easier to get started with and use. However, they are usually quite limited in their ability to automatically update a report when changes to data or data analysis methods lead to changes in data analysis artifacts. This makes them less reproducible, and can lead to errors when repeated manual updating of data analysis artifacts is needed when analysis is iterated on during development.</p>
+<p><img src="../img/word.png" width="300"></p>
+</section>
+<section id="introduction-to-quarto" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="introduction-to-quarto"><span class="header-section-number">16.2</span> Introduction to Quarto</h2>
+<p>Quarto is one implementation of a reproducible reporting tool. It is very user friendly and has become very powerful - allowing a great deal of control over formatting with the ability to render to many different outputs.</p>
+<p>Including: - PDF - html - Word - Powerpoint presentation - many more!</p>
+<p>It is a mix of markdown primarily used for narrative text, and code chunks where code can be executed in an engine. It works very well with either R or Python as the coding engine. It has many more advanced features for customizing document outputs compared to Jupyter notebooks on their own, which is why we recommend shifting to this tool when the audience of your analysis moves beyond you and your data science team.</p>
+<p>Quarto also can very easily convert between different kinds of reproducible report documents, making it easy to shift from working in an Jupyter notebook to this different reproducible report tool. For example,</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> convert your_notebook.ipynb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There is a wonderful online guide for getting to know Quarto, we link to it below. In these notes, we will generally introduce this tool, and demonstrate how to:</p>
+<ul>
+<li>Anatomy of a Quarto document</li>
+<li>Create document sections and a table of contents.</li>
+<li>Add citations and a bibliography.</li>
+<li>Format figures and figure captions, as well as automatically number them and cross reference them in the narrative text.</li>
+<li>Format tables and table descriptions, as well as automatically number them and cross reference them in the narrative text.</li>
+<li>Execute code inline in the report narrative, so that the text will be automatically updated with the correct value when the report is rendered.</li>
+<li>Set the global and local code chunk options so that no code is viewable in the rendered report, just the code outputs where needed (e.g., figures and tables).</li>
+</ul>
+<p>Quarto can do all this and so much more, and so if you are interested in learning more be sure to refer to the <a href="https://quarto.org/docs/guide/">Quarto Guide</a>.</p>
+<div class="callout callout-style-default callout-exercise callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Get to know Quarto
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let’s get to know Quarto! Open RStudio and create a new Quarto document, choosing HTML as the output format. Look at the source document that is created, where is the narrative text written? Where is the code written? How does this differ from Jupyter?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Render your first document
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are two ways to render a document from the <code>qmd</code> source to the desired output. One is using a button in RStudio - the <strong>“Render”</strong> button that looks like this:</p>
+<p><img src="../img/render.png" width="100"></p>
+<p>Try clicking that button and see what happens!</p>
+<p>Another way you can do this is through code! Try running this in the terminal (replacing <code>"FILEPATH/FILE.qmd"</code> with the file path to where you saved this Quarto document:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render your_report.qmd <span class="at">--to</span> html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Checkout the new visual markdown editor
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>RStudio has implemented a new feature for working with Quarto to make it more similar to working with Jupyter - it is called the visual markdown editor. Checkout this feature by clicking the visual markdown editor button when you have an R Markdown file open in the editor. The button looks like this:</p>
+<p><img src="../img/viz-md-button.png" width="125"></p>
+</div>
+</div>
+<section id="quarto-in-vs-code" class="level3" data-number="16.2.1">
+<h3 data-number="16.2.1" class="anchored" data-anchor-id="quarto-in-vs-code"><span class="header-section-number">16.2.1</span> Quarto in VS Code</h3>
+<p>You can also use Quarto in VS Code with R or Python. If you decide to use this editor, it is highly recommended that you use the <a href="https://marketplace.visualstudio.com/items?itemName=quarto.quarto">VS Code Quarto extension</a>. This will allow you to preview the rendered document, similar to how this can be done in RStudio. In VS Code, to preview the rendered document you click “Preview” (instead of “Render” as in RStudio), which is located at the top right-hand side of the document you are working on.</p>
+</section>
+</section>
+<section id="anatomy-of-a-quarto-document" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="anatomy-of-a-quarto-document"><span class="header-section-number">16.3</span> Anatomy of a Quarto document</h2>
+<p>At a basic level, a Quarto document has three parts:</p>
+<ol type="1">
+<li><p>YAML front matter</p></li>
+<li><p>Markdown text</p></li>
+<li><p>Code chunks</p></li>
+</ol>
+<p><img src="../img/quarto-doc-anatomy.png" width="100%"></p>
+<section id="yaml-front-matter" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="yaml-front-matter"><span class="header-section-number">16.3.1</span> YAML front matter</h3>
+<p>The YAML front matter controls global settings for the report (document output types, code display defaults, table of contents presence and depth), as well as houses document metadata (e.g., author, date, etc). Below is an example YAML front matter which sets the:</p>
+<ul>
+<li>Title</li>
+<li>Author</li>
+<li>Date of report rendering</li>
+<li>Document render format to HTML</li>
+<li>Document have a references section and the source file for the references</li>
+<li>Source code to be hidden in the rendered report</li>
+<li>RStudio editor to show the source code view instead of the visual markdown view</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Historical Horse Population in Canada"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Tiffany Timbers"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> Sys.Date()</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bibliography</span><span class="kw">:</span><span class="at"> references.bib</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">editor</span><span class="kw">:</span><span class="at"> visual</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="markdown-text" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="markdown-text"><span class="header-section-number">16.3.2</span> Markdown text</h3>
+<p>Following the yaml frontmatter section, by default, the rest of the document is considered Markdown text. If no markdown syntax is used, the text will be rendered as unformatted text. Here is a table of very common markdown formatting that you might find useful:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Description</th>
+<th>Markdown syntax</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bold text</td>
+<td><code>**Bold text**</code></td>
+<td><strong>Bold text</strong></td>
+</tr>
+<tr class="even">
+<td>Italic text</td>
+<td><code>*Italic text*</code></td>
+<td><em>Italic text</em></td>
+</tr>
+<tr class="odd">
+<td>Bold Italic text</td>
+<td><code>***Bold Italic text***</code></td>
+<td><strong><em>Bold Italic text</em></strong></td>
+</tr>
+<tr class="even">
+<td>verbatim code (not executed)</td>
+<td>`verbatim code`</td>
+<td><code>verbatim code</code></td>
+</tr>
+<tr class="odd">
+<td>Inline math</td>
+<td><code>$E = mc^{2}$</code></td>
+<td><span class="math inline">\(E = mc^{2}\)</span></td>
+</tr>
+<tr class="even">
+<td>Display math</td>
+<td><code>$$E = mc^{2}$$</code></td>
+<td><span class="math display">\[E = mc^{2}\]</span></td>
+</tr>
+</tbody>
+</table>
+<p>See the Quarto Markdown docs for additional formatting that you might need to do: - <a href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto Markdown basics</a></p>
+</section>
+<section id="code-chunks" class="level3" data-number="16.3.3">
+<h3 data-number="16.3.3" class="anchored" data-anchor-id="code-chunks"><span class="header-section-number">16.3.3</span> Code chunks</h3>
+<p>Just like Jupyter notebooks, Quarto has code cells, although they’re more commonly referred to as code “chunks” or “blocks”. These are based off fenced Markdown code blocks and always start and end with 3 backticks (```), just like in Markdown. Unique to Quarto is that the leading three backticks are followed by curly braces containing the language engine you want to run, which for r looks like this <code>{r}</code>. For Python, they would look like <code>{python}</code>. Additional metadata can be included, for example a name to reference the code chunk:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r my-first-code-chunk}</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- 5</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="in">x</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>All code cells are run when you render the entire document (like pressing “Run all” in JupyterLab). By default, the code in the chunk and the code output will be included in your rendered document. You can also run the code by clicking the green play button on the right-hand side of the code chunk.</p>
+</section>
+</section>
+<section id="document-sections-and-a-table-of-contents" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="document-sections-and-a-table-of-contents"><span class="header-section-number">16.4</span> Document sections and a table of contents</h2>
+<p>By using Markdown formatted headers, we can create document sections that we can link to, as well as easily create linkable table of contents. This is especially important in longer documents, that without such features are hard to navigate.</p>
+<p>Markdown headers are specified by staring the line with one or more <code>#</code> characters.</p>
+<p>A single <code>#</code> results in a first level header, two <code>#</code>’s results in a second level header, three <code>#'s</code> results in a third level header, and so on.</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># First level header</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## Second level header</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can have up to header level 6, <code>######</code></p>
+<p>For example we can have H3 and H4 tags, and will render like this</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">### Header 3 markdown</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Header 4 Markdown</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="header-3-markdown" class="level3" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="header-3-markdown"><span class="header-section-number">16.4.1</span> Header 3 markdown</h3>
+<section id="header-4-markdown" class="level4">
+<h4 class="anchored" data-anchor-id="header-4-markdown">Header 4 Markdown</h4>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We are rending the H3 and H4 tags because this book is written in Quarto, and having it render the H1 and H2 tags will interfere with the book’s rendering and table of contents.</p>
+<p>We’ve also disabled numbering for this book beyond H4.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="specifying-the-table-of-contents-in-the-yaml-front-matter" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="specifying-the-table-of-contents-in-the-yaml-front-matter"><span class="header-section-number">16.5</span> Specifying the table of contents in the YAML front matter</h2>
+<p>Once the headers have been created in the document, the YAML front matter can be edited to specify that you would like a table of contents, and to what depth of header level you would like to include in it. This is done by setting the <code>toc</code> key to <code>true</code>, and the header depth the the level you want it use in the table contents using the <code>toc-depth</code> key (e.g., setting that to <code>2</code> would include first and second level headers in the table of contents).</p>
+<p>These need to be set under each document type you want to render to, for example to create a table of contents with depth 3 for HTML documents you would add this to the YAML front matter:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can render more than one document type from a <code>.qmd</code> file, below is the example of YAML front matter for a <code>.qmd</code> file that renders to both HTML and PDF and set the table of contents depth to 2 for both of these:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Historical Horse Population in Canada"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Tiffany Timbers"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> Sys.Date()</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">pdf</span><span class="kw">:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">toc-depth</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">editor</span><span class="kw">:</span><span class="at"> visual</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="citations-and-a-bibliographies" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="citations-and-a-bibliographies"><span class="header-section-number">16.6</span> Citations and a bibliographies</h2>
+<p>DO NOT format references by hand, you will drive yourself nuts, especially the more references you collect! Instead use Quarto bibliography/citiation functionality. Below is a brief introduction, full docs <a href="https://quarto.org/docs/manuscripts/authoring/jupyterlab.html#citations">here</a>.</p>
+<section id="steps-to-citing-in-quarto" class="level4">
+<h4 class="anchored" data-anchor-id="steps-to-citing-in-quarto">Steps to citing in Quarto</h4>
+<ol type="1">
+<li><p>Add <code>bibliography: FILENAME.bib</code> to the YAML front matter</p></li>
+<li><p>At the very end of the <code>.qmd</code> file add a header with the word “References” (e.g., <code>## References</code>)</p></li>
+<li><p>Create <code>FILENAME.bib</code> (this is a plain text file) and place citations in there using bibtex citation format (see examples <a href="https://www.economics.utoronto.ca/osborne/latex/BIBTEX.HTM">here</a>).</p></li>
+<li><p>In the <code>.qmd</code> mardown text, use <code>@label</code> (corresponds to the first string inside the <code>{}</code> in the <code>.bib</code> file for the reference of interest) to do a in-text citation.</p></li>
+</ol>
+</section>
+<section id="getting-bibtex-citations" class="level4">
+<h4 class="anchored" data-anchor-id="getting-bibtex-citations">Getting bibtex citations</h4>
+<p>Bibtex citations for code (R &amp; Python programming languages and their respective packages) can be obtained from the sources: - <code>citatation()</code> function in R (no argument will give you the citation for R, adding a package name as a string to the function call will give you the citation for that package) - For Python, I have found I have had to do this somewhat manually from package GitHub repos or docs pages (some packages exist to do this, but none seem to work flawlessly out of box). See my demo <code>.bib</code> file here for an example: https://github.com/ttimbers/breast_cancer_predictor/blob/master/doc/breast_cancer_refs.bib</p>
+<p>Bibtex citations for papers can usually be found via Google scholar:</p>
+</section>
+<section id="search-for-the-paper-on-google-scholar" class="level4">
+<h4 class="anchored" data-anchor-id="search-for-the-paper-on-google-scholar">1. Search for the paper on Google Scholar</h4>
+<ul>
+<li>visit https://scholar.google.com/</li>
+</ul>
+</section>
+<section id="use-google-scholar-to-get-the-citation" class="level4">
+<h4 class="anchored" data-anchor-id="use-google-scholar-to-get-the-citation">2. Use Google Scholar to get the citation</h4>
+<ul>
+<li>Click on the quotation icon under the paper:</li>
+</ul>
+<p><img src="../img/google_scholar_step_1.png" class="img-fluid"></p>
+<ul>
+<li>Click on the BibTex link on the pop-up box:</li>
+</ul>
+<p><img src="../img/google_scholar_step_2.png" class="img-fluid"></p>
+<ul>
+<li>Copy the BibTeX citation to your .bib file</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">@article</span>{<span class="ot">ahmad2007k</span>,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>={A k-mean clustering algorithm for mixed numeric and categorical data},</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>={Ahmad, Amir and Dey, Lipika},</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">journal</span>={Data <span class="ch">\&amp;</span> Knowledge Engineering},</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">volume</span>={63},</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">number</span>={2},</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pages</span>={503--527},</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>={2007},</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">publisher</span>={Elsevier}</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="figures" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="figures"><span class="header-section-number">16.7</span> Figures</h2>
+<p>Figures can be added by using Markdown figure syntax in the Markdown section of the Quarto documents. For example, the syntax shown below <code>![](../img/banff.png)</code> will embed the figure in the rendered document:</p>
+<p><img src="../img/banff.png" width="400"></p>
+<p>Usually, we want to do a few things to our figures in reports to make them more understandable and easier to refer to and discuss. These include: - adding figure captions - give them figure numbers so we can cross reference them in the text - adjust their size so they are just big enough to understand, but also small enough to read the surrounding report text</p>
+<p>In particular, with the assigning figure numbers, we want to do this in a automated way so that if you change the order that figures show up in your report during the editing process, you do not have to manually renumber them.</p>
+<p>The syntax below takes our Markdown figure and gives it a caption (via adding the caption between the <code>[ ]</code>), gives it a label so that Quarto will do automated numbering of the figure and so you can cross reference it in the text (via <code>#fig-some-name</code>), and specifies the size of the figure to be 50% (via <code>width=50%</code>).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="al">![The Banff International Research Station campus in February 2024.](../img/banff.png)</span>{#fig-banff width=50%}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-banff" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-banff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../img/banff.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-banff-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: The Banff International Research Station campus in February 2024.
+</figcaption>
+</figure>
+</div>
+<p>To cross reference the figure in the narrative of the report, we write <code>@fig-banff</code> when we want to refer to it. That will change to Figure 1 in the rendered report, if the figure named <code>fig-banff</code> is the first figure embedded in the report. This works in both R and Python.</p>
+</section>
+<section id="tables" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="tables"><span class="header-section-number">16.8</span> Tables</h2>
+<p>There are several ways to add tables to Quarto documents, but the most consistent way that works across many data set sizes is to use code from the programming language you are working with to load your data into the Quarto document as a data frame object and then use the appropriate functions from your programming language to display them as a nicely formatted table. This should happen within a code chunk, specifying the code engine you are using (either R or Python). In R, that combination is usually a function from the <code>readr</code> package in combination with the <code>knitr::kable</code> function. In python, that combination is usually a reading data method from the <code>pandas</code> package (e.g., <code>pd.read_csv</code>) in combination with the <code>Markdown</code> function from the <code>IPython</code> package.</p>
+<p>R example:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="in">table_to_display &lt;- readr::read_csv("my_data.csv")</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable( table_to_display)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Python example:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="in">import pandas as pd</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="in">table_to_display = pd.read_csv("my_data.csv")</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="in">Markdown(table_to_display.to_markdown(index = False))</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As with figures, with tables we usually want to do a few things to our figures in reports to make them more understandable and easier to refer to and discuss. These include: - adding table descriptions - give them table numbers so we can cross reference them in the text</p>
+<p>Similar to with the assigning figure numbers, when assigning table numbers, we want to do this in a automated way so that if you change the order that tables show up in your report during the editing process, you do not have to manually renumber them.</p>
+<p>Since we loaded the table data into the report using R or Python code in a code chunk, we will this time use code chunk formatting options to add the table descriptions and to gives it a label so that Quarto will do automated numbering of the tables and allow us to cross refernece them in the text (via <code>#tab-some_name</code>).</p>
+<p>R example:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: tbl-my-data</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="in">#| tbl-cap: Some relevant description about the data in my table.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="in">table_to_display &lt;- readr::read_csv("my_data.csv")</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::kable( table_to_display)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p>Note that we only showed the example in one language because the code chunk options for this are the same in both R and Python.</p>
+</blockquote>
+<p>To cross reference the table in the narrative of the report, we write <code>@tbl-my-data</code> when we want to refer to it. That will change to Table 1 in the rendered report, if the table named <code>tbl-my-data</code> is the first table embedded in the report. This works in both R and Python.</p>
+</section>
+<section id="inline-code" class="level2" data-number="16.9">
+<h2 data-number="16.9" class="anchored" data-anchor-id="inline-code"><span class="header-section-number">16.9</span> Inline code</h2>
+<p>If you are wanting to include a value your code calculates in the narrative of your Quarto report, you ideally should not hard-code this value, as it may change if you change something in your analysis. Instead you want to use inline code to embed the appropriate value when your render your document. You can do this via</p>
+<p>You can refer to values stored in code inside your markdown text using the <code>{language_engine} code_object</code> surrounded by backticks. For example in R you would include this in your narrative text to embed the sample mean inside the report:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="in">sample_mean = 5</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>The radius of the circle is <span class="in">`{r} sample_mean`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In Python, you would replace the <code>r</code> with <code>python</code>:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="in">sample_mean = 5</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>The radius of the circle is <span class="in">`{python} sample_mean`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The value for this must be a vector of length one in R, or a scalar in Python.</p>
+</div>
+</div>
+</section>
+<section id="code-chunk-execution-options" class="level2" data-number="16.10">
+<h2 data-number="16.10" class="anchored" data-anchor-id="code-chunk-execution-options"><span class="header-section-number">16.10</span> Code chunk execution options</h2>
+<p>There are many code chunk options that you can set. These options let you customize chunk behavior, including whether a chunk is evaluated, whether to include the output in the rendered document, etc.</p>
+<p>A short list of code chunk options is shown below, but you can find an extensive list in the Quarto docs: - <a href="https://quarto.org/docs/computations/execution-options.html">Quarto Execution Options</a></p>
+<p><img src="../img/quarto-execute-options.png" width="100%"></p>
+<p><em>Source: <a href="https://quarto.org/docs/computations/execution-options.html#output-options" class="uri">https://quarto.org/docs/computations/execution-options.html#output-options</a></em></p>
+<p>You can set the chunk options at either a global level (once set they will be applied to all code chunks in the <code>.qmd</code> file) or locally for a specific chunk (these will override the global chunk options if they are contradictory).</p>
+<p>Global options are set in the YAML front matter at the top of the document. Setting the code chunk options so that the source code (<code>echo</code>) is hidden in the rendered document and that warnings (<code>warning</code> are suppressed) looks like this:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">echo</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">warning</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Local chunk options are set by adding the options at the top of the code chunk. To not display warnings in a single code chunk we would use the <code>warning: FALSE</code> code chunk as follows:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="in">#| warning: false</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="in">cor( c( 1 , 1 ), c( 2 , 3 ) )</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="a-helpful-hint-for-successfully-working-with-quarto-documents" class="level2" data-number="16.11">
+<h2 data-number="16.11" class="anchored" data-anchor-id="a-helpful-hint-for-successfully-working-with-quarto-documents"><span class="header-section-number">16.11</span> A helpful hint for successfully working with Quarto documents</h2>
+<p>Given that you need to render the entire document to see your Markdown and LaTeX rendered, it is important to render often as you make changes. If you make an error in a LaTeX equation for example, it will stop the rendering process and you will not get to see the rendered document. So by rendering often you will know where the last changes you made are and then will be able to easily identify and fix your errors.</p>
+</section>
+<section id="quarto-reports-in-subdirectories" class="level2" data-number="16.12">
+<h2 data-number="16.12" class="anchored" data-anchor-id="quarto-reports-in-subdirectories"><span class="header-section-number">16.12</span> Quarto reports in subdirectories</h2>
+<p>When working with a more complex project, it is a good practice to split our files up into subdirectories. This means that our Quarto documents often end up in a directory called <code>reports</code> or <code>analysis</code> or something similar. This best practice can lead to headaches when rendering the document, as the relative paths for loading in data artifacts (figures and tables) can change depending on where the document is executed from.</p>
+<p>In this course we will adopt the strategy that Quarto documents will be executed from the subdirectory that live in (e.g., <code>reports</code> or <code>analysis</code> or something similar). This is actually Quarto’s default when using the <code>quarto render ...</code> command. To ensure that the preview works correctly with this setup, however, we need to add an empty <code>_quarto.yml</code> file to our project root directory. This can be done by running <code>touch _quarto.yml</code> in the terminal in your project root. This document can be used to set many kinds of Quarto configurations (see all <a href="https://quarto.org/docs/projects/quarto-projects.html#project-metadata">here</a>), including saving the rendered documents to different directories (which can be useful if you plan to serve up your report as a nice, human readable HTML document on the web as <a href="https://quarto.org/docs/publishing/github-pages.html">documented here</a>).</p>
+</section>
+<section id="strategies-for-collaborative-writing-with-quarto" class="level2" data-number="16.13">
+<h2 data-number="16.13" class="anchored" data-anchor-id="strategies-for-collaborative-writing-with-quarto"><span class="header-section-number">16.13</span> Strategies for collaborative writing with Quarto</h2>
+<p>Although Quarto is wonderful for incorporating code, and code-generated research artifacts in a reproducible manner, it is not as user-friendly for collaborative writing as other tools (e.g., Google docs). In particular, the lack of real-time collaboration and possibilities for merge conflicts that cannot be automatically resolved are the greatest challenges. Thus, to make collaborative writing efficient and effective with Quarto, we need to take a thoughtful approach to using it for this purpose. Clear communication helps, in particular with avoiding merge conflicts, however we can do more than that to make this work even better. We outline below, two strategies we can incorporate, which function to help reduce the number of merge conflicts that cannot be automatically resolved, and create a cohesive document, even with multiple authors.</p>
+<section id="child-documents" class="level3" data-number="16.13.1">
+<h3 data-number="16.13.1" class="anchored" data-anchor-id="child-documents"><span class="header-section-number">16.13.1</span> Child documents</h3>
+<p>When multiple authors are editing a Quarto document at the same time in collaborative writing, there ends up being a good chance that a merge conflict will occur, and potentially one that cannot be automatically resolved. One way to avoid this is using communication to assign different authors to work on different sections of the document - reducing the chance that they will be editing the same lines at the same time. With this strategy however, this still can happen with sections that are adjacent to each other as Git uses the line numbers, not section headers to decide which changes are overappling changes.</p>
+<p>Thus, an even better strategy is the use of child documents. Child documents are documents that are sourced into the main (parent) document when the document is rendered (you get one single document rendered, which includes all the content from the parent and child documents). A good idea in collaborative writing is to split each section into a separate child document. That way, each person working on a section is working on a separate document - minimizing greatly the number of potential merge conflicts.</p>
+<p>The <a href="https://quarto.org/docs/authoring/includes.html">Includes syntax</a> is the way to incorporate a child document into a parent document in Quarto. Below we show an example parent document (<code>breast_cancer_predictor_report.qmd</code>) which uses child documents to split the sections of the report into separate documents.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>title<span class="sc">:</span> <span class="st">"Predicting breast cancer from digitized images of breast mass"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>author<span class="sc">:</span> <span class="st">"Tiffany A. Timbers, Joel Ostblom &amp; Melissa Lee"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>format<span class="sc">:</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    pdf</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        toc<span class="sc">:</span> true</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        toc<span class="sc">-</span>depth<span class="sc">:</span> <span class="dv">2</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>bibliography<span class="sc">:</span> references.bib</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>execute<span class="sc">:</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  echo<span class="sc">:</span> false</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  warning<span class="sc">:</span> false</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="sc">---</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Abstract</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>{{<span class="sc">&lt;</span> include _abstract.qmd <span class="sc">&gt;</span>}}</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Introduction</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>{{<span class="sc">&lt;</span> include _introduction.qmd <span class="sc">&gt;</span>}}</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Methods</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>{{<span class="sc">&lt;</span> include _methods.qmd <span class="sc">&gt;</span>}}</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Results &amp; Discussion</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>{{<span class="sc">&lt;</span> include _results<span class="sc">-</span>and<span class="sc">-</span>discussion.qmd <span class="sc">&gt;</span>}}</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="do">## References</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This document would live in a project structure something like this (only zooming in on the reports sub-directory:</p>
+<pre><code>project/
+├── data/
+├── reports/
+│   ├── _abstract.qmd
+│   ├── _introduction.qmd
+│   ├── _methods.qmd
+│   ├── _results-and-discussion.qmd
+│   └── breast_cancer_predictor_report.qmd
+├── src/
+├── doc/
+├── README.md
+└── Dockerfile</code></pre>
+<p>And when rendered, (by running <code>quarto render reports/breast_cancer_predicotr_report.qmd</code>) a single PDF document would be rendered from the 5 separate <code>.qmd</code> files.</p>
+</section>
+<section id="smoothing" class="level3" data-number="16.13.2">
+<h3 data-number="16.13.2" class="anchored" data-anchor-id="smoothing"><span class="header-section-number">16.13.2</span> Smoothing</h3>
+<p>One downside to splitting collaborative writing into sections, is the the resulting document reads like it was written by several authors (because it was)! Additionally, the transitions between different sections of the report are often quite disjoint and abrupt (Stout, 2022). This is really undesirable as it makes it more difficult for the reader to understand the report. To counteract this effect of drafting a manuscript collaboratively by sections, we need to employ a smoothing process to blend the writing styles from the various authors, so that in the end, it will read as one consistently styled document, similar to documents written by a single author (Stout, 2022).</p>
+<p>Smoothing is a step, after the initial draft is generated by separate authors, where the authors trade section assignments and edit and revise a different section than which they initially drafted. It is also advisable after this step of smoothing, to do another step, where the entire manuscript is read by at least 2-3 authors where they pay particular attention to section transitions. This extra work, results in a more cohesive, clear and easy to read document, and should be used in any collaborative writing project (Stout, 2022).</p>
+</section>
+</section>
+<section id="references" class="level2" data-number="16.14">
+<h2 data-number="16.14" class="anchored" data-anchor-id="references"><span class="header-section-number">16.14</span> References</h2>
+<p>Sara Stoudt (2022) Collaborative Writing Workflows in the Data-Driven Classroom: A Conversation Starter, Journal of Statistics and Data Science Education, 30:3, 282-288, DOI: 10.1080/26939169.2022.2082602</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/150-scripts.html" class="pagination-link" aria-label="Non-interactive scripts">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../lectures/170-pipelines-scripts.html" class="pagination-link" aria-label="Data analysis pipelines with scripts">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
