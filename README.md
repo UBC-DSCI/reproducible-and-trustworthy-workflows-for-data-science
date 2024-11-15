@@ -1,8 +1,6 @@
 ## Reproducible and Trustworthy Workflows for Data Science
 
-Tiffany A. Timbers, Joel Ostblom, Florencia D'Andrea, Rodolfo Lourenzutti
-
-January, 2023
+Tiffany A. Timbers, Joel Ostblom, Florencia D'Andrea, Rodolfo Lourenzutti, Daniel Chen
 
 Course notes for teaching concepts and practices 
 related to reproducible and trustworthy workflows for data science.

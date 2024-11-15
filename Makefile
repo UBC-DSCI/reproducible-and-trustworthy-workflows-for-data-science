@@ -1,10 +1,11 @@
-book:
-	cp README.md materials/README.md
-	jupyter-book build materials
-	if [ ! -d "docs" ]; then mkdir docs; fi
-	if [ ! -f ".nojekyll" ]; then touch docs/.nojekyll; fi
-	cp -r materials/_build/html/* docs
+@PHONY: preview render
 
-clean-book:
-	rm -rf docs/*
-	rm -rf materials/_build/*
+preview:
+	quarto preview book/index.qmd --port 54321
+
+render:
+	make clean
+	quarto render book/
+
+clean:
+	rm -rf docs

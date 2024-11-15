@@ -1,0 +1,489 @@
+---
+title: Non-interactive scripts
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/150-scripts.qmd >}}
+
+## Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) versus Scripts
+
+- Up until now, we have primarily been using R and Python in an Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode)
+- Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) is when we run our code in the console in R/Python, or in cells/chunks in the RStudio/Juptyer notebooks
+- A Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) is very useful for:
+    - solving small problems
+    - developing code that will be knit to an analytic report
+    - developing code that will be run as a script (i.e., in "batch" mode)
+
+## What is a script?
+
+An R/Python script is simply a plain text file containing (almost) the same commands that you would enter into R/Python's console or in cells/chunks in the RStudio/Juptyer notebooks. We often run these from top to bottom from the command line/unix shell.
+
+### Why write scripts?
+
+- Efficiency!
+- Automation!
+- Reusable!
+- Record of what you have done!
+
+**It also makes your report files a lot cleaner!!!**
+
+You can find the code repository for this lesson here: <https://github.com/DSCI-310/2024-02-13-scripts>
+
+## Scripts in R
+
+Let's start with a small, simple example to demonstrate how we write and run scripts in R (it is very similar in Python and we will get to this later in the lesson).
+
+Our script will be called `print_mean_hp.R`, and it will calculate the mean horsepower of the cars from the built-in R data frame `mtcars`.
+
+We will develop this script inside RStudio, make sure it works, and then run it from the command line/terminal/Git bash.
+
+### Our first R script
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean horsepower of the cars from the built-in
+# R data frame `mtcars`. This script takes no arguments.
+#
+# Usage: Rscript print_mean_hp.R
+
+mean_hp <- mean(mtcars$hp)
+print(mean_hp)
+```
+
+### Running our first R script
+
+To run our R script, we need to open the command line/terminal/Git bash, and either navigate to the directory that houses the script OR point to it when we call it. We will do the former.
+
+Then to run the R script, we use the `Rscript` command, followed by the name/path to the file:
+
+```bash
+Rscript print_mean_hp.R
+```
+
+The output should be:
+
+```sh
+[1] 146.6875
+```
+
+### A couple notes about scripts
+
+- If you want something to be output to the command line/terminal/Git bash, you **should** explicitly ask for it to be print. *This is not an absolute requirement in R, but it is in Python!*
+- Similar with figures, they need to be saved! You will never see a figure created in a script unless you write it to a file.
+- From a reproducibility perspective, if we want input from the user, usually we will design the scripts to take command line arguments, and not use keyboard/user prompts.
+
+### Script structure and organization
+
+Although not necessary in R or Python, it is still good practice and advised to organize the code in your script into related sections. This practice keeps your code readable and organized. Below we outline how we typically organize R scripts:
+
+### Example R script organization:
+
+```r
+# documentation comments
+
+# import libraries/packages
+
+# parse/define command line arguments here
+
+# define main function
+main <- function(){
+    # code for "guts" of script goes here
+}
+
+# code for other functions & tests goes here
+
+# call main function
+main() # pass any command line args to main here
+```
+
+
+### R script example
+
+Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv) (*original source: <https://biostat.app.vumc.org/wiki/Main/DataSets>*) and calculates the  mean for the fare (ticket price) variable.
+
+Our script has two functions, a function we defined to calculate the standard error of the mean (such a function does not exist in R) and a `main` function which runs the "body" of our code.
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean for the fare (ticket price)
+# from titanic.csv. This script takes no arguments.
+#
+# Usage: quick_titanic_fare_mean.R
+
+library(tidyverse)
+
+main <- function() {
+data <- read_csv('data/titanic.csv')
+  out <- data %>%
+         pull(fare) %>%
+         mean(na.rm = TRUE)
+  print(out)
+}
+
+main()
+```
+
+### Saving things from scripts
+
+Above we just printed the mean to the terminal.
+That is was done because the purpose of that script
+was to have a very simple illustration of how to create and run scripts in R.
+However, in practice, we typically want to save our analysis artifacts (figures, tables, values, etc)
+to disc so that we can load them into other files
+(e.g., our final reports to communicate our analysis findings).
+
+Below we show an example of how we would use `readr::write_csv`
+to save the mean value we calculated to a `.csv` file:
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+#
+# This script calculates the mean horsepower of the cars from the built-in
+# R data frame `mtcars` and saves it to `results/mean_hp_col.csv`.
+# This script takes no arguments.
+#
+# Usage: Rscript print_mean_hp.R
+
+library(readr)
+
+main <- function() {
+  mean_hp <- mean(mtcars$hp)
+  mean_hp <- data.frame(value = mean_hp)
+  write_csv(mean_hp, "results/mean_hp_col.csv")
+}
+
+main()
+```
+
+:::{.callout-note}
+In this script we are saving the file to the `results` directory.
+There needs to be a `results` directory created before this script would work.
+:::
+
+## Using command line arguments in R
+Let's make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.
+
+To do this, we use the `docopt` R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.
+
+When we run `docopt` it takes the text we entered at the command line and gives it to us as a named list of the text provided after the script name. The names of the items in the list come from the documentation. Whitespace at the command line is what is used to parse the text into separate items in the vector.
+
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+
+"This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_titanic_col_mean.R <var>
+" -> doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt <- docopt(doc)
+
+main <- function(var) {
+
+  # read in data
+  data <- read_csv('data/titanic.csv')
+
+  # print out statistic of variable of interest
+  out <- data |>
+    pull(!!var) |>
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$var)
+```
+
+:::{.callout-note}
+Note: we use `!!` in front of `opt$col` because all command line arguments are passed into R
+as strings, and are thus quoted. However, `pull` is a function from the `tidyverse` that expects
+an unquoted column name of a data frame. `!!` does this unquoting.
+This is similar to `{{` that we saw before with functions
+(which quotes and unquotes values when they are passed into functions).
+However here we use `!!` as we have no indirection and just need to perform unquoting.
+:::
+
+
+And we would run a script like this from the command line as follows:
+
+```bash
+Rscript src/quick_titanic_col_mean.R fare
+```
+
+Let's make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the [Gapminder `.csv`'s](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder-FiveYearData.csv)).
+
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+
+"This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_titanic_col_mean.R <file_path> <var>
+" -> doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt <- docopt(doc)
+
+main <- function(file_path, var) {
+
+  # read in data
+  data <- read_csv(file_path)
+
+  # print out statistic of variable of interest
+  out <- data |>
+    pull(!!var) |>
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$file_path, opt$var)
+```
+
+Now we would run a script like this from the command line as follows:
+
+```bash
+Rscript src/quick_csv_col_mean.R data/titanic.csv fare
+```
+
+### Positional arguments vs options
+
+In the examples above, we used `docopt` to specify positional arguments. This means that the order matters! If we change the order of the values of the arguments at the command line, our script will likely throw an error, because it will try to perform the wrong operations on the wrong values.
+
+Another downside to positional arguments, is that without good documentation, they can be less readable. And certainly the call to the script to is less readable. We can instead give the arguments names using `--ARGUMENT_NAME` syntax. We call these "options". Below is the same script but specified using options as opposed to positional arguments:
+
+```r
+# author: Tiffany Timbers
+# date: 2020-01-15
+
+"This script calculates the mean for a specified column
+from titanic.csv.
+
+Usage: quick_csv_col_mean.R --file_path=<file_path> --var=<var>
+
+Options:
+--file_path=<file_path>   Path to the data file
+--var=<var>               Unquoted column name of the numerical vector for which to calculate the mean
+" -> doc
+
+
+library(tidyverse)
+library(docopt)
+
+opt <- docopt(doc)
+
+main <- function(file_path, var) {
+
+  # read in data
+  data <- read_csv(file_path)
+
+  # print out statistic of variable of interest
+  out <- data |>
+    pull(!!var) |>
+    mean(na.rm = TRUE)
+  print(out)
+}
+
+main(opt$file_path, opt$var)
+```
+
+And we would run a script like this that uses options like this:
+
+```bash
+Rscript src/quick_csv_col_mean.R --file_path=data/titanic.csv --col=fare
+```
+
+or like this:
+
+```bash
+Rscript src/quick_csv_col_mean.R --col=fare --file_path=data/titanic.csv
+```
+
+because we gave the arguments names, and thus their position no longer matters!
+
+### Some tips for RStudio IDE
+
+- To indent a block of text, highlight and use tab
+- To fix indenting in general to R code standards,
+  use <kbd>⌘</kbd>/<kbd>ctrl></kbd> + <kbd>shift</kbd> + <kbd>i</kbd>
+- To get multiple cursors, hold alt/option and highlight lines using cursor
+- To get multiple cursors to the beginning of the line, use control A
+- To get multiple cursors to the end of the line, use control E
+
+## Scripts in Python
+
+### Example Python script organization:
+
+```python
+# documentation comments
+
+# import libraries/packages
+
+# parse/define command line arguments here
+
+# define main function
+def main():
+    # code for "guts" of script goes here
+
+# code for other functions & tests goes here
+
+# call main function
+if __name__ == "__main__":
+    main() # pass any command line args to main here
+```
+
+:::{.callout-note}
+You can see that R and Python scripts should have roughly the same style. There is the difference of `if __name__ == "__main__":` in Python scripts, and R does not really have an equivalent. The benefit of some control flow around `main`, as is done in Python, is so that you could import or source the other functions in the script without running the `main` function.
+:::
+
+:::{.callout-tip}
+It is still worthwhile however to have a main function in your R scripts, as it helps with organization and readability.
+:::
+
+
+### Using command line arguments in Python
+
+Although `docopt` for Python exists, it is not currently being supported by an active development community.
+Thus, we will use the [`click`](https://click.palletsprojects.com/en/8.1.x/) Python package instead. It is widely used, has a healthy and active development community,
+and excellent functionality.
+
+Below is an example of using `click` for a simple Python script:
+
+```python
+import click
+
+@click.command()
+@click.argument('num1', type=int)
+@click.argument('num2', type=int)
+def main(num1, num2):
+    """Simple program that adds two numbers."""
+    result = num1 + num2
+    click.echo(f"The sum of {num1} and {num2} is {result}")
+
+if __name__ == '__main__':
+    main()
+```
+
+Running this script via:
+
+```bash
+python sum.py 5 7
+```
+
+Would result in:
+
+```bash
+The sum of 5 and 7 is 12
+```
+
+:::{.callout-note}
+We do not need to pass the variables into `main()`.
+The `click` decorators take care of that for us! How nice!!!
+:::
+
+### Positional arguments vs options in Python
+
+If we instead wanted to use options in the script above, we swap the `argument` method for the `option` method and add `--` to the prefix of our options:
+
+```python
+import click
+
+@click.command()
+@click.option('--num1', type=int)
+@click.option('--num2', type=int)
+def main(num1, num2):
+    """Simple program that adds two numbers."""
+    result = num1 + num2
+    click.echo(f"The sum of {num1} and {num2} is {result}")
+
+if __name__ == '__main__':
+    main()
+```
+
+Running this script, we now add the names of the options as shown below via:
+
+```bash
+python sum.py --num1=5 --num2=7
+```
+
+Would result in:
+
+```bash
+The sum of 5 and 7 is 12
+```
+
+## Saving objects from scripts
+
+### Tables
+As mentioned already, it is important you save results from your scripts so that you can import
+them into your reports (or other other data products).
+For data frame objects that will be presented as tables, writing the objects to a `.csv` file
+through `readr` (in R) or `pandas` (in Python) is great.
+
+### Figures
+For figures, saving images as `.png` is also a good choice. Although the downstream usage of the figure can sometimes change this recommendation. For a brief but more thorough discussion of this topic, see the ["Saving the visualization" chapter](https://datasciencebook.ca/viz.html#saving-the-visualization) from *Data Science: An Introduction* by Timbers, Campbell & Lee (2020).
+
+### Model objects
+
+Model objects that are trained/fit in one script, and then need to be used again later in another script can and should be saved as binary files. In R, the format is `.RDS` and we use the functions `saveRDS()` and `readRDS()` to do this. In python, the format is `.pickle` and we use the functions `pickle.dump()` and `pickle.load()` from the `pickle` package.
+
+#### example of saving a model using `saveRDS()`
+
+```r
+saveRDS(final_knn_model, "final_knn_model.rds")
+```
+
+#### example of loading a saved model using `readRDS()`
+
+```r
+final_knn_model <- readRDS("final_knn_model.rds")
+```
+
+#### example of saving a model using `pickle.dump()`
+
+##### for very simple objects (like preprocessor)
+
+```python
+import pickle
+pickle.dump(knn_preprocessor, open("knn_preprocessor.pickle", "wb"))
+```
+
+##### for more complex objects (like a fit model)
+
+```python
+import pickle
+with open("knn_fit.pickle", 'wb') as f:
+    pickle.dump(knn_fit, f)
+```
+
+#### example of loading a saved model using `pickle.load()`
+
+##### for very simple objects (like preprocessor)
+
+```python
+import pickle
+knn_preprocessor = pickle.load(open("knn_preprocessor.pickle", "rb"))
+```
+
+##### for more complex objects (like a fit model)
+
+```python
+import pickle
+with open("knn_fit.pickle", 'rb') as f:
+        knn_fit = pickle.load(f)
+```

@@ -1,0 +1,299 @@
+---
+title: "Conda lock: reproducible lock files for conda environments"
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/080-conda-lock.qmd >}}
+
+## What is conda lock?
+
+Conda lock is a tool that is able to resolve all the dependencies for an environment
+and save them into a fully reproducible lock file for conda environments.
+It's similar to an `environment.yml` file in that both files will
+specify packages in an environment,
+but the conda lock file specifically tells the installer
+everything specified in the file is exactly what the platform needs to
+install the environment.
+
+## Downsides of `environment.yml`
+
+First let's review the `environment.yml` and point out some of its problems.
+Conda's `environment.yml` file is one way to create a reproducible conda environment.
+
+This file can be created with the `conda env export` command.
+
+```bash
+conda env export > environment.yml
+```
+
+:::{.callout-note}
+You can read more on managing conda environments in the conda documentation:
+<<https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>
+:::
+
+One of the issues with this method is that it will capture all the installed packages and dependencies
+in the current conda environment into an `environment.yml`.
+That sounds great!
+Until you realize that it also captures any needed OS-specific dependencies,
+and also writes a `prefix` line in the file.
+Both of these prevent a fully reproducible file across multiple machines and collaborators.
+
+We can partially solve this issue by using the `--from-history` flag.
+
+```bash
+conda env export --from-history
+```
+
+This will only include packages that were explicitly installed,
+without the dependencies.
+If you manually go remove the `prefix` line,
+this is a good way to create an `environment.yml` file that is also
+compatible across platforms.
+
+Finally,
+even if you manually curate an `environment.yml`,
+you still have to go through the conda (or mamba) solver to make sure
+all listed package versions are compatible with each other,
+and install any missing dependencies.
+The main issue is, the solver still takes time.
+
+## What conda lock aims to solve
+
+When we use `conda install` to install a package,
+the solver will look up the version of the package you are installing
+and make sure any currently installed package version are compatible
+with the package.
+In this way using `conda env export` will report the same result of
+a reproducible environment.
+
+But,
+when we ran `conda install`, we have already spent the time for the solver to
+do its work.
+The main problem conda lock solves is specifying an environment file
+similar to `environment.yml`, but it also signals to the installer
+that the solver has already been run and does not need to run again.
+This creates an environment file that can also be used to speed up
+subsequent environment setups.
+
+When we try to install from an `environment.yml` file,
+there's no guarantee that the packages listed include the versions full dependency tree.
+Conda lock does provide that guarantee that all the packages listed
+in the file will have a version and full dependency tree.
+That's why the solver does not need to run again.
+
+Finally,
+you can tell conda lock to do the solving for other platforms.
+So the solver can be run for operating systems other than the one you are working in.
+This is useful when you are collaborating with
+people using different platforms and also creating environment files (i.e., lock files)
+for docker containers.
+
+:::{.definition title="Conda Lock"}
+A `conda-lock` file is a file that specifies all the packages, its versions,
+and the full dependency tree to recreate a conda environment.
+It's main benefit is that when using the conda-lock file,
+the solver no longer needs to be run,
+and can be created to target specific operating system platforms.
+:::
+
+You can learn more about conda-lock in the documentation:
+<https://conda.github.io/conda-lock/>
+
+## Create conda lock files
+
+Conda lock is a separate tool that needs to be installed first,
+it's not installed by default in the base conda environment.
+Conda-lock also relies on a source file, we'll be using `environment.yml`.
+
+```bash
+conda install -c conda-forge conda-lock
+```
+
+:::{.callout-note}
+You may want to install `conda-lock` into a new environment,
+especially if you want to follow along and do the exercises in this chapter.
+
+```bash
+conda create -n condalock conda-lock
+```
+
+Since you are using a `conda install`, this will take some time for the solver to resolve.
+Note, we are just installing `conda-lock` in the environment,
+we are not installing python yet.
+
+Don't forget to activate your environment
+
+```bash
+conda activate condalock
+```
+
+:::
+
+When creating conda-lock files there are 2 different types of files that can be created,
+`conda-lock.yml` or `conda-<platform>.lock` file.
+The `conda-lock.yml` is the newer unified multi-platform lockfile that is the default
+generated from conda-lock > 1.0.
+The `conda-<platform>.lock` is the older platform specific lock files you can create,
+e.g., `conda-linux-64.lock`.
+
+:::{.exercise title="Exercise 1"}
+Let's create our first `conda-lock.yml` file
+
+#### Step 1: Environment Setup
+
+Let's populate our current environment by installing pandas,
+and create an `environment.yml` file.
+
+```bash
+conda install pandas
+```
+
+We'll take a note here on how long this took to install.
+It may take about 14 seconds depending on your system and computer specs.
+
+Let's save our current environment into a file
+
+```bash
+conda env export --from-history > environment.yml
+```
+
+You should see something like this
+
+```yaml
+name: condalock
+channels:
+  - conda-forge
+dependencies:
+  - conda-lock
+  - pandas
+prefix: /home/dan/.pyenv/versions/miniforge3-latest/envs/condalock
+```
+
+You'll notice that `python` is not listed in the `environment.yml` file.
+That's because we only explicitly installed `pandas`,
+`python` is installed as part of the dependency resolution.
+
+You'll see `python` in the environment if you search for it in the environment.
+
+```bash
+$ conda env export | grep python
+  - brotli-python=1.1.0=py313h46c70d0_2
+  - gitpython=3.1.43=pyhd8ed1ab_0
+  - msgpack-python=1.1.0=py313h33d0bda_0
+  - python=3.13.0=h9ebbce0_100_cp313
+  - python-dateutil=2.9.0=pyhd8ed1ab_0
+  - python-tzdata=2024.2=pyhd8ed1ab_0
+  - python_abi=3.13=5_cp313
+```
+
+
+#### Step 2: Create a `conda-lock.yml` file
+
+We will now use the `environment.yml` file to create our `conda-lock.yml` file.
+
+```bash
+conda-lock lock --file environment.yml
+```
+
+You'll see that it will create a multi-platform lock file.
+We can look into only creating platform specific lock files next.
+
+```bash
+$ conda-lock lock --file environment.yml
+Locking dependencies for ['linux-64', 'osx-64', 'osx-arm64', 'win-64']...
+INFO:conda_lock.conda_solver:linux-64 using specs ['conda-lock', 'pandas']
+INFO:conda_lock.conda_solver:osx-64 using specs ['conda-lock', 'pandas']
+INFO:conda_lock.conda_solver:osx-arm64 using specs ['conda-lock', 'pandas']
+INFO:conda_lock.conda_solver:win-64 using specs ['conda-lock', 'pandas']
+ - Install lock using: conda-lock install --name YOURENV conda-lock.yml
+```
+
+You will now see a `conda-lock.yml` file for all the platforms.
+
+This particular file (on this specific machine) has almost 5000 lines
+
+```bash
+$ wc -l conda-lock.yml
+4944 conda-lock.yml
+```
+
+:::{.callout-tip}
+If you run into an error, try manually deleting any exiting `conda-lock.yml`
+file in your directory and try again.
+:::
+
+:::
+
+You can learn more about `conda-lock` flags (i.e., options) in the documentation:
+<https://conda.github.io/conda-lock/flags/>
+
+The CLI Reference will list all the commands for `conda-lock`:
+<https://conda.github.io/conda-lock/cli/gen/>
+
+## Specifying the platform
+
+By default you'll see `conda-lock` solve for multiple dependencies:
+`['linux-64', 'osx-64', 'osx-arm64', 'win-64']`.
+Depending on the size of your environment,
+this may take a long time, especially if you only need to target
+a single platform (or a subset of platforms).
+we can use the `-p` or `--platform` for the `lock` command.
+
+:::{.exercise title="Exercise 2"}
+
+#### Generating platform specific lock files
+
+We can generate a subset of platforms with the `-p` or `--platform` flag.
+If you are doing this example after the previous example,
+remember to delete the existing `conda-lock.yml` file.
+
+:::{.callout-caution}
+Be careful, the `-p` flag does not mean the same for all the `conda-lock` commands.
+:::
+
+```bash
+conda-lock lock --file environment.yml -p linux-64
+```
+
+Our new files has much fewer lines, because it contains packages for fewer platforms.
+
+```bash
+$ wc -l conda-lock.yml
+1403 conda-lock.yml
+```
+
+:::
+
+## Create environments from conda lock files
+
+Now that we have a `conda-lock.yml` file,
+we can use it to create a new environment with the `install` command
+
+:::{.exercise title="Exercise 3"}
+
+#### Create a new environment from `conda-lock.yml`
+
+Let's use our `conda-lock.yml` file to create a new environment called `condalock-new`.
+
+```bash
+conda-lock install --name condalock-new conda-lock.yml
+```
+
+When we timed this install, the new environment was created in 6 seconds.
+This much faster than using `conda install` and relying on the solver.
+
+We can now activate this environment with `conda activate condalock-new`
+:::
+
+## Conclusion
+
+There are many ways of creating a reproducible compute environment.
+`conda` comes with a mechanism to create an `environment.yml` file,
+but there are a few downsides with using `environment.yml` with `conda`,
+mainly sharing environments causes everyone to go through the same solving process.
+`conda-lock` uses the `environment.yml` file to create a different kind of
+environment file, `conda-lock.yml`, and provides a way where only one person
+needs to compute the dependency solver,
+everyone else who uses this new file to create or update an environment
+will have a much faster environment setup.
