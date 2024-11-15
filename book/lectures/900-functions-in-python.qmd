@@ -1,0 +1,100 @@
+---
+title: 'Defining functions in Python'
+jupyter: python3
+---
+
+
+
+In this course, we will get to practice writing functions (and then testing them) in the Python programming language. We will only cover it here briefly. To learn more about functions in Python, we refer you to the [Module 6: Functions Fundamentals and Best Practices
+](https://prog-learn.mds.ubc.ca/en/module6) from the Programming in Python for Data Science course.
+
+Functions in Python are defined using the reserved word `def`. A colon follows the function arguments to indicate where the function body should starte. White space, in particular indentation, is used to indicate which code belongs in the function body and which does not (unindented code following the function is not part of the function body). A general form for fucntion definition is shown below:
+
+```
+def function_name(…function arguments…):
+    …function body…
+```
+
+Here's a working example:
+
+```{python}
+#| slideshow: {slide_type: fragment}
+def add_two_numbers(x, y):
+    return x + y
+
+add_two_numbers(1, 4)
+```
+
+Note that functions in Python are objects.
+
+### Default function arguments
+
+Default values can be specified in the function definition:
+
+```{python}
+def math_two_numbers(x, y, operation = "add"):
+    if (operation == "add"):
+        return x + y
+    else:
+        return x - y
+```
+
+```{python}
+math_two_numbers (1, 4)
+```
+
+```{python}
+math_two_numbers (1, 4, "subtract")
+```
+
+## Function documentation
+
+Function documentation is extremely useful at both the time of function creation/development, as well as at the time of function usage by the user. At the time of creation/development, it is useful for clearly delineating and communication the planned function's specifications. At the time of usage, it is often the primary documentation a user will refer to in order to understand how to use the function. If a function is not well documented, it will not be well understood or widely used.
+
+### Function documentation in Python
+
+In Python, we write function documentation using docstrings. These come after the function definition and are denoted by three apostrophes (`''' ... '''`). There are many ways to write and format the content of the docstrings. For the purpose of this course, we will adopt the numpy style docstrings as they are easy to read and following by many data scientists.
+
+Example numpy style docstrings for math_two_numbers function:
+
+```{python}
+def math_two_numbers(x, y, operation = "add"):
+    '''
+    Perform a mathematical operation (addition or subtraction) on two numbers.
+
+    Parameters
+    ----------
+    x : float or int
+        The first number to use in the operation.
+    y : float or int
+        The second number to use in the operation.
+    operation : str, optional
+        The operation to perform on the two numbers.
+        Can be 'add' for addition (default) or 'sub' for subtraction.
+
+    Returns
+    -------
+    float or int
+        The result of the mathematical operation performed on `x` and `y`.
+
+    Examples
+    --------
+    >>> math_two_numbers(4, 5)
+    9
+
+    >>> math_two_numbers(10, 3, operation="sub")
+    7
+    '''
+    if (operation == "add"):
+        return x + y
+    else:
+        return x - y
+```
+
+Once we define a function with docstrings,
+we (and other users) can get it as as part of the help documentation
+via `help(math_two_numbers)` or `?math_two_numbers`:
+
+```{python}
+help(math_two_numbers)
+```
