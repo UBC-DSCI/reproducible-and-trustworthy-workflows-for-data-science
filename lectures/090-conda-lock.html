@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>8&nbsp; Conda lock: reproducible lock files for conda environments – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>9&nbsp; Conda lock: reproducible lock files for conda environments – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/090-virtual-environments.html" rel="next">
-<link href="../lectures/070-filenames-project-organization.html" rel="prev">
+<link href="../lectures/100-containerization-1.html" rel="next">
+<link href="../lectures/080-virtual-environments.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,15 +103,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
+div.callout-exercise.callout {
+  border-left-color: green;
 }
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
 }
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -125,6 +125,17 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   content: '💻';
   background-image: none;
 }
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
 div.callout-definition.callout {
   border-left-color: pink;
 }
@@ -134,17 +145,6 @@ div.callout-definition.callout-style-default > .callout-header {
 div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
 div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
   content: '📝';
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: green;
-}
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
   background-image: none;
 }
 </style>
@@ -162,7 +162,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/080-conda-lock.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-conda-lock.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -271,14 +271,14 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/080-conda-lock.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+  <a href="../lectures/080-virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/090-virtual-environments.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  <a href="../lectures/090-conda-lock.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -391,7 +391,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Wrap-Up</span></a>
+ <span class="menu-text">Wrap Up</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -451,22 +451,22 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#what-is-conda-lock" id="toc-what-is-conda-lock" class="nav-link" data-scroll-target="#what-is-conda-lock"><span class="header-section-number">8.1</span> What is conda lock?</a></li>
-  <li><a href="#downsides-of-environment.yml" id="toc-downsides-of-environment.yml" class="nav-link" data-scroll-target="#downsides-of-environment.yml"><span class="header-section-number">8.2</span> Downsides of <code>environment.yml</code></a></li>
-  <li><a href="#what-conda-lock-aims-to-solve" id="toc-what-conda-lock-aims-to-solve" class="nav-link" data-scroll-target="#what-conda-lock-aims-to-solve"><span class="header-section-number">8.3</span> What conda lock aims to solve</a></li>
-  <li><a href="#create-conda-lock-files" id="toc-create-conda-lock-files" class="nav-link" data-scroll-target="#create-conda-lock-files"><span class="header-section-number">8.4</span> Create conda lock files</a></li>
-  <li><a href="#specifying-the-platform" id="toc-specifying-the-platform" class="nav-link" data-scroll-target="#specifying-the-platform"><span class="header-section-number">8.5</span> Specifying the platform</a></li>
-  <li><a href="#create-environments-from-conda-lock-files" id="toc-create-environments-from-conda-lock-files" class="nav-link" data-scroll-target="#create-environments-from-conda-lock-files"><span class="header-section-number">8.6</span> Create environments from conda lock files</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">8.7</span> Conclusion</a></li>
+  <li><a href="#what-is-conda-lock" id="toc-what-is-conda-lock" class="nav-link" data-scroll-target="#what-is-conda-lock"><span class="header-section-number">9.1</span> What is conda lock?</a></li>
+  <li><a href="#downsides-of-environment.yml" id="toc-downsides-of-environment.yml" class="nav-link" data-scroll-target="#downsides-of-environment.yml"><span class="header-section-number">9.2</span> Downsides of <code>environment.yml</code></a></li>
+  <li><a href="#what-conda-lock-aims-to-solve" id="toc-what-conda-lock-aims-to-solve" class="nav-link" data-scroll-target="#what-conda-lock-aims-to-solve"><span class="header-section-number">9.3</span> What conda lock aims to solve</a></li>
+  <li><a href="#create-conda-lock-files" id="toc-create-conda-lock-files" class="nav-link" data-scroll-target="#create-conda-lock-files"><span class="header-section-number">9.4</span> Create conda lock files</a></li>
+  <li><a href="#specifying-the-platform" id="toc-specifying-the-platform" class="nav-link" data-scroll-target="#specifying-the-platform"><span class="header-section-number">9.5</span> Specifying the platform</a></li>
+  <li><a href="#create-environments-from-conda-lock-files" id="toc-create-environments-from-conda-lock-files" class="nav-link" data-scroll-target="#create-environments-from-conda-lock-files"><span class="header-section-number">9.6</span> Create environments from conda lock files</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">9.7</span> Conclusion</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/080-conda-lock.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-conda-lock.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></h1>
 </div>
 
 
@@ -491,12 +491,12 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 <li>Create a conda environment from a lock file</li>
 </ol>
 </section>
-<section id="what-is-conda-lock" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="what-is-conda-lock"><span class="header-section-number">8.1</span> What is conda lock?</h2>
+<section id="what-is-conda-lock" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="what-is-conda-lock"><span class="header-section-number">9.1</span> What is conda lock?</h2>
 <p>Conda lock is a tool that is able to resolve all the dependencies for an environment and save them into a fully reproducible lock file for conda environments. It’s similar to an <code>environment.yml</code> file in that both files will specify packages in an environment, but the conda lock file specifically tells the installer everything specified in the file is exactly what the platform needs to install the environment.</p>
 </section>
-<section id="downsides-of-environment.yml" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="downsides-of-environment.yml"><span class="header-section-number">8.2</span> Downsides of <code>environment.yml</code></h2>
+<section id="downsides-of-environment.yml" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="downsides-of-environment.yml"><span class="header-section-number">9.2</span> Downsides of <code>environment.yml</code></h2>
 <p>First let’s review the <code>environment.yml</code> and point out some of its problems. Conda’s <code>environment.yml</code> file is one way to create a reproducible conda environment.</p>
 <p>This file can be created with the <code>conda env export</code> command.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -519,8 +519,8 @@ Note
 <p>This will only include packages that were explicitly installed, without the dependencies. If you manually go remove the <code>prefix</code> line, this is a good way to create an <code>environment.yml</code> file that is also compatible across platforms.</p>
 <p>Finally, even if you manually curate an <code>environment.yml</code>, you still have to go through the conda (or mamba) solver to make sure all listed package versions are compatible with each other, and install any missing dependencies. The main issue is, the solver still takes time.</p>
 </section>
-<section id="what-conda-lock-aims-to-solve" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="what-conda-lock-aims-to-solve"><span class="header-section-number">8.3</span> What conda lock aims to solve</h2>
+<section id="what-conda-lock-aims-to-solve" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="what-conda-lock-aims-to-solve"><span class="header-section-number">9.3</span> What conda lock aims to solve</h2>
 <p>When we use <code>conda install</code> to install a package, the solver will look up the version of the package you are installing and make sure any currently installed package version are compatible with the package. In this way using <code>conda env export</code> will report the same result of a reproducible environment.</p>
 <p>But, when we ran <code>conda install</code>, we have already spent the time for the solver to do its work. The main problem conda lock solves is specifying an environment file similar to <code>environment.yml</code>, but it also signals to the installer that the solver has already been run and does not need to run again. This creates an environment file that can also be used to speed up subsequent environment setups.</p>
 <p>When we try to install from an <code>environment.yml</code> file, there’s no guarantee that the packages listed include the versions full dependency tree. Conda lock does provide that guarantee that all the packages listed in the file will have a version and full dependency tree. That’s why the solver does not need to run again.</p>
@@ -540,8 +540,8 @@ Conda Lock
 </div>
 <p>You can learn more about conda-lock in the documentation: <a href="https://conda.github.io/conda-lock/" class="uri">https://conda.github.io/conda-lock/</a></p>
 </section>
-<section id="create-conda-lock-files" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="create-conda-lock-files"><span class="header-section-number">8.4</span> Create conda lock files</h2>
+<section id="create-conda-lock-files" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="create-conda-lock-files"><span class="header-section-number">9.4</span> Create conda lock files</h2>
 <p>Conda lock is a separate tool that needs to be installed first, it’s not installed by default in the base conda environment. Conda-lock also relies on a source file, we’ll be using <code>environment.yml</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge conda-lock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-exercise callout-titled">
@@ -634,8 +634,8 @@ Tip
 <p>You can learn more about <code>conda-lock</code> flags (i.e., options) in the documentation: <a href="https://conda.github.io/conda-lock/flags/" class="uri">https://conda.github.io/conda-lock/flags/</a></p>
 <p>The CLI Reference will list all the commands for <code>conda-lock</code>: <a href="https://conda.github.io/conda-lock/cli/gen/" class="uri">https://conda.github.io/conda-lock/cli/gen/</a></p>
 </section>
-<section id="specifying-the-platform" class="level2" data-number="8.5">
-<h2 data-number="8.5" class="anchored" data-anchor-id="specifying-the-platform"><span class="header-section-number">8.5</span> Specifying the platform</h2>
+<section id="specifying-the-platform" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="specifying-the-platform"><span class="header-section-number">9.5</span> Specifying the platform</h2>
 <p>By default you’ll see <code>conda-lock</code> solve for multiple dependencies: <code>['linux-64', 'osx-64', 'osx-arm64', 'win-64']</code>. Depending on the size of your environment, this may take a long time, especially if you only need to target a single platform (or a subset of platforms). we can use the <code>-p</code> or <code>--platform</code> for the <code>lock</code> command.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -668,8 +668,8 @@ Caution
 </div>
 </div>
 </section>
-<section id="create-environments-from-conda-lock-files" class="level2" data-number="8.6">
-<h2 data-number="8.6" class="anchored" data-anchor-id="create-environments-from-conda-lock-files"><span class="header-section-number">8.6</span> Create environments from conda lock files</h2>
+<section id="create-environments-from-conda-lock-files" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="create-environments-from-conda-lock-files"><span class="header-section-number">9.6</span> Create environments from conda lock files</h2>
 <p>Now that we have a <code>conda-lock.yml</code> file, we can use it to create a new environment with the <code>install</code> command</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -688,8 +688,8 @@ Exercise 4
 </div>
 </div>
 </section>
-<section id="conclusion" class="level2" data-number="8.7">
-<h2 data-number="8.7" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">8.7</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">9.7</span> Conclusion</h2>
 <p>There are many ways of creating a reproducible compute environment. <code>conda</code> comes with a mechanism to create an <code>environment.yml</code> file, but there are a few downsides with using <code>environment.yml</code> with <code>conda</code>, mainly sharing environments causes everyone to go through the same solving process. <code>conda-lock</code> uses the <code>environment.yml</code> file to create a different kind of environment file, <code>conda-lock.yml</code>, and provides a way where only one person needs to compute the dependency solver, everyone else who uses this new file to create or update an environment will have a much faster environment setup.</p>
 
 
@@ -1118,13 +1118,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/070-filenames-project-organization.html" class="pagination-link" aria-label="Filenames and data science project organization, Integrated development environments">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span>
+      <a href="../lectures/080-virtual-environments.html" class="pagination-link" aria-label="Virtual environments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/090-virtual-environments.html" class="pagination-link" aria-label="Virtual environments">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/100-containerization-1.html" class="pagination-link" aria-label="Introduction to containerization">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>9&nbsp; Virtual environments – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>8&nbsp; Virtual environments – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/100-containerization-1.html" rel="next">
-<link href="../lectures/080-conda-lock.html" rel="prev">
+<link href="../lectures/090-conda-lock.html" rel="next">
+<link href="../lectures/070-filenames-project-organization.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,28 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
-  background-image: none;
-}
-div.callout-relevance-project.callout {
-  border-left-color: orange;
-}
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -147,6 +125,28 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
 </style>
 
 
@@ -162,7 +162,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-virtual-environments.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/080-virtual-environments.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -271,14 +271,14 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/080-conda-lock.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+  <a href="../lectures/080-virtual-environments.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/090-virtual-environments.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  <a href="../lectures/090-conda-lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -391,7 +391,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Wrap-Up</span></a>
+ <span class="menu-text">Wrap Up</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -452,32 +452,32 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
   <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution">Attribution</a></li>
-  <li><a href="#virtual-environments" id="toc-virtual-environments" class="nav-link" data-scroll-target="#virtual-environments"><span class="header-section-number">9.1</span> Virtual environments</a></li>
-  <li><a href="#conda" id="toc-conda" class="nav-link" data-scroll-target="#conda"><span class="header-section-number">9.2</span> Conda</a>
+  <li><a href="#virtual-environments" id="toc-virtual-environments" class="nav-link" data-scroll-target="#virtual-environments"><span class="header-section-number">8.1</span> Virtual environments</a></li>
+  <li><a href="#conda" id="toc-conda" class="nav-link" data-scroll-target="#conda"><span class="header-section-number">8.2</span> Conda</a>
   <ul class="collapse">
-  <li><a href="#managing-conda" id="toc-managing-conda" class="nav-link" data-scroll-target="#managing-conda"><span class="header-section-number">9.2.1</span> Managing Conda</a></li>
-  <li><a href="#managing-conda-environments" id="toc-managing-conda-environments" class="nav-link" data-scroll-target="#managing-conda-environments"><span class="header-section-number">9.2.2</span> Managing <code>conda</code> environments</a></li>
-  <li><a href="#creating-environment-by-manually-specifying-packages" id="toc-creating-environment-by-manually-specifying-packages" class="nav-link" data-scroll-target="#creating-environment-by-manually-specifying-packages"><span class="header-section-number">9.2.3</span> Creating environment by manually specifying packages</a></li>
-  <li><a href="#seeing-what-packages-are-available-in-an-environment" id="toc-seeing-what-packages-are-available-in-an-environment" class="nav-link" data-scroll-target="#seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">9.2.4</span> Seeing what packages are available in an environment</a></li>
-  <li><a href="#installing-conda-package" id="toc-installing-conda-package" class="nav-link" data-scroll-target="#installing-conda-package"><span class="header-section-number">9.2.5</span> Installing conda package</a></li>
-  <li><a href="#removing-a-conda-package" id="toc-removing-a-conda-package" class="nav-link" data-scroll-target="#removing-a-conda-package"><span class="header-section-number">9.2.6</span> Removing a conda package</a></li>
-  <li><a href="#sharing-environments-with-others" id="toc-sharing-environments-with-others" class="nav-link" data-scroll-target="#sharing-environments-with-others"><span class="header-section-number">9.2.7</span> Sharing Environments with others</a></li>
-  <li><a href="#creating-environment-from-an-environment-file" id="toc-creating-environment-from-an-environment-file" class="nav-link" data-scroll-target="#creating-environment-from-an-environment-file"><span class="header-section-number">9.2.8</span> Creating environment from an environment file</a></li>
-  <li><a href="#copying-an-environment" id="toc-copying-an-environment" class="nav-link" data-scroll-target="#copying-an-environment"><span class="header-section-number">9.2.9</span> Copying an environment</a></li>
-  <li><a href="#listing-all-environments-on-your-laptop" id="toc-listing-all-environments-on-your-laptop" class="nav-link" data-scroll-target="#listing-all-environments-on-your-laptop"><span class="header-section-number">9.2.10</span> Listing all environments on your laptop</a></li>
-  <li><a href="#deleting-an-environment" id="toc-deleting-an-environment" class="nav-link" data-scroll-target="#deleting-an-environment"><span class="header-section-number">9.2.11</span> Deleting an environment</a></li>
-  <li><a href="#making-environments-work-well-with-jupyterlab" id="toc-making-environments-work-well-with-jupyterlab" class="nav-link" data-scroll-target="#making-environments-work-well-with-jupyterlab"><span class="header-section-number">9.2.12</span> Making environments work well with JupyterLab</a></li>
+  <li><a href="#managing-conda" id="toc-managing-conda" class="nav-link" data-scroll-target="#managing-conda"><span class="header-section-number">8.2.1</span> Managing Conda</a></li>
+  <li><a href="#managing-conda-environments" id="toc-managing-conda-environments" class="nav-link" data-scroll-target="#managing-conda-environments"><span class="header-section-number">8.2.2</span> Managing <code>conda</code> environments</a></li>
+  <li><a href="#creating-environment-by-manually-specifying-packages" id="toc-creating-environment-by-manually-specifying-packages" class="nav-link" data-scroll-target="#creating-environment-by-manually-specifying-packages"><span class="header-section-number">8.2.3</span> Creating environment by manually specifying packages</a></li>
+  <li><a href="#seeing-what-packages-are-available-in-an-environment" id="toc-seeing-what-packages-are-available-in-an-environment" class="nav-link" data-scroll-target="#seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">8.2.4</span> Seeing what packages are available in an environment</a></li>
+  <li><a href="#installing-conda-package" id="toc-installing-conda-package" class="nav-link" data-scroll-target="#installing-conda-package"><span class="header-section-number">8.2.5</span> Installing conda package</a></li>
+  <li><a href="#removing-a-conda-package" id="toc-removing-a-conda-package" class="nav-link" data-scroll-target="#removing-a-conda-package"><span class="header-section-number">8.2.6</span> Removing a conda package</a></li>
+  <li><a href="#sharing-environments-with-others" id="toc-sharing-environments-with-others" class="nav-link" data-scroll-target="#sharing-environments-with-others"><span class="header-section-number">8.2.7</span> Sharing Environments with others</a></li>
+  <li><a href="#creating-environment-from-an-environment-file" id="toc-creating-environment-from-an-environment-file" class="nav-link" data-scroll-target="#creating-environment-from-an-environment-file"><span class="header-section-number">8.2.8</span> Creating environment from an environment file</a></li>
+  <li><a href="#copying-an-environment" id="toc-copying-an-environment" class="nav-link" data-scroll-target="#copying-an-environment"><span class="header-section-number">8.2.9</span> Copying an environment</a></li>
+  <li><a href="#listing-all-environments-on-your-laptop" id="toc-listing-all-environments-on-your-laptop" class="nav-link" data-scroll-target="#listing-all-environments-on-your-laptop"><span class="header-section-number">8.2.10</span> Listing all environments on your laptop</a></li>
+  <li><a href="#deleting-an-environment" id="toc-deleting-an-environment" class="nav-link" data-scroll-target="#deleting-an-environment"><span class="header-section-number">8.2.11</span> Deleting an environment</a></li>
+  <li><a href="#making-environments-work-well-with-jupyterlab" id="toc-making-environments-work-well-with-jupyterlab" class="nav-link" data-scroll-target="#making-environments-work-well-with-jupyterlab"><span class="header-section-number">8.2.12</span> Making environments work well with JupyterLab</a></li>
   </ul></li>
-  <li><a href="#renv" id="toc-renv" class="nav-link" data-scroll-target="#renv"><span class="header-section-number">9.3</span> <code>renv</code></a></li>
+  <li><a href="#renv" id="toc-renv" class="nav-link" data-scroll-target="#renv"><span class="header-section-number">8.3</span> <code>renv</code></a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-virtual-environments.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/080-virtual-environments.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></h1>
 </div>
 
 
@@ -506,8 +506,8 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <h2 class="unnumbered anchored" data-anchor-id="attribution">Attribution</h2>
 <p>The conda virtual environment section of this guide was originally published at <a href="http://geohackweek.github.io/" class="uri">http://geohackweek.github.io/</a> under a CC-BY license and has been updated to reflect recent changes in conda, as well as modified slightly to fit the MDS lecture format.</p>
 </section>
-<section id="virtual-environments" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="virtual-environments"><span class="header-section-number">9.1</span> Virtual environments</h2>
+<section id="virtual-environments" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="virtual-environments"><span class="header-section-number">8.1</span> Virtual environments</h2>
 <p>Virtual environments let’s you have multiple versions of programming languages packages, and other programs on the same computer, while keeping them isolated so they do not create conflicts with each other. In practice virtual environments are used in one or multiple projects. And you might have several virtual environments stored on your laptop, so that you can have a different collection of versions programming languages and their packages for each project, as needed.</p>
 <p>Most virtual environment tools have a sharing functionality which aids in making data science projects reproducible, as not only is there a record of the computational environment, but that computational environment can be shared to others computer - facilitating the reproduction of results from data and code. This facilitation comes from the fact that programming languages and their packages are not static - they change! There are new features added, bugs are fixed, etc, and this can impact how your code runs! Therefore, for a data science project to be reproducible across time, you need the computational environment in addition to the data and the code.</p>
 <p>There are several other major benefits of using environments:</p>
@@ -553,14 +553,14 @@ Note
 </div>
 </section>
 </section>
-<section id="conda" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="conda"><span class="header-section-number">9.2</span> Conda</h2>
+<section id="conda" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="conda"><span class="header-section-number">8.2</span> Conda</h2>
 <p><a href="http://conda.pydata.org/docs/"><strong>conda</strong></a> is an <strong>open source <code>package</code> and <code>environment</code> management system for any programming language</strong>; though it is most popular in the Python community. <code>conda</code> was originally developed by <a href="https://www.anaconda.com/products/individual">Anaconda Inc.</a> and bundled with their Anaconda distribution of Python. However, <code>conda</code>’s widespread popularity and utility led to its decoupling into its own package.</p>
 <p>It is now available for installation via: - Anaconda Python distribution - Miniconda Python distribution (this is what we recommended most of you install for this course) - Miniforge (this is what we recommended folks with Mac ARM machines install for this course)</p>
 <p>Conda builds of R and Python packages, are in fact R and Python packages and built from R and Python source code, but they are packaged up and built differently, and with a different tool chain. How to create <code>conda</code> packages from R and Python source code is beyond the scope of this course. However, we direct keen learners of this topic to the documentation on how to do this: - <a href="https://docs.conda.io/projects/conda-build/en/latest/">Conda-build documentation</a></p>
 <p>What we will focus on learning is how to use <code>conda</code> to create virtual environments, record the components of the virtual environment and share the virtual environment with collaborators in a way that they can recreate it on their computer.</p>
-<section id="managing-conda" class="level3" data-number="9.2.1">
-<h3 data-number="9.2.1" class="anchored" data-anchor-id="managing-conda"><span class="header-section-number">9.2.1</span> Managing Conda</h3>
+<section id="managing-conda" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="managing-conda"><span class="header-section-number">8.2.1</span> Managing Conda</h3>
 <p>Let’s first start by checking if conda is installed (it should be if we followed the recommended course computer setup instructions) by running:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To see which conda commands are available, type <code>conda --help</code>. To see the full documentation for any command of these commands, type the command followed by <code>--help</code>. For example, to learn about the conda update command:</p>
@@ -609,8 +609,8 @@ Note
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">###################################################| 100%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this case, conda itself needed to be updated, and along with this update some dependencies also needed to be updated. There is also a NEW package that was INSTALLED in order to update conda. You don’t need to worry about remembering to update conda, it will let you know if it is out of date when you are installing new packages.</p>
 </section>
-<section id="managing-conda-environments" class="level3" data-number="9.2.2">
-<h3 data-number="9.2.2" class="anchored" data-anchor-id="managing-conda-environments"><span class="header-section-number">9.2.2</span> Managing <code>conda</code> environments</h3>
+<section id="managing-conda-environments" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="managing-conda-environments"><span class="header-section-number">8.2.2</span> Managing <code>conda</code> environments</h3>
 <section id="what-is-a-conda-environment-and-why-is-it-so-useful" class="level4">
 <h4 class="anchored" data-anchor-id="what-is-a-conda-environment-and-why-is-it-so-useful">What is a conda environment and why is it so useful?</h4>
 <p>Using <code>conda</code>, you can create an isolated R or Python virtual environment for your project. The default environment is the <code>base</code> environment, which contains only the essential packages from Miniconda (and anything else you have installed in it since installing Miniconda). You can see that your shell’s prompt string is prefaced with <code>(base)</code> when you are inside this environment:</p>
@@ -624,15 +624,15 @@ Note
 <p>We will now discuss both, as they are both relevant workflows for data science. When do you use one versus the other? I typically use the manual specifications of packages when I am creating a new data science project. From that I generate an environment file in YAML format that I can share with collaborators (or anyone else who wants to reproduce my work). Thus, I use an environment file in YAML format when I join a project as a collaborator and I need to use the same environment that has been previously used for that project, or when I want to reproduce someone else’s work.</p>
 </section>
 </section>
-<section id="creating-environment-by-manually-specifying-packages" class="level3" data-number="9.2.3">
-<h3 data-number="9.2.3" class="anchored" data-anchor-id="creating-environment-by-manually-specifying-packages"><span class="header-section-number">9.2.3</span> Creating environment by manually specifying packages</h3>
+<section id="creating-environment-by-manually-specifying-packages" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="creating-environment-by-manually-specifying-packages"><span class="header-section-number">8.2.3</span> Creating environment by manually specifying packages</h3>
 <p>We can create <code>test_env</code> conda environment by typing <code>conda -n &lt;name-of-env&gt;</code>. However, it is often useful to specify more than just the name of the environment, e.g.&nbsp;the channel from which to install packages, the Python version, and a list of packages to install into the new env. In the example below, I am creating the <code>test_env</code> environment that uses python 3.12 and a list of libraries: <code>jupyterlab</code> and <code>pandas</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> test_env <span class="at">-c</span> conda-forge python=3.12 jupyterlab pandas=2.2.3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>conda will solve any dependencies between the packages like before and create a new environment with those packages. Usually, we don’t need to specify the channel, but in this case I want to get the very latest version of these packages, and they are made available in <code>conda-forge</code> before they reach the default conda channel.</p>
 <p>To activate this new environment, you can type <code>conda activate test_env</code> (and <code>conda deactivate</code> for deactivating). Since you will do this often, we created an alias shortcut <code>ca</code> that you can use to activate environments. To know the current environment that you’re in you can look at the prefix of the prompt string in your shell which now changed to (<code>test_env</code>). And to see all your environments, you can type <code>conda env list</code>.</p>
 </section>
-<section id="seeing-what-packages-are-available-in-an-environment" class="level3" data-number="9.2.4">
-<h3 data-number="9.2.4" class="anchored" data-anchor-id="seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">9.2.4</span> Seeing what packages are available in an environment</h3>
+<section id="seeing-what-packages-are-available-in-an-environment" class="level3" data-number="8.2.4">
+<h3 data-number="8.2.4" class="anchored" data-anchor-id="seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">8.2.4</span> Seeing what packages are available in an environment</h3>
 <p>We will now check packages that are available to us. The command below will list all the packages in an environment, in this case <code>test_env</code>. The list will include versions of each package, the specific build, and the channel that the package was downloaded from. <code>conda list</code> is also useful to ensure that you have installed the packages that you desire.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># packages in environment at //miniconda/envs/test_env:</span></span>
@@ -646,16 +646,16 @@ Note
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">functools32</span>               3.2.3.2                  py27_1    conda-forge</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">libgfortran</span>               3.0.0                         0    conda-forge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="installing-conda-package" class="level3" data-number="9.2.5">
-<h3 data-number="9.2.5" class="anchored" data-anchor-id="installing-conda-package"><span class="header-section-number">9.2.5</span> Installing conda package</h3>
+<section id="installing-conda-package" class="level3" data-number="8.2.5">
+<h3 data-number="8.2.5" class="anchored" data-anchor-id="installing-conda-package"><span class="header-section-number">8.2.5</span> Installing conda package</h3>
 <p>Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing, shows the necessary information to install the package. e.g.&nbsp;conda-forge/rasterio. The first word list the channel that this package is from and the second part shows the name of the package.</p>
 <p>To install the latest version available within the channel, do not specify in the install command. We will install version 0.35 of <code>rasterio</code> from conda-forge into <code>test_env</code> in this example. Conda will also automatically install the dependencies for this package.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge rasterio=0.35</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you have a few trusted channels that you prefer to use, you can pre-configure these so that everytime you are creating an environment, you won’t need to explicitly declare the channel.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="removing-a-conda-package" class="level3" data-number="9.2.6">
-<h3 data-number="9.2.6" class="anchored" data-anchor-id="removing-a-conda-package"><span class="header-section-number">9.2.6</span> Removing a conda package</h3>
+<section id="removing-a-conda-package" class="level3" data-number="8.2.6">
+<h3 data-number="8.2.6" class="anchored" data-anchor-id="removing-a-conda-package"><span class="header-section-number">8.2.6</span> Removing a conda package</h3>
 <p>We decided that rasterio is not needed in this tutorial, so we will remove it from <code>test_env</code>. Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> remove <span class="at">-n</span> test_env rasterio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> Anaconda Cloud api site https://api.anaconda.org</span>
@@ -673,8 +673,8 @@ Note
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Unlinking</span> packages ...</span>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">#######################################################################################################| 100%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="sharing-environments-with-others" class="level3" data-number="9.2.7">
-<h3 data-number="9.2.7" class="anchored" data-anchor-id="sharing-environments-with-others"><span class="header-section-number">9.2.7</span> Sharing Environments with others</h3>
+<section id="sharing-environments-with-others" class="level3" data-number="8.2.7">
+<h3 data-number="8.2.7" class="anchored" data-anchor-id="sharing-environments-with-others"><span class="header-section-number">8.2.7</span> Sharing Environments with others</h3>
 <p>To share an environment, you can export your conda environment to an environment file, which will list each package and its version in the format <code>package=version=build</code>.</p>
 <p>Exporting your environment to a file called <code>environment.yaml</code> (it could be called anything, but this is the conventional name and using it makes it easy for others to recognize that this is a conda env file, the extension can be either <code>.yaml</code> or <code>.yml</code>):</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="at">-f</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -691,8 +691,8 @@ Note
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> jupyterlab</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Importantly, this will not include the package version unless you included it when you installed with the <code>package==version</code> syntax. For an environment to be reproducible, you <strong>NEED</strong> to add the version string manually.</p>
 </section>
-<section id="creating-environment-from-an-environment-file" class="level3" data-number="9.2.8">
-<h3 data-number="9.2.8" class="anchored" data-anchor-id="creating-environment-from-an-environment-file"><span class="header-section-number">9.2.8</span> Creating environment from an environment file</h3>
+<section id="creating-environment-from-an-environment-file" class="level3" data-number="8.2.8">
+<h3 data-number="8.2.8" class="anchored" data-anchor-id="creating-environment-from-an-environment-file"><span class="header-section-number">8.2.8</span> Creating environment from an environment file</h3>
 <p>Now, let’s install <code>environment.yml</code> environment file above so that we can create a conda environment called <code>test_env</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">--file</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-exercise callout-titled">
@@ -716,13 +716,13 @@ Exercise
 </div>
 </div>
 </section>
-<section id="copying-an-environment" class="level3" data-number="9.2.9">
-<h3 data-number="9.2.9" class="anchored" data-anchor-id="copying-an-environment"><span class="header-section-number">9.2.9</span> Copying an environment</h3>
+<section id="copying-an-environment" class="level3" data-number="8.2.9">
+<h3 data-number="8.2.9" class="anchored" data-anchor-id="copying-an-environment"><span class="header-section-number">8.2.9</span> Copying an environment</h3>
 <p>We can make an exact copy of an environment to an environment with a different name. This maybe useful for any testing versus live environments or different Python 3.7 versions for the same packages. In this example, <code>test_env</code> is cloned to create <code>live_env</code>.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">--name</span> live_env <span class="at">--clone</span> test_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="listing-all-environments-on-your-laptop" class="level3" data-number="9.2.10">
-<h3 data-number="9.2.10" class="anchored" data-anchor-id="listing-all-environments-on-your-laptop"><span class="header-section-number">9.2.10</span> Listing all environments on your laptop</h3>
+<section id="listing-all-environments-on-your-laptop" class="level3" data-number="8.2.10">
+<h3 data-number="8.2.10" class="anchored" data-anchor-id="listing-all-environments-on-your-laptop"><span class="header-section-number">8.2.10</span> Listing all environments on your laptop</h3>
 <p>You may have created an environment and forgotten what you named it, or you want to do some cleanup and delete old environments (next topic), and so you want to see which exist on your computer and remove the ones you are no longer using. To do this we will use the <code>info</code> command along with the <code>--envs</code> flag/option.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> info <span class="at">--envs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -739,21 +739,21 @@ Note
 </div>
 </div>
 </section>
-<section id="deleting-an-environment" class="level3" data-number="9.2.11">
-<h3 data-number="9.2.11" class="anchored" data-anchor-id="deleting-an-environment"><span class="header-section-number">9.2.11</span> Deleting an environment</h3>
+<section id="deleting-an-environment" class="level3" data-number="8.2.11">
+<h3 data-number="8.2.11" class="anchored" data-anchor-id="deleting-an-environment"><span class="header-section-number">8.2.11</span> Deleting an environment</h3>
 <p>Since we are only testing out our environment, we will delete <code>live_env</code> to remove some clutter. <em>Make sure that you are not currently using <code>live_env</code>.</em></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env remove <span class="at">-n</span> live_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="making-environments-work-well-with-jupyterlab" class="level3" data-number="9.2.12">
-<h3 data-number="9.2.12" class="anchored" data-anchor-id="making-environments-work-well-with-jupyterlab"><span class="header-section-number">9.2.12</span> Making environments work well with JupyterLab</h3>
+<section id="making-environments-work-well-with-jupyterlab" class="level3" data-number="8.2.12">
+<h3 data-number="8.2.12" class="anchored" data-anchor-id="making-environments-work-well-with-jupyterlab"><span class="header-section-number">8.2.12</span> Making environments work well with JupyterLab</h3>
 <p>In brief, you need to install a kernel in the new conda environment in any new environment your create (<code>ipykernel</code> for Python and the <code>r-irkernel</code> package for R), and the <code>nb_conda_kernels</code> package needs to be installed in the environment where JupyterLab is installed.</p>
 <p>By default, JupyterLab only sees the conda environment where it is installed. Since it is quite annoying to install JupyterLab and its extensions separately in each environment, there is a package called <code>nb_conda_kernels</code> that makes it possible to have a single installation of JupyterLab access kernels in other conda environments. This package needs to be installed in the conda environment where JupyterLab is installed. For the computer setup for this course, we did that in the <code>base</code> environment, so that is where you would need to install <code>nb_conda_kernels</code> to make this work.</p>
 <p><em>More details are available in the <a href="https://github.com/Anaconda-Platform/nb_conda_kernels#installation">nb_conda_kernels README</a>).</em></p>
 <p>Remember that when you forget a specific command you can type in the help command we have created <code>mds-help</code> in you terminal to see a list of all commands we use in MDS.</p>
 </section>
 </section>
-<section id="renv" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="renv"><span class="header-section-number">9.3</span> <code>renv</code></h2>
+<section id="renv" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="renv"><span class="header-section-number">8.3</span> <code>renv</code></h2>
 <p>In R, environments can also be managed by <code>renv</code>, which works with similar principles as <code>conda</code>, and other virtual environment managers, but the commands are different. Detailed documentation for <code>renv</code>, can found at the <a href="https://rstudio.github.io/renv/index.html">package website</a>.</p>
 <p><code>renv</code> differs from <code>conda</code> in the way that it adds package dependencies. Briefly, when you prompt <code>renv</code> to create (or update) a file to record the project dependencies (done via <code>renv</code>’s <code>snapshot()</code> function), it recursively crawls the files in the project looking for calls to <code>library()</code> or <code>require()</code>.</p>
 <p>The key file <code>renv</code> creates for recording and sharing environments is called <code>renv.lock</code> in the project’s root directory. Other files are created in the project’s root directory when you use <code>renv</code> but <code>renv.lock</code> is the file that documents which programming languages and packages (including versions) are used in the project. It is recommended that when sharing an <code>renv</code> environment that you version control <code>renv.lock</code>, <code>.Rprofile</code> and <code>renv/activate.R</code> to facilitate collaboration. When you setup an <code>renv</code> environment with <code>renv::init()</code> it creates a <code>renv/.gitignore</code> file so that files that <code>renv</code> creates and uses locally but are not helpful to share, are not shared.</p>
@@ -1222,13 +1222,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/080-conda-lock.html" class="pagination-link" aria-label="Conda lock: reproducible lock files for conda environments">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span>
+      <a href="../lectures/070-filenames-project-organization.html" class="pagination-link" aria-label="Filenames and data science project organization, Integrated development environments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/100-containerization-1.html" class="pagination-link" aria-label="Introduction to containerization">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/090-conda-lock.html" class="pagination-link" aria-label="Conda lock: reproducible lock files for conda environments">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
