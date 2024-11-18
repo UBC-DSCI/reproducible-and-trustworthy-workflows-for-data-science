@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>21&nbsp; Deploying and publishing packages – Reproducible and Trustworthy Workflows for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../parts/licenses-copyright-wrapup.html" rel="next">
+<link href="../lectures/200-continuous-integration.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-273e46d7b3848a679358d7b360117b95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<style>
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+</style>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging-ci-cd-publish.html">packaging-ci-cd-publish.html</a></li><li class="breadcrumb-item"><a href="../lectures/210-deploy-and-publish.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Reproducible and Trustworthy Workflows for Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://ubc-dsci.github.io/reproducible-and-trustworthy-workflows-for-data-science/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">intro.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/010-intro-to-ds-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">How do reproducible and trustworthy workflows impact data science?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/020-intro-to-bash.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to the Bash Shell</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">version-control.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/030-ssh-for-authentication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SSH for authentication</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/040-version-control-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/050-version-control-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/060-version-control-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Project management using GitHub</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/projects-envs-containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">projects-envs-containers.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/070-filenames-project-organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/080-conda-lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/090-virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/100-containerization-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/110-containerization-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/120-containerization-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/data-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">data-testing.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">automation.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/packaging-ci-cd-publish.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">packaging-ci-cd-publish.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/190-packaging-and-documenting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">licenses-copyright-wrapup.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">appendix.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#topic-learning-objectives" id="toc-topic-learning-objectives" class="nav-link active" data-scroll-target="#topic-learning-objectives"><span class="header-section-number">21.1</span> Topic learning objectives</a></li>
+  <li><a href="#continuous-deployment-cd" id="toc-continuous-deployment-cd" class="nav-link" data-scroll-target="#continuous-deployment-cd"><span class="header-section-number">21.2</span> Continuous Deployment (CD)</a>
+  <ul class="collapse">
+  <li><a href="#why-use-cd" id="toc-why-use-cd" class="nav-link" data-scroll-target="#why-use-cd"><span class="header-section-number">21.2.1</span> Why use CD?</a></li>
+  <li><a href="#why-use-cd-1" id="toc-why-use-cd-1" class="nav-link" data-scroll-target="#why-use-cd-1"><span class="header-section-number">21.2.2</span> Why use CD?</a></li>
+  </ul></li>
+  <li><a href="#examples-of-cd-being-used-for-data-science" id="toc-examples-of-cd-being-used-for-data-science" class="nav-link" data-scroll-target="#examples-of-cd-being-used-for-data-science"><span class="header-section-number">21.3</span> Examples of CD being used for data science</a></li>
+  <li><a href="#conditionals-for-when-to-run-the-job" id="toc-conditionals-for-when-to-run-the-job" class="nav-link" data-scroll-target="#conditionals-for-when-to-run-the-job"><span class="header-section-number">21.4</span> Conditionals for when to run the job</a>
+  <ul class="collapse">
+  <li><a href="#exercise-read-the-cd-job-of-ci-cd.yml" id="toc-exercise-read-the-cd-job-of-ci-cd.yml" class="nav-link" data-scroll-target="#exercise-read-the-cd-job-of-ci-cd.yml"><span class="header-section-number">21.4.1</span> Exercise: read the <code>cd</code> job of <code>ci-cd.yml</code></a></li>
+  <li><a href="#how-can-we-automate-version-bumping" id="toc-how-can-we-automate-version-bumping" class="nav-link" data-scroll-target="#how-can-we-automate-version-bumping"><span class="header-section-number">21.4.2</span> How can we automate version bumping?</a></li>
+  </ul></li>
+  <li><a href="#semantic-versioning" id="toc-semantic-versioning" class="nav-link" data-scroll-target="#semantic-versioning"><span class="header-section-number">21.5</span> Semantic versioning</a></li>
+  <li><a href="#semantic-versioning-1" id="toc-semantic-versioning-1" class="nav-link" data-scroll-target="#semantic-versioning-1"><span class="header-section-number">21.6</span> Semantic versioning</a>
+  <ul class="collapse">
+  <li><a href="#semantic-versioning-case-study" id="toc-semantic-versioning-case-study" class="nav-link" data-scroll-target="#semantic-versioning-case-study"><span class="header-section-number">21.6.1</span> Semantic versioning case study</a></li>
+  <li><a href="#exercise-name-that-semantic-version-release" id="toc-exercise-name-that-semantic-version-release" class="nav-link" data-scroll-target="#exercise-name-that-semantic-version-release"><span class="header-section-number">21.6.2</span> Exercise: name that semantic version release</a></li>
+  </ul></li>
+  <li><a href="#conventional-commit-messages" id="toc-conventional-commit-messages" class="nav-link" data-scroll-target="#conventional-commit-messages"><span class="header-section-number">21.7</span> Conventional commit messages</a>
+  <ul class="collapse">
+  <li><a href="#an-example-of-a-conventional-commit-message" id="toc-an-example-of-a-conventional-commit-message" class="nav-link" data-scroll-target="#an-example-of-a-conventional-commit-message"><span class="header-section-number">21.7.1</span> An example of a conventional commit message</a></li>
+  <li><a href="#another-example-of-a-conventional-commit-message" id="toc-another-example-of-a-conventional-commit-message" class="nav-link" data-scroll-target="#another-example-of-a-conventional-commit-message"><span class="header-section-number">21.7.2</span> Another example of a conventional commit message</a></li>
+  <li><a href="#some-practical-notes-for-usage-in-your-packages" id="toc-some-practical-notes-for-usage-in-your-packages" class="nav-link" data-scroll-target="#some-practical-notes-for-usage-in-your-packages"><span class="header-section-number">21.7.3</span> Some practical notes for usage in your packages:</a></li>
+  <li><a href="#some-practical-notes-for-usage-in-your-packages-1" id="toc-some-practical-notes-for-usage-in-your-packages-1" class="nav-link" data-scroll-target="#some-practical-notes-for-usage-in-your-packages-1"><span class="header-section-number">21.7.4</span> Some practical notes for usage in your packages:</a></li>
+  <li><a href="#demo-of-continous-deployment" id="toc-demo-of-continous-deployment" class="nav-link" data-scroll-target="#demo-of-continous-deployment"><span class="header-section-number">21.7.5</span> Demo of Continous Deployment!</a></li>
+  <li><a href="#what-about-cd-with-r-packages" id="toc-what-about-cd-with-r-packages" class="nav-link" data-scroll-target="#what-about-cd-with-r-packages"><span class="header-section-number">21.7.6</span> What about CD with R packages</a></li>
+  </ul></li>
+  <li><a href="#publishing-your-r-package" id="toc-publishing-your-r-package" class="nav-link" data-scroll-target="#publishing-your-r-package"><span class="header-section-number">21.8</span> Publishing your R package</a>
+  <ul class="collapse">
+  <li><a href="#level-1-publishing-on-github" id="toc-level-1-publishing-on-github" class="nav-link" data-scroll-target="#level-1-publishing-on-github"><span class="header-section-number">21.8.1</span> Level 1: publishing on GitHub</a></li>
+  </ul></li>
+  <li><a href="#level-2-publishing-on-cran" id="toc-level-2-publishing-on-cran" class="nav-link" data-scroll-target="#level-2-publishing-on-cran"><span class="header-section-number">21.9</span> Level 2: publishing on CRAN</a>
+  <ul class="collapse">
+  <li><a href="#number-of-packages-hosted-by-cran-over-history" id="toc-number-of-packages-hosted-by-cran-over-history" class="nav-link" data-scroll-target="#number-of-packages-hosted-by-cran-over-history"><span class="header-section-number">21.9.2</span> Number of packages hosted by CRAN over history</a></li>
+  <li><a href="#what-does-it-mean-to-be-a-cran-package" id="toc-what-does-it-mean-to-be-a-cran-package" class="nav-link" data-scroll-target="#what-does-it-mean-to-be-a-cran-package"><span class="header-section-number">21.9.3</span> What does it mean to be a CRAN package:</a></li>
+  <li><a href="#how-to-submit-a-package-to-cran" id="toc-how-to-submit-a-package-to-cran" class="nav-link" data-scroll-target="#how-to-submit-a-package-to-cran"><span class="header-section-number">21.9.4</span> How to submit a package to CRAN</a></li>
+  <li><a href="#notes-on-submitting-to-cran" id="toc-notes-on-submitting-to-cran" class="nav-link" data-scroll-target="#notes-on-submitting-to-cran"><span class="header-section-number">21.9.5</span> Notes on submitting to CRAN</a></li>
+  <li><a href="#notes-on-submitting-to-cran-contd" id="toc-notes-on-submitting-to-cran-contd" class="nav-link" data-scroll-target="#notes-on-submitting-to-cran-contd"><span class="header-section-number">21.9.6</span> Notes on submitting to CRAN (cont’d)</a></li>
+  <li><a href="#if-your-submission-fails" id="toc-if-your-submission-fails" class="nav-link" data-scroll-target="#if-your-submission-fails"><span class="header-section-number">21.9.7</span> If your submission fails:</a></li>
+  </ul></li>
+  <li><a href="#publishing-your-python-package" id="toc-publishing-your-python-package" class="nav-link" data-scroll-target="#publishing-your-python-package"><span class="header-section-number">21.10</span> Publishing your Python package</a>
+  <ul class="collapse">
+  <li><a href="#level-1-github" id="toc-level-1-github" class="nav-link" data-scroll-target="#level-1-github"><span class="header-section-number">21.10.1</span> Level 1: GitHub</a></li>
+  <li><a href="#level-2-pypi" id="toc-level-2-pypi" class="nav-link" data-scroll-target="#level-2-pypi"><span class="header-section-number">21.10.2</span> Level 2: PyPI</a></li>
+  <li><a href="#the-cheese-shop-er-pypi" id="toc-the-cheese-shop-er-pypi" class="nav-link" data-scroll-target="#the-cheese-shop-er-pypi"><span class="header-section-number">21.10.3</span> the Cheese Shop (er, PyPI)</a></li>
+  <li><a href="#number-of-packages-hosted-by-pypi-over-history" id="toc-number-of-packages-hosted-by-pypi-over-history" class="nav-link" data-scroll-target="#number-of-packages-hosted-by-pypi-over-history"><span class="header-section-number">21.10.4</span> Number of packages hosted by PyPI over history</a></li>
+  <li><a href="#what-does-it-mean-to-be-a-pypi-package" id="toc-what-does-it-mean-to-be-a-pypi-package" class="nav-link" data-scroll-target="#what-does-it-mean-to-be-a-pypi-package"><span class="header-section-number">21.10.5</span> What does it mean to be a PyPI package:</a></li>
+  <li><a href="#how-to-submit-a-package-to-pypi" id="toc-how-to-submit-a-package-to-pypi" class="nav-link" data-scroll-target="#how-to-submit-a-package-to-pypi"><span class="header-section-number">21.10.6</span> How to submit a package to PyPI</a></li>
+  <li><a href="#points-for-discussion" id="toc-points-for-discussion" class="nav-link" data-scroll-target="#points-for-discussion"><span class="header-section-number">21.10.7</span> Points for discussion</a></li>
+  </ul></li>
+  <li><a href="#peer-review-facilitates-package-publishing" id="toc-peer-review-facilitates-package-publishing" class="nav-link" data-scroll-target="#peer-review-facilitates-package-publishing"><span class="header-section-number">21.11</span> Peer review facilitates package publishing</a>
+  <ul class="collapse">
+  <li><a href="#ropensci" id="toc-ropensci" class="nav-link" data-scroll-target="#ropensci"><span class="header-section-number">21.11.1</span> rOpenSci</a></li>
+  <li><a href="#ropenscis-open-peer-review-process" id="toc-ropenscis-open-peer-review-process" class="nav-link" data-scroll-target="#ropenscis-open-peer-review-process"><span class="header-section-number">21.11.2</span> rOpenSci’s open peer review process</a></li>
+  <li><a href="#ropenscis-guidance-and-standards" id="toc-ropenscis-guidance-and-standards" class="nav-link" data-scroll-target="#ropenscis-guidance-and-standards"><span class="header-section-number">21.11.3</span> rOpenSci’s Guidance and Standards</a></li>
+  <li><a href="#ropenscis-review-guidebook" id="toc-ropenscis-review-guidebook" class="nav-link" data-scroll-target="#ropenscis-review-guidebook"><span class="header-section-number">21.11.4</span> rOpenSci’s Review Guidebook</a></li>
+  <li><a href="#ropensci-reviewed-packages" id="toc-ropensci-reviewed-packages" class="nav-link" data-scroll-target="#ropensci-reviewed-packages"><span class="header-section-number">21.11.5</span> rOpenSci-reviewed packages:</a></li>
+  <li><a href="#lets-look-at-an-ropensci-review" id="toc-lets-look-at-an-ropensci-review" class="nav-link" data-scroll-target="#lets-look-at-an-ropensci-review"><span class="header-section-number">21.11.6</span> Let’s look at an rOpenSci review!</a></li>
+  <li><a href="#what-do-you-get-for-having-your-package-reviewed-by-ropensci" id="toc-what-do-you-get-for-having-your-package-reviewed-by-ropensci" class="nav-link" data-scroll-target="#what-do-you-get-for-having-your-package-reviewed-by-ropensci"><span class="header-section-number">21.11.7</span> What do you get for having your package reviewed by rOpenSci?</a></li>
+  </ul></li>
+  <li><a href="#pyopensci" id="toc-pyopensci" class="nav-link" data-scroll-target="#pyopensci"><span class="header-section-number">21.12</span> pyOpenSci</a>
+  <ul class="collapse">
+  <li><a href="#semantic-versioning-case-study---answers" id="toc-semantic-versioning-case-study---answers" class="nav-link" data-scroll-target="#semantic-versioning-case-study---answers"><span class="header-section-number">21.12.1</span> Semantic versioning case study - answers</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging-ci-cd-publish.html">packaging-ci-cd-publish.html</a></li><li class="breadcrumb-item"><a href="../lectures/210-deploy-and-publish.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="topic-learning-objectives" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="topic-learning-objectives"><span class="header-section-number">21.1</span> Topic learning objectives</h2>
+<p>By the end of this topic, students should be able to:</p>
+<ol type="1">
+<li>Define continuous deployment and argue the costs and benefits of continuous deployment</li>
+<li>Explain semantic versioning, and define what constitutes patch, minor, major and breaking changes</li>
+<li>Use continuous deployment (e.g., GitHub Actions) to automate deployment of software packages, or components of software packages (e.g., documentation)</li>
+<li>Publish software packages to development and production package repositories (e.g., GitHub and CRAN)</li>
+</ol>
+</section>
+<section id="continuous-deployment-cd" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="continuous-deployment-cd"><span class="header-section-number">21.2</span> Continuous Deployment (CD)</h2>
+<p>Defined as the practice of automating the deployment of software that has successfully run through your test-suite.</p>
+<p>For example, upon merging a pull request to master, an automation process builds the Python package and publishes to PyPI without further human intervention.</p>
+<section id="why-use-cd" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="why-use-cd"><span class="header-section-number">21.2.1</span> Why use CD?</h3>
+<ul>
+<li>little to no effort in deploying new version of the software allows new features to be rolled out quickly and frequently</li>
+<li>also allows for quick implementation and release of bug fixes</li>
+<li>deployment can be done by many contributors, not just one or two people with a high level of Software Engineering expertise</li>
+</ul>
+</section>
+<section id="why-use-cd-1" class="level3" data-number="21.2.2">
+<h3 data-number="21.2.2" class="anchored" data-anchor-id="why-use-cd-1"><span class="header-section-number">21.2.2</span> Why use CD?</h3>
+<p>Perhaps this story is more convincing:</p>
+<p><em>The company, let’s call them ABC Corp, had 16 instances of the same software, each as a different white label hosted on separate Linux machines in their data center. What I ended up watching (for 3 hours) was how the client remotely connected to each machine individually and did a “capistrano deploy”. For those unfamiliar, Capistrano is essentially a scripting tool which allows for remote execution of various tasks. The deployment process involved running multiple commands on each machine and then doing manual testing to make sure it worked.</em></p>
+<p><em>The best part was that this developer and one other were the only two in the whole company who knew how to run the deployment, meaning they were forbidden from going on vacation at the same time. And if one of them was sick, the other had the responsibility all for themselves. This deployment process was done once every two weeks.</em></p>
+<p><a href="https://levelup.gitconnected.com/heres-why-continuous-integration-and-deployment-is-so-important-to-the-software-development-c0caeead5881"><em>Source</em></a><em>: Tylor Borgeson</em></p>
+<p>Infrequent &amp; manual deployment makes me feel like this when it comes time to do it:</p>
+<p><img src="https://media.giphy.com/media/bEVKYB487Lqxy/giphy.gif" class="img-fluid"></p>
+<p><em>and so it can become a viscious cycle of delaying deployment because its hard, and then making it harder to do deployment because a lot of changes have been made since the last deployment…</em></p>
+<p>So to avoid this, we are going to do continuous deployment when we can! And where we can’t, we will automate as much as we can up until the point where we need to manually step in.</p>
+</section>
+</section>
+<section id="examples-of-cd-being-used-for-data-science" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="examples-of-cd-being-used-for-data-science"><span class="header-section-number">21.3</span> Examples of CD being used for data science</h2>
+<ul>
+<li><p><a href="https://py-pkgs.org/08-ci-cd#setting-up-continuous-deployment">Python packages</a> (but not R, more on this later…)</p></li>
+<li><p>Package documentation (e.g., <a href="https://pkgdown.r-lib.org/"><code>pkgdown</code> websites</a> for R, <a href="https://py-pkgs.org/06-documentation#hosting-documentation-online">ReadtheDocs</a> websites for Python)</p></li>
+<li><p>Books and websites (e.g., <a href="https://jupyterbook.org/intro.html"><code>jupyter-book</code></a>, <a href="https://bookdown.org/"><code>bookdown</code></a>, <a href="https://pkgs.rstudio.com/distill/index.html"><code>distill</code> websites</a>, etc)</p></li>
+</ul>
+</section>
+<section id="conditionals-for-when-to-run-the-job" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="conditionals-for-when-to-run-the-job"><span class="header-section-number">21.4</span> Conditionals for when to run the job</h2>
+<p>We only want our <code>cd</code> job to run if certain conditions are true, these are:</p>
+<ol type="1">
+<li><p>if the <code>ci</code> job passes</p></li>
+<li><p>if this is a commit to the <code>main</code> branch</p></li>
+</ol>
+<p>We can accomplish this in our <code>cd</code> job be writing a conditional using the <code>needs</code> and <code>if</code> keywords at the top of the job, right after we set the permissions:</p>
+<pre><code>cd:
+    permissions:
+      id-token: write
+      contents: write
+
+    # Only run this job if the "ci" job passes
+    needs: ci
+
+    # Only run this job if new work is pushed to "main"
+    if: github.event_name == 'push' &amp;&amp; github.ref == 'refs/heads/main'</code></pre>
+<section id="exercise-read-the-cd-job-of-ci-cd.yml" class="level3" data-number="21.4.1">
+<h3 data-number="21.4.1" class="anchored" data-anchor-id="exercise-read-the-cd-job-of-ci-cd.yml"><span class="header-section-number">21.4.1</span> Exercise: read the <code>cd</code> job of <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci-cd.yml"><code>ci-cd.yml</code></a></h3>
+<p>To make sure we understand what is happening in our workflow that performs CD, let’s convert each <strong>step</strong> to a human-readable explanation:</p>
+<ol type="1">
+<li><p>Sets up Python on the runner</p></li>
+<li><p>Checkout our repository files from GitHub and put them on the runner</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+<li><p>…</p></li>
+</ol>
+<blockquote class="blockquote">
+<p>Note: I filled in the steps we went over last class, so you can just fill in the new stuff</p>
+</blockquote>
+</section>
+<section id="how-can-we-automate-version-bumping" class="level3" data-number="21.4.2">
+<h3 data-number="21.4.2" class="anchored" data-anchor-id="how-can-we-automate-version-bumping"><span class="header-section-number">21.4.2</span> How can we automate version bumping?</h3>
+<p>Let’s look at the first step that works towards accomplishing this:</p>
+<pre><code>      - name: Use Python Semantic Release to prepare release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v8.3.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}</code></pre>
+<p><a href="https://python-semantic-release.readthedocs.io/en/latest/">Python semantic-release</a> is a Python tool which parses commit messages looking for keywords to indicate how to bump the version. It bumps the version in the <code>pyproject.toml</code> file.</p>
+<p>To understand how it works so that we can use it, we need to understand <strong>semantic versioning</strong> and how to write <strong>conventional commit</strong> messages.</p>
+<p>Let’s unpack each of these on its own.</p>
+</section>
+</section>
+<section id="semantic-versioning" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="semantic-versioning"><span class="header-section-number">21.5</span> Semantic versioning</h2>
+<ul>
+<li><p>When we make changes and publish new versions of our packages, we should tag these with a version number so that we and others can view and use older versions of the package if needed.</p></li>
+<li><p>These version numbers should also communicate something about how the underlying code has changed from one version to the next.</p></li>
+<li><p>Semantic versioning is an agreed upon “code” by developers that gives meaning to version number changes, so developers and users can make meaningful predictions about how code changes between versions from looking solely at the version numbers.</p></li>
+<li><p>Semantic versioning assumes version 1.0.0 defines the API, and the changes going forward use that as a starting reference.</p></li>
+</ul>
+</section>
+<section id="semantic-versioning-1" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="semantic-versioning-1"><span class="header-section-number">21.6</span> Semantic versioning</h2>
+<p>Given a version number <code>MAJOR.MINOR.PATCH</code> (e.g., <code>2.3.1</code>), increment the:</p>
+<ul>
+<li><p>MAJOR version when you make incompatible API changes (often called breaking changes 💥)</p></li>
+<li><p>MINOR version when you add functionality in a backwards compatible manner ✨↩︎️</p></li>
+<li><p>PATCH version when you make backwards compatible bug fixes 🐞</p></li>
+</ul>
+<p><em>Source: https://semver.org/</em></p>
+<section id="semantic-versioning-case-study" class="level3" data-number="21.6.1">
+<h3 data-number="21.6.1" class="anchored" data-anchor-id="semantic-versioning-case-study"><span class="header-section-number">21.6.1</span> Semantic versioning case study</h3>
+<p><strong>Case 1:</strong> In June 2009, Python bumped versions from 3.0.1, some changes in the new release included: - Addition of an ordered dictionary type - A pure Python reference implementation of the import statement - New syntax for nested with statements</p>
+<p><strong>Case 2:</strong> In Dec 2017, Python bumped versions from 3.6.3, some changes in the new release included:</p>
+<ul>
+<li>Fixed several issues in printing tracebacks (<code>PyTraceBack_Print()</code>).</li>
+<li>Fix the interactive interpreter looping endlessly when no memory.</li>
+<li>Fixed an assertion failure in Python parser in case of a bad <code>unicodedata.normalize()</code></li>
+</ul>
+<p><strong>Case 3:</strong> In Feb 2008, Python bumped versions from 2.7.17, some changes in the new release included: - <code>print</code> became a function - integer division resulted in creation of a float, instead of an integer - Some well-known APIs no longer returned lists (e.g., <code>dict.keys</code>, <code>dict.values</code>, <code>map</code>)</p>
+</section>
+<section id="exercise-name-that-semantic-version-release" class="level3" data-number="21.6.2">
+<h3 data-number="21.6.2" class="anchored" data-anchor-id="exercise-name-that-semantic-version-release"><span class="header-section-number">21.6.2</span> Exercise: name that semantic version release</h3>
+<p>Reading the three cases posted above, think about whether each should be a major, minor or patch version bump. Answer the chat when prompted.</p>
+</section>
+</section>
+<section id="conventional-commit-messages" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="conventional-commit-messages"><span class="header-section-number">21.7</span> Conventional commit messages</h2>
+<p><a href="https://python-semantic-release.readthedocs.io/en/latest/">Python Semantic Release</a> by default uses a parser that works on the conventional (or Angular) commit message style, which is:</p>
+<pre><code>&lt;type&gt;(optional scope): succinct description of the change
+
+(optional body: the motivation for the change and contrast this with previous behavior)
+
+(optional footer: note BREAKING CHANGES here, as well as any issues to be closed)</code></pre>
+<p>How to affect semantic versioning with conventional commit messages: - a commit with the type <code>fix</code> leads to a patch version bump - a commit with the type <code>feat</code> leads to a minor version bump - a commit with a body or footer that starts with <code>BREAKING CHANGE:</code> - these can be of any type (Note: currently Python Semantic release is broken for detecting these on commits with Windows line endings, wich the GitHub pen tool commits also use. The workaround fix is to use <code>!</code> after <code>feat</code>, for example: <code>feat!: This describes the new feature and breaking changes</code> in addition to <code>BREAKING CHANGES: ...</code> in the footer.)</p>
+<blockquote class="blockquote">
+<p>Note - commit types other than <code>fix</code> and <code>feat</code> are allowed. Recommeneded ones include <code>docs</code>, <code>style</code>, <code>refactor</code>, <code>test</code>, <code>ci</code> and <a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type">others</a>. However, only <code>fix</code> and <code>feat</code> result in version bumps using Python Semantic Release.</p>
+</blockquote>
+<section id="an-example-of-a-conventional-commit-message" class="level3" data-number="21.7.1">
+<h3 data-number="21.7.1" class="anchored" data-anchor-id="an-example-of-a-conventional-commit-message"><span class="header-section-number">21.7.1</span> An example of a conventional commit message</h3>
+<pre><code>git commit -m "feat(function_x): added the ability to initialize a project even if a pyproject.toml file exists"</code></pre>
+<p>What kind of version bump would this result in?</p>
+</section>
+<section id="another-example-of-a-conventional-commit-message" class="level3" data-number="21.7.2">
+<h3 data-number="21.7.2" class="anchored" data-anchor-id="another-example-of-a-conventional-commit-message"><span class="header-section-number">21.7.2</span> Another example of a conventional commit message</h3>
+<pre><code>git commit -m "feat!: change to use of `%&gt;%` to add new layers to ggplot objects
+
+BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release"</code></pre>
+<p>What kind of version bump would this result in?</p>
+</section>
+<section id="some-practical-notes-for-usage-in-your-packages" class="level3" data-number="21.7.3">
+<h3 data-number="21.7.3" class="anchored" data-anchor-id="some-practical-notes-for-usage-in-your-packages"><span class="header-section-number">21.7.3</span> Some practical notes for usage in your packages:</h3>
+<ol type="1">
+<li><p>You must add the following to the tool section of your <code>pyproject.toml</code> file for this to work (note: the <code>pypkgs-cookiecutter</code> adds this table if you choose to add <code>ci-cd</code> when you set it up):</p>
+<pre><code>[tool.semantic_release]
+version_toml = [
+    "pyproject.toml:tool.poetry.version",
+]                                                    # version location
+branch = "main"                                      # branch to make releases of
+changelog_file = "CHANGELOG.md"                      # changelog file
+build_command = "pip install poetry &amp;&amp; poetry build" # build dists</code></pre></li>
+<li><p>Versions will <strong>not</strong> be bumped if conventional commits are not used.</p></li>
+</ol>
+</section>
+<section id="some-practical-notes-for-usage-in-your-packages-1" class="level3" data-number="21.7.4">
+<h3 data-number="21.7.4" class="anchored" data-anchor-id="some-practical-notes-for-usage-in-your-packages-1"><span class="header-section-number">21.7.4</span> Some practical notes for usage in your packages:</h3>
+<ol type="1">
+<li><p>Automated version bumping can only work (as currently implemented in our cookiecutter) with versions in the <code>pyproject.toml</code> metadata (line 3). If you add a version elsewhere, it will not get bumped unless you specify the location the the <code>[tool.semantic_release]</code> table in <code>pyproject.toml</code>.</p></li>
+<li><p>If you have been working with main branch protection, you will need to change something to use <code>ci.yml</code> work for continuous deployment. The reason for this, is that this workflow (which bumps versions and deploy the package) is triggered to run <strong>after</strong> the pull request is merged to main. Therefore, when we bump the versions in the <code>pyproject.toml</code> file we need to push these changes to the main branch - however this is problematic given that we have set-up main branch protection!</p></li>
+</ol>
+<p>What are we to do about #2?</p>
+<section id="solution-1" class="level4">
+<h4 class="anchored" data-anchor-id="solution-1">Solution 1:</h4>
+<p>Remove main branch protection. This is not the most idealistic solution, however it is a simple and practical one.</p>
+</section>
+<section id="possible-solution-2" class="level4">
+<h4 class="anchored" data-anchor-id="possible-solution-2">Possible solution 2:</h4>
+<p>(I say possible because this has yet to be formally documented by PSR, and is still just reported in an issue: <a href="https://github.com/python-semantic-release/python-semantic-release/issues/311" class="uri">https://github.com/python-semantic-release/python-semantic-release/issues/311</a>. I have tested it and it works for me, see example here: <a href="https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml" class="uri">https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml</a>)</p>
+<ol type="1">
+<li><p>Create a new GitHub PAT (see <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">these docs</a>) with the <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes">repo</a> scope.</p></li>
+<li><p>Under <strong>“Secrets”</strong>, click on <strong>“Settings and variables”</strong> &gt; <strong>“Actions”</strong>, and then under <strong>“Repository secrets”</strong> click <strong>“New repository secret”</strong> to create a new repository secret named <code>RELEASE_TOKEN</code> and the new GitHub PAT with repo scope as its value.</p></li>
+<li><p>Edit the to <code>cd</code> job steps shown below (from <code>ci-cd.yml</code>) use this token:</p></li>
+</ol>
+<pre><code>...
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.RELEASE_TOKEN }}
+...
+
+    - name: Use Python Semantic Release to prepare release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v8.3.0
+      with:
+        github_token: ${{ secrets.RELEASE_TOKEN }}
+...</code></pre>
+</section>
+</section>
+<section id="demo-of-continous-deployment" class="level3" data-number="21.7.5">
+<h3 data-number="21.7.5" class="anchored" data-anchor-id="demo-of-continous-deployment"><span class="header-section-number">21.7.5</span> Demo of Continous Deployment!</h3>
+<ul>
+<li><a href="https://github.com/ttimbers/pycounts_tt_2024" class="uri">https://github.com/ttimbers/pycounts_tt_2024</a></li>
+</ul>
+</section>
+<section id="what-about-cd-with-r-packages" class="level3" data-number="21.7.6">
+<h3 data-number="21.7.6" class="anchored" data-anchor-id="what-about-cd-with-r-packages"><span class="header-section-number">21.7.6</span> What about CD with R packages</h3>
+<ul>
+<li><p>This is not a common practice (yet!). One reason for this could be that CRAN has a policy where they only want to see updates every 1-2 months.</p></li>
+<li><p>Semantic versioning is used in Tidyverse R packages, but creating versions is done manually</p></li>
+</ul>
+</section>
+</section>
+<section id="publishing-your-r-package" class="level2" data-number="21.8">
+<h2 data-number="21.8" class="anchored" data-anchor-id="publishing-your-r-package"><span class="header-section-number">21.8</span> Publishing your R package</h2>
+<section id="level-1-publishing-on-github" class="level3" data-number="21.8.1">
+<h3 data-number="21.8.1" class="anchored" data-anchor-id="level-1-publishing-on-github"><span class="header-section-number">21.8.1</span> Level 1: publishing on GitHub</h3>
+<p>For this course, we will only publish your package on GitHub, not CRAN. For this to work, you need to push your package code to GitHub and provide users these instructions to download, build and install your package:</p>
+<pre><code># install.packages("devtools")
+devtools::install_github("ttimbers/convertempr")</code></pre>
+<p>This is where almost all R packages start out publishing, and continue publishing development versions between releases.</p>
+</section>
+</section>
+<section id="level-2-publishing-on-cran" class="level2" data-number="21.9">
+<h2 data-number="21.9" class="anchored" data-anchor-id="level-2-publishing-on-cran"><span class="header-section-number">21.9</span> Level 2: publishing on CRAN</h2>
+<ul>
+<li><p>CRAN (founded in 1997) stands for the “Comprehensive R Archive Network”</p></li>
+<li><p>it is a collection of sites which host identical copies of:</p>
+<ul>
+<li>R distribution(s)</li>
+<li>the contributed extensions (<em>i.e.,</em> packages)</li>
+<li>documentation for R</li>
+<li>binaries (i.e., packages)</li>
+</ul></li>
+<li><p>as of 2012, there were 85 official ‘daily’ mirrors</p></li>
+</ul>
+<p><em>Source: Hornik, K (2012). The Comprehensive R Archive Network. Wiley interdisciplinary reviews. Computational statistics. 4(4): 394-398. <a href="https://onlinelibrary-wiley-com.ezproxy.library.ubc.ca/doi/full/10.1002/wics.1212">doi:10.1002/wics.1212</a></em></p>
+<blockquote class="blockquote">
+<h3 id="binary-vs-source-distributions-whats-the-difference" data-number="21.9.1" class="anchored"><span class="header-section-number">21.9.1</span> Binary vs source distributions, what’s the difference?</h3>
+<p>Binary distributions are pre-compiled (computer readable), whereas source distributions have to be compiled before they are installed.</p>
+<p>Precompiled binaries are often different for each operating system (e.g., Windows vs Mac)</p>
+</blockquote>
+<section id="number-of-packages-hosted-by-cran-over-history" class="level3" data-number="21.9.2">
+<h3 data-number="21.9.2" class="anchored" data-anchor-id="number-of-packages-hosted-by-cran-over-history"><span class="header-section-number">21.9.2</span> Number of packages hosted by CRAN over history</h3>
+<p><img src="https://www.researchgate.net/publication/333159083/figure/fig1/AS:759374838517760@1558060478678/Number-of-R-packages-contributed-to-the-Comprehensive-R-Archive-Network-CRAN-as-a.png" width="800"></p>
+<p><em>Source: <a href="https://journals.sagepub.com/doi/10.1177/2515245919847421">“Reproducibility and Replicability in a Fast-Paced Methodological World”</a> by Sacha Epskamp</em></p>
+</section>
+<section id="what-does-it-mean-to-be-a-cran-package" class="level3" data-number="21.9.3">
+<h3 data-number="21.9.3" class="anchored" data-anchor-id="what-does-it-mean-to-be-a-cran-package"><span class="header-section-number">21.9.3</span> What does it mean to be a CRAN package:</h3>
+<p><strong>A stamp of authenticity:</strong> - passed quality control of the <code>check</code> utility</p>
+<p><strong>Ease of installation:</strong> - can be installed by users via <code>install.packages</code> (it’s actually the default!) - binaries available for Windows &amp; Mac OS’s</p>
+<p><strong>Discoverability:</strong> - listed as a package on CRAN</p>
+<p><strong>HOWEVER</strong> - CRAN makes no assertions about the package’s usability, or the efficiency and correctness of the computations it performs</p>
+</section>
+<section id="how-to-submit-a-package-to-cran" class="level3" data-number="21.9.4">
+<h3 data-number="21.9.4" class="anchored" data-anchor-id="how-to-submit-a-package-to-cran"><span class="header-section-number">21.9.4</span> How to submit a package to CRAN</h3>
+<ol type="1">
+<li>Pick a version number.</li>
+<li>Run and document <code>R CMD check</code>.</li>
+<li>Check that you’re aligned with CRAN policies.</li>
+<li>Update README.md and NEWS.md.</li>
+<li>Submit the package to CRAN.</li>
+<li>Prepare for the next version by updating version numbers.</li>
+<li>Publicise the new version.</li>
+</ol>
+<p><em>Source: <a href="https://r-pkgs.org/release.html">Chapter 18 Releasing a package</a> - R packages book by Hadley Wickham &amp; Jenny Bryan</em></p>
+</section>
+<section id="notes-on-submitting-to-cran" class="level3" data-number="21.9.5">
+<h3 data-number="21.9.5" class="anchored" data-anchor-id="notes-on-submitting-to-cran"><span class="header-section-number">21.9.5</span> Notes on submitting to CRAN</h3>
+<ul>
+<li>CRAN is staffed by volunteers, all of whom have other full-time jobs</li>
+<li>A typical week has over 100 submissions and only three volunteers to process them all.</li>
+<li>The less work you make for them the more likely you are to have a pleasant submission experience…</li>
+</ul>
+</section>
+<section id="notes-on-submitting-to-cran-contd" class="level3" data-number="21.9.6">
+<h3 data-number="21.9.6" class="anchored" data-anchor-id="notes-on-submitting-to-cran-contd"><span class="header-section-number">21.9.6</span> Notes on submitting to CRAN (cont’d)</h3>
+<p>Technical things:</p>
+<ul>
+<li>Your package must pass <code>R CMD check</code> with the current development version of R (R-devel)</li>
+<li>it must work on at least two platforms (CRAN uses the following 4 platforms: Windows, Mac OS X, Linux and Solaris) - use GitHub Actions to ensure this before submitting to CRAN!</li>
+</ul>
+<p><em>If you decide to submit a package to CRAN follow the detailed instructions in <a href="https://r-pkgs.org/release.html">Chapter 18 Releasing a package</a> fromt the R packages book by Hadley Wickham &amp; Jenny Bryan to do so. If you submit your package to rOpenSci, they will help you get everything in order for submission to CRAN as well!</em></p>
+<p>CRAN policies: <a href="https://cran.r-project.org/web/packages/policies.html" class="uri">https://cran.r-project.org/web/packages/policies.html</a></p>
+<p>Most common problems (from the R packages book):</p>
+<ul>
+<li><p>The maintainer’s e-mail address must be stable, if they can’t get in touch with you they will remove your package from CRAN.</p></li>
+<li><p>You must have clearly identified the copyright holders in DESCRIPTION: if you have included external source code, you must ensure that the license is compatible.</p></li>
+<li><p>Do not make external changes without explicit user permission. Don’t write to the file system, change options, install packages, quit R, send information over the internet, open external software, etc.</p></li>
+<li><p>Do not submit updates too frequently. The policy suggests a new version once every 1-2 months at most.</p></li>
+</ul>
+</section>
+<section id="if-your-submission-fails" class="level3" data-number="21.9.7">
+<h3 data-number="21.9.7" class="anchored" data-anchor-id="if-your-submission-fails"><span class="header-section-number">21.9.7</span> If your submission fails:</h3>
+<p>Read section 18.6.1 “On failure” from <a href="https://r-pkgs.org/release.html">Chapter 18 Releasing a package</a> - R packages book by Hadley Wickham &amp; Jenny Bryan*</p>
+<p>TL;DR - Breathe, don’t argue, fix what is needed and re-submit.</p>
+</section>
+</section>
+<section id="publishing-your-python-package" class="level2" data-number="21.10">
+<h2 data-number="21.10" class="anchored" data-anchor-id="publishing-your-python-package"><span class="header-section-number">21.10</span> Publishing your Python package</h2>
+<section id="level-1-github" class="level3" data-number="21.10.1">
+<h3 data-number="21.10.1" class="anchored" data-anchor-id="level-1-github"><span class="header-section-number">21.10.1</span> Level 1: GitHub</h3>
+<p>Packages can be installed from GitHub via <code>pip</code>:</p>
+<pre><code>pip install git+https://github.com/USERNAME/REPOSITORY.git</code></pre>
+</section>
+<section id="level-2-pypi" class="level3" data-number="21.10.2">
+<h3 data-number="21.10.2" class="anchored" data-anchor-id="level-2-pypi"><span class="header-section-number">21.10.2</span> Level 2: PyPI</h3>
+<p>Packages can be installed from <code>PyPI</code> via:</p>
+<pre><code>pip install PACKAGE_NAME</code></pre>
+<ul>
+<li>should be pronounced like “pie pea eye”</li>
+<li>also known as the Cheese Shop (a reference to the Monty Python’s Flying Circus sketch “Cheese Shop”)</li>
+</ul>
+<blockquote class="blockquote">
+<p>Because level 2 is so easy, it is the most commonly used method.</p>
+</blockquote>
+<div id="4229dc38" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> YouTubeVideo</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>YouTubeVideo(<span class="st">'zB8pbUW5n1g'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+
+        <iframe width="400" height="300" src="https://www.youtube.com/embed/zB8pbUW5n1g" frameborder="0" allowfullscreen=""></iframe>
+        
+</div>
+</div>
+<p>Don’t get the joke? I didn’t either without historical context. When PyPI was first launched it didn’t have many Python packages on it - similar to a cheese shop with no cheese 😆</p>
+</section>
+<section id="the-cheese-shop-er-pypi" class="level3" data-number="21.10.3">
+<h3 data-number="21.10.3" class="anchored" data-anchor-id="the-cheese-shop-er-pypi"><span class="header-section-number">21.10.3</span> the Cheese Shop (er, PyPI)</h3>
+<ul>
+<li><p>PyPI (founded in 2002) stands for the “Python Package Index”</p></li>
+<li><p>hosts Python packages of two different forms:</p>
+<ul>
+<li>sdists (source distributions)</li>
+<li>precompiled “wheels (binaries)</li>
+</ul></li>
+<li><p>heavily cached and distributed</p></li>
+<li><p>currently contains &gt; 9000 projects</p></li>
+</ul>
+</section>
+<section id="number-of-packages-hosted-by-pypi-over-history" class="level3" data-number="21.10.4">
+<h3 data-number="21.10.4" class="anchored" data-anchor-id="number-of-packages-hosted-by-pypi-over-history"><span class="header-section-number">21.10.4</span> Number of packages hosted by PyPI over history</h3>
+<p><img src="https://www.researchgate.net/profile/Marat_Valiev2/publication/328595587/figure/fig1/AS:687258193633280@1540866530197/Number-of-new-PyPI-packages-per-month.png" width="800"></p>
+<p><em>Source: <a href="https://dl.acm.org/doi/10.1145/3236024.3236062">“Ecosystem-level determinants of sustained activity in open-source projects: a case study of the PyPI ecosystem”</a> by Marat Valiev, Bogdan Vasilescu &amp; James Herbsleb</em></p>
+</section>
+<section id="what-does-it-mean-to-be-a-pypi-package" class="level3" data-number="21.10.5">
+<h3 data-number="21.10.5" class="anchored" data-anchor-id="what-does-it-mean-to-be-a-pypi-package"><span class="header-section-number">21.10.5</span> What does it mean to be a PyPI package:</h3>
+<p><strong>Ease of installation:</strong> - can be installed by users via <code>pip install</code> (it’s actually the default!) - universal binaries available for packages that are written solely in Python</p>
+<p><strong>Discoverability:</strong> - listed as a package on PyPI</p>
+<p>HOWEVER, there is no required check for your package is required to pass… As long as you can bundle it as something that PyPI recognizes as an sdist or wheels then it can go on PyPI… This allows the process to be fully automated, but QC is lower than it is for CRAN.</p>
+</section>
+<section id="how-to-submit-a-package-to-pypi" class="level3" data-number="21.10.6">
+<h3 data-number="21.10.6" class="anchored" data-anchor-id="how-to-submit-a-package-to-pypi"><span class="header-section-number">21.10.6</span> How to submit a package to PyPI</h3>
+<p>See the <a href="https://py-pkgs.org/03-how-to-package-a-python#">“How to package a Python”</a> chapter of the <em>Python Packages</em> book.</p>
+</section>
+<section id="points-for-discussion" class="level3" data-number="21.10.7">
+<h3 data-number="21.10.7" class="anchored" data-anchor-id="points-for-discussion"><span class="header-section-number">21.10.7</span> Points for discussion</h3>
+<ul>
+<li><p>Is one model better or worse?</p></li>
+<li><p>Importance &amp; complimentarity of organizations like rOpenSci &amp; pyOpenSci with CRAN and PyPI, respecitively</p></li>
+</ul>
+</section>
+</section>
+<section id="peer-review-facilitates-package-publishing" class="level2" data-number="21.11">
+<h2 data-number="21.11" class="anchored" data-anchor-id="peer-review-facilitates-package-publishing"><span class="header-section-number">21.11</span> Peer review facilitates package publishing</h2>
+<section id="ropensci" class="level3" data-number="21.11.1">
+<h3 data-number="21.11.1" class="anchored" data-anchor-id="ropensci"><span class="header-section-number">21.11.1</span> <a href="https://ropensci.org/">rOpenSci</a></h3>
+<section id="aims-and-goals" class="level4">
+<h4 class="anchored" data-anchor-id="aims-and-goals">aims and goals:</h4>
+<p>rOpenSci fosters a culture that values open and reproducible research using shared data and reusable software.</p>
+<p>We do this by: - Creating technical infrastructure in the form of carefully vetted, staff- and community-contributed R software tools that lower barriers to working with scientific data sources on the web</p>
+<ul>
+<li><p>Creating social infrastructure through a welcoming and diverse community</p></li>
+<li><p>Making the right data, tools and best practices more discoverable</p></li>
+<li><p>Building capacity of software users and developers and fostering a sense of pride in their work</p></li>
+<li><p>Promoting advocacy for a culture of data sharing and reusable software.</p></li>
+</ul>
+<p><em>Source: <a href="https://ropensci.org/about/" class="uri">https://ropensci.org/about/</a></em></p>
+</section>
+</section>
+<section id="ropenscis-open-peer-review-process" class="level3" data-number="21.11.2">
+<h3 data-number="21.11.2" class="anchored" data-anchor-id="ropenscis-open-peer-review-process"><span class="header-section-number">21.11.2</span> rOpenSci’s open peer review process</h3>
+<ul>
+<li><p>Authors submit complete R packages to rOpenSci.</p></li>
+<li><p>Editors check that packages fit into rOpenSci’s scope, run a series of automated tests to ensure a baseline of code quality and completeness, and then assign two independent reviewers.</p></li>
+<li><p>Reviewers comment on usability, quality, and style of software code as well as documentation.</p></li>
+<li><p>Authors make changes in response.</p></li>
+<li><p>Once reviewers are satisfied with the updates, the package receives a badge of approval and joins rOpenSci’s suite of approved pacakges.</p></li>
+<li><p>Happens openly, and publicly on GitHub in issues.</p></li>
+<li><p>Process is quite iterative and fast. After reviewers post a first round of extensive reviews, authors and reviewers chat in an informal back-and-forth, only lightly moderated by an editor.</p></li>
+</ul>
+<p><em>Source: <a href="https://numfocus.org/blog/how-ropensci-uses-code-review-to-promote-reproducible-science" class="uri">https://numfocus.org/blog/how-ropensci-uses-code-review-to-promote-reproducible-science</a></em></p>
+</section>
+<section id="ropenscis-guidance-and-standards" class="level3" data-number="21.11.3">
+<h3 data-number="21.11.3" class="anchored" data-anchor-id="ropenscis-guidance-and-standards"><span class="header-section-number">21.11.3</span> rOpenSci’s Guidance and Standards</h3>
+<p>What aspects of a package are reviewed?</p>
+<ul>
+<li>high-level best practices:
+<ul>
+<li>is the code reusable (e.g.&nbsp;follow the DRY principle)?</li>
+<li>are sufficient edge cases tested?</li>
+<li>etc</li>
+</ul></li>
+<li>low-level standards:
+<ul>
+<li>are naming conventions for functions followed?</li>
+<li>did they make the best choices of dependencies for the package’s intended tasks?</li>
+<li>etc</li>
+</ul></li>
+</ul>
+<p><em>Source: <a href="https://numfocus.org/blog/how-ropensci-uses-code-review-to-promote-reproducible-science" class="uri">https://numfocus.org/blog/how-ropensci-uses-code-review-to-promote-reproducible-science</a></em></p>
+</section>
+<section id="ropenscis-review-guidebook" class="level3" data-number="21.11.4">
+<h3 data-number="21.11.4" class="anchored" data-anchor-id="ropenscis-review-guidebook"><span class="header-section-number">21.11.4</span> rOpenSci’s Review Guidebook</h3>
+<ul>
+<li><a href="https://devguide.ropensci.org/" class="uri">https://devguide.ropensci.org/</a></li>
+</ul>
+</section>
+<section id="ropensci-reviewed-packages" class="level3" data-number="21.11.5">
+<h3 data-number="21.11.5" class="anchored" data-anchor-id="ropensci-reviewed-packages"><span class="header-section-number">21.11.5</span> rOpenSci-reviewed packages:</h3>
+<ul>
+<li><a href="https://ropensci.org/packages/" class="uri">https://ropensci.org/packages/</a></li>
+</ul>
+</section>
+<section id="lets-look-at-an-ropensci-review" class="level3" data-number="21.11.6">
+<h3 data-number="21.11.6" class="anchored" data-anchor-id="lets-look-at-an-ropensci-review"><span class="header-section-number">21.11.6</span> Let’s look at an rOpenSci review!</h3>
+<p>All packages currently under review: <a href="https://github.com/ropensci/software-review/issues" class="uri">https://github.com/ropensci/software-review/issues</a></p>
+<ul>
+<li><a href="https://github.com/ropensci/software-review/issues/290">Review of tidypmc</a></li>
+</ul>
+</section>
+<section id="what-do-you-get-for-having-your-package-reviewed-by-ropensci" class="level3" data-number="21.11.7">
+<h3 data-number="21.11.7" class="anchored" data-anchor-id="what-do-you-get-for-having-your-package-reviewed-by-ropensci"><span class="header-section-number">21.11.7</span> What do you get for having your package reviewed by rOpenSci?</h3>
+<ul>
+<li>valuable feedback from the knowledgeable editors and reviewers</li>
+<li>help with package maintenance and submission of your package to CRAN</li>
+<li>promotion of your package on their website, blog and social media</li>
+<li>packages that have a short accompanying paper can be automatically submitted to <a href="https://joss.theoj.org/">JOSS</a> and fast-tracked for publication.</li>
+</ul>
+</section>
+</section>
+<section id="pyopensci" class="level2" data-number="21.12">
+<h2 data-number="21.12" class="anchored" data-anchor-id="pyopensci"><span class="header-section-number">21.12</span> <a href="https://www.pyopensci.org/">pyOpenSci</a></h2>
+<ul>
+<li>A new organization, modelled after rOpenSci</li>
+<li>scope is Python packages</li>
+<li>First package submitted to pyOpenSci was in May 2019</li>
+</ul>
+<section id="semantic-versioning-case-study---answers" class="level3" data-number="21.12.1">
+<h3 data-number="21.12.1" class="anchored" data-anchor-id="semantic-versioning-case-study---answers"><span class="header-section-number">21.12.1</span> Semantic versioning case study - answers</h3>
+<p>In 2008, Python bumped versions from 2.7.17 to 3.0.0. Some changes in the 3.0.0 release included: - <code>print</code> became a function - integer division resulted in creation of a float, instead of an integer - Some well-known APIs no longer returned lists (e.g., <code>dict.keys</code>, <code>dict.values</code>, <code>map</code>) - and many more (see <a href="https://docs.python.org/3.0/whatsnew/3.0.html">here</a> if interested)</p>
+<p><a href="https://docs.python.org/3.0/whatsnew/3.0.html"><em>Source</em></a></p>
+<p>In 2009, Python bumped versions from 3.0.1 to 3.1.0. Some changes in the 3.1.0 release included: - Addition of an ordered dictionary type - A pure Python reference implementation of the import statement - New syntax for nested with statements</p>
+<p><a href="https://www.python.org/download/releases/3.1/"><em>Source</em></a></p>
+<p>In 2017, Python bumped versions from 3.6.3 to 3.6.4. Some changes in the 3.6.4 release included:</p>
+<ul>
+<li>Fixed several issues in printing tracebacks (<code>PyTraceBack_Print()</code>).</li>
+<li>Fix the interactive interpreter looping endlessly when no memory.</li>
+<li>Fixed an assertion failure in Python parser in case of a bad <code>unicodedata.normalize()</code></li>
+</ul>
+<p><a href="https://docs.python.org/3.6/whatsnew/changelog.html#python-3-6-4-final"><em>Source</em></a></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/200-continuous-integration.html" class="pagination-link" aria-label="Automated testing and continuous integration">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../parts/licenses-copyright-wrapup.html" class="pagination-link" aria-label="licenses-copyright-wrapup.html">
+        <span class="nav-page-text">licenses-copyright-wrapup.html</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

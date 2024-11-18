@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>19&nbsp; Packaging and documenting code – Reproducible and Trustworthy Workflows for Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../lectures/200-continuous-integration.html" rel="next">
+<link href="../parts/packaging-ci-cd-publish.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-01c78b5cd655e4cd89133cf59d535862.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-273e46d7b3848a679358d7b360117b95.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+</style>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging-ci-cd-publish.html">packaging-ci-cd-publish.html</a></li><li class="breadcrumb-item"><a href="../lectures/190-packaging-and-documenting.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Reproducible and Trustworthy Workflows for Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://ubc-dsci.github.io/reproducible-and-trustworthy-workflows-for-data-science/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-git"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">intro.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/010-intro-to-ds-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">How do reproducible and trustworthy workflows impact data science?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/020-intro-to-bash.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to the Bash Shell</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">version-control.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/030-ssh-for-authentication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SSH for authentication</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/040-version-control-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) I</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/050-version-control-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Version control (for transparency and collaboration) II</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/060-version-control-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Project management using GitHub</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/projects-envs-containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">projects-envs-containers.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/070-filenames-project-organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/080-conda-lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/090-virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/100-containerization-1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/110-containerization-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/120-containerization-3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/data-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">data-testing.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">automation.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/packaging-ci-cd-publish.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">packaging-ci-cd-publish.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/190-packaging-and-documenting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">licenses-copyright-wrapup.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">appendix.html</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#when-to-start-writing-an-r-or-python-package" id="toc-when-to-start-writing-an-r-or-python-package" class="nav-link" data-scroll-target="#when-to-start-writing-an-r-or-python-package"><span class="header-section-number">19.1</span> When to start writing an R or Python package</a></li>
+  <li><a href="#tour-de-packages" id="toc-tour-de-packages" class="nav-link" data-scroll-target="#tour-de-packages"><span class="header-section-number">19.2</span> Tour de packages</a></li>
+  <li><a href="#tour-de-r-packages" id="toc-tour-de-r-packages" class="nav-link" data-scroll-target="#tour-de-r-packages"><span class="header-section-number">19.3</span> Tour de R packages</a>
+  <ul class="collapse">
+  <li><a href="#usethis-and-the-evolution-of-r-packaging" id="toc-usethis-and-the-evolution-of-r-packaging" class="nav-link" data-scroll-target="#usethis-and-the-evolution-of-r-packaging"><span class="header-section-number">19.3.1</span> <code>usethis</code> and the evolution of R packaging</a></li>
+  <li><a href="#learn-more-by-building-a-toy-r-package" id="toc-learn-more-by-building-a-toy-r-package" class="nav-link" data-scroll-target="#learn-more-by-building-a-toy-r-package"><span class="header-section-number">19.3.2</span> Learn more by building a toy R package</a></li>
+  </ul></li>
+  <li><a href="#tour-de-python-packages" id="toc-tour-de-python-packages" class="nav-link" data-scroll-target="#tour-de-python-packages"><span class="header-section-number">19.4</span> Tour de Python packages</a>
+  <ul class="collapse">
+  <li><a href="#poetry-and-the-evolution-of-python-packaging" id="toc-poetry-and-the-evolution-of-python-packaging" class="nav-link" data-scroll-target="#poetry-and-the-evolution-of-python-packaging"><span class="header-section-number">19.4.1</span> Poetry and the evolution of Python packaging</a></li>
+  <li><a href="#learn-more-by-building-a-toy-python-package" id="toc-learn-more-by-building-a-toy-python-package" class="nav-link" data-scroll-target="#learn-more-by-building-a-toy-python-package"><span class="header-section-number">19.4.2</span> Learn more by building a toy Python package</a></li>
+  </ul></li>
+  <li><a href="#key-package-things-for-python-and-r-packages" id="toc-key-package-things-for-python-and-r-packages" class="nav-link" data-scroll-target="#key-package-things-for-python-and-r-packages"><span class="header-section-number">19.5</span> Key package things for Python and R packages</a></li>
+  <li><a href="#what-is-a-minimal-viable-software-package" id="toc-what-is-a-minimal-viable-software-package" class="nav-link" data-scroll-target="#what-is-a-minimal-viable-software-package"><span class="header-section-number">19.6</span> What is a minimal viable software package?</a>
+  <ul class="collapse">
+  <li><a href="#essential-python-package-files" id="toc-essential-python-package-files" class="nav-link" data-scroll-target="#essential-python-package-files"><span class="header-section-number">19.6.1</span> Essential Python package files</a></li>
+  <li><a href="#docs-and-.githubworkflowsci-cd.yml" id="toc-docs-and-.githubworkflowsci-cd.yml" class="nav-link" data-scroll-target="#docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">19.6.2</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></a></li>
+  <li><a href="#essential-r-package-files" id="toc-essential-r-package-files" class="nav-link" data-scroll-target="#essential-r-package-files"><span class="header-section-number">19.6.3</span> Essential R package files</a></li>
+  <li><a href="#cookiecutter-project-templates" id="toc-cookiecutter-project-templates" class="nav-link" data-scroll-target="#cookiecutter-project-templates"><span class="header-section-number">19.6.4</span> Cookiecutter project templates</a></li>
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">19.6.5</span> Exercise:</a></li>
+  <li><a href="#differences-in-package-building-tool-philosophy" id="toc-differences-in-package-building-tool-philosophy" class="nav-link" data-scroll-target="#differences-in-package-building-tool-philosophy"><span class="header-section-number">19.6.6</span> Differences in package building tool philosophy</a></li>
+  </ul></li>
+  <li><a href="#dealing-with-other-package-dependencies-in-your-package" id="toc-dealing-with-other-package-dependencies-in-your-package" class="nav-link" data-scroll-target="#dealing-with-other-package-dependencies-in-your-package"><span class="header-section-number">19.7</span> Dealing with other package dependencies in your package</a>
+  <ul class="collapse">
+  <li><a href="#dealing-with-package-dependencies-in-r" id="toc-dealing-with-package-dependencies-in-r" class="nav-link" data-scroll-target="#dealing-with-package-dependencies-in-r"><span class="header-section-number">19.7.1</span> Dealing with package dependencies in R</a></li>
+  <li><a href="#the-pipe-a-special-dependency" id="toc-the-pipe-a-special-dependency" class="nav-link" data-scroll-target="#the-pipe-a-special-dependency"><span class="header-section-number">19.7.2</span> The pipe, <code>%&gt;%</code>, a special dependency</a></li>
+  </ul></li>
+  <li><a href="#package-documentation-for-r" id="toc-package-documentation-for-r" class="nav-link" data-scroll-target="#package-documentation-for-r"><span class="header-section-number">19.8</span> Package documentation for R</a>
+  <ul class="collapse">
+  <li><a href="#code-level-documentation-roxygen-style-comments" id="toc-code-level-documentation-roxygen-style-comments" class="nav-link" data-scroll-target="#code-level-documentation-roxygen-style-comments"><span class="header-section-number">19.8.1</span> Code-level documentation (Roxygen-style comments)</a></li>
+  <li><a href="#vignettes" id="toc-vignettes" class="nav-link" data-scroll-target="#vignettes"><span class="header-section-number">19.8.2</span> Vignettes</a></li>
+  <li><a href="#package-websites-via-pkgdown" id="toc-package-websites-via-pkgdown" class="nav-link" data-scroll-target="#package-websites-via-pkgdown"><span class="header-section-number">19.8.3</span> Package websites (via <code>pkgdown</code>)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging-ci-cd-publish.html">packaging-ci-cd-publish.html</a></li><li class="breadcrumb-item"><a href="../lectures/190-packaging-and-documenting.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ol type="1">
+<li><p>Explain the circumstances in which one should consider creating a package for their code</p></li>
+<li><p>Use available package development tools (e.g., <code>usethis</code> and <code>devtools</code> in R) to create a small, simple software package</p></li>
+<li><p>Be able to distinguish between essential software package elements (required to make a minimal software package) and those that are not essential but act to improve the user and developer experiences.</p></li>
+<li><p>Define what a namespace is.</p></li>
+<li><p>Explain the role of the code within the following software package files:</p></li>
+</ol>
+<ul>
+<li>Python
+<ul>
+<li><code>pyproject.toml</code></li>
+<li><code>__init__.py</code></li>
+<li><code>docs/*</code></li>
+<li><code>.github/workflows/ci-cd.yml</code></li>
+</ul></li>
+<li>R
+<ul>
+<li><code>DESCRIPTION</code></li>
+<li><code>NAMESPACE</code></li>
+<li><code>man/*.Rd</code></li>
+</ul></li>
+</ul>
+<ol start="7" type="1">
+<li><p>Explain at a high level how the Cookiecutter project template tool works.</p></li>
+<li><p>Compare and contrast how the Cookiecutter project template tool sets up a software package structure to how <code>devtools</code> and <code>usethis</code> set up a software package.</p></li>
+<li><p>Generate well formatted function and package-level documentation for software packages using available tools (e.g., <code>Roxygen2</code> and <code>pkgdown</code> in R, or numpy-style dosctrings and Sphinx in Python)</p></li>
+</ol>
+</section>
+<section id="when-to-start-writing-an-r-or-python-package" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="when-to-start-writing-an-r-or-python-package"><span class="header-section-number">19.1</span> When to start writing an R or Python package</h2>
+<p>When your DRY radar goes off:</p>
+<blockquote class="blockquote">
+<p>It depends on your level of patience for violating the DRY principle, for me the magic number is about 3. If I repeat writing code within a single script or notebook, on the third try hair starts to stand up on the back of my neck and I am irritated sufficiently to either write a function or a loop. The same goes with copying files containing functions that I would like to re-use. The third time that I do this, I am convinced that I will likely want to use this code again on another project and thus I should package it to make my life easier.</p>
+</blockquote>
+<p>When you think your code has general usefulness others could benefit from:</p>
+<blockquote class="blockquote">
+<p>Another reason to package your code is that you think that it is a general enough solution that other people would find it useful. Doing this can be viewed as an act of altruism that also provides you professional gain by putting your data science skills on display (and padding your CV!).</p>
+</blockquote>
+<p>When you want to share data:</p>
+<blockquote class="blockquote">
+<p>The R package ecosystem has found great use in packaging data in addition to Software. Packaging data is beyond the scope of this course, but you should know that it is widely done in R and that you can do it if you want or need to.</p>
+</blockquote>
+<div class="callout callout-style-default callout-tip callout-titled" title="Optional video">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Optional video
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I recommend watching a video from rstudio::conf 2020, called RMarkdown Driven Development by Emily Riederer, because I think it is such a nice narrative on how analysis code can evolve into software packages. Despite this talk being focused on R, it really applies to any data science language, and you could easily re-present this as “Jupyter Driven Development” or “Quarto Driven Development”.</p>
+<p><a href="https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/">RMarkdown Driven Development by Emily Riederer (video)</a></p>
+</div>
+</div>
+</section>
+<section id="tour-de-packages" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="tour-de-packages"><span class="header-section-number">19.2</span> Tour de packages</h2>
+<p>We will spend some time now exploring GitHub repositories of some Python and R packages to get more familiar with their internals. As we do this, fill out the missing data in the table below (which tries to match up the corresponding R and Python package key files and directories):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 65%">
+<col style="width: 17%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Description</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Online package repository or index</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Directory for user-facing package functions</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Directory for tests for user-facing package functions</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Directory for documentation</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Package metadata</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>File(s) that define the Namespace</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Tool(s) for easy package creation</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>Note: at the end of lecture I will review the answers to this table.</p>
+</blockquote>
+</section>
+<section id="tour-de-r-packages" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="tour-de-r-packages"><span class="header-section-number">19.3</span> Tour de R packages</h2>
+<p>Some R packages you may want to explore:</p>
+<ol type="1">
+<li><p><a href="https://github.com/jennybc/foofactors"><code>foofactors</code></a> - the end product of <a href="https://r-pkgs.org/whole-game.html">the Whole Game Chapter</a> from the R Packages book.</p></li>
+<li><p><a href="https://github.com/ttimbers/convertempr"><code>convertempr</code></a> - a simple example package I built as a demo for this course</p></li>
+<li><p><a href="https://github.com/tidymodels/broom"><code>broom</code></a> - a tidyverse R package</p></li>
+<li><p><a href="https://github.com/ropensci/tidyhydat"><code>tidyhydat</code></a> - a reviewed ROpenSci R package</p></li>
+</ol>
+<section id="usethis-and-the-evolution-of-r-packaging" class="level3" data-number="19.3.1">
+<h3 data-number="19.3.1" class="anchored" data-anchor-id="usethis-and-the-evolution-of-r-packaging"><span class="header-section-number">19.3.1</span> <code>usethis</code> and the evolution of R packaging</h3>
+<p>What constitutes an R package or its configuration files, has not changed in a long time. However the tools commonly used to build them have. Currently, the most straight forward, and easy way to build R packages now involves the use of two developer packages called <code>usethis</code> and <code>devtools</code>.</p>
+<p><img src="../img/usethis-devtools.png" width="400"></p>
+<p>These packages automate repetitive tasks that arise during project setup and development. It prevents you from having to do things like manually create boiler plate file and directory structures needed for building your R package structure, as well as simplifies the checking, installation and building of your package from source code.</p>
+<p>Packages created via <code>usethis</code> and <code>devtools</code> can be shared so that they can be installed via source from GitHub, or as package binaries on CRAN. For a package to be shared on CRAN, there is a check and gatekeeping system (in contrast to PyPI). We will learn more about this in later parts of the course.</p>
+<blockquote class="blockquote">
+<p>Fun fact! Jenny Bryan, a past UBC Statistics Professor UBC MDS founder, is the maintainer for the <code>usethis</code> R package!</p>
+</blockquote>
+</section>
+<section id="learn-more-by-building-a-toy-r-package" class="level3" data-number="19.3.2">
+<h3 data-number="19.3.2" class="anchored" data-anchor-id="learn-more-by-building-a-toy-r-package"><span class="header-section-number">19.3.2</span> Learn more by building a toy R package</h3>
+<p>For individual assignment 5, you will build a toy R package using a tutorial Jenny Bryan put together: <a href="https://r-pkgs.org/whole-game.html">The Whole Game</a></p>
+<p>After building the toy package, read <a href="https://r-pkgs.org/package-structure-state.html">Package structure and state</a> to deepen your understanding of what packaging means in R and what packages actually are.</p>
+</section>
+</section>
+<section id="tour-de-python-packages" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="tour-de-python-packages"><span class="header-section-number">19.4</span> Tour de Python packages</h2>
+<p>Some Python packages you may want to explore:</p>
+<ol type="1">
+<li><p><a href="https://github.com/TomasBeuzen/pycounts_tb"><code>pycounts_tb</code></a> - the end product of <a href="https://py-pkgs.org/03-how-to-package-a-python">How to Package a Python</a> from the Python Packages book</p></li>
+<li><p><a href="https://github.com/ttimbers/convertempPy"><code>convertempPy</code></a> - a simple example package I built as a demo for this course</p></li>
+<li><p><a href="https://github.com/UNCG-DAISY/PyWebCAT"><code>PyWebCAT</code></a> - a Pythonic way to interface with the NOAA National Ocean Service Web Camera Applications Testbed (WebCAT)</p></li>
+<li><p><a href="https://github.com/yannvgn/laserembeddings"><code>laserembeddings</code></a> - a Python package (uses the Poetry approach to creating Python packages)</p></li>
+<li><p><a href="https://github.com/pandera-dev/pandera"><code>pandera</code></a> - a reviewed PyOpenSci Python package (uses more traditional approach to creating Python packages)</p></li>
+</ol>
+<section id="poetry-and-the-evolution-of-python-packaging" class="level3" data-number="19.4.1">
+<h3 data-number="19.4.1" class="anchored" data-anchor-id="poetry-and-the-evolution-of-python-packaging"><span class="header-section-number">19.4.1</span> Poetry and the evolution of Python packaging</h3>
+<p>If you want to package your Python code and distribute for ease of use by others on the Python Packaging Index (PyPI) you need to convert it to a standard format called Wheel.</p>
+<p>Previously, to do this it was standard to have 4 configuration files in your package repository:</p>
+<ul>
+<li><code>setup.py</code></li>
+<li><code>requirements.txt</code></li>
+<li><code>setup.cfg</code></li>
+<li><code>MANIFEST.in</code></li>
+</ul>
+<p>In 2016, a new PEP (<a href="https://www.python.org/dev/peps/pep-0518/">518</a>) was made. This PEP defined a new configuration format, <code>pyproject.toml</code>, so that now a single file can be used in place of those previous four. This file must have at least two sections, <code>[build-system]</code> and <code>[tool]</code>.</p>
+<p>This new single configuration file has inspired some new tools to be created in the package building and management ecosystem in Python. One of the most recent and simplest to use is Poetry (created in 2018). When used to build packages, Poetry roughly does two things:</p>
+<ol type="1">
+<li><p>Uses the <code>pyproject.toml</code> to manage and solve package configurations via the Poetry commands <code>init</code>, <code>add</code>, <code>config</code>, etc</p></li>
+<li><p>Creates a lock file (<code>poetry.lock</code>) which automatically creates and activates a virtual environment (if none are activated) where the Poetry commands such as <code>install</code>, <code>build</code>, <code>run</code>, etc are executed.</p></li>
+</ol>
+<p>Cookiecutter templates are also useful to help setup the biolerplate project and directory structure needed for packages. We will use these in this course as well.</p>
+</section>
+<section id="learn-more-by-building-a-toy-python-package" class="level3" data-number="19.4.2">
+<h3 data-number="19.4.2" class="anchored" data-anchor-id="learn-more-by-building-a-toy-python-package"><span class="header-section-number">19.4.2</span> Learn more by building a toy Python package</h3>
+<p>For an optional/bonus part of invidividual assignment 5, you can choose to build a toy Python package using a tutorial we have put together for you: <a href="https://py-pkgs.org/03-how-to-package-a-python">How to package a Python</a></p>
+<p>After building the toy package, read <a href="https://py-pkgs.org/04-package-structure">Package structure and state</a> to deepen your understanding of what packaging means in Python and what packages actually are.</p>
+</section>
+</section>
+<section id="key-package-things-for-python-and-r-packages" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="key-package-things-for-python-and-r-packages"><span class="header-section-number">19.5</span> Key package things for Python and R packages</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 65%">
+<col style="width: 17%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Description</th>
+<th>Python</th>
+<th>R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Online package repository or index</td>
+<td>PyPI</td>
+<td>CRAN</td>
+</tr>
+<tr class="even">
+<td>Directory for user-facing package functions</td>
+<td>Package directory (a named directory within the project root that contians <code>.py</code> files and a <code>__init__.py</code> file)</td>
+<td><code>R</code> directory</td>
+</tr>
+<tr class="odd">
+<td>Directory for tests for user-facing package functions</td>
+<td><code>tests</code></td>
+<td><code>tests/testthat</code></td>
+</tr>
+<tr class="even">
+<td>Directory for documentation</td>
+<td><code>docs</code></td>
+<td><code>man</code> and <code>vignettes</code></td>
+</tr>
+<tr class="odd">
+<td>Package metadata</td>
+<td><code>pyproject.toml</code></td>
+<td><code>DESCRIPTION</code></td>
+</tr>
+<tr class="even">
+<td>File(s) that define the Namespace</td>
+<td><code>__init__.py</code></td>
+<td><code>NAMESPACE</code></td>
+</tr>
+<tr class="odd">
+<td>Tool(s) for easy package creation</td>
+<td>Cookiecutter &amp; Poetry</td>
+<td><code>usethis</code> &amp; <code>devtools</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-is-a-minimal-viable-software-package" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="what-is-a-minimal-viable-software-package"><span class="header-section-number">19.6</span> What is a minimal viable software package?</h2>
+<p>In this course, we are learning to build software packages in R and Python to a high standard, with regards to: - code robustness - documentation - collaboration strategies</p>
+<p>This is really great, but that means there are a LOT of files to track and learn about. What can be helpful is to know and be able to identify which files are essential to make a locally installable software package.</p>
+<section id="essential-python-package-files" class="level3" data-number="19.6.1">
+<h3 data-number="19.6.1" class="anchored" data-anchor-id="essential-python-package-files"><span class="header-section-number">19.6.1</span> Essential Python package files</h3>
+<p>Using the project layout we recommend for this course, here is a Python package structure with only the most essential files.</p>
+<pre><code>pkg
+├── pyproject.toml
+└── src
+    └── pkg
+        ├── __init__.py
+        └── module.py</code></pre>
+<p>What do each of these do?</p>
+<ul>
+<li><p><code>pyproject.toml</code> stores all the metadata and install instructions for the package.</p></li>
+<li><p>The presence of the <code>src</code> directory defines the code that will form the installable version of your package (meaning that users only get this code when they install the package, and that developers must install the package before running their tests).</p></li>
+<li><p><code>__init__.py</code> tells Python that a directory is a package. They can be left empty, or they can also be used to add objects to the package’s namespace, provide documentation, and/or run other initialization code.</p></li>
+<li><p><code>module.py</code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
+</ul>
+<section id="getting-to-know-a-pyproject.toml-files-contents" class="level4">
+<h4 class="anchored" data-anchor-id="getting-to-know-a-pyproject.toml-files-contents">Getting to know a <code>pyproject.toml</code> file’s contents</h4>
+<p>Here is an example <code>pyproject.toml</code> file:</p>
+<pre><code>[tool.poetry]                                          ┐
+name = "pycounts_tt_2024"                              │
+version = "0.1.0"                                      │ Package metadata
+description = "Calculate word counts in a text file!"  │
+authors = ["Tiffany Timbers"]                          │
+license = "MIT"                                        │
+readme = "README.md"                                   ┘
+
+[tool.poetry.dependencies]                             ┐
+python = "&gt;=3.9"                                       │ User function dependencies
+matplotlib = "&gt;=3.8.2"                                 ┘
+
+[tool.poetry.dev-dependencies]                         ┐
+                                                       │
+[tool.poetry.group.dev.dependencies]                   │
+pytest = "&gt;=7.4.4"                                     │
+pytest-cov = "&gt;=4.1.0"                                 │ Developer dependencies
+jupyter = "&gt;=1.0.0"                                    │
+myst-nb = {version = "^1.0.0", python = "^3.9"}        │
+sphinx-autoapi = "^3.0.0"                              │
+sphinx-rtd-theme = "^2.0.0"                            ┘
+
+[build-system]                                         ┐
+requires = ["poetry-core&gt;=1.0.0"]                      │ Package build dependencies
+build-backend = "poetry.core.masonry.api"              ┘</code></pre>
+<p>Almost everything inside this file is customizable based on your package. Even the build system! <code>pyproject.toml</code> can also be used with other build tools such as setuptools and flit! If you are interested in learning more, checkout the <a href="https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html">Python Packaging Tools guide</a> from PyOpenSci.</p>
+</section>
+<section id="getting-to-know-a-__init__.py-files-contents" class="level4">
+<h4 class="anchored" data-anchor-id="getting-to-know-a-__init__.py-files-contents">Getting to know a <code>__init__.py</code> file’s contents</h4>
+<p>As mentioned earlier, this file can serve it’s essential package function of telling Python that this directory is a package by just existing and being empty. It can however serve other purposes. Let’s discuss the code that exists in the <code>py-pkgs-cookiecutter</code> template:</p>
+<p>The <code>py-pkgs-cookiecutter</code> we used to create our <code>pycounts</code> package (<a href="https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure">Section 3.2.2</a>) already populated our <code>__init__.py</code> file with this code for us:</p>
+<pre><code># read version from installed package
+from importlib.metadata import version
+__version__ = version("pycounts")</code></pre>
+<p>Because this code is in <code>__init__.py</code> is executed when the package is imported (this is the case for all <code>__init__.py</code> files, we can ask for the package version with Python code like this:</p>
+<pre><code>import pycounts
+pycounts.__version__</code></pre>
+<pre><code>0.1.0</code></pre>
+<p>In the code in <code>__init__.py</code> we get the version from the package metadata, that is derived from <code>pyproject.toml</code>. This allows us to only have to update the version of our package in one place when we bump to a new version.</p>
+<p>What other kinds of interesting things can we do with <code>__init__.py</code>? Well we can use it to control the import behavior of a package. For example, there are currently only two main functions that users will commonly use from our <code>pycounts</code> package: <code>pycounts.count_words()</code> and <code>plotting.plot_words()</code>. Users have to type the full path to these functions to import them:</p>
+<pre><code>from pycounts.pycounts import count_words
+from pycounts.plotting import plot_words</code></pre>
+<p>If we import those core functions in <code>pycounts</code>’s <code>__init__.py</code> file, which would bind them to the package namespace, we can make our user’s experience of loading them easier!</p>
+<pre><code># read version from installed package
+from importlib.metadata import version
+__version__ = version(__name__)
+
+# populate package namespace
+from pycounts.pycounts import count_words
+from pycounts.plotting import plot_words</code></pre>
+<p>The functions are now bound to the pycounts namespace, so users can access them like this:</p>
+<pre><code>import pycounts
+pycounts.count_words</code></pre>
+<pre><code>&lt;function count_words&gt;
+</code></pre>
+<p>What is a namespace again? A “namespace” is a set of names that are used to identify and refer to objects of various kinds (source: <a href="https://en.wikipedia.org/wiki/Namespace">Wikipedia</a>).</p>
+</section>
+</section>
+<section id="docs-and-.githubworkflowsci-cd.yml" class="level3" data-number="19.6.2">
+<h3 data-number="19.6.2" class="anchored" data-anchor-id="docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">19.6.2</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></h3>
+<p>We will cover both these topics in greater detail later (<code>docs/*</code> in the documentation chapter/lecture and <code>.github/workflows/ci-cd.yml</code> in the continuous integration and deployment chapter/lecture), but for now it’s helpful to get a bit better of an idea of these files and what they are doing.</p>
+<section id="docs" class="level4">
+<h4 class="anchored" data-anchor-id="docs"><code>docs/*</code></h4>
+<p>To keep things organized, to and to make the package documentation easier to automate, we keep the documentation files in the <code>docs</code> directory and use a <code>Makefile</code> (or <code>make.bat</code> on Windows) therein to automate their rendering.</p>
+<pre><code>docs
+   ├── changelog.md
+   ├── conduct.md
+   ├── conf.py
+   ├── contributing.md
+   ├── example.ipynb
+   ├── index.md
+   ├── make.bat
+   └── requirements.txt (deprecated)</code></pre>
+<p>Note that many of these files also commonly exist in the root of projects and people expect to find them there!!! These include:</p>
+<ul>
+<li>changelog.md</li>
+<li>conduct.md</li>
+<li>contributing.md</li>
+</ul>
+<p>So what we have done is pointed the <code>doc/*.md</code>’s of these files to the contents these files in the project root. And at rendering, their content will be used instead! If you look at the raw source of one of these files (e.g., conduct.md) you will see:</p>
+<p><img src="../img/python-docs-md-content.png" width="500"></p>
+<p>This helps keep our docs up to date by not having two places to update them!</p>
+<p><code>conf.py</code> is a configuration file that specifies style and formatting for the documentation. In this course we will not be modifying it, but if you wanted you can! To do this, please first read the docs for <a href="https://www.sphinx-doc.org/en/master/usage/configuration.html">Sphinx configuration here</a>.</p>
+<p>The <code>requirements.txt</code> file in the <code>pypkgs-cookiecutter</code> template is now deprecated and will be removed in a future version. All dependencies are now managed by <code>pyproject.toml</code>.</p>
+</section>
+<section id="githubworkflowsci-cd.yml" class="level4">
+<h4 class="anchored" data-anchor-id="githubworkflowsci-cd.yml"><code>.github/workflows/ci-cd.yml</code></h4>
+<p>This file contains automation code for continuous integration and delivery of our Python software package, reading the steps in this file you will see that it does the following:</p>
+<ol type="1">
+<li>Continuous integration tasks:</li>
+</ol>
+<ul>
+<li>installs your package</li>
+<li>runs the test suite</li>
+<li>calculates test coverage</li>
+</ul>
+<ol start="2" type="1">
+<li>Continous deployment tasks:</li>
+</ol>
+<ul>
+<li>bumps the package software version, as well as prepares and creates a GitHub release of the package</li>
+<li>builds the package</li>
+<li>publishes it to the package repository (i.e., TestPyPI or PyPI, or both)</li>
+</ul>
+<p>When we first start building our packages, the GitHub Actions workflows for most of these things will fail. That is to be expected! As you complete the tasks for setting each of these up (e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets, etc) then the GitHub Actions workflows should start passing. This is a consequence of the philosophy of the <code>pypkgs-cookiecutter</code> template tool.</p>
+</section>
+</section>
+<section id="essential-r-package-files" class="level3" data-number="19.6.3">
+<h3 data-number="19.6.3" class="anchored" data-anchor-id="essential-r-package-files"><span class="header-section-number">19.6.3</span> Essential R package files</h3>
+<p>Using the project layout we recommend for this course, here is a R package structure with only the most essential files.</p>
+<pre><code>pkg
+├── DESCRIPTION
+├── man
+│   ├── functionA.Rd
+│   └── functionB.Rd
+├── NAMESPACE
+└── R
+    └── functions.R</code></pre>
+<p>What do each of these do?</p>
+<ul>
+<li><p><code>DESCRIPTION</code> stores all the metadata and dependency installation instructions for the package.</p></li>
+<li><p>The <code>man</code> directory contains the function documentation in <code>.Rd</code> files (one per function). The contents are from these are generated from the <code>ROxygen2</code> function documentation in the <code>R/*.R</code> files.</p></li>
+<li><p>Unsurprisingly, the <code>NAMESPACE</code> file is important in defining your package’s namespace.</p></li>
+<li><p><code>R</code> is the directory for the <code>*.R</code> files which contain your exported (i.e., user-facing) functions.</p></li>
+<li><p><code>functions.R</code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
+</ul>
+<section id="getting-to-know-a-description-files-contents" class="level4">
+<h4 class="anchored" data-anchor-id="getting-to-know-a-description-files-contents">Getting to know a <code>DESCRIPTION</code> file’s contents</h4>
+<p>Here is an example <code>DESCRIPTION</code> file:</p>
+<pre><code>Package: foofactors                                                         ┐
+Title: Make Factors Less Aggravating                                        │
+Version: 0.0.0.9000                                                         │
+Authors@R:                                                                  │
+    person(given = "Tiffany",                                               │ Package metadata
+           family = "Timbers",                                              │
+           role = c("aut", "cre"),                                          │
+           email = "tiffany.timbers@gmail.com",                             │
+           comment = c(ORCID = "0000-0002-2667-376X"))                      │
+Description: Factors have driven people to extreme measures, like ordering  │
+    custom conference ribbons and laptop stickers to express how HELLNO we  │
+    feel about stringsAsFactors. And yet, sometimes you need them. Can they │
+    be made less maddening? Let's find out.                                 │
+License: MIT + file LICENSE                                                 │
+Encoding: UTF-8                                                             │
+LazyData: true                                                              ┘
+Roxygen: list(markdown = TRUE)                                              ┐
+RoxygenNote: 7.0.2                                                          │ Developer dependencies
+Suggests:                                                                   │
+    testthat (&gt;= 2.1.0),                                                    │
+    covr                                                                    ┘
+Imports:                                                                    ┐ User function dependencies
+    forcats                                                                 ┘
+URL: https://github.com/ttimbers/foofactors                                 ┐ More package metadata
+BugReports: https://github.com/ttimbers/foofactors/issues                   ┘</code></pre>
+<p>This is equivalent to the <code>pyproject.toml</code> file in Python packages. Again, almost everything in it is customizable based on your package’s specifics.</p>
+</section>
+<section id="manrd-files" class="level4">
+<h4 class="anchored" data-anchor-id="manrd-files"><code>man/*Rd</code> files</h4>
+<p>The <code>man</code> directory contains the function documentation in <code>.Rd</code> files (one per function). These can be created from the function’s <code>roxygen2</code> documentation using <code>devtools::document</code>. They use a custom syntax that is loosely based on LaTeX, which can be rendered to different formats for sharing with the package users.</p>
+<p>For example, this <code>roxygen2</code> documention in <code>R/fbind.R</code>:</p>
+<pre><code>#' Bind two factors
+#'
+#' Create a new factor from two existing factors, where the new factor's levels
+#' are the union of the levels of the input factors.
+#'
+#' @param a factor
+#' @param b factor
+#'
+#' @return factor
+#' @export
+#' @examples
+#' fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])</code></pre>
+<p>gives this syntax (loosely based on LaTeX) in <code>man/bind.Rd</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Generated by roxygen2: do not edit by hand</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Please edit documentation in R/fcount.R</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\name</span>{fcount}</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\alias</span>{fcount}</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{Make a sorted frequency table for a factor}</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\usage</span>{</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>fcount(x)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\arguments</span>{</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">\item</span>{x}{factor}</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">\value</span>{</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>A tibble</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="fu">\description</span>{</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>Make a sorted frequency table for a factor</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\examples</span>{</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>fcount(iris<span class="ss">$Species)</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="ss">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="namespace-file" class="level4">
+<h4 class="anchored" data-anchor-id="namespace-file"><code>NAMESPACE</code> file</h4>
+<p>In it are commands applied to R objects. Common commands include indicating that a function should be exported from your package, and/or that a another package should be imported to be used internally. The contents of this file are best to be created automatically using <code>devtools</code> to pull this information from the package function’s <code>roxygen2</code> documentation (exports) and the <code>DESCRIPTION</code> file (imports).</p>
+<p>Here’s an example <code>NAMESPACE</code> file:</p>
+<pre><code># Generated by roxygen2: do not edit by hand
+
+export(compare)
+export(expect_equal)
+import(rlang)
+importFrom(brio,readLines)</code></pre>
+</section>
+</section>
+<section id="cookiecutter-project-templates" class="level3" data-number="19.6.4">
+<h3 data-number="19.6.4" class="anchored" data-anchor-id="cookiecutter-project-templates"><span class="header-section-number">19.6.4</span> Cookiecutter project templates</h3>
+<p><a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> is a general Python tool for repeatedly generating a desired file and directory structure.</p>
+<p>Many many many Python <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> templates already exist, this search on GitHub (linked to from the <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> documentation) identifies 9000 repositories!!!</p>
+<ul>
+<li><a href="https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories" class="uri">https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories</a></li>
+</ul>
+<p>How does it work? It uses the concept of code templating and uses the <a href="https://jinja.palletsprojects.com/en/3.1.x/"><code>Jinja</code></a> templating engine. Special syntax (involving <code>{{</code>) is used to specify parts of the code that should be “filled in” with user input (from a function call if interacting directly with the <code>Jinja</code> API, or the keyboard if using <code>Cookiecutter</code>). The input is then used to replace the placeholder text in the code (denoted by the special syntax involving <code>{{</code>). This allows template code to be automatically filled in and reused again and again!</p>
+</section>
+<section id="exercise" class="level3" data-number="19.6.5">
+<h3 data-number="19.6.5" class="anchored" data-anchor-id="exercise"><span class="header-section-number">19.6.5</span> Exercise:</h3>
+<p>Let’s explore the <code>pypkgs-cookiecutter</code> to get to know how the Cookiecutter project template tool works in the case of <code>pypkgs-cookiecutter</code>, and in general!</p>
+<ul>
+<li>Go to: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter</a></li>
+<li>Looks at: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json</a></li>
+<li>Look for all the places you see <code>{ cookiecutter.__SOMETHING }</code></li>
+</ul>
+</section>
+<section id="differences-in-package-building-tool-philosophy" class="level3" data-number="19.6.6">
+<h3 data-number="19.6.6" class="anchored" data-anchor-id="differences-in-package-building-tool-philosophy"><span class="header-section-number">19.6.6</span> Differences in package building tool philosophy</h3>
+<section id="iclicker-question" class="level4">
+<h4 class="anchored" data-anchor-id="iclicker-question">iClicker question:</h4>
+<p>Setting the programming language differences aside (and the technical issues with the <code>pypkgs-Cookiecutter</code> at the beginning of last week), which approach to package building did you prefer?</p>
+<p>A. Adding package components step-by-step as needed, like you did when using <code>devtools</code>/<code>usethis</code> to create an R package.</p>
+<p>B. Setting up the project template in one fell swoop (i.e., once at the beginning of the project), like you did when using <code>pypkgs-Cookiecutter</code> to create an R package.</p>
+</section>
+<section id="in-class-disucssion" class="level4">
+<h4 class="anchored" data-anchor-id="in-class-disucssion">In class disucssion</h4>
+<ol type="1">
+<li>What are the advantages and disadvantages of the <code>devtools</code>/<code>usethis</code> software package building approach in R?</li>
+</ol>
+<ul>
+<li>Advantages:
+<ul>
+<li>Not overwhelming for beginners, since you just add one thing at a time.</li>
+<li>Allows you to redo the one thing you made a mistake on.</li>
+</ul></li>
+<li>Disadvantages:
+<ul>
+<li>Easy to forget to add or do somethings, as you need to run a different command each time.</li>
+<li>Somewhat inefficient as a command needs to be run each time you want to add a new feature to the package.</li>
+</ul></li>
+</ul>
+<ol start="2" type="1">
+<li>What are the advantages and disadvantages of the <code>pypkgs-Cookiecutter</code> software package building approach in Python?</li>
+</ol>
+<ul>
+<li>Advantages:
+<ul>
+<li>Minimizes forgetting to dd or do somethings, because you just have one setup step at the beginning.</li>
+<li>Efficient because you just have one setup step at the beginning.</li>
+</ul></li>
+<li>Disadvantages:
+<ul>
+<li>Can be overwhelming for beginners, since you generate a large number of files at one time.</li>
+<li>Takes a lot of time to when you make a mistake (e.g., typo in package name) because you need to manually got back and fix things.</li>
+<li>Sets everything up at the beginning, including the things you are not yet ready for (e.g., Continuous integration and deployment workflows on GitHub actions) and there are some annoying consequences of this (e.g., notifications about failed checks).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="dealing-with-other-package-dependencies-in-your-package" class="level2" data-number="19.7">
+<h2 data-number="19.7" class="anchored" data-anchor-id="dealing-with-other-package-dependencies-in-your-package"><span class="header-section-number">19.7</span> Dealing with other package dependencies in your package</h2>
+<section id="dealing-with-package-dependencies-in-r" class="level3" data-number="19.7.1">
+<h3 data-number="19.7.1" class="anchored" data-anchor-id="dealing-with-package-dependencies-in-r"><span class="header-section-number">19.7.1</span> Dealing with package dependencies in R</h3>
+<ul>
+<li><p>When we write code in our package that uses functions from other packages we need to import those functions from the namespace of their packages.</p></li>
+<li><p>In R, we do this via <code>use_package</code>, which adds that package to the “Imports” section of DESCRIPTION</p></li>
+<li><p>We also need to refer to that package in our function code, there are two ways to do this:</p>
+<ol type="1">
+<li>refer the function by <code>package::fun_name</code> (e.g., <code>dplyer::filter</code>) whenever you use the function in your code</li>
+<li>add the function to your packages namespace so that you can just refer to it as your normally would. To do this add <code>@importFrom &lt;package_name&gt; &lt;function_or_operator&gt;</code> to the Roxygen documentation of the function that you would like to use the function from the other package in and then use <code>document()</code> to update the DESCRIPTION and NAMESPACE file.</li>
+</ol></li>
+</ul>
+<p><em>It is recommended to use method 1 (<code>pkg::fun_name</code>) because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you). The trade off is that it’s a little more work to write.</em></p>
+</section>
+<section id="the-pipe-a-special-dependency" class="level3" data-number="19.7.2">
+<h3 data-number="19.7.2" class="anchored" data-anchor-id="the-pipe-a-special-dependency"><span class="header-section-number">19.7.2</span> The pipe, <code>%&gt;%</code>, a special dependency</h3>
+<ul>
+<li><p>Given the ubiquity of the pipe operator, <code>%&gt;%</code>, in R, there is a function that automates exposing to your entire package: <code>usethis::use_pipe()</code></p></li>
+<li><p>Note, in general, the tidyverse team does not recommend using the pipe in packages unless they are personal, low use packages, or “pro” packages with a lot of data wrangling because:</p>
+<ul>
+<li>In most cases it is really an unnecessary dependency</li>
+<li>It is not that readable for folks who do not typically use the pipe</li>
+<li>makes debugging more challenging</li>
+</ul></li>
+</ul>
+<p>So, should you use the pipe in your package? The answer is, it depends on your package’s scope, aims and goals. Also, this is probably your first package, so it doesn’t have to be perfect. If using the pipe helps you get the job done this time around, go for it. Just know that if you aim to ever build a widely used package, you probably do not want to depend on it.</p>
+<blockquote class="blockquote">
+<p>Note: with the advent of the base R pipe <code>|&gt;</code>, you can now use that pipe and no longer have to add it as a dependency!</p>
+</blockquote>
+</section>
+</section>
+<section id="package-documentation-for-r" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="package-documentation-for-r"><span class="header-section-number">19.8</span> Package documentation for R</h2>
+<p>There are several levels of documentation possible for R packages: - code-level documentation (Roxygen-style comments) - vignettes - package websites (via <code>pkgdown</code>)</p>
+<section id="code-level-documentation-roxygen-style-comments" class="level3" data-number="19.8.1">
+<h3 data-number="19.8.1" class="anchored" data-anchor-id="code-level-documentation-roxygen-style-comments"><span class="header-section-number">19.8.1</span> Code-level documentation (Roxygen-style comments)</h3>
+<ul>
+<li>We learned the basics of how to write Roxygen-style comments in DSCI 511</li>
+<li>In the package context, there are Namespace tags you should know about:
+<ul>
+<li><code>@export</code> - this should be added to all package functions you want your user to know about</li>
+<li><code>@NoRd</code> - this should be added to helper/internal helper functions that you don’t want your user to know about</li>
+</ul></li>
+</ul>
+</section>
+<section id="vignettes" class="level3" data-number="19.8.2">
+<h3 data-number="19.8.2" class="anchored" data-anchor-id="vignettes"><span class="header-section-number">19.8.2</span> Vignettes</h3>
+<p>It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. Think of your vignette as a demonstration of how someone would use your function to solve a problem.</p>
+<ul>
+<li><p>It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.</p></li>
+<li><p>To create a template for your vignette, run: <code>usethis::use_vignette("package_name-vignette")</code></p></li>
+<li><p>Add content to that file and knit it when done.</p></li>
+</ul>
+<p>As an example, here’s the <code>dplyr</code> vignette: <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html" class="uri">https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html</a></p>
+</section>
+<section id="package-websites-via-pkgdown" class="level3" data-number="19.8.3">
+<h3 data-number="19.8.3" class="anchored" data-anchor-id="package-websites-via-pkgdown"><span class="header-section-number">19.8.3</span> Package websites (via <a href="https://pkgdown.r-lib.org/"><code>pkgdown</code></a>)</h3>
+<ul>
+<li><p>Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others.</p></li>
+<li><p>The <code>pkgdown</code> R package let’s you build a beautiful website for your R package in 4 steps!</p>
+<ol type="1">
+<li><p>Turn on GitHub pages in your package repository, setting <code>main branch / docs folder</code> as the source.</p></li>
+<li><p>Install <code>pkgdown</code>: `install.packages(“pkgdown”)</p></li>
+<li><p>Run <code>pkgdown::build_site()</code> from the root of your project, and commit and push the changes made by this.</p></li>
+<li><p>Push your code, including the <code>docs</code> directory to GitHub.com</p></li>
+</ol></li>
+</ul>
+<p>In addition to the beautiful website, <code>pkgdown</code> automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉</p>
+<blockquote class="blockquote">
+<p>Note you can also configure a GitHub Actions workflow to automate the rebuilding of the <code>pkgdown</code> site anytime changes are pushed to your package’s GitHub repository. We will discuss this later in the course under the topic of continuous deployment.</p>
+</blockquote>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../parts/packaging-ci-cd-publish.html" class="pagination-link" aria-label="packaging-ci-cd-publish.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">packaging-ci-cd-publish.html</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../lectures/200-continuous-integration.html" class="pagination-link" aria-label="Automated testing and continuous integration">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
