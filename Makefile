@@ -1,4 +1,4 @@
-@PHONY: preview render
+@PHONY: preview render clean publish
 
 preview:
 	quarto preview book/index.qmd --port 54321
@@ -9,3 +9,6 @@ render:
 
 clean:
 	rm -rf docs
+
+publish:
+	quarto publish gh-pages book --no-prompt --no-browser
