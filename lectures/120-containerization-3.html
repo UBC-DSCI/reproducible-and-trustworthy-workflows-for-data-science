@@ -103,6 +103,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -123,17 +134,6 @@ div.callout-exercise.callout-style-default > .callout-header {
 div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
 div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
   content: '🏋️';
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -454,7 +454,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   <li><a href="#building-container-images-from-dockerfiles" id="toc-building-container-images-from-dockerfiles" class="nav-link" data-scroll-target="#building-container-images-from-dockerfiles"><span class="header-section-number">12.1</span> Building container images from <code>Dockerfile</code>’s</a>
   <ul class="collapse">
   <li><a href="#workflow-for-building-a-dockerfile" id="toc-workflow-for-building-a-dockerfile" class="nav-link" data-scroll-target="#workflow-for-building-a-dockerfile"><span class="header-section-number">12.1.1</span> Workflow for building a Dockerfile</a></li>
-  <li><a href="#demo-workflow-for-creating-a-dockfile-locally" id="toc-demo-workflow-for-creating-a-dockfile-locally" class="nav-link" data-scroll-target="#demo-workflow-for-creating-a-dockfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockfile</code> locally</a></li>
+  <li><a href="#demo-workflow-for-creating-a-dockerfile-locally" id="toc-demo-workflow-for-creating-a-dockerfile-locally" class="nav-link" data-scroll-target="#demo-workflow-for-creating-a-dockerfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockerfile</code> locally</a></li>
   <li><a href="#guidelines-for-run-commands" id="toc-guidelines-for-run-commands" class="nav-link" data-scroll-target="#guidelines-for-run-commands"><span class="header-section-number">12.1.3</span> Guidelines for <code>RUN</code> Commands:</a></li>
   </ul></li>
   <li><a href="#dockerfile-command-summary" id="toc-dockerfile-command-summary" class="nav-link" data-scroll-target="#dockerfile-command-summary"><span class="header-section-number">12.2</span> <code>Dockerfile</code> command summary</a></li>
@@ -502,7 +502,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <ul>
 <li><p>A <code>Dockerfile</code> is a plain text file that contains commands primarily about what software to install in the Docker image. This is the more trusted and transparent way to build Docker images.</p></li>
 <li><p>Once we have created a <code>Dockerfile</code> we can build it into a Docker image.</p></li>
-<li><p>Docker images are built in layers, and as such, <code>Dockerfiles</code> always start by specifiying a base Docker image that the new image is to be built on top off.</p></li>
+<li><p>Docker images are built in layers, and as such, <code>Dockerfile</code>s always start by specifying a base Docker image that the new image is to be built on top off.</p></li>
 <li><p>Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use <code>apt-get</code> as our installation program). However, most of what we’ll be doing for installation is R, Python and their packages. For that we can really use tools we’re already familiar with (<code>conda</code> and <code>conda-lock</code>, for example).</p></li>
 </ul>
 <section id="workflow-for-building-a-dockerfile" class="level3" data-number="12.1.1">
@@ -512,37 +512,37 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <li><p>Choose a base image to build off (from <a href="https://hub.docker.com/" class="uri">https://hub.docker.com/</a>).</p></li>
 <li><p>Create a <code>Dockerfile</code> named <code>Dockerfile</code> and save it in an appropriate project repository. Open that file and type <code>FROM &lt;BASE_IMAGE&gt; on the first line</code>. Add any files that need to be accessed at build time via the <code>COPY</code> command.</p></li>
 <li><p>In a terminal, type <code>docker run --rm -it &lt;IMAGE_NAME&gt;</code> and interactively try the install commands you think will work. Edit and try again until the install command works.</p></li>
-<li><p>Write working install commands in the <code>Dockerfile</code>, preceeding them with <code>RUN</code> and save the <code>Dockerfile</code>.</p></li>
+<li><p>Write working install commands in the <code>Dockerfile</code>, preceding them with <code>RUN</code> and save the <code>Dockerfile</code>.</p></li>
 <li><p>After adding every 2-3 commands to your <code>Dockerfile</code>, try building the Docker image via <code>docker build --tag &lt;TEMP_IMAGE_NAME&gt; &lt;PATH_TO_DOCKERFILE_DIRECTORY&gt;</code>.</p></li>
 <li><p>Once the entire <code>Dockerfile</code> works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).</p></li>
 </ol>
 </section>
-<section id="demo-workflow-for-creating-a-dockfile-locally" class="level3" data-number="12.1.2">
-<h3 data-number="12.1.2" class="anchored" data-anchor-id="demo-workflow-for-creating-a-dockfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockfile</code> locally</h3>
+<section id="demo-workflow-for-creating-a-dockerfile-locally" class="level3" data-number="12.1.2">
+<h3 data-number="12.1.2" class="anchored" data-anchor-id="demo-workflow-for-creating-a-dockerfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockerfile</code> locally</h3>
 <p>We will demo this workflow together to build a Docker image locally on our machines that has Jupyter, Python and the python packages <code>pandas</code>, <code>pandera</code> and <code>deepcheck</code> installed. When we do this, we will leverage a <code>conda</code> environment that we have for these packages already:</p>
-<pre><code># environment.yml
-name: my-env
-channels:
-  - conda-forge
-  - defaults
-  dependencies:
-    - pandas=2.2.2
-    - pandera=0.20.4
-    - python=3.11
-    - pip
-    - pip:
-      - deepchecks==0.18.1</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># environment.yml</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> my-env</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> defaults</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pandas=2.2.2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pandera=0.20.4</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> python=3.11</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> pip</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">pip</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> deepchecks==0.18.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To use this environment efficiently to build a Docker image, we need a <code>conda-lock</code> file, more specifically an explicit <code>conda-lock</code> file for the linux operating system (as our container will be a linux container). We can generate that from the <code>environment.yml</code> file via:</p>
-<pre><code>conda-lock -k explicit --file environment.yml -p linux-64</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> <span class="at">-k</span> explicit <span class="at">--file</span> environment.yml <span class="at">-p</span> linux-64</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>From that, we get a file named <code>conda-linux-64.lock</code>, which we can copy into a <a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/">Jupyter container</a> and update the <code>conda</code> environment already installed there using <code>mamba update</code>.</p>
 <p>OK, now we are ready to start writing our <code>Dockerfile</code>! Let’s start with the <code>quay.io/jupyter/minimal-notebook:afe30f0c9ad8</code> image, which already has Jupyter lab installed. so the first line of our <code>Dockerfile</code> should be as such:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FROM</span> quay.io/jupyter/minimal-notebook:afe30f0c9ad8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next, since we will be wanting the container to have access to a file at build time, we need to <code>COPY</code> it in so we can have access to it in the container. Our Dockerfile should now look like this:</p>
-<pre><code>FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
-
-COPY conda-linux-64.lock /tmp/conda-linux-64.lock</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> quay.io/jupyter/minimal-notebook:afe30f0c9ad8</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> conda-linux-64.lock /tmp/conda-linux-64.lock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Now let’s build an image from our <code>Dockerfile</code> so we can test out and find install commands that work for what we need to do! To build an image, we use <code>docker build</code>. We’ll want to tag/name the image so we can reference it after its built, so we can run it. Here we named it <code>testing_cmds</code>. Finally we say where to look for the <code>Dockerfile</code>. Here we say <code>.</code>, meaning the current working directory:</p>
-<pre><code>docker build --tag testing_cmds .</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--tag</span> testing_cmds .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -553,7 +553,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note: If you are running a computer using an ARM chip remember to add `–platform=linux/amd64</p>
+<p>Note: If you are running a computer using an ARM chip remember to add <code>--platform=linux/amd64</code></p>
 </div>
 </div>
 <p>Now we will run our image (named <code>testing_cmds</code>). Note that we run this not using the Jupyter web app because all we are doing right now is testing out installation commands.</p>
@@ -569,10 +569,10 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Note the use of –quiet in the command below. These commands will be run non-interactively when building the container, and so we will not be able to see the output. If this command fails here though, we may want to remove <code>--quiet</code> while troubleshooting, and then add it back in once we get things working.</p>
+<p>Note the use of <code>--quiet</code> in the command below. These commands will be run non-interactively when building the container, and so we will not be able to see the output. If this command fails here though, we may want to remove <code>--quiet</code> while troubleshooting, and then add it back in once we get things working.</p>
 </div>
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> mamba update <span class="at">--quiet</span> <span class="at">--file</span> /tmp/conda-linux-64.lock </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> mamba update <span class="at">--quiet</span> <span class="at">--file</span> /tmp/conda-linux-64.lock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Great! That seemed to work. Next, we’ll try cleaning up (a good, but not necessary practice after updating conda environments).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -608,14 +608,14 @@ Note
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.11.6 <span class="kw">|</span> <span class="ex">packaged</span> by conda-forge <span class="kw">|</span> <span class="kw">(</span><span class="ex">main,</span> Oct  3 2023, 11:57:02<span class="kw">)</span> <span class="ex">[GCC</span> 12.3.0] on linux</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">"help"</span>, <span class="st">"copyright"</span>, <span class="st">"credits"</span> or <span class="st">"license"</span> for more information.</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> import <span class="ex">panderas</span> as pa</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Hurray! We did it! Now we can automate this build on GitHub, push it to Docker Hub and share this Docker image with the world!</p>
 <p><img src="https://media.giphy.com/media/ZcKASxMYMKA9SQnhIl/giphy-downsized.gif"></p>
 <p>Source: <a href="https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl" class="uri">https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl</a></p>
 </section>
 <section id="guidelines-for-run-commands" class="level3" data-number="12.1.3">
 <h3 data-number="12.1.3" class="anchored" data-anchor-id="guidelines-for-run-commands"><span class="header-section-number">12.1.3</span> Guidelines for <code>RUN</code> Commands:</h3>
-<p>Each RUN command creates a new layer in the Docker image. Each layer in a Docker image takes more disc space. As a consequence, we want to minimize the number of layers where reasonably possible. How can we do this?</p>
+<p>Each <code>RUN</code> command creates a new layer in the Docker image. Each layer in a Docker image takes more disc space. As a consequence, we want to minimize the number of layers where reasonably possible. How can we do this?</p>
 <p>Install everything that can be installed by a tool (e.g., <code>conda</code>, <code>mamba</code>, <code>pip</code>, <code>apt-get</code>, etc) at once (i.e., when installing 5 programs via <code>apt-get</code>, do not call <code>apt-get</code> five times, instead do: <code>apt-get tool1 tool2 tool3 tool4 tool5</code>). However, doing this can lead to long lines. In response, we can break a single command across lines in the shell by using the <code>\</code> character. For example, to reduce the long line below which uses <code>apt-get</code> to install the programs Git, Tiny Nano, Less, and wget:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> git nano-tiny less wget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can use <code>\</code> after each program, to break the long command across lines and make the command more readable (especially if there were even more programs to install). Similarly, we indent the lines after <code>\</code> to increase readability:</p>
@@ -678,7 +678,7 @@ Note
 </section>
 <section id="choosing-a-base-image-for-your-dockerfile" class="level2" data-number="12.3">
 <h2 data-number="12.3" class="anchored" data-anchor-id="choosing-a-base-image-for-your-dockerfile"><span class="header-section-number">12.3</span> Choosing a base image for your Dockerfile</h2>
-<p><img src="https://themuslimtimesdotinfodotcom.files.wordpress.com/2018/10/newton-quotes-2.jpg?w=1334" width="700"></p>
+<p><img src="https://themuslimtimesdotinfodotcom.files.wordpress.com/2018/10/newton-quotes-2.jpg?w=1334" width="100%"></p>
 <p>Source: <a href="https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-standing-on-the-shoulders-of-giants/" class="uri">https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-standing-on-the-shoulders-of-giants/</a></p>
 <section id="good-base-images-to-work-from-for-r-or-python-projects" class="level3" data-number="12.3.1">
 <h3 data-number="12.3.1" class="anchored" data-anchor-id="good-base-images-to-work-from-for-r-or-python-projects"><span class="header-section-number">12.3.1</span> Good base images to work from for R or Python projects!</h3>
@@ -745,52 +745,52 @@ Note
 <p>Building a Docker image from a <code>Dockerfile</code> using an automated tool (e.g., DockerHub or GitHub Actions) lets others trust your image as they can clearly see which <code>Dockerfile</code> was used to build which image.</p>
 <p>We will do this in this course by using GitHub Actions (a continuous integration tool) because is provides a great deal of nuanced control over when to trigger the automated builds of the Docker image, and how to tag them.</p>
 <p>An example GitHub repository that uses GitHub Actions to build a Docker image from a <code>Dockerfile</code> and publish it on DockerHub is available here: <a href="https://github.com/ttimbers/dsci522-dockerfile-practice" class="uri">https://github.com/ttimbers/dsci522-dockerfile-practice</a></p>
-<p>What is there that we haven’t already seen here? It’s the GitHub Actions workflow file <code>.github/workflows/docker-publish.yml</code> shown below. This worlflow can be triggered manually, or automatically when a push to GitHub is made that changes <code>Dockerfile</code> or <code>conda-linux-64.lock</code>. When that happens, a computer on GitHub will copy the contents of the GitHub repository and build and version/tag a Docker image using the <code>Dockerfile</code> contained therein. The image will get two tags: <code>latest</code> and the short GitHub SHA corresponding to the Git commit SHA at the HEAD of <code>main</code>. It will also push the Docker image to DockerHub. For that last step to happen, the code owner’s DockerHub credentials must be stored in the GitHub repository as <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions">GitHub respository secrets</a>.</p>
-<pre><code># Publishes docker image, pinning actions to a commit SHA,
-# and updating most recently built image with the latest tag.
-# Can be triggered by either pushing a commit that changes the `Dockerfile`, 
-# or manually dispatching the workflow.
-
-name: Publish Docker image
-
-on: 
-  workflow_dispatch:
-  push: 
-    paths: 
-      - 'Dockerfile'
-      - 'conda-linux-64.lock'
-      
-jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-      
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ttimbers/dsci522-dockerfile-practice
-          tags: |
-            type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}
-            type=raw, value=latest
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}</code></pre>
+<p>What is there that we haven’t already seen here? It’s the GitHub Actions workflow file <code>.github/workflows/docker-publish.yml</code> shown below. This workflow can be triggered manually, or automatically when a push to GitHub is made that changes <code>Dockerfile</code> or <code>conda-linux-64.lock</code>. When that happens, a computer on GitHub will copy the contents of the GitHub repository and build and version/tag a Docker image using the <code>Dockerfile</code> contained therein. The image will get two tags: <code>latest</code> and the short GitHub SHA corresponding to the Git commit SHA at the HEAD of <code>main</code>. It will also push the Docker image to DockerHub. For that last step to happen, the code owner’s DockerHub credentials must be stored in the GitHub repository as <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions">GitHub repository secrets</a>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Publishes docker image, pinning actions to a commit SHA,</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and updating most recently built image with the latest tag.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Can be triggered by either pushing a commit that changes the `Dockerfile`,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or manually dispatching the workflow.</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Publish Docker image</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">paths</span><span class="kw">:</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'Dockerfile'</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">'conda-linux-64.lock'</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push_to_registry</span><span class="kw">:</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Push Docker image to Docker Hub</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check out the repo</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Log in to Docker Hub</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/login-action@v3</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">username</span><span class="kw">:</span><span class="at"> ${{ secrets.DOCKER_USERNAME }}</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">password</span><span class="kw">:</span><span class="at"> ${{ secrets.DOCKER_PASSWORD }}</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Extract metadata (tags, labels) for Docker</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">id</span><span class="kw">:</span><span class="at"> meta</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/metadata-action@v5</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">images</span><span class="kw">:</span><span class="at"> ttimbers/dsci522-dockerfile-practice</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="fu">          tags</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>            type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>            type=raw, value=latest</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Build and push Docker image</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/build-push-action@v6</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">context</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">file</span><span class="kw">:</span><span class="at"> ./Dockerfile</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">push</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.tags }}</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">labels</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.labels }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
