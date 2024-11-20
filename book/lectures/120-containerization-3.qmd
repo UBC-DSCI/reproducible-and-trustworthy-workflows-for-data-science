@@ -13,7 +13,7 @@ title: Customizing and building containers
 
 - Once we have created a `Dockerfile` we can build it into a Docker image.
 
-- Docker images are built in layers, and as such, `Dockerfiles` always start by specifiying a base Docker image that the new image is to be built on top off.
+- Docker images are built in layers, and as such, `Dockerfile`s always start by specifying a base Docker image that the new image is to be built on top off.
 
 - Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use `apt-get` as our installation program). However, most of what we'll be doing for installation is R, Python and their packages. For that we can really use tools we're already familiar with (`conda` and `conda-lock`, for example).
 
@@ -29,21 +29,21 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
 
 3. In a terminal, type `docker run --rm -it <IMAGE_NAME>` and interactively try the install commands you think will work. Edit and try again until the install command works.
 
-4. Write working install commands in the `Dockerfile`, preceeding them with `RUN` and save the `Dockerfile`.
+4. Write working install commands in the `Dockerfile`, preceding them with `RUN` and save the `Dockerfile`.
 
 5. After adding every 2-3 commands to your `Dockerfile`, try building the Docker image via `docker build --tag <TEMP_IMAGE_NAME> <PATH_TO_DOCKERFILE_DIRECTORY>`.
 
 6. Once the entire `Dockerfile` works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).
 
-### Demo workflow for creating a `Dockfile` locally
+### Demo workflow for creating a `Dockerfile` locally
 
-We will demo this workflow together to build a Docker image locally 
+We will demo this workflow together to build a Docker image locally
 on our machines that has Jupyter, Python and the python packages `pandas`,
-`pandera` and `deepcheck` installed. 
-When we do this, 
+`pandera` and `deepcheck` installed.
+When we do this,
 we will leverage a `conda` environment that we have for these packages already:
 
-```
+```yaml
 # environment.yml
 name: my-env
 channels:
@@ -59,19 +59,19 @@ channels:
 ```
 
 To use this environment efficiently to build a Docker image,
-we need a `conda-lock` file, more specifically an explicit 
-`conda-lock` file for the linux operating system 
+we need a `conda-lock` file, more specifically an explicit
+`conda-lock` file for the linux operating system
 (as our container will be a linux container).
 We can generate that from the `environment.yml` file via:
 
-```
+```bash
 conda-lock -k explicit --file environment.yml -p linux-64
 ```
 
-From that, we get a file named `conda-linux-64.lock`, 
-which we can copy into a 
-[Jupyter container](https://jupyter-docker-stacks.readthedocs.io/en/latest/) 
-and update the `conda` environment 
+From that, we get a file named `conda-linux-64.lock`,
+which we can copy into a
+[Jupyter container](https://jupyter-docker-stacks.readthedocs.io/en/latest/)
+and update the `conda` environment
 already installed there using `mamba update`.
 
 OK, now we are ready to start writing our `Dockerfile`!
@@ -83,11 +83,11 @@ so the first line of our `Dockerfile` should be as such:
 FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
 ```
 
-Next, since we will be wanting the container to have access to a file at 
+Next, since we will be wanting the container to have access to a file at
 build time, we need to `COPY` it in so we can have access to it in the container.
 Our Dockerfile should now look like this:
 
-```
+```dockerfile
 FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
 
 COPY conda-linux-64.lock /tmp/conda-linux-64.lock
@@ -95,23 +95,23 @@ COPY conda-linux-64.lock /tmp/conda-linux-64.lock
 
 Now let's build an image from our `Dockerfile`
 so we can test out and find install commands that work for what we need to do!
-To build an image, we use `docker build`. 
+To build an image, we use `docker build`.
 We'll want to tag/name the image so we can reference it after its built,
 so we can run it. Here we named it `testing_cmds`.
-Finally we say where to look for the `Dockerfile`. 
+Finally we say where to look for the `Dockerfile`.
 Here we say `.`, meaning the current working directory:
 
-```
+```bash
 docker build --tag testing_cmds .
 ```
 
 :::{.callout-note}
 Note: If you are running a computer using an ARM chip
-remember to add `--platform=linux/amd64
+remember to add `--platform=linux/amd64`
 :::
 
 Now we will run our image (named `testing_cmds`).
-Note that we run this not using the Jupyter web app 
+Note that we run this not using the Jupyter web app
 because all we are doing right now is testing out installation commands.
 
 ```bash
@@ -123,27 +123,27 @@ to add the packages specified in `conda-linux-64.lock`
 to the base `conda` environment in the container.
 
 :::{.callout-note}
-Note the use of --quiet in the command below.
+Note the use of `--quiet` in the command below.
 These commands will be run non-interactively when building the container,
 and so we will not be able to see the output.
 If this command fails here though,
-we may want to remove `--quiet` while troubleshooting, 
+we may want to remove `--quiet` while troubleshooting,
 and then add it back in once we get things working.
 :::
 
 ```bash
-jovyan@91320098e7cb:~$ mamba update --quiet --file /tmp/conda-linux-64.lock 
+jovyan@91320098e7cb:~$ mamba update --quiet --file /tmp/conda-linux-64.lock
 ```
 
 Great! That seemed to work.
-Next, we'll try cleaning up 
+Next, we'll try cleaning up
 (a good, but not necessary practice after updating conda environments).
 
 :::{.callout-note}
 Note the use of `-y` and `-f` in the command below.
 These commands will be run non-interactively when building the container,
 and so we cannot use the keyboard to say "yes" to `conda`/`mamba` questions.
-So instead we just give full permission 
+So instead we just give full permission
 for all the things when we run the command.
 :::
 
@@ -151,8 +151,8 @@ for all the things when we run the command.
 jovyan@91320098e7cb:~$ mamba clean --all -y -f
 ```
 
-OK, great! That seemed to have worked too! 
-Last thing we'll test out is fixing permissions 
+OK, great! That seemed to have worked too!
+Last thing we'll test out is fixing permissions
 of the directories where we installed things
 (sometimes these got modified during installation
 and can cause user issues):
@@ -165,9 +165,9 @@ jovyan@91320098e7cb:~$ fix-permissions "${CONDA_DIR}"
 jovyan@91320098e7cb:~$ fix-permissions "/home/${NB_USER}"
 ```
 
-Awesome! This seemed to have worked! 
-Let's exit the Docker container (via `exit`). 
-Then we can add these commands to the `Dockerfile`, 
+Awesome! This seemed to have worked!
+Let's exit the Docker container (via `exit`).
+Then we can add these commands to the `Dockerfile`,
 proceeding them with `RUN` and try to build our image to ensure this works.
 
 Our `Dockerfile` so far:
@@ -196,10 +196,10 @@ jovyan@cc85f7afef69:~$ python
 Python 3.11.6 | packaged by conda-forge | (main, Oct  3 2023, 11:57:02) [GCC 12.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import panderas as pa
->>> 
+>>>
 ```
 
-Hurray! We did it! Now we can automate this build on GitHub, 
+Hurray! We did it! Now we can automate this build on GitHub,
 push it to Docker Hub and share this Docker image with the world!
 
 <img src="https://media.giphy.com/media/ZcKASxMYMKA9SQnhIl/giphy-downsized.gif">
@@ -208,12 +208,12 @@ Source: <https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl>
 
 ### Guidelines for `RUN` Commands:
 
-Each RUN command creates a new layer in the Docker image. 
+Each `RUN` command creates a new layer in the Docker image.
 Each layer in a Docker image takes more disc space.
 As a consequence, we want to minimize the number of layers where reasonably possible.
 How can we do this?
 
-Install everything that can be installed by a tool 
+Install everything that can be installed by a tool
 (e.g., `conda`, `mamba`, `pip`, `apt-get`, etc) at once (i.e., when installing 5 programs via `apt-get`, do not call `apt-get` five times, instead do: `apt-get tool1 tool2 tool3 tool4 tool5`).
 However, doing this can lead to long lines.
 In response, we can break a single command across lines in the shell by using the `\` character.
@@ -233,10 +233,10 @@ apt-get install --yes \
     wget
 ```
 
-We can also group together related commands that depend upon each other. 
-Whe doing this we need to be careful though, 
-as sometimes we don't want to run a command if the command that was run immediately before it failed. 
-We can specify this in the shell using `&&`. 
+We can also group together related commands that depend upon each other.
+Whe doing this we need to be careful though,
+as sometimes we don't want to run a command if the command that was run immediately before it failed.
+We can specify this in the shell using `&&`.
 For example, if we want to not run `apt-get` installation commands if `apt-get update` failed, we can write:
 
 ```bash
@@ -262,7 +262,7 @@ And more here in the [Dockerfile reference](https://docs.docker.com/engine/refer
 
 ## Choosing a base image for your Dockerfile
 
-<img src="https://themuslimtimesdotinfodotcom.files.wordpress.com/2018/10/newton-quotes-2.jpg?w=1334" width=700>
+<img src="https://themuslimtimesdotinfodotcom.files.wordpress.com/2018/10/newton-quotes-2.jpg?w=1334" width=100%>
 
 Source: <https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-standing-on-the-shoulders-of-giants/>
 
@@ -310,37 +310,37 @@ We will do this in this course by using GitHub Actions (a continuous integration
 
 An example GitHub repository that uses GitHub Actions to build a Docker image from a `Dockerfile` and publish it on DockerHub is available here: <https://github.com/ttimbers/dsci522-dockerfile-practice>
 
-What is there that we haven't already seen here? 
+What is there that we haven't already seen here?
 It's the GitHub Actions workflow file `.github/workflows/docker-publish.yml`
 shown below.
-This worlflow can be triggered manually,
+This workflow can be triggered manually,
 or automatically when a push to GitHub is made that changes `Dockerfile`
 or `conda-linux-64.lock`.
 When that happens, a computer on GitHub will copy the contents of the
 GitHub repository and build and version/tag a Docker image
 using the `Dockerfile` contained therein.
-The image will get two tags: `latest` and the short GitHub SHA 
+The image will get two tags: `latest` and the short GitHub SHA
 corresponding to the Git commit SHA at the HEAD of `main`.
 It will also push the Docker image to DockerHub.
-For that last step to happen, 
+For that last step to happen,
 the code owner's DockerHub credentials must be stored in the GitHub repository
-as [GitHub respository secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
+as [GitHub repository secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
 
-```
+```yaml
 # Publishes docker image, pinning actions to a commit SHA,
 # and updating most recently built image with the latest tag.
-# Can be triggered by either pushing a commit that changes the `Dockerfile`, 
+# Can be triggered by either pushing a commit that changes the `Dockerfile`,
 # or manually dispatching the workflow.
 
 name: Publish Docker image
 
-on: 
+on:
   workflow_dispatch:
-  push: 
-    paths: 
+  push:
+    paths:
       - 'Dockerfile'
       - 'conda-linux-64.lock'
-      
+
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
@@ -348,13 +348,13 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -363,7 +363,7 @@ jobs:
           tags: |
             type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}
             type=raw, value=latest
-      
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
