@@ -103,17 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -145,6 +134,17 @@ div.callout-activity.callout-style-default > .callout-header {
 div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
 div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
   content: '🧩';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewbox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -455,28 +455,15 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   <ul class="collapse">
   <li><a href="#workflow-for-building-a-dockerfile" id="toc-workflow-for-building-a-dockerfile" class="nav-link" data-scroll-target="#workflow-for-building-a-dockerfile"><span class="header-section-number">12.1.1</span> Workflow for building a Dockerfile</a></li>
   <li><a href="#demo-workflow-for-creating-a-dockfile-locally" id="toc-demo-workflow-for-creating-a-dockfile-locally" class="nav-link" data-scroll-target="#demo-workflow-for-creating-a-dockfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockfile</code> locally</a></li>
+  <li><a href="#guidelines-for-run-commands" id="toc-guidelines-for-run-commands" class="nav-link" data-scroll-target="#guidelines-for-run-commands"><span class="header-section-number">12.1.3</span> Guidelines for <code>RUN</code> Commands:</a></li>
   </ul></li>
-  <li><a href="#tips-for-installing-things-programmatically-on-debian-flavoured-linux" id="toc-tips-for-installing-things-programmatically-on-debian-flavoured-linux" class="nav-link" data-scroll-target="#tips-for-installing-things-programmatically-on-debian-flavoured-linux"><span class="header-section-number">12.2</span> Tips for installing things programmatically on Debian-flavoured Linux</a>
+  <li><a href="#dockerfile-command-summary" id="toc-dockerfile-command-summary" class="nav-link" data-scroll-target="#dockerfile-command-summary"><span class="header-section-number">12.2</span> <code>Dockerfile</code> command summary</a></li>
+  <li><a href="#choosing-a-base-image-for-your-dockerfile" id="toc-choosing-a-base-image-for-your-dockerfile" class="nav-link" data-scroll-target="#choosing-a-base-image-for-your-dockerfile"><span class="header-section-number">12.3</span> Choosing a base image for your Dockerfile</a>
   <ul class="collapse">
-  <li><a href="#installing-things-with-apt-get" id="toc-installing-things-with-apt-get" class="nav-link" data-scroll-target="#installing-things-with-apt-get"><span class="header-section-number">12.2.1</span> Installing things with <code>apt-get</code></a></li>
-  <li><a href="#breaking-shell-commands-across-lines" id="toc-breaking-shell-commands-across-lines" class="nav-link" data-scroll-target="#breaking-shell-commands-across-lines"><span class="header-section-number">12.2.2</span> Breaking shell commands across lines</a></li>
-  <li><a href="#running-commands-only-if-the-previous-one-worked" id="toc-running-commands-only-if-the-previous-one-worked" class="nav-link" data-scroll-target="#running-commands-only-if-the-previous-one-worked"><span class="header-section-number">12.2.3</span> Running commands only if the previous one worked</a></li>
+  <li><a href="#good-base-images-to-work-from-for-r-or-python-projects" id="toc-good-base-images-to-work-from-for-r-or-python-projects" class="nav-link" data-scroll-target="#good-base-images-to-work-from-for-r-or-python-projects"><span class="header-section-number">12.3.1</span> Good base images to work from for R or Python projects!</a></li>
   </ul></li>
-  <li><a href="#dockerfile-command-summary" id="toc-dockerfile-command-summary" class="nav-link" data-scroll-target="#dockerfile-command-summary"><span class="header-section-number">12.3</span> <code>Dockerfile</code> command summary</a></li>
-  <li><a href="#choosing-a-base-image-for-your-dockerfile" id="toc-choosing-a-base-image-for-your-dockerfile" class="nav-link" data-scroll-target="#choosing-a-base-image-for-your-dockerfile"><span class="header-section-number">12.4</span> Choosing a base image for your Dockerfile</a>
-  <ul class="collapse">
-  <li><a href="#good-base-images-to-work-from-for-r-or-python-projects" id="toc-good-base-images-to-work-from-for-r-or-python-projects" class="nav-link" data-scroll-target="#good-base-images-to-work-from-for-r-or-python-projects"><span class="header-section-number">12.4.1</span> Good base images to work from for R or Python projects!</a></li>
-  </ul></li>
-  <li><a href="#dockerfile-faq" id="toc-dockerfile-faq" class="nav-link" data-scroll-target="#dockerfile-faq"><span class="header-section-number">12.5</span> Dockerfile FAQ:</a></li>
-  <li><a href="#build-a-docker-image-from-a-dockerfile-on-github-actions" id="toc-build-a-docker-image-from-a-dockerfile-on-github-actions" class="nav-link" data-scroll-target="#build-a-docker-image-from-a-dockerfile-on-github-actions"><span class="header-section-number">12.6</span> Build a Docker image from a Dockerfile on GitHub Actions</a></li>
-  <li><a href="#version-docker-images-and-report-software-and-package-versions" id="toc-version-docker-images-and-report-software-and-package-versions" class="nav-link" data-scroll-target="#version-docker-images-and-report-software-and-package-versions"><span class="header-section-number">12.7</span> Version Docker images and report software and package versions</a>
-  <ul class="collapse">
-  <li><a href="#how-to-get-the-versions-of-your-software-in-your-container" id="toc-how-to-get-the-versions-of-your-software-in-your-container" class="nav-link" data-scroll-target="#how-to-get-the-versions-of-your-software-in-your-container"><span class="header-section-number">12.7.1</span> How to get the versions of your software in your container</a></li>
-  <li><a href="#but-i-want-to-control-the-versions" id="toc-but-i-want-to-control-the-versions" class="nav-link" data-scroll-target="#but-i-want-to-control-the-versions"><span class="header-section-number">12.7.2</span> But I want to control the versions!</a></li>
-  <li><a href="#how-to-in-r" id="toc-how-to-in-r" class="nav-link" data-scroll-target="#how-to-in-r"><span class="header-section-number">12.7.3</span> How to in R:</a></li>
-  <li><a href="#how-to-in-python" id="toc-how-to-in-python" class="nav-link" data-scroll-target="#how-to-in-python"><span class="header-section-number">12.7.4</span> How to in Python:</a></li>
-  <li><a href="#take-home-messages" id="toc-take-home-messages" class="nav-link" data-scroll-target="#take-home-messages"><span class="header-section-number">12.7.5</span> Take home messages:</a></li>
-  </ul></li>
+  <li><a href="#dockerfile-faq" id="toc-dockerfile-faq" class="nav-link" data-scroll-target="#dockerfile-faq"><span class="header-section-number">12.4</span> Dockerfile FAQ:</a></li>
+  <li><a href="#build-a-docker-image-from-a-dockerfile-on-github-actions" id="toc-build-a-docker-image-from-a-dockerfile-on-github-actions" class="nav-link" data-scroll-target="#build-a-docker-image-from-a-dockerfile-on-github-actions"><span class="header-section-number">12.5</span> Build a Docker image from a Dockerfile on GitHub Actions</a></li>
   </ul>
 </nav>
     </div>
@@ -516,124 +503,134 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <li><p>A <code>Dockerfile</code> is a plain text file that contains commands primarily about what software to install in the Docker image. This is the more trusted and transparent way to build Docker images.</p></li>
 <li><p>Once we have created a <code>Dockerfile</code> we can build it into a Docker image.</p></li>
 <li><p>Docker images are built in layers, and as such, <code>Dockerfiles</code> always start by specifiying a base Docker image that the new image is to be built on top off.</p></li>
-<li><p>Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images and thus use <code>apt-get</code> as our installation program.</p></li>
+<li><p>Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use <code>apt-get</code> as our installation program). However, most of what we’ll be doing for installation is R, Python and their packages. For that we can really use tools we’re already familiar with (<code>conda</code> and <code>conda-lock</code>, for example).</p></li>
 </ul>
 <section id="workflow-for-building-a-dockerfile" class="level3" data-number="12.1.1">
 <h3 data-number="12.1.1" class="anchored" data-anchor-id="workflow-for-building-a-dockerfile"><span class="header-section-number">12.1.1</span> Workflow for building a Dockerfile</h3>
+<p>It can take a LOOOOOOOONNNG time to troubleshoot the building of Docker images. Thus, to speed things up and be more efficient, we suggest the workflow below:</p>
 <ol type="1">
 <li><p>Choose a base image to build off (from <a href="https://hub.docker.com/" class="uri">https://hub.docker.com/</a>).</p></li>
-<li><p>Create a <code>Dockerfile</code> named <code>Dockerfile</code> and save it in an appropriate project repository. Open that file and type <code>FROM &lt;BASE_IMAGE&gt; on the first line</code>.</p></li>
+<li><p>Create a <code>Dockerfile</code> named <code>Dockerfile</code> and save it in an appropriate project repository. Open that file and type <code>FROM &lt;BASE_IMAGE&gt; on the first line</code>. Add any files that need to be accessed at build time via the <code>COPY</code> command.</p></li>
 <li><p>In a terminal, type <code>docker run --rm -it &lt;IMAGE_NAME&gt;</code> and interactively try the install commands you think will work. Edit and try again until the install command works.</p></li>
 <li><p>Write working install commands in the <code>Dockerfile</code>, preceeding them with <code>RUN</code> and save the <code>Dockerfile</code>.</p></li>
 <li><p>After adding every 2-3 commands to your <code>Dockerfile</code>, try building the Docker image via <code>docker build --tag &lt;TEMP_IMAGE_NAME&gt; &lt;PATH_TO_DOCKERFILE_DIRECTORY&gt;</code>.</p></li>
-<li><p>Once the entire Dockerfile works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).</p></li>
+<li><p>Once the entire <code>Dockerfile</code> works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).</p></li>
 </ol>
 </section>
 <section id="demo-workflow-for-creating-a-dockfile-locally" class="level3" data-number="12.1.2">
 <h3 data-number="12.1.2" class="anchored" data-anchor-id="demo-workflow-for-creating-a-dockfile-locally"><span class="header-section-number">12.1.2</span> Demo workflow for creating a <code>Dockfile</code> locally</h3>
-<p>We will demo this workflow together to build a Docker image locally on our machines that has R and the <code>cowsay</code> R package installed.</p>
-<p>Let’s start with the <code>debian:stable</code> image, so the first line of our <code>Dockerfile</code> should be as such:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FROM</span> debian:stable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now let’s run the <code>debian:stable</code> image so we can work on our install commands to find some that work!</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-it</span> debian:stable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now that we are in a container instance of the <code>debian:stable</code> Docker image, we can start playing around with installing things. To install things in the Debian flavour of Linux we use the command <code>apt-get</code>. We will do some demo’s in class today, but a more comprehensive tutorial can be found <a href="https://www.digitalocean.com/community/tutorials/how-to-manage-packages-in-ubuntu-and-debian-with-apt-get-apt-cache">here</a>.</p>
-<p>To install R on Debian, we can figure out how to do this by following the CRAN documentation available <a href="https://cran.r-project.org/bin/linux/debian/">here</a>.</p>
-<p>First they recommend updating the list of available software package we can install with <code>apt-get</code> to us via the <code>apt-get update</code> command:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@5d0f4d21a1f9:/#</span> apt-get update</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Next, they suggest the following commands to install R:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@5d0f4d21a1f9:/#</span> apt-get install r-base r-base-dev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>OK, great! That seemed to have worked! Let’s test it by trying out R!</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@5d0f4d21a1f9:/#</span> R</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> version 3.5.2 <span class="er">(</span><span class="ex">2018-12-20</span><span class="kw">)</span> <span class="ex">--</span> <span class="st">"Eggshell Igloo"</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Copyright</span> <span class="er">(</span><span class="ex">C</span><span class="kw">)</span> <span class="ex">2018</span> The R Foundation for Statistical Computing</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Platform:</span> x86_64-pc-linux-gnu <span class="er">(</span><span class="ex">64-bit</span><span class="kw">)</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> is free software and comes with ABSOLUTELY NO WARRANTY.</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">You</span> are welcome to redistribute it under certain conditions.</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">'license()'</span> or <span class="st">'licence()'</span> for distribution details.</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">R</span> is a collaborative project with many contributors.</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">'contributors()'</span> for more information and</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">'citation()'</span> on how to cite R or R packages in publications.</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">'demo()'</span> for some demos, <span class="st">'help()'</span> for on-line help, or</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">'help.start()'</span> for an HTML browser interface to help.</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">'q()'</span> to quit R.</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Awesome! This seemed to have worked! Let’s exit R (via <code>q()</code>) and the Docker container (via <code>exit</code>). Then we can add these commands to the Dockerfile, proceeding them with <code>RUN</code> and try to build our image to ensure this works.</p>
+<p>We will demo this workflow together to build a Docker image locally on our machines that has Jupyter, Python and the python packages <code>pandas</code>, <code>pandera</code> and <code>deepcheck</code> installed. When we do this, we will leverage a <code>conda</code> environment that we have for these packages already:</p>
+<pre><code># environment.yml
+name: my-env
+channels:
+  - conda-forge
+  - defaults
+  dependencies:
+    - pandas=2.2.2
+    - pandera=0.20.4
+    - python=3.11
+    - pip
+    - pip:
+      - deepchecks==0.18.1</code></pre>
+<p>To use this environment efficiently to build a Docker image, we need a <code>conda-lock</code> file, more specifically an explicit <code>conda-lock</code> file for the linux operating system (as our container will be a linux container). We can generate that from the <code>environment.yml</code> file via:</p>
+<pre><code>conda-lock -k explicit --file environment.yml -p linux-64</code></pre>
+<p>From that, we get a file named <code>conda-linux-64.lock</code>, which we can copy into a <a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/">Jupyter container</a> and update the <code>conda</code> environment already installed there using <code>mamba update</code>.</p>
+<p>OK, now we are ready to start writing our <code>Dockerfile</code>! Let’s start with the <code>quay.io/jupyter/minimal-notebook:afe30f0c9ad8</code> image, which already has Jupyter lab installed. so the first line of our <code>Dockerfile</code> should be as such:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FROM</span> quay.io/jupyter/minimal-notebook:afe30f0c9ad8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Next, since we will be wanting the container to have access to a file at build time, we need to <code>COPY</code> it in so we can have access to it in the container. Our Dockerfile should now look like this:</p>
+<pre><code>FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
+
+COPY conda-linux-64.lock /tmp/conda-linux-64.lock</code></pre>
+<p>Now let’s build an image from our <code>Dockerfile</code> so we can test out and find install commands that work for what we need to do! To build an image, we use <code>docker build</code>. We’ll want to tag/name the image so we can reference it after its built, so we can run it. Here we named it <code>testing_cmds</code>. Finally we say where to look for the <code>Dockerfile</code>. Here we say <code>.</code>, meaning the current working directory:</p>
+<pre><code>docker build --tag testing_cmds .</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: If you are running a computer using an ARM chip remember to add `–platform=linux/amd64</p>
+</div>
+</div>
+<p>Now we will run our image (named <code>testing_cmds</code>). Note that we run this not using the Jupyter web app because all we are doing right now is testing out installation commands.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">--rm</span> <span class="at">-it</span> testing_cmds bin/bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The first command we will test out is <code>mamba update</code> to add the packages specified in <code>conda-linux-64.lock</code> to the base <code>conda</code> environment in the container.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note the use of –quiet in the command below. These commands will be run non-interactively when building the container, and so we will not be able to see the output. If this command fails here though, we may want to remove <code>--quiet</code> while troubleshooting, and then add it back in once we get things working.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> mamba update <span class="at">--quiet</span> <span class="at">--file</span> /tmp/conda-linux-64.lock </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Great! That seemed to work. Next, we’ll try cleaning up (a good, but not necessary practice after updating conda environments).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note the use of <code>-y</code> and <code>-f</code> in the command below. These commands will be run non-interactively when building the container, and so we cannot use the keyboard to say “yes” to <code>conda</code>/<code>mamba</code> questions. So instead we just give full permission for all the things when we run the command.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> mamba clean <span class="at">--all</span> <span class="at">-y</span> <span class="at">-f</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>OK, great! That seemed to have worked too! Last thing we’ll test out is fixing permissions of the directories where we installed things (sometimes these got modified during installation and can cause user issues):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> fix-permissions <span class="st">"</span><span class="va">${CONDA_DIR}</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@91320098e7cb:~$</span> fix-permissions <span class="st">"/home/</span><span class="va">${NB_USER}</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Awesome! This seemed to have worked! Let’s exit the Docker container (via <code>exit</code>). Then we can add these commands to the <code>Dockerfile</code>, proceeding them with <code>RUN</code> and try to build our image to ensure this works.</p>
 <p>Our <code>Dockerfile</code> so far:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> debian:stable</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install r-base r-base-dev <span class="at">-y</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="at">--tag</span> testr1 src</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Wait! That didn’t seem to work! Let’s focus on the last two lines of the error message:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Do</span> you want to continue<span class="pp">?</span> <span class="pp">[</span><span class="ss">Y/n</span><span class="pp">]</span> Abort.</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> command <span class="st">'/bin/sh -c apt-get install r-base r-base-dev'</span> returned a non-zero code: 1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Ohhhh, right! As we were interactively installing this, we were prompted to press “Y” on our keyboard to continue the installation. We need to include this in our Dockerfile so that we don’t get this error. To do this we append the <code>-y</code> flag to the end of the line contianing <code>RUN apt-get install r-base r-base-dev</code>. Let’s try building again!</p>
-<p>Great! Success! Now we can play with installing R packages!</p>
-<p>Let’s start now with the test image we have built from our <code>Dockerfile</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">-it</span> <span class="at">--rm</span> testr1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Now while we are in the container interactively, we can try to install the R package via:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@51f56d653892:/#</span> Rscript <span class="at">-e</span> <span class="st">"install.packages('cowsay')"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And it looks like it worked! Let’s confirm by trying to call a function from the <code>cowsay</code> package in R:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@51f56d653892:/#</span> R</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> quay.io/jupyter/minimal-notebook:afe30f0c9ad8</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> cowsay::say<span class="kw">(</span><span class="st">"Smart for using Docker are you"</span><span class="ex">,</span> <span class="st">"yoda"</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Great, let’s exit the container, and add this command to our <code>Dockerfile</code> and try to build it again!</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@51f56d653892:/#</span> exit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Our <code>Dockerfile</code> now:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> debian:stable</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install r-base r-base-dev <span class="at">-y</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">"install.packages('cowsay')"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Build the <code>Dockerfile</code> into an image:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="at">--tag</span> testr1 src</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker run <span class="at">-it</span> <span class="at">--rm</span> testr1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Looks like a success, let’s be sure we can use the <code>cowsay</code> package:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">root@861487da5d00:/#</span> R</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> cowsay::say<span class="kw">(</span><span class="st">"why did the chicken cross the road"</span><span class="ex">,</span> <span class="st">"chicken"</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> conda-linux-64.lock /tmp/conda-linux-64.lock</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">mamba</span> update <span class="at">--quiet</span> <span class="at">--file</span> /tmp/conda-linux-64.lock</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">mamba</span> clean <span class="at">--all</span> <span class="at">-y</span> <span class="at">-f</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">fix-permissions</span> <span class="st">"</span><span class="va">${CONDA_DIR}</span><span class="st">"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">fix-permissions</span> <span class="st">"/home/</span><span class="va">${NB_USER}</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s try building an image named <code>testimage</code> locally:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker build <span class="at">--tag</span> testimage .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Looks like a success, let’s be sure we can use the <code>pandera</code> package as a test:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jovyan@cc85f7afef69:~$</span> python</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Python</span> 3.11.6 <span class="kw">|</span> <span class="ex">packaged</span> by conda-forge <span class="kw">|</span> <span class="kw">(</span><span class="ex">main,</span> Oct  3 2023, 11:57:02<span class="kw">)</span> <span class="ex">[GCC</span> 12.3.0] on linux</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Type</span> <span class="st">"help"</span>, <span class="st">"copyright"</span>, <span class="st">"credits"</span> or <span class="st">"license"</span> for more information.</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> import <span class="ex">panderas</span> as pa</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Hurray! We did it! Now we can automate this build on GitHub, push it to Docker Hub and share this Docker image with the world!</p>
 <p><img src="https://media.giphy.com/media/ZcKASxMYMKA9SQnhIl/giphy-downsized.gif"></p>
 <p>Source: <a href="https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl" class="uri">https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl</a></p>
 </section>
-</section>
-<section id="tips-for-installing-things-programmatically-on-debian-flavoured-linux" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="tips-for-installing-things-programmatically-on-debian-flavoured-linux"><span class="header-section-number">12.2</span> Tips for installing things programmatically on Debian-flavoured Linux</h2>
-<section id="installing-things-with-apt-get" class="level3" data-number="12.2.1">
-<h3 data-number="12.2.1" class="anchored" data-anchor-id="installing-things-with-apt-get"><span class="header-section-number">12.2.1</span> Installing things with <code>apt-get</code></h3>
-<p>Before you install things with <code>apt-get</code> you will want to update the list of packages that <code>apt-get</code> can see. We do this via <code>apt-get update</code>.</p>
-<p>Next, to install something with <code>apt-get</code> you will use the <code>apt-get install</code> command along with the name of the software. For example, to install the Git version control software we would type <code>apt-get install git</code>. Note however that we will be building our containers non-interactively, and so we want to preempt any questions/prompts the installation software we will get by including the answers in our commands. So for example, to <code>apt-get install</code> we append <code>--yes</code> to tell <code>apt-get</code> that yes we are happy to install the software we asked it to install, using the amount of disk space required to install it. If we didn’t append this, the installation would stall out at this point waiting for our answer to this question. Thus, the full command to Git via <code>apt-get</code> looks like:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="breaking-shell-commands-across-lines" class="level3" data-number="12.2.2">
-<h3 data-number="12.2.2" class="anchored" data-anchor-id="breaking-shell-commands-across-lines"><span class="header-section-number">12.2.2</span> Breaking shell commands across lines</h3>
-<p>If we want to break a single command across lines in the shell, we use the <code>\</code> character. For example, to reduce the long line below which uses <code>apt-get</code> to install the programs Git, Tiny Nano, Less, and wget:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> git nano-tiny less wget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="guidelines-for-run-commands" class="level3" data-number="12.1.3">
+<h3 data-number="12.1.3" class="anchored" data-anchor-id="guidelines-for-run-commands"><span class="header-section-number">12.1.3</span> Guidelines for <code>RUN</code> Commands:</h3>
+<p>Each RUN command creates a new layer in the Docker image. Each layer in a Docker image takes more disc space. As a consequence, we want to minimize the number of layers where reasonably possible. How can we do this?</p>
+<p>Install everything that can be installed by a tool (e.g., <code>conda</code>, <code>mamba</code>, <code>pip</code>, <code>apt-get</code>, etc) at once (i.e., when installing 5 programs via <code>apt-get</code>, do not call <code>apt-get</code> five times, instead do: <code>apt-get tool1 tool2 tool3 tool4 tool5</code>). However, doing this can lead to long lines. In response, we can break a single command across lines in the shell by using the <code>\</code> character. For example, to reduce the long line below which uses <code>apt-get</code> to install the programs Git, Tiny Nano, Less, and wget:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> git nano-tiny less wget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can use <code>\</code> after each program, to break the long command across lines and make the command more readable (especially if there were even more programs to install). Similarly, we indent the lines after <code>\</code> to increase readability:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> <span class="dt">\</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    git <span class="dt">\</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    nano-tidy <span class="dt">\</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    less <span class="dt">\</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    wget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="running-commands-only-if-the-previous-one-worked" class="level3" data-number="12.2.3">
-<h3 data-number="12.2.3" class="anchored" data-anchor-id="running-commands-only-if-the-previous-one-worked"><span class="header-section-number">12.2.3</span> Running commands only if the previous one worked</h3>
-<p>Sometimes we don’t want to run a command if the command that was run immediately before it failed. We can specify this in the shell using <code>&amp;&amp;</code>. For example, if we want to not run <code>apt-get</code> installation commands if <code>apt-get update</code> failed, we can write:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">apt-get</span> install <span class="at">--yes</span> git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> install <span class="at">--yes</span> <span class="dt">\</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    git <span class="dt">\</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    nano-tidy <span class="dt">\</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    less <span class="dt">\</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    wget</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can also group together related commands that depend upon each other. Whe doing this we need to be careful though, as sometimes we don’t want to run a command if the command that was run immediately before it failed. We can specify this in the shell using <code>&amp;&amp;</code>. For example, if we want to not run <code>apt-get</code> installation commands if <code>apt-get update</code> failed, we can write:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="dt">\</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">apt-get</span> install <span class="at">--yes</span> git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="dockerfile-command-summary" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="dockerfile-command-summary"><span class="header-section-number">12.3</span> <code>Dockerfile</code> command summary</h2>
+<section id="dockerfile-command-summary" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="dockerfile-command-summary"><span class="header-section-number">12.2</span> <code>Dockerfile</code> command summary</h2>
 <p>Most common <code>Dockerfile</code> commands I use:</p>
 <table class="caption-top table">
 <colgroup>
@@ -679,12 +676,12 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </table>
 <p>And more here in the <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference</a>.</p>
 </section>
-<section id="choosing-a-base-image-for-your-dockerfile" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="choosing-a-base-image-for-your-dockerfile"><span class="header-section-number">12.4</span> Choosing a base image for your Dockerfile</h2>
+<section id="choosing-a-base-image-for-your-dockerfile" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="choosing-a-base-image-for-your-dockerfile"><span class="header-section-number">12.3</span> Choosing a base image for your Dockerfile</h2>
 <p><img src="https://themuslimtimesdotinfodotcom.files.wordpress.com/2018/10/newton-quotes-2.jpg?w=1334" width="700"></p>
 <p>Source: <a href="https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-standing-on-the-shoulders-of-giants/" class="uri">https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-standing-on-the-shoulders-of-giants/</a></p>
-<section id="good-base-images-to-work-from-for-r-or-python-projects" class="level3" data-number="12.4.1">
-<h3 data-number="12.4.1" class="anchored" data-anchor-id="good-base-images-to-work-from-for-r-or-python-projects"><span class="header-section-number">12.4.1</span> Good base images to work from for R or Python projects!</h3>
+<section id="good-base-images-to-work-from-for-r-or-python-projects" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="good-base-images-to-work-from-for-r-or-python-projects"><span class="header-section-number">12.3.1</span> Good base images to work from for R or Python projects!</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -694,28 +691,26 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </thead>
 <tbody>
 <tr class="odd">
+<td><a href="https://hub.docker.com/r/jupyter/scipy-notebook">jupyter/minimal-notebook</a></td>
+<td>Includes popular packages from the scientific Python ecosystem.</td>
+</tr>
+<tr class="even">
 <td><a href="https://hub.docker.com/r/rocker/tidyverse/">rocker/tidyverse</a></td>
 <td>R, R packages (including the tidyverse), RStudio, make</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="https://hub.docker.com/r/continuumio/anaconda3/">continuumio/anaconda3</a></td>
 <td>Python 3.7.4, Ananconda base package distribution, Jupyter notebook</td>
 </tr>
-<tr class="odd">
-<td><a href="https://hub.docker.com/r/jupyter/scipy-notebook">jupyter/scipy-notebook</a></td>
-<td>Includes popular packages from the scientific Python ecosystem.</td>
-</tr>
 </tbody>
 </table>
-<p>For mixed language projects, I would recommend using the <code>rocker/tidyverse</code> image as the base and then installing Anaconda or miniconda as I have done here: https://github.com/UBC-DSCI/introduction-to-datascience/blob/b0f86fc4d6172cd043a0eb831b5d5a8743f29c81/Dockerfile#L19</p>
-<p>This is also a nice tour de Docker images from the Jupyter core team: https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#selecting-an-image</p>
 </section>
 </section>
-<section id="dockerfile-faq" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="dockerfile-faq"><span class="header-section-number">12.5</span> Dockerfile FAQ:</h2>
+<section id="dockerfile-faq" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="dockerfile-faq"><span class="header-section-number">12.4</span> Dockerfile FAQ:</h2>
 <section id="where-does-the-dockerfile-live" class="level4">
 <h4 class="anchored" data-anchor-id="where-does-the-dockerfile-live">1. Where does the <code>Dockerfile</code> live?</h4>
-<p>The Dockerfile should live in the root directory of your project.</p>
+<p>The <code>Dockerfile</code> should live in the root directory of your project.</p>
 </section>
 <section id="how-do-i-make-an-image-from-a-dockerfile" class="level4">
 <h4 class="anchored" data-anchor-id="how-do-i-make-an-image-from-a-dockerfile">2. How do I make an image from a <code>Dockerfile</code>?</h4>
@@ -728,7 +723,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <section id="how-do-i-build-an-image-locally-on-my-laptop" class="level4">
 <h4 class="anchored" data-anchor-id="how-do-i-build-an-image-locally-on-my-laptop">3. How do I build an image locally on my laptop</h4>
 <p>From the directory that contains your <code>Dockerfile</code> (usually your project root):</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--tag</span> IMAGE_NAME:VERSION .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--tag</span> IMAGE_NAME:VERSION .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -745,69 +740,59 @@ Note
 <p>After I build, I think try to <code>docker run ...</code> to test the image locally. If I don’t like it, or it doesn’t work, I delete the image with <code>docker rmi {IMAGE_NAME}</code>, edit my Dockerfile and try to build and run it again.</p>
 </section>
 </section>
-<section id="build-a-docker-image-from-a-dockerfile-on-github-actions" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="build-a-docker-image-from-a-dockerfile-on-github-actions"><span class="header-section-number">12.6</span> Build a Docker image from a Dockerfile on GitHub Actions</h2>
-<p>Building a Docker image from a Dockerfile using an automated tool (e.g., DockerHub or GitHub Actions) lets others trust your image as they can clearly see which Dockerfile was used to build which image.</p>
+<section id="build-a-docker-image-from-a-dockerfile-on-github-actions" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="build-a-docker-image-from-a-dockerfile-on-github-actions"><span class="header-section-number">12.5</span> Build a Docker image from a Dockerfile on GitHub Actions</h2>
+<p>Building a Docker image from a <code>Dockerfile</code> using an automated tool (e.g., DockerHub or GitHub Actions) lets others trust your image as they can clearly see which <code>Dockerfile</code> was used to build which image.</p>
 <p>We will do this in this course by using GitHub Actions (a continuous integration tool) because is provides a great deal of nuanced control over when to trigger the automated builds of the Docker image, and how to tag them.</p>
-<p>An example GitHub repository that uses GitHub Actions to build a Docker image from a Dockerfile and publish it on DockerHub is available here: <a href="https://github.com/ttimbers/gha_docker_build">https://github.com/ttimbers/gha_docker_build</a></p>
-<p>We will work through a demonstration of this now starting here: <a href="https://github.com/ttimbers/dockerfile-practice">https://github.com/ttimbers/dockerfile-practice</a></p>
-</section>
-<section id="version-docker-images-and-report-software-and-package-versions" class="level2" data-number="12.7">
-<h2 data-number="12.7" class="anchored" data-anchor-id="version-docker-images-and-report-software-and-package-versions"><span class="header-section-number">12.7</span> Version Docker images and report software and package versions</h2>
-<p>It is easier to create a Docker image from a Dockerfile and tag it (or use it’s digest) than to control the version of each thing that goes into your Docker image.</p>
-<ul>
-<li>tags are human readable, however they can be associated with different builds of the image (potentially using different Dockerfiles…)</li>
-<li>digests are not human readable, but specify a specific build of an image</li>
-</ul>
-<p>Example of how to pull using a tag:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull ttimbers/dockerfile-practice:v1.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Example of how to pull using a digest:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull ttimbers/dockerfile-practice@sha256:cc512c9599054f24f4020e2c7e3337b9e71fd6251dfde5bcd716dc9b1f8c3a73</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Tags are specified when you build on Docker Hub on the Builds tab under the Configure automated builds options. Digests are assigned to a build. You can see the digests on the Tags tab, by clicking on the “Digest” link for a specific tag of the image.</p>
-<section id="how-to-get-the-versions-of-your-software-in-your-container" class="level3" data-number="12.7.1">
-<h3 data-number="12.7.1" class="anchored" data-anchor-id="how-to-get-the-versions-of-your-software-in-your-container"><span class="header-section-number">12.7.1</span> How to get the versions of your software in your container</h3>
-<p>Easiest is to enter the container interactively and poke around using the following commands:</p>
-<ul>
-<li><code>python --version</code> and <code>R --version</code> to find out the versions of Python and R, respectively</li>
-<li><code>pip freeze</code> or <code>conda list</code> in the bash shell to find out Python package versions</li>
-<li>Enter R and load the libraries used in your scripts, then use <code>sessionInfo()</code> to print the package versions</li>
-</ul>
-</section>
-<section id="but-i-want-to-control-the-versions" class="level3" data-number="12.7.2">
-<h3 data-number="12.7.2" class="anchored" data-anchor-id="but-i-want-to-control-the-versions"><span class="header-section-number">12.7.2</span> But I want to control the versions!</h3>
-</section>
-<section id="how-to-in-r" class="level3" data-number="12.7.3">
-<h3 data-number="12.7.3" class="anchored" data-anchor-id="how-to-in-r"><span class="header-section-number">12.7.3</span> How to in R:</h3>
-<section id="the-rocker-teams-strategy" class="level4">
-<h4 class="anchored" data-anchor-id="the-rocker-teams-strategy">The Rocker team’s strategy</h4>
-<p>This is not an easy thing, but the Rocker team has made a concerted effort to do this. Below is their strategy:</p>
-<blockquote class="blockquote">
-<p>Using the R version tag will naturally lock the R version, and also lock the install date of any R packages on the image. For example, rocker/tidyverse:3.3.1 Docker image will always rebuild with R 3.3.1 and R packages installed from the 2016-10-31 MRAN snapshot, corresponding to the last day that version of R was the most recent release. Meanwhile rocker/tidyverse:latest will always have both the latest R version and latest versions of the R packages, built nightly.</p>
-</blockquote>
-<p>See <a href="https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md">VERSIONS.md</a> for details, but in short they use the line below to lock the R version (or view in r-ver Dockerfile <a href="https://github.com/rocker-org/rocker-versioned/blob/c4a9f540d4c66a6277f281be6dcfe55d3cb40ec0/r-ver/3.6.1.Dockerfile#L76">here</a> for more context):</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">curl</span> <span class="at">-O</span> https://cran.r-project.org/src/base/R-3/R-<span class="va">${R_VERSION}</span>.tar.gz <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>And this line to specify the CRAN snapshot from which to grab the R packages (or view in r-ver Dockerfile <a href="mhttps://github.com/rocker-org/rocker-versioned/blob/c4a9f540d4c66a6277f281be6dcfe55d3cb40ec0/r-ver/3.6.1.Dockerfile#L121">here</a> for more context):</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&amp;&amp;</span> <span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">"install.packages(c('littler', 'docopt'), repo = '</span><span class="va">$MRAN</span><span class="st">')"</span> <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="how-to-in-python" class="level3" data-number="12.7.4">
-<h3 data-number="12.7.4" class="anchored" data-anchor-id="how-to-in-python"><span class="header-section-number">12.7.4</span> How to in Python:</h3>
-<p>Python version:</p>
-<ul>
-<li><code>conda</code> to specify an install of specific Python version, either when downloading (see example <a href="https://github.com/ContinuumIO/docker-images/blob/8e10242c6d7804a0e991a9d9d758e25b340f4fce/miniconda3/debian/Dockerfile#L10">here</a>, or after downloading with <code>conda install python=3.6</code>).</li>
-<li>Or you can install a specific version of Python yourself, as they do in the Python official images (see <a href="https://github.com/docker-library/python/blob/master/3.7/stretch/slim/Dockerfile">here</a> for example), but this is more complicated.</li>
-</ul>
-<p>For Python packages, there are a few tools: - conda (via <code>conda install scipy=0.15.0</code> for example) - pip (via <code>pip install scipy=0.15.0</code> for example)</p>
-</section>
-<section id="take-home-messages" class="level3" data-number="12.7.5">
-<h3 data-number="12.7.5" class="anchored" data-anchor-id="take-home-messages"><span class="header-section-number">12.7.5</span> Take home messages:</h3>
-<ul>
-<li>At a minimum, tag your Docker images or reference image digests</li>
-<li>If you want to version installs inside the container, use base images that version R &amp; Python, and add what you need on top in a versioned manner!</li>
-</ul>
+<p>An example GitHub repository that uses GitHub Actions to build a Docker image from a <code>Dockerfile</code> and publish it on DockerHub is available here: <a href="https://github.com/ttimbers/dsci522-dockerfile-practice" class="uri">https://github.com/ttimbers/dsci522-dockerfile-practice</a></p>
+<p>What is there that we haven’t already seen here? It’s the GitHub Actions workflow file <code>.github/workflows/docker-publish.yml</code> shown below. This worlflow can be triggered manually, or automatically when a push to GitHub is made that changes <code>Dockerfile</code> or <code>conda-linux-64.lock</code>. When that happens, a computer on GitHub will copy the contents of the GitHub repository and build and version/tag a Docker image using the <code>Dockerfile</code> contained therein. The image will get two tags: <code>latest</code> and the short GitHub SHA corresponding to the Git commit SHA at the HEAD of <code>main</code>. It will also push the Docker image to DockerHub. For that last step to happen, the code owner’s DockerHub credentials must be stored in the GitHub repository as <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions">GitHub respository secrets</a>.</p>
+<pre><code># Publishes docker image, pinning actions to a commit SHA,
+# and updating most recently built image with the latest tag.
+# Can be triggered by either pushing a commit that changes the `Dockerfile`, 
+# or manually dispatching the workflow.
+
+name: Publish Docker image
+
+on: 
+  workflow_dispatch:
+  push: 
+    paths: 
+      - 'Dockerfile'
+      - 'conda-linux-64.lock'
+      
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ttimbers/dsci522-dockerfile-practice
+          tags: |
+            type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}
+            type=raw, value=latest
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}</code></pre>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
