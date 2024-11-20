@@ -15,14 +15,17 @@ title: Customizing and building containers
 
 - Docker images are built in layers, and as such, `Dockerfiles` always start by specifiying a base Docker image that the new image is to be built on top off.
 
-- Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images and thus use `apt-get` as our installation program.
+- Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use `apt-get` as our installation program). However, most of what we'll be doing for installation is R, Python and their packages. For that we can really use tools we're already familiar with (`conda` and `conda-lock`, for example).
 
 
 ### Workflow for building a Dockerfile
 
+It can take a LOOOOOOOONNNG time to troubleshoot the building of Docker images.
+Thus, to speed things up and be more efficient, we suggest the workflow below:
+
 1. Choose a base image to build off (from <https://hub.docker.com/>).
 
-2. Create a `Dockerfile` named `Dockerfile` and save it in an appropriate project repository. Open that file and type `FROM <BASE_IMAGE> on the first line`.
+2. Create a `Dockerfile` named `Dockerfile` and save it in an appropriate project repository. Open that file and type `FROM <BASE_IMAGE> on the first line`. Add any files that need to be accessed at build time via the `COPY` command.
 
 3. In a terminal, type `docker run --rm -it <IMAGE_NAME>` and interactively try the install commands you think will work. Edit and try again until the install command works.
 
@@ -30,168 +33,190 @@ title: Customizing and building containers
 
 5. After adding every 2-3 commands to your `Dockerfile`, try building the Docker image via `docker build --tag <TEMP_IMAGE_NAME> <PATH_TO_DOCKERFILE_DIRECTORY>`.
 
-6. Once the entire Dockerfile works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).
+6. Once the entire `Dockerfile` works from beginning to end on your laptop, then you can finally move to building remotely (e.g., creating a trusted build on GitHub Actions).
 
 ### Demo workflow for creating a `Dockfile` locally
 
-We will demo this workflow together to build a Docker image locally on our machines that has R and the `cowsay` R package installed.
-
-Let's start with the `debian:stable` image, so the first line of our `Dockerfile` should be as such:
-
-```bash
-FROM debian:stable
-```
-
-Now let's run the `debian:stable` image so we can work on our install commands to find some that work!
-
-```bash
-$ docker run --rm -it debian:stable
-```
-
-Now that we are in a container instance of the `debian:stable` Docker image, we can start playing around with installing things. To install things in the Debian flavour of Linux we use the command `apt-get`. We will do some demo's in class today, but a more comprehensive tutorial can be found [here](https://www.digitalocean.com/community/tutorials/how-to-manage-packages-in-ubuntu-and-debian-with-apt-get-apt-cache).
-
-To install R on Debian, we can figure out how to do this by following the CRAN documentation available [here](https://cran.r-project.org/bin/linux/debian/).
-
-First they recommend updating the list of available software package we can install with `apt-get` to us via the `apt-get update` command:
-
-```bash
-root@5d0f4d21a1f9:/# apt-get update
-```
-
-Next, they suggest the following commands to install R:
-
-```bash
-root@5d0f4d21a1f9:/# apt-get install r-base r-base-dev
-```
-
-OK, great! That seemed to have worked! Let's test it by trying out R!
-
-```bash
-root@5d0f4d21a1f9:/# R
-
-R version 3.5.2 (2018-12-20) -- "Eggshell Igloo"
-Copyright (C) 2018 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
-
->
+We will demo this workflow together to build a Docker image locally 
+on our machines that has Jupyter, Python and the python packages `pandas`,
+`pandera` and `deepcheck` installed. 
+When we do this, 
+we will leverage a `conda` environment that we have for these packages already:
 
 ```
+# environment.yml
+name: my-env
+channels:
+  - conda-forge
+  - defaults
+  dependencies:
+    - pandas=2.2.2
+    - pandera=0.20.4
+    - python=3.11
+    - pip
+    - pip:
+      - deepchecks==0.18.1
+```
 
-Awesome! This seemed to have worked! Let's exit R (via `q()`) and the Docker container (via `exit`). Then we can add these commands to the Dockerfile, proceeding them with `RUN` and try to build our image to ensure this works.
+To use this environment efficiently to build a Docker image,
+we need a `conda-lock` file, more specifically an explicit 
+`conda-lock` file for the linux operating system 
+(as our container will be a linux container).
+We can generate that from the `environment.yml` file via:
+
+```
+conda-lock -k explicit --file environment.yml -p linux-64
+```
+
+From that, we get a file named `conda-linux-64.lock`, 
+which we can copy into a 
+[Jupyter container](https://jupyter-docker-stacks.readthedocs.io/en/latest/) 
+and update the `conda` environment 
+already installed there using `mamba update`.
+
+OK, now we are ready to start writing our `Dockerfile`!
+Let's start with the `quay.io/jupyter/minimal-notebook:afe30f0c9ad8` image,
+which already has Jupyter lab installed.
+so the first line of our `Dockerfile` should be as such:
+
+```bash
+FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
+```
+
+Next, since we will be wanting the container to have access to a file at 
+build time, we need to `COPY` it in so we can have access to it in the container.
+Our Dockerfile should now look like this:
+
+```
+FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
+
+COPY conda-linux-64.lock /tmp/conda-linux-64.lock
+```
+
+Now let's build an image from our `Dockerfile`
+so we can test out and find install commands that work for what we need to do!
+To build an image, we use `docker build`. 
+We'll want to tag/name the image so we can reference it after its built,
+so we can run it. Here we named it `testing_cmds`.
+Finally we say where to look for the `Dockerfile`. 
+Here we say `.`, meaning the current working directory:
+
+```
+docker build --tag testing_cmds .
+```
+
+:::{.callout-note}
+Note: If you are running a computer using an ARM chip
+remember to add `--platform=linux/amd64
+:::
+
+Now we will run our image (named `testing_cmds`).
+Note that we run this not using the Jupyter web app 
+because all we are doing right now is testing out installation commands.
+
+```bash
+$ docker run --rm -it testing_cmds bin/bash
+```
+
+The first command we will test out is `mamba update`
+to add the packages specified in `conda-linux-64.lock`
+to the base `conda` environment in the container.
+
+:::{.callout-note}
+Note the use of --quiet in the command below.
+These commands will be run non-interactively when building the container,
+and so we will not be able to see the output.
+If this command fails here though,
+we may want to remove `--quiet` while troubleshooting, 
+and then add it back in once we get things working.
+:::
+
+```bash
+jovyan@91320098e7cb:~$ mamba update --quiet --file /tmp/conda-linux-64.lock 
+```
+
+Great! That seemed to work.
+Next, we'll try cleaning up 
+(a good, but not necessary practice after updating conda environments).
+
+:::{.callout-note}
+Note the use of `-y` and `-f` in the command below.
+These commands will be run non-interactively when building the container,
+and so we cannot use the keyboard to say "yes" to `conda`/`mamba` questions.
+So instead we just give full permission 
+for all the things when we run the command.
+:::
+
+```bash
+jovyan@91320098e7cb:~$ mamba clean --all -y -f
+```
+
+OK, great! That seemed to have worked too! 
+Last thing we'll test out is fixing permissions 
+of the directories where we installed things
+(sometimes these got modified during installation
+and can cause user issues):
+
+```bash
+jovyan@91320098e7cb:~$ fix-permissions "${CONDA_DIR}"
+```
+
+```bash
+jovyan@91320098e7cb:~$ fix-permissions "/home/${NB_USER}"
+```
+
+Awesome! This seemed to have worked! 
+Let's exit the Docker container (via `exit`). 
+Then we can add these commands to the `Dockerfile`, 
+proceeding them with `RUN` and try to build our image to ensure this works.
 
 Our `Dockerfile` so far:
 
 ```dockerfile
-FROM debian:stable
+FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
 
-RUN apt-get update
+COPY conda-linux-64.lock /tmp/conda-linux-64.lock
 
-RUN apt-get install r-base r-base-dev -y
+RUN mamba update --quiet --file /tmp/conda-linux-64.lock
+RUN mamba clean --all -y -f
+RUN fix-permissions "${CONDA_DIR}"
+RUN fix-permissions "/home/${NB_USER}"
 ```
+
+Let's try building an image named `testimage` locally:
 
 ```bash
-$ docker build --tag testr1 src
+$ docker build --tag testimage .
 ```
 
-Wait! That didn't seem to work! Let's focus on the last two lines of the error message:
+Looks like a success, let's be sure we can use the `pandera` package as a test:
 
 ```bash
-Do you want to continue? [Y/n] Abort.
-The command '/bin/sh -c apt-get install r-base r-base-dev' returned a non-zero code: 1
+jovyan@cc85f7afef69:~$ python
+Python 3.11.6 | packaged by conda-forge | (main, Oct  3 2023, 11:57:02) [GCC 12.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import panderas as pa
+>>> 
 ```
 
-Ohhhh, right! As we were interactively installing this, we were prompted to press "Y" on our keyboard to continue the installation. We need to include this in our Dockerfile so that we don't get this error. To do this we append the `-y` flag to the end of the line contianing `RUN apt-get install r-base r-base-dev`. Let's try building again!
-
-Great! Success! Now we can play with installing R packages!
-
-Let's start now with the test image we have built from our `Dockerfile`:
-
-```bash
-$ docker run -it --rm testr1
-```
-
-Now while we are in the container interactively, we can try to install the R package via:
-
-```bash
-root@51f56d653892:/# Rscript -e "install.packages('cowsay')"
-```
-
-And it looks like it worked! Let's confirm by trying to call a function from the `cowsay` package in R:
-
-```bash
-root@51f56d653892:/# R
-
-> cowsay::say("Smart for using Docker are you", "yoda")
-```
-
-Great, let's exit the container, and add this command to our `Dockerfile` and try to build it again!
-
-```bash
-root@51f56d653892:/# exit
-```
-
-Our `Dockerfile` now:
-
-```dockerfile
-FROM debian:stable
-
-RUN apt-get update
-
-RUN apt-get install r-base r-base-dev -y
-
-RUN Rscript -e "install.packages('cowsay')"
-```
-
-Build the `Dockerfile` into an image:
-
-```bash
-$ docker build --tag testr1 src
-
-$ docker run -it --rm testr1
-```
-
-Looks like a success, let's be sure we can use the `cowsay` package:
-
-```bash
-root@861487da5d00:/# R
-
-> cowsay::say("why did the chicken cross the road", "chicken")
-
-```
-
-Hurray! We did it! Now we can automate this build on GitHub, push it to Docker Hub and share this Docker image with the world!
+Hurray! We did it! Now we can automate this build on GitHub, 
+push it to Docker Hub and share this Docker image with the world!
 
 <img src="https://media.giphy.com/media/ZcKASxMYMKA9SQnhIl/giphy-downsized.gif">
 
 Source: <https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl>
 
-## Tips for installing things programmatically on Debian-flavoured Linux
+### Guidelines for `RUN` Commands:
 
-### Installing things with `apt-get`
+Each RUN command creates a new layer in the Docker image. 
+Each layer in a Docker image takes more disc space.
+As a consequence, we want to minimize the number of layers where reasonably possible.
+How can we do this?
 
-Before you install things with `apt-get` you will want to update the list of packages that `apt-get` can see. We do this via `apt-get update`.
-
-Next, to install something with `apt-get` you will use the `apt-get install` command along with the name of the software. For example, to install the Git version control software we would type `apt-get install git`. Note however that we will be building our containers non-interactively, and so we want to preempt any questions/prompts the installation software we will get by including the answers in our commands. So for example, to `apt-get install` we append `--yes` to tell `apt-get` that yes we are happy to install the software we asked it to install, using the amount of disk space required to install it. If we didn't append this, the installation would stall out at this point waiting for our answer to this question. Thus, the full command to Git via `apt-get` looks like:
-
-```bash
-apt-get install --yes git
-```
-
-### Breaking shell commands across lines
-
-If we want to break a single command across lines in the shell, we use the `\` character.
+Install everything that can be installed by a tool 
+(e.g., `conda`, `mamba`, `pip`, `apt-get`, etc) at once (i.e., when installing 5 programs via `apt-get`, do not call `apt-get` five times, instead do: `apt-get tool1 tool2 tool3 tool4 tool5`).
+However, doing this can lead to long lines.
+In response, we can break a single command across lines in the shell by using the `\` character.
 For example, to reduce the long line below which uses `apt-get` to install the programs Git, Tiny Nano, Less, and wget:
 
 ```bash
@@ -208,9 +233,11 @@ apt-get install --yes \
     wget
 ```
 
-### Running commands only if the previous one worked
-
-Sometimes we don't want to run a command if the command that was run immediately before it failed. We can specify this in the shell using `&&`. For example, if we want to not run `apt-get` installation commands if `apt-get update` failed, we can write:
+We can also group together related commands that depend upon each other. 
+Whe doing this we need to be careful though, 
+as sometimes we don't want to run a command if the command that was run immediately before it failed. 
+We can specify this in the shell using `&&`. 
+For example, if we want to not run `apt-get` installation commands if `apt-get update` failed, we can write:
 
 ```bash
 apt-get update && \
@@ -243,19 +270,15 @@ Source: <https://themuslimtimes.info/2018/10/25/if-i-have-seen-further-it-is-by-
 
 | Image | Software installed |
 |-------|--------------------|
+| [jupyter/minimal-notebook](https://hub.docker.com/r/jupyter/scipy-notebook) | Includes popular packages from the scientific Python ecosystem. |
 | [rocker/tidyverse](https://hub.docker.com/r/rocker/tidyverse/) | R, R packages (including the tidyverse), RStudio, make |
 | [continuumio/anaconda3](https://hub.docker.com/r/continuumio/anaconda3/) | Python 3.7.4, Ananconda base package distribution, Jupyter notebook |
-| [jupyter/scipy-notebook](https://hub.docker.com/r/jupyter/scipy-notebook) | Includes popular packages from the scientific Python ecosystem. |
-
-For mixed language projects, I would recommend using the `rocker/tidyverse` image as the base and then installing Anaconda or miniconda as I have done here: https://github.com/UBC-DSCI/introduction-to-datascience/blob/b0f86fc4d6172cd043a0eb831b5d5a8743f29c81/Dockerfile#L19
-
-This is also a nice tour de Docker images from the Jupyter core team: https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#selecting-an-image
 
 ## Dockerfile FAQ:
 
 #### 1. Where does the `Dockerfile` live?
 
-The Dockerfile should live in the root directory of your project.
+The `Dockerfile` should live in the root directory of your project.
 
 #### 2. How do I make an image from a `Dockerfile`?
 
@@ -281,77 +304,72 @@ After I build, I think try to `docker run ...` to test the image locally. If I d
 
 ## Build a Docker image from a Dockerfile on GitHub Actions
 
-Building a Docker image from a Dockerfile using an automated tool (e.g., DockerHub or GitHub Actions) lets others trust your image as they can clearly see which Dockerfile was used to build which image.
+Building a Docker image from a `Dockerfile` using an automated tool (e.g., DockerHub or GitHub Actions) lets others trust your image as they can clearly see which `Dockerfile` was used to build which image.
 
 We will do this in this course by using GitHub Actions (a continuous integration tool) because is provides a great deal of nuanced control over when to trigger the automated builds of the Docker image, and how to tag them.
 
-An example GitHub repository that uses GitHub Actions to build a Docker image from a Dockerfile and publish it on DockerHub is available here: [https://github.com/ttimbers/gha_docker_build](https://github.com/ttimbers/gha_docker_build)
+An example GitHub repository that uses GitHub Actions to build a Docker image from a `Dockerfile` and publish it on DockerHub is available here: <https://github.com/ttimbers/dsci522-dockerfile-practice>
 
-We will work through a demonstration of this now starting here: [https://github.com/ttimbers/dockerfile-practice](https://github.com/ttimbers/dockerfile-practice)
+What is there that we haven't already seen here? 
+It's the GitHub Actions workflow file `.github/workflows/docker-publish.yml`
+shown below.
+This worlflow can be triggered manually,
+or automatically when a push to GitHub is made that changes `Dockerfile`
+or `conda-linux-64.lock`.
+When that happens, a computer on GitHub will copy the contents of the
+GitHub repository and build and version/tag a Docker image
+using the `Dockerfile` contained therein.
+The image will get two tags: `latest` and the short GitHub SHA 
+corresponding to the Git commit SHA at the HEAD of `main`.
+It will also push the Docker image to DockerHub.
+For that last step to happen, 
+the code owner's DockerHub credentials must be stored in the GitHub repository
+as [GitHub respository secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
 
-## Version Docker images and report software and package versions
-
-It is easier to create a Docker image from a Dockerfile and tag it (or use it's digest) than to control the version of each thing that goes into your Docker image.
-
-- tags are human readable, however they can be associated with different builds of the image (potentially using different Dockerfiles...)
-- digests are not human readable, but specify a specific build of an image
-
-Example of how to pull using a tag:
-
-```bash
-docker pull ttimbers/dockerfile-practice:v1.0
 ```
+# Publishes docker image, pinning actions to a commit SHA,
+# and updating most recently built image with the latest tag.
+# Can be triggered by either pushing a commit that changes the `Dockerfile`, 
+# or manually dispatching the workflow.
 
-Example of how to pull using a digest:
+name: Publish Docker image
 
-```bash
-docker pull ttimbers/dockerfile-practice@sha256:cc512c9599054f24f4020e2c7e3337b9e71fd6251dfde5bcd716dc9b1f8c3a73
+on: 
+  workflow_dispatch:
+  push: 
+    paths: 
+      - 'Dockerfile'
+      - 'conda-linux-64.lock'
+      
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ttimbers/dsci522-dockerfile-practice
+          tags: |
+            type=raw, value={{sha}},enable=${{github.ref_type != 'tag' }}
+            type=raw, value=latest
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 ```
-
-Tags are specified when you build on Docker Hub on the Builds tab under the Configure automated builds options. Digests are assigned to a build. You can see the digests on the Tags tab, by clicking on the "Digest" link for a specific tag of the image.
-
-### How to get the versions of your software in your container
-
-Easiest is to enter the container interactively and poke around using the following commands:
-
-- `python --version` and `R --version` to find out the versions of Python and R, respectively
-- `pip freeze` or `conda list` in the bash shell to find out Python package versions
-- Enter R and load the libraries used in your scripts, then use `sessionInfo()` to print the package versions
-
-### But I want to control the versions!
-
-### How to in R:
-
-#### The Rocker team's strategy
-
-This is not an easy thing, but the Rocker team has made a concerted effort to do this. Below is their strategy:
-
-> Using the R version tag will naturally lock the R version, and also lock the install date of any R packages on the image. For example, rocker/tidyverse:3.3.1 Docker image will always rebuild with R 3.3.1 and R packages installed from the 2016-10-31 MRAN snapshot, corresponding to the last day that version of R was the most recent release. Meanwhile rocker/tidyverse:latest will always have both the latest R version and latest versions of the R packages, built nightly.
-
-See [VERSIONS.md](https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md) for details, but in short they use the line below to lock the R version (or view in r-ver Dockerfile [here](https://github.com/rocker-org/rocker-versioned/blob/c4a9f540d4c66a6277f281be6dcfe55d3cb40ec0/r-ver/3.6.1.Dockerfile#L76) for more context):
-
-```bash
-    && curl -O https://cran.r-project.org/src/base/R-3/R-${R_VERSION}.tar.gz \
-```
-
-And this line to specify the CRAN snapshot from which to grab the R packages (or view in r-ver Dockerfile [here](mhttps://github.com/rocker-org/rocker-versioned/blob/c4a9f540d4c66a6277f281be6dcfe55d3cb40ec0/r-ver/3.6.1.Dockerfile#L121) for more context):
-
-```bash
-    && Rscript -e "install.packages(c('littler', 'docopt'), repo = '$MRAN')" \
-```
-
-### How to in Python:
-
-Python version:
-
-- `conda`  to specify an install of specific Python version, either when downloading (see example [here](https://github.com/ContinuumIO/docker-images/blob/8e10242c6d7804a0e991a9d9d758e25b340f4fce/miniconda3/debian/Dockerfile#L10), or after downloading with `conda install python=3.6`).
-- Or you can install a specific version of Python yourself, as they do in the Python official images (see [here](https://github.com/docker-library/python/blob/master/3.7/stretch/slim/Dockerfile) for example), but this is more complicated.
-
-For Python packages, there are a few tools:
-- conda (via `conda install scipy=0.15.0` for example)
-- pip (via `pip install scipy=0.15.0` for example)
-
-### Take home messages:
-
-- At a minimum, tag your Docker images or reference image digests
-- If you want to version installs inside the container, use base images that version R & Python, and add what you need on top in a versioned manner!
