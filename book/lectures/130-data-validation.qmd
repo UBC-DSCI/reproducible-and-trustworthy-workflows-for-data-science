@@ -546,10 +546,68 @@ We list the others below:
 
 **Python:**
 
-- Pandera: <https://pandera.readthedocs.io>
-- Great Expectation: <https://docs.greatexpectations.io>
 - Deep Checks: <https://docs.deepchecks.com>
+- Great Expectation: <https://docs.greatexpectations.io>
+- Pandera: <https://pandera.readthedocs.io>
+- Pydantic: <https://docs.pydantic.dev/latest/>
+
 
 **R**
 
 - pointblank: <https://rstudio.github.io/pointblank>
+
+### Deep Checks
+
+In particular, the [Deep Checks](https://docs.deepchecks.com) package is quite useful
+due to it's high-level abstraction of several machine learning data validation checks
+that you would have to code manually if you chose to use something like `Pandera` for these.
+Examples from the checklist above include: 
+
+- [ ] No anomalous correlations between target/response variable and features/explanatory variables^1^
+- [ ] No anomalous correlations between features/explanatory variables^1^
+
+To use this, we first have to create a Deep Checks Dataset object 
+(specifying the data set, the target/response variable, and any categorical features):
+
+```python
+from deepchecks.tabular import Dataset
+
+
+cancer_train_ds = Dataset(cancer_train, label="class", cat_features=[])
+```
+
+Once we have that, we can use the `FeatureLabelCorrelation()` check
+set the maximum threshold we'll allow (here 0.9),
+and run the check:
+
+```python
+from deepchecks.tabular.checks import FeatureLabelCorrelation
+
+
+check_feat_lab_corr = FeatureLabelCorrelation().add_condition_feature_pps_less_than(0.9)
+check_feat_lab_corr_result = check_feat_lab_corr.run(dataset=cancer_train_ds)
+```
+
+Finally, we can check if the result of the `FeatureLabelCorrelation()` validation has failed.
+If it has (i.e., correlation is above the acceptable threshold), 
+we can do something, like raise a ValueError with an appropriate error message:
+
+```python
+if not check_feat_lab_corr_result.passed_conditions():
+    raise ValueError("Feature-Label correlation exceeds the maximum acceptable threshold.")
+```
+
+:::{.callout-note}
+Notice above the name of the data frame and Deep checks data set?
+It has the word "train" in it. 
+This is important! 
+Some data validation checks can cause data leakage 
+if we perform them on the entire data set 
+before finalizing feature and model selection. 
+Be conscientious about your data validation checks 
+to ensure they do not data introduce leakage.
+:::
+
+Deep Checks has a nice gallery of different data validation checks 
+for which it has high-level functions:
+<https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html>
