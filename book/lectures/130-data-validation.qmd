@@ -47,6 +47,25 @@ into functions also allows this code to be tested to ensure it is correct,
 and that invalid data is handled as intended 
 (more on this in the testing chapter later in this book).
 
+One note of caution for where to perform data validation checks in data analysis 
+where data splitting is needed 
+(e.g., splitting data into a training and test set for answering predictive questions)
+is that you want to be sure that the data validation checks 
+do not cause any data leakage between the split data sets. 
+For example, 
+when checking for anomalous correlations between the target/response variable 
+and features/explanatory variables, 
+when attempting to answer a predictive question,
+it would be important to not use the entire data set.
+This is because using the entire dataset for such checks 
+could inadvertently reveal patterns, distributions, 
+or relationships from the test set -- 
+which may impact the analyst's decisions/choices 
+when performing feature and model selection. 
+Given that, data validation checks like this should initially only be done on the training set.
+It may make sense to apply this data validation check also to the test set, 
+but only after finalizing the feature and model selection.
+
 ## Data validation checks
 
 What kind of data validation, or checks, 
