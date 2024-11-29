@@ -171,8 +171,80 @@ Let's make our script more flexible, and let us specify what column variable we 
 
 To do this, we use the `docopt` R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.
 
-When we run `docopt` it takes the text we entered at the command line and gives it to us as a named list of the text provided after the script name. The names of the items in the list come from the documentation. Whitespace at the command line is what is used to parse the text into separate items in the vector.
+When we run `docopt` it takes the text we entered at the command line 
+and gives it to us as a named list of the text provided after the script name. 
+The names of the items in the list come from the documentation.
+Whitespace at the command line is what is used to parse the text 
+into separate items in the list.
+The list is a bit funny, in that the arguments are duplicated in the list.
+In the first occurrence of the arguments in the list, 
+the names include the syntax 
+of how you specify the argument in the `docopt` docs
+(so it can include characters like `<` and `-` and `[`).
+These make the names for the arguments non-syntactic, 
+and thus difficult to program with in R.
+Thus, they are also given without those special `docopt` characters.
 
+It might be easier to understand if we see an example.
+Consider this script named `demo-docopt.R`:
+
+```
+# author: Tiffany Timbers
+# date: 2024-11-29
+
+"This script prints out docopt args and the type of object they are stored as.
+Usage: demo-docopt.R <arg1> <arg2> <arg3>
+Options:
+<arg1>  Takes any value 
+<arg2>  Takes any value
+<arg3>  Takes any value 
+" -> doc
+
+library(docopt)
+
+opt <- docopt(doc)
+
+print(opt)
+print(typeof(opt))
+```
+
+If we run this via `Rscript demo-docopt.R I LOVE MDS` 
+(so our three arguments were `I`, `LOVE` and `MDS`),
+we get this output:
+
+```
+List of 6
+ $ <arg1>: chr "I"
+ $ <arg2>: chr "LOVE"
+ $ <arg3>: chr "MDS"
+ $ arg1  : chr "I"
+ $ arg2  : chr "LOVE"
+ $ arg3  : chr "MDS"
+NULL
+[1] "list"
+```
+
+You can see that `opt` (the list of command line arguments)
+is of length 6, even though there are only 3 command line 
+arguments expected by the script 
+and there were only 3 command line 
+arguments passed to the script at the command line.
+The argument values are repeated, with only the names being different.
+The second occurence of the argument name is easier to work with
+because it doesn't have the special docopt command line characters.
+So to reference a command line argument value,
+let's say the second command line argument value in the example above,
+we would type `opt$arg2`.
+
+:::{.callout-note}
+We could also use numerical indexing 
+to access the second command line argument value in the example above.
+To do that we could type either `opt[[2]]` or `opt[[5]]`.
+But this is far less readable, 
+and so we tend to reference the command line arguments using the `$name` approach.
+:::
+
+Let's look at a more realistic example:
 
 ```r
 # author: Tiffany Timbers
@@ -213,7 +285,6 @@ This is similar to `{{` that we saw before with functions
 (which quotes and unquotes values when they are passed into functions).
 However here we use `!!` as we have no indirection and just need to perform unquoting.
 :::
-
 
 And we would run a script like this from the command line as follows:
 
