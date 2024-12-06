@@ -103,6 +103,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -123,17 +134,6 @@ div.callout-activity.callout-style-default > .callout-header {
 div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
   content: '🧩';
-  background-image: none;
-}
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -472,8 +472,9 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   <li><a href="#makefile-structure" id="toc-makefile-structure" class="nav-link" data-scroll-target="#makefile-structure"><span class="header-section-number">17.2</span> Makefile Structure</a></li>
   <li><a href="#structure-if-you-have-multiple-targets-from-a-scripts" id="toc-structure-if-you-have-multiple-targets-from-a-scripts" class="nav-link" data-scroll-target="#structure-if-you-have-multiple-targets-from-a-scripts"><span class="header-section-number">17.3</span> Structure if you have multiple targets from a scripts</a></li>
   <li><a href="#finish-off-the-makefile" id="toc-finish-off-the-makefile" class="nav-link" data-scroll-target="#finish-off-the-makefile"><span class="header-section-number">17.4</span> Finish off the Makefile!</a></li>
-  <li><a href="#improving-the-makefile" id="toc-improving-the-makefile" class="nav-link" data-scroll-target="#improving-the-makefile"><span class="header-section-number">17.5</span> Improving the Makefile</a></li>
-  <li><a href="#pattern-matching-and-variables-in-a-makefile" id="toc-pattern-matching-and-variables-in-a-makefile" class="nav-link" data-scroll-target="#pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.6</span> Pattern matching and variables in a Makefile</a></li>
+  <li><a href="#phony-targets" id="toc-phony-targets" class="nav-link" data-scroll-target="#phony-targets"><span class="header-section-number">17.5</span> PHONY Targets</a></li>
+  <li><a href="#improving-the-makefile" id="toc-improving-the-makefile" class="nav-link" data-scroll-target="#improving-the-makefile"><span class="header-section-number">17.6</span> Improving the Makefile</a></li>
+  <li><a href="#pattern-matching-and-variables-in-a-makefile" id="toc-pattern-matching-and-variables-in-a-makefile" class="nav-link" data-scroll-target="#pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.7</span> Pattern matching and variables in a Makefile</a></li>
   </ul>
 </nav>
     </div>
@@ -733,93 +734,102 @@ Building a Data Analysis pipeline using Make, a tutorial
 <span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a>        results/figure/sierra.png</span>
 <span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>    rm -rf report/count_report.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="improving-the-makefile" class="level2" data-number="17.5">
-<h2 data-number="17.5" class="anchored" data-anchor-id="improving-the-makefile"><span class="header-section-number">17.5</span> Improving the Makefile</h2>
+<section id="phony-targets" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="phony-targets"><span class="header-section-number">17.5</span> PHONY Targets</h2>
+<p>So far our make files contains multiple targets. Some of these targets point to the name of a file, and others, e.g., <code>clean</code> and <code>all</code>, are not names of a particular file. When we have a target that is really a name for a recipe, these are known as phony targets.</p>
+<p>The main reason for phony targets is to avoid a conflict with a file of the same name. In order to create a phony garget we use the <code>.PHONY</code> at the top of our <code>Makefile</code> and space separate the target names. By convention we list all the phony targets at the top of the file in 1 place. Sometimes you may see multiple <code>.PHONY:</code> calls right above the recipe for a phony target. Pay attention to how it is spelled, <code>.PHONY</code>.</p>
+<p>In order to declare our <code>clean</code> and <code>all</code> targets as a phony target we would put this line at the top of our <code>Makefile</code></p>
+<pre class="make"><code>.PHONY: all clean</code></pre>
+</section>
+<section id="improving-the-makefile" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="improving-the-makefile"><span class="header-section-number">17.6</span> Improving the Makefile</h2>
 <p>Adding <code>PHONY</code> targets to run parts of the analysis (e.g., just counting the words, or just making the figures) can be very useful when iterating and refining a particular part of your analysis. Similarly, adding other PHONY targets to clean up parts of the analysis can help with this as well.</p>
 <p>In the version of the <code>Makefile</code> below we do just that, creating the following PHONY targets: - <code>dats</code> (counts words and saves to <code>.dat</code> files) - <code>figs</code> (creates figures) - <code>clean-dats</code> (cleans up <code>.dat</code> files) - <code>clean-figs</code>(cleans up figure files)</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Makefile</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Tiffany Timbers, Nov 2018</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This driver script completes the textual analysis of</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 novels and creates figures on the 10 most frequently</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># occuring words from each of the 3 novels. This script</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># takes no arguments.</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># example usage:</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># make all</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># run entire analysis</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> report/count_report.html</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co"># count words</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="dv">dats:</span><span class="dt"> results/isles.dat </span><span class="ch">\</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="dt">results/abyss.dat </span><span class="ch">\</span></span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="dt">results/last.dat </span><span class="ch">\</span></span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="dt">results/sierra.dat</span></span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="dv">results/isles.dat :</span><span class="dt"> scripts/wordcount.py data/isles.txt</span></span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/isles.txt </span><span class="ch">\</span></span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/isles.dat</span></span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="dv">results/abyss.dat :</span><span class="dt"> scripts/wordcount.py data/abyss.txt</span></span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/abyss.txt </span><span class="ch">\</span></span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/abyss.dat</span></span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="dv">results/last.dat :</span><span class="dt"> scripts/wordcount.py data/last.txt</span></span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/last.txt </span><span class="ch">\</span></span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/last.dat</span></span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="dv">results/sierra.dat :</span><span class="dt"> scripts/wordcount.py data/sierra.txt</span></span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/sierra.txt </span><span class="ch">\</span></span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/sierra.dat</span></span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a><span class="dv">figs :</span><span class="dt"> results/figure/isles.png </span><span class="ch">\</span></span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/abyss.png </span><span class="ch">\</span></span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/last.png </span><span class="ch">\</span></span>
-<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/sierra.png</span></span>
-<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/isles.png :</span><span class="dt"> scripts/plotcount.py results/isles.dat</span></span>
-<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
-<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/isles.dat </span><span class="ch">\</span></span>
-<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/isles.png</span></span>
-<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/abyss.png :</span><span class="dt"> scripts/plotcount.py results/abyss.dat</span></span>
-<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
-<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/abyss.dat </span><span class="ch">\</span></span>
-<span id="cb23-51"><a href="#cb23-51" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/abyss.png</span></span>
-<span id="cb23-52"><a href="#cb23-52" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/last.png :</span><span class="dt"> scripts/plotcount.py results/last.dat</span></span>
-<span id="cb23-53"><a href="#cb23-53" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
-<span id="cb23-54"><a href="#cb23-54" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/last.dat </span><span class="ch">\</span></span>
-<span id="cb23-55"><a href="#cb23-55" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/last.png</span></span>
-<span id="cb23-56"><a href="#cb23-56" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/sierra.png :</span><span class="dt"> scripts/plotcount.py results/sierra.dat</span></span>
-<span id="cb23-57"><a href="#cb23-57" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
-<span id="cb23-58"><a href="#cb23-58" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/sierra.dat </span><span class="ch">\</span></span>
-<span id="cb23-59"><a href="#cb23-59" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/sierra.png</span></span>
-<span id="cb23-60"><a href="#cb23-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-61"><a href="#cb23-61" aria-hidden="true" tabindex="-1"></a><span class="co"># write the report</span></span>
-<span id="cb23-62"><a href="#cb23-62" aria-hidden="true" tabindex="-1"></a><span class="dv">report/count_report.html :</span><span class="dt"> report/count_report.qmd figs</span></span>
-<span id="cb23-63"><a href="#cb23-63" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>quarto render report/count_report.qmd</span>
-<span id="cb23-64"><a href="#cb23-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-65"><a href="#cb23-65" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-dats :</span></span>
-<span id="cb23-66"><a href="#cb23-66" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f results/isles.dat \</span>
-<span id="cb23-67"><a href="#cb23-67" aria-hidden="true" tabindex="-1"></a>        results/abyss.dat \</span>
-<span id="cb23-68"><a href="#cb23-68" aria-hidden="true" tabindex="-1"></a>        results/last.dat \</span>
-<span id="cb23-69"><a href="#cb23-69" aria-hidden="true" tabindex="-1"></a>        results/sierra.dat</span>
-<span id="cb23-70"><a href="#cb23-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-71"><a href="#cb23-71" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-figs :</span></span>
-<span id="cb23-72"><a href="#cb23-72" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f results/figure/isles.png \</span>
-<span id="cb23-73"><a href="#cb23-73" aria-hidden="true" tabindex="-1"></a>    results/figure/abyss.png \</span>
-<span id="cb23-74"><a href="#cb23-74" aria-hidden="true" tabindex="-1"></a>    results/figure/last.png \</span>
-<span id="cb23-75"><a href="#cb23-75" aria-hidden="true" tabindex="-1"></a>    results/figure/sierra.png</span>
-<span id="cb23-76"><a href="#cb23-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-77"><a href="#cb23-77" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-all :</span><span class="dt"> clean-dats </span><span class="ch">\</span></span>
-<span id="cb23-78"><a href="#cb23-78" aria-hidden="true" tabindex="-1"></a><span class="dt">    clean-figs</span></span>
-<span id="cb23-79"><a href="#cb23-79" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f report/count_report.html</span>
-<span id="cb23-80"><a href="#cb23-80" aria-hidden="true" tabindex="-1"></a>    rm -rf report/count_report_files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Makefile</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Tiffany Timbers, Nov 2018</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This driver script completes the textual analysis of</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 novels and creates figures on the 10 most frequently</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># occuring words from each of the 3 novels. This script</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># takes no arguments.</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># example usage:</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># make all</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="ot">.PHONY:</span><span class="dt"> all dats figs clean-dats clean-figs clean-all</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># run entire analysis</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="dv">all:</span><span class="dt"> report/count_report.html</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="co"># count words</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="dv">dats:</span><span class="dt"> results/isles.dat </span><span class="ch">\</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="dt">results/abyss.dat </span><span class="ch">\</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="dt">results/last.dat </span><span class="ch">\</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="dt">results/sierra.dat</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="dv">results/isles.dat :</span><span class="dt"> scripts/wordcount.py data/isles.txt</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/isles.txt </span><span class="ch">\</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/isles.dat</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="dv">results/abyss.dat :</span><span class="dt"> scripts/wordcount.py data/abyss.txt</span></span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/abyss.txt </span><span class="ch">\</span></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/abyss.dat</span></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a><span class="dv">results/last.dat :</span><span class="dt"> scripts/wordcount.py data/last.txt</span></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/last.txt </span><span class="ch">\</span></span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/last.dat</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a><span class="dv">results/sierra.dat :</span><span class="dt"> scripts/wordcount.py data/sierra.txt</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/wordcount.py \</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">data/sierra.txt </span><span class="ch">\</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/sierra.dat</span></span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a><span class="dv">figs :</span><span class="dt"> results/figure/isles.png </span><span class="ch">\</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/abyss.png </span><span class="ch">\</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/last.png </span><span class="ch">\</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a><span class="dt">    results/figure/sierra.png</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/isles.png :</span><span class="dt"> scripts/plotcount.py results/isles.dat</span></span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/isles.dat </span><span class="ch">\</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/isles.png</span></span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/abyss.png :</span><span class="dt"> scripts/plotcount.py results/abyss.dat</span></span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/abyss.dat </span><span class="ch">\</span></span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/abyss.png</span></span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/last.png :</span><span class="dt"> scripts/plotcount.py results/last.dat</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/last.dat </span><span class="ch">\</span></span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/last.png</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a><span class="dv">results/figure/sierra.png :</span><span class="dt"> scripts/plotcount.py results/sierra.dat</span></span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python scripts/plotcount.py \</span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>        <span class="dt">--input_file</span><span class="ch">=</span><span class="st">results/sierra.dat </span><span class="ch">\</span></span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a><span class="st">        --output_file=results/figure/sierra.png</span></span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a><span class="co"># write the report</span></span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a><span class="dv">report/count_report.html :</span><span class="dt"> report/count_report.qmd figs</span></span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>quarto render report/count_report.qmd</span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-dats :</span></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f results/isles.dat \</span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a>        results/abyss.dat \</span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a>        results/last.dat \</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a>        results/sierra.dat</span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-figs :</span></span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f results/figure/isles.png \</span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a>    results/figure/abyss.png \</span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>    results/figure/last.png \</span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a>    results/figure/sierra.png</span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a><span class="dv">clean-all :</span><span class="dt"> clean-dats </span><span class="ch">\</span></span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a><span class="dt">    clean-figs</span></span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f report/count_report.html</span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a>    rm -rf report/count_report_files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="pattern-matching-and-variables-in-a-makefile" class="level2" data-number="17.6">
-<h2 data-number="17.6" class="anchored" data-anchor-id="pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.6</span> Pattern matching and variables in a Makefile</h2>
+<section id="pattern-matching-and-variables-in-a-makefile" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.7</span> Pattern matching and variables in a Makefile</h2>
 <p>It is possible to DRY out a Makefile and use variables.</p>
 <p>Using wild cards and pattern matching in a makefile is possible, but the syntax is not very readable. So if you choose to do this proceed with caution. Example of how to do this are here: http://swcarpentry.github.io/make-novice/05-patterns/index.html</p>
 <p>As for variables in a Makefile, in most cases we actually do not want to do this. The reason is that we want this file to be a record of what we did to run our analysis (e.g., what files were used, what settings were used, etc). If you start using variables with your Makefile, then you are shifting the problem of recording how your analysis was done to another file. There needs to be some file in your repo that captures what variables were called so that you can replicate your analysis. Examples of using variables in a Makefile are here: http://swcarpentry.github.io/make-novice/06-variables/index.html</p>
