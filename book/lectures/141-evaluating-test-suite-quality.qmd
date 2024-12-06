@@ -1,0 +1,281 @@
+---
+title: Evaluating test suite quality
+---
+
+We really want to know how well the code performs its expected tasks and how robustly it responds to unexpected inputs and situations. Answering this complex and qualitative question involves balancing tests value (e.g., protection against regressions and bugs introduced by refactoring) and tests cost (e.g., time for creation and upkeep, time to run the tests). This is hard to do, and takes a lot of time. Also, as hinted in the previous sentence, it is not very quantifiable.
+
+Code coverage is a way to more simply assess code quality - it is useful to answer the question does the test suite validate all the code? This is an assessment that also attempts to be more quantitative and is popular because it can often be calculated automatically. However it does not factor time or test value, so we have to take it with a grain of salt.
+
+*Source: [CPSC 310 class notes from Reid Holmes, UBC](https://github.com/ubccpsc/310/blob/master/resources/readings/WhiteBoxTesting.md)*
+
+> ## Black box & white box testing
+>
+> Up until now, we have primarily been focused on deriving tests when thinking about the code specifications - what is the functionality of the code, and does it do what we expect. For example, most of the tests we wrote for the `count_classes` function would fall under the guise of **black box testing**. After we follow our TDD-inspired workflow for writing functions and tests for data science, we may want to look inside our code and do some testing of how it is implemented. This would fall under the umbrella of **white box testing** and code coverage can be very helpful here to identify portions of code that is not being tested well, or at all.
+>
+>  **Black box testing:** is a method of software testing that examines the functionality of an application without peering into its internal structures or workings. This method of test can be applied virtually to every level of software testing: unit, integration, system and acceptance. It is sometimes referred to as specification-based testing.
+>
+>
+>  **White box testing:** is a method of software testing that tests internal structures or workings of an application, as opposed to its functionality (*i.e.* black-box testing). In white-box testing an internal perspective of the system, as well as programming skills, are used to design test cases.
+>
+>
+> *Source: [Wikipedia](https://en.wikipedia.org/wiki/Main_Page)*
+
+
+## Coverage
+
+**Definition:** Proportion of system being executed by the test suite.
+
+- usually reported as a percentage: $$Coverage = \frac{covered}{(covered + uncovered)} * 100$$
+
+### Coverage metrics:
+
+There are many, but here are the ones our automated tools in this course will calculate for you:
+
+| Metric | Description                           | Dependent upon control flow |
+|--------|---------------------------------------|-----------------------------|
+| line   | lines of code that tests execute      | No                          |
+| branch | number of branches (independent code segments) that tests execute | Yes                         |
+
+### What exactly is a branch?
+
+```{r}
+my_function <- function(x) {
+  # Branch 1
+  if (condition_met) {
+        y = function_a(x)
+        z = function_b(y)
+  }
+  # Branch 2
+  else {
+    y = function_b(x)
+    z = function_c(y)
+  }
+  z
+}
+```
+
+*Adapted from: <http://www.ncover.com/blog/code-coverage-metrics-branch-coverage/>*
+
+## How are line and branch coverage different?
+
+Consider the same example we just saw and the unit test below, let's manually calculate the coverage using line and branch coverage metrics:
+
+
+```r
+1  |  my_function <- function(x) {
+2  |  # Branch 1
+3  |    if (x == "pony") {
+4  |      y = function_a(x)
+5  |      z = function_b(y)
+6  |    }
+7  |    # Branch 2
+8  |    else {
+9  |      y = function_b(x)
+10 |      z = function_c(y)
+11 |    }
+12 |    z
+13 |  }
+14 |
+15 |  test_that("ponies are actually unicorns", {
+16 |    expect_equal(my_function("pony"), ("Actually a unicorn"))
+17 |  })
+```
+
+*Note: function definitions are not counted as lines when calculating coverage*
+
+#### Using branch as the coverage metric:
+
+Branch 1 (lines 3-5) is covered by the test, because `if (x == "pony")` evaluates to true.
+Therefore we have one branch covered, and one branch uncovered (lines 8-10),
+resulting in 50% branch coverage when we plug these numbers into our formula.
+
+$Coverage = \frac{covered}{(covered + uncovered)} * 100$
+
+$Coverage = \frac{1}{(1 + 1)} * 100$
+
+$Coverage = 50\%$
+
+#### Using line as the coverage metric:
+
+Lines 3-5 and 12 are executed, and lines 8-10 are not (function definitions are not typically counted in line coverage).
+There fore we have 4 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.
+
+$Coverage = \frac{covered}{(covered + uncovered)} * 100$
+
+$Coverage = \frac{4}{(4 + 3)} * 100$
+
+$Coverage = 57\%$
+
+In this case, both metrics give us relatively similar estimates of code coverage.
+
+### But wait, line coverage can be misleading...
+
+Let's alter our function and re-calculate line and branch coverage:
+
+```r
+1  |  my_function <- function(x) {
+2  |  # Branch 1
+3  |    if (x == "pony") {
+4  |      y = function_a(x)
+5  |      z = function_b(y)
+6  |      print(z)
+7  |      print("some important message")
+8  |      print("another important message")
+9  |      print("a less important message")
+10 |      print("just makin' stuff up here...")
+11 |      print("out of things to say...")
+12 |      print("how creative can I be...")
+13 |      print("I guess not very...")
+14 |    }
+15 |    # Branch 2
+16 |    else {
+17 |      y = function_b(x)
+18 |      z = function_c(y)
+19 |    }
+20 |    z
+21 |  }
+22 |
+23 |  test_that("ponies are actually unicorns", {
+24 |    expect_equal(my_function("pony"), ("Actually a unicorn"))
+25 |  })
+```
+
+#### Using branch as the coverage metric:
+
+Branch 1 (lines 3-13) is covered by the test, because `if (x == "pony")` evaluates to true.
+Therefore we have one branch covered, and one branch uncovered (lines 16-18),
+resulting in 50% branch coverage when we plug these numbers into our formula.
+
+$Coverage = \frac{covered}{(covered + uncovered)} * 100$
+
+$Coverage = \frac{1}{(1 + 1)} * 100$
+
+$Coverage = 50\%$
+
+#### Using line as the coverage metric:
+
+Lines 3-13 and 20 are executed, and lines 16-18 are not (function definitions are not typically counted in line coverage).
+There fore we have 12 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.
+
+$Coverage = \frac{covered}{(covered + uncovered)} * 100$
+
+$Coverage = \frac{12}{(12 + 3)} * 100$
+
+$Coverage = 80\%$
+
+In this case, the different metrics give us very different estimates of code coverage! 🤯
+
+### Take home message:
+
+Use branch coverage when you can, especially if your code uses control flow!
+
+## Calculating coverage in R
+
+We use the [`covr`](https://covr.r-lib.org/) R package to do this.
+
+Install via R console:
+
+```r
+install.packages("covr")
+```
+
+To calculate line coverage and have it show in the viewer pane in RStudio:
+
+```r
+covr::report()
+```
+
+Currently `covr` does not have the functionality to calculate branch coverage. Thus this is up to you in R to calculate this by hand if you really want to know.
+
+> Why has this not been implemented? It has been in an now unsupported package (see [here](https://github.com/MangoTheCat/testCoverage)), but its implementation was too complicated for others to understand. Automating the calculation of branch coverage is non-trivial, and this is a perfect demonstration of that.
+
+## Calculating coverage in Python
+
+We use the plugin  tool [`pytest-cov`](https://github.com/pytest-dev/pytest-cov) to do this.
+
+Install as a package via conda:
+
+```bash
+conda install pytest-cov
+```
+
+### Calculating coverage in Python
+
+To calculate line coverage and print it to the terminal:
+
+```bash
+pytest --cov=<directory>
+```
+
+To calculate line coverage and print it to the terminal:
+
+```bash
+pytest --cov-branch --cov=<directory>
+```
+
+### How does `coverage` in Python actually count line coverage?
+
+- the output from `poetry run pytest --cov=src` gives a table that looks like this:
+
+```sh
+---------- coverage: platform darwin, python 3.7.6-final-0 -----------
+Name                  Stmts   Miss  Cover
+-----------------------------------------
+big_abs/big_abs.py        8      2    75%
+-----------------------------------------
+TOTAL                     9      2    78%
+```
+
+In the column labelled as "Stmts", coverage is calculating all possible line jumps that could have been executed (these line jumps are sometimes called arcs). This is essentially covered + uncovered lines of code.
+
+:::{.callout-note}
+This leads coverage to count two statements on one line that are separated by a ";" (e.g., print("hello"); print("there")) as one statement, as well as calculating a single statement that is spread across two lines as one statement.
+:::
+
+In the column labelled as "Miss", this is the number of line jumps not executed by the tests.
+So our covered lines of code is "Stmts" - "Miss".
+
+The coverage percentage in this scenario is calculated by:
+$$Coverage = \frac{(Stmts - Miss)}{Stmts}$$
+$$Coverage = \frac{8 - 2}{8} * 100 = 75\%$$
+
+### How does `coverage` in Python actually branch coverage?
+
+- the output from `poetry run pytest --cov-branch --cov=src` gives a table that looks like this:
+
+```sh
+---------- coverage: platform darwin, python 3.7.6-final-0 -----------
+Name                  Stmts   Miss Branch BrPart  Cover
+-------------------------------------------------------
+big_abs/big_abs.py        8      2      6      3    64%
+-------------------------------------------------------
+TOTAL                     9      2      6      3    67%
+```
+
+In the column labelled as "Branch", coverage is actually counting the number of possible jumps from branch points.
+This is essentially covered + uncovered branches of code.
+
+:::{.callout-note}
+Because coverage is using line jumps to count branches, each `if` inherently has an `else` even if its not explicitly written in the code.
+:::
+
+In the column labelled as "BrPart", this is the number of of possible jumps from branch points executed by the tests.
+This is essentially our covered branches of code.
+
+The branch coverage percentage in this tool is calculated by:
+
+$$Coverage = \frac{(Stmts\:executed + BrPart)}{(Stmts + Branch)}$$
+
+$$Coverage = \frac{((Stmts - Miss) + BrPart)}{(Stmts + Branch)}$$
+
+:::{.callout-note}
+You can see this formula actually includes both line and branch coverage in this calculation.
+:::
+
+So for `big_abs/big_abs.py` 64% was calculated from:
+$$Coverage = \frac{((8 - 2) + 3)}{(8 + 6)} * 100 = 64\%$$
+
+## Attribution:
+- [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
+- [The Tidynomicon](http://tidynomicon.tech/) by Greg Wilson
+- [CPSC 310](https://github.com/ubccpsc/310/tree/2019sept) and [CPSC 410](https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf) class notes by Reid Holmes, UBC
