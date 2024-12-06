@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>18&nbsp; Data analysis pipelines with GNU Make – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>17&nbsp; Data analysis pipelines with GNU Make – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../parts/packaging-ci-cd-publish.html" rel="next">
+<link href="../lectures/140-intro-to-testing-code.html" rel="next">
 <link href="../lectures/170-pipelines-scripts.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -103,28 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-relevance-project.callout {
-  border-left-color: orange;
-}
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -147,6 +125,28 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
 </style>
 
 
@@ -162,7 +162,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">Automation</a></li><li class="breadcrumb-item"><a href="../lectures/180-pipelines-make.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">Automation</a></li><li class="breadcrumb-item"><a href="../lectures/180-pipelines-make.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -303,8 +303,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../parts/data-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Validation</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">parts/data-validation.qmd</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -314,12 +314,6 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   <div class="sidebar-item-container"> 
   <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
       </ul>
@@ -336,25 +330,48 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">parts/software-testing-for-data-science.qmd</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/141-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -363,27 +380,27 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/packaging-ci-cd-publish.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Packages and Continuous Integration + Deployment</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/190-packaging-and-documenting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
       </ul>
@@ -392,21 +409,21 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Wrap Up</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -415,27 +432,27 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
       </ul>
@@ -451,21 +468,21 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#gnu-make-as-a-data-analysis-pipeline-tool" id="toc-gnu-make-as-a-data-analysis-pipeline-tool" class="nav-link" data-scroll-target="#gnu-make-as-a-data-analysis-pipeline-tool"><span class="header-section-number">18.1</span> GNU Make as a data analysis pipeline tool</a></li>
-  <li><a href="#makefile-structure" id="toc-makefile-structure" class="nav-link" data-scroll-target="#makefile-structure"><span class="header-section-number">18.2</span> Makefile Structure</a></li>
-  <li><a href="#structure-if-you-have-multiple-targets-from-a-scripts" id="toc-structure-if-you-have-multiple-targets-from-a-scripts" class="nav-link" data-scroll-target="#structure-if-you-have-multiple-targets-from-a-scripts"><span class="header-section-number">18.3</span> Structure if you have multiple targets from a scripts</a></li>
-  <li><a href="#finish-off-the-makefile" id="toc-finish-off-the-makefile" class="nav-link" data-scroll-target="#finish-off-the-makefile"><span class="header-section-number">18.4</span> Finish off the Makefile!</a></li>
-  <li><a href="#improving-the-makefile" id="toc-improving-the-makefile" class="nav-link" data-scroll-target="#improving-the-makefile"><span class="header-section-number">18.5</span> Improving the Makefile</a></li>
-  <li><a href="#pattern-matching-and-variables-in-a-makefile" id="toc-pattern-matching-and-variables-in-a-makefile" class="nav-link" data-scroll-target="#pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">18.6</span> Pattern matching and variables in a Makefile</a></li>
+  <li><a href="#gnu-make-as-a-data-analysis-pipeline-tool" id="toc-gnu-make-as-a-data-analysis-pipeline-tool" class="nav-link" data-scroll-target="#gnu-make-as-a-data-analysis-pipeline-tool"><span class="header-section-number">17.1</span> GNU Make as a data analysis pipeline tool</a></li>
+  <li><a href="#makefile-structure" id="toc-makefile-structure" class="nav-link" data-scroll-target="#makefile-structure"><span class="header-section-number">17.2</span> Makefile Structure</a></li>
+  <li><a href="#structure-if-you-have-multiple-targets-from-a-scripts" id="toc-structure-if-you-have-multiple-targets-from-a-scripts" class="nav-link" data-scroll-target="#structure-if-you-have-multiple-targets-from-a-scripts"><span class="header-section-number">17.3</span> Structure if you have multiple targets from a scripts</a></li>
+  <li><a href="#finish-off-the-makefile" id="toc-finish-off-the-makefile" class="nav-link" data-scroll-target="#finish-off-the-makefile"><span class="header-section-number">17.4</span> Finish off the Makefile!</a></li>
+  <li><a href="#improving-the-makefile" id="toc-improving-the-makefile" class="nav-link" data-scroll-target="#improving-the-makefile"><span class="header-section-number">17.5</span> Improving the Makefile</a></li>
+  <li><a href="#pattern-matching-and-variables-in-a-makefile" id="toc-pattern-matching-and-variables-in-a-makefile" class="nav-link" data-scroll-target="#pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.6</span> Pattern matching and variables in a Makefile</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">Automation</a></li><li class="breadcrumb-item"><a href="../lectures/180-pipelines-make.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/automation.html">Automation</a></li><li class="breadcrumb-item"><a href="../lectures/180-pipelines-make.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></h1>
 </div>
 
 
@@ -489,8 +506,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <li>Discuss the advantage of using software that has a dependency graph for analysis pipelines compared to software that does not.</li>
 </ol>
 </section>
-<section id="gnu-make-as-a-data-analysis-pipeline-tool" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="gnu-make-as-a-data-analysis-pipeline-tool"><span class="header-section-number">18.1</span> GNU Make as a data analysis pipeline tool</h2>
+<section id="gnu-make-as-a-data-analysis-pipeline-tool" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="gnu-make-as-a-data-analysis-pipeline-tool"><span class="header-section-number">17.1</span> GNU Make as a data analysis pipeline tool</h2>
 <p>We previously built a data analysis pipeline by using a shell script (we called it <code>run_all.sh</code>) to piece together and create a record of all the scripts and arguments we used in our analysis. That is a step in the right direction, but there were a few unsatisfactory things about this strategy:</p>
 <ol type="1">
 <li>It takes time to manually erase all intermediate and final files generated by analysis to do a complete test to see that everything is working from top to bottom</li>
@@ -498,8 +515,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </ol>
 <p>Thus, to improve on this we are going to use the build and automation tool, Make, to make a smarter data analysis pipeline.</p>
 </section>
-<section id="makefile-structure" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="makefile-structure"><span class="header-section-number">18.2</span> Makefile Structure</h2>
+<section id="makefile-structure" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="makefile-structure"><span class="header-section-number">17.2</span> Makefile Structure</h2>
 <p>Each block of code in a Makefile is called a rule, it looks something like this:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">file_to_create.png :</span><span class="dt"> data_it_depends_on.dat script_it_depends_on.py</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python script_it_depends_on.py data_it_depends_on.dat file_to_create.png</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -511,8 +528,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <li>Together, the target, dependencies, and actions form a rule.</li>
 </ul>
 </section>
-<section id="structure-if-you-have-multiple-targets-from-a-scripts" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="structure-if-you-have-multiple-targets-from-a-scripts"><span class="header-section-number">18.3</span> Structure if you have multiple targets from a scripts</h2>
+<section id="structure-if-you-have-multiple-targets-from-a-scripts" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="structure-if-you-have-multiple-targets-from-a-scripts"><span class="header-section-number">17.3</span> Structure if you have multiple targets from a scripts</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">file_to_create_1.png file_to_create_2.png :</span><span class="dt"> data_it_depends_on.dat script_it_depends_on.py</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>python script_it_depends_on.py data_it_depends_on.dat file_to_create</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-style-default callout-exercise callout-titled">
@@ -639,8 +656,8 @@ Building a Data Analysis pipeline using Make, a tutorial
 </div>
 </div>
 </section>
-<section id="finish-off-the-makefile" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="finish-off-the-makefile"><span class="header-section-number">18.4</span> Finish off the Makefile!</h2>
+<section id="finish-off-the-makefile" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="finish-off-the-makefile"><span class="header-section-number">17.4</span> Finish off the Makefile!</h2>
 <p>Since we will also combine the figures into a report in the end, we will change our all target to being the rendered report file, and add a target for the rendered report file at the end:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Makefile</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Tiffany Timbers, Nov 2018</span></span>
@@ -716,8 +733,8 @@ Building a Data Analysis pipeline using Make, a tutorial
 <span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a>        results/figure/sierra.png</span>
 <span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a>    rm -rf report/count_report.html</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="improving-the-makefile" class="level2" data-number="18.5">
-<h2 data-number="18.5" class="anchored" data-anchor-id="improving-the-makefile"><span class="header-section-number">18.5</span> Improving the Makefile</h2>
+<section id="improving-the-makefile" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="improving-the-makefile"><span class="header-section-number">17.5</span> Improving the Makefile</h2>
 <p>Adding <code>PHONY</code> targets to run parts of the analysis (e.g., just counting the words, or just making the figures) can be very useful when iterating and refining a particular part of your analysis. Similarly, adding other PHONY targets to clean up parts of the analysis can help with this as well.</p>
 <p>In the version of the <code>Makefile</code> below we do just that, creating the following PHONY targets: - <code>dats</code> (counts words and saves to <code>.dat</code> files) - <code>figs</code> (creates figures) - <code>clean-dats</code> (cleans up <code>.dat</code> files) - <code>clean-figs</code>(cleans up figure files)</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode makefile code-with-copy"><code class="sourceCode makefile"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Makefile</span></span>
@@ -801,8 +818,8 @@ Building a Data Analysis pipeline using Make, a tutorial
 <span id="cb23-79"><a href="#cb23-79" aria-hidden="true" tabindex="-1"></a><span class="er">    </span>rm -f report/count_report.html</span>
 <span id="cb23-80"><a href="#cb23-80" aria-hidden="true" tabindex="-1"></a>    rm -rf report/count_report_files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="pattern-matching-and-variables-in-a-makefile" class="level2" data-number="18.6">
-<h2 data-number="18.6" class="anchored" data-anchor-id="pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">18.6</span> Pattern matching and variables in a Makefile</h2>
+<section id="pattern-matching-and-variables-in-a-makefile" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="pattern-matching-and-variables-in-a-makefile"><span class="header-section-number">17.6</span> Pattern matching and variables in a Makefile</h2>
 <p>It is possible to DRY out a Makefile and use variables.</p>
 <p>Using wild cards and pattern matching in a makefile is possible, but the syntax is not very readable. So if you choose to do this proceed with caution. Example of how to do this are here: http://swcarpentry.github.io/make-novice/05-patterns/index.html</p>
 <p>As for variables in a Makefile, in most cases we actually do not want to do this. The reason is that we want this file to be a record of what we did to run our analysis (e.g., what files were used, what settings were used, etc). If you start using variables with your Makefile, then you are shifting the problem of recording how your analysis was done to another file. There needs to be some file in your repo that captures what variables were called so that you can replicate your analysis. Examples of using variables in a Makefile are here: http://swcarpentry.github.io/make-novice/06-variables/index.html</p>
@@ -1231,12 +1248,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../lectures/170-pipelines-scripts.html" class="pagination-link" aria-label="Data analysis pipelines with scripts">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../parts/packaging-ci-cd-publish.html" class="pagination-link" aria-label="Packages and Continuous Integration + Deployment">
-        <span class="nav-page-text">Packages and Continuous Integration + Deployment</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/140-intro-to-testing-code.html" class="pagination-link" aria-label="Introduction to testing code for data science">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>14&nbsp; Introduction to testing code for data science – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>18&nbsp; Introduction to testing code for data science – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../parts/automation.html" rel="next">
-<link href="../lectures/130-data-validation.html" rel="prev">
+<link href="../lectures/141-evaluating-test-suite-quality.html" rel="next">
+<link href="../lectures/180-pipelines-make.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,17 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -125,15 +114,15 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   content: '🏋️';
   background-image: none;
 }
-div.callout-relevance-project.callout {
-  border-left-color: orange;
+div.callout-definition.callout {
+  border-left-color: pink;
 }
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
 }
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 div.callout-activity.callout {
@@ -145,6 +134,17 @@ div.callout-activity.callout-style-default > .callout-header {
 div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
   content: '🧩';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 </style>
@@ -162,7 +162,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/data-testing.html">Data Validation</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html">parts/software-testing-for-data-science.qmd</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -303,8 +303,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../parts/data-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Validation</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">parts/data-validation.qmd</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -314,12 +314,6 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   <div class="sidebar-item-container"> 
   <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
       </ul>
@@ -336,25 +330,48 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">parts/software-testing-for-data-science.qmd</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/141-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -363,27 +380,27 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/packaging-ci-cd-publish.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Packages and Continuous Integration + Deployment</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/190-packaging-and-documenting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Packaging and documenting code</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
       </ul>
@@ -392,21 +409,21 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/licenses-copyright-wrapup.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Wrap Up</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -415,27 +432,27 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <div class="sidebar-item-container"> 
             <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Appendix</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
       </ul>
@@ -451,30 +468,30 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#workflow-for-writing-functions-and-tests-for-data-science" id="toc-workflow-for-writing-functions-and-tests-for-data-science" class="nav-link" data-scroll-target="#workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">14.1</span> Workflow for writing functions and tests for data science</a>
+  <li><a href="#workflow-for-writing-functions-and-tests-for-data-science" id="toc-workflow-for-writing-functions-and-tests-for-data-science" class="nav-link" data-scroll-target="#workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">18.1</span> Workflow for writing functions and tests for data science</a>
   <ul class="collapse">
-  <li><a href="#example-of-workflow-for-writing-functions-and-tests-for-data-science" id="toc-example-of-workflow-for-writing-functions-and-tests-for-data-science" class="nav-link" data-scroll-target="#example-of-workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">14.1.1</span> Example of workflow for writing functions and tests for data science</a></li>
-  <li><a href="#error-test-case-1" id="toc-error-test-case-1" class="nav-link" data-scroll-target="#error-test-case-1"><span class="header-section-number">14.1.2</span> Error test case #1</a></li>
-  <li><a href="#where-do-the-function-and-test-files-go" id="toc-where-do-the-function-and-test-files-go" class="nav-link" data-scroll-target="#where-do-the-function-and-test-files-go"><span class="header-section-number">14.1.3</span> Where do the function and test files go?</a></li>
+  <li><a href="#example-of-workflow-for-writing-functions-and-tests-for-data-science" id="toc-example-of-workflow-for-writing-functions-and-tests-for-data-science" class="nav-link" data-scroll-target="#example-of-workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">18.1.1</span> Example of workflow for writing functions and tests for data science</a></li>
+  <li><a href="#error-test-case-1" id="toc-error-test-case-1" class="nav-link" data-scroll-target="#error-test-case-1"><span class="header-section-number">18.1.2</span> Error test case #1</a></li>
+  <li><a href="#where-do-the-function-and-test-files-go" id="toc-where-do-the-function-and-test-files-go" class="nav-link" data-scroll-target="#where-do-the-function-and-test-files-go"><span class="header-section-number">18.1.3</span> Where do the function and test files go?</a></li>
   </ul></li>
-  <li><a href="#reproducibly-generating-test-data" id="toc-reproducibly-generating-test-data" class="nav-link" data-scroll-target="#reproducibly-generating-test-data"><span class="header-section-number">14.2</span> Reproducibly generating test data</a></li>
-  <li><a href="#common-types-of-test-levels-in-data-science" id="toc-common-types-of-test-levels-in-data-science" class="nav-link" data-scroll-target="#common-types-of-test-levels-in-data-science"><span class="header-section-number">14.3</span> Common types of test levels in data science</a></li>
-  <li><a href="#observability-of-unit-outputs-in-data-science" id="toc-observability-of-unit-outputs-in-data-science" class="nav-link" data-scroll-target="#observability-of-unit-outputs-in-data-science"><span class="header-section-number">14.4</span> Observability of unit outputs in data science</a>
+  <li><a href="#reproducibly-generating-test-data" id="toc-reproducibly-generating-test-data" class="nav-link" data-scroll-target="#reproducibly-generating-test-data"><span class="header-section-number">18.2</span> Reproducibly generating test data</a></li>
+  <li><a href="#common-types-of-test-levels-in-data-science" id="toc-common-types-of-test-levels-in-data-science" class="nav-link" data-scroll-target="#common-types-of-test-levels-in-data-science"><span class="header-section-number">18.3</span> Common types of test levels in data science</a></li>
+  <li><a href="#observability-of-unit-outputs-in-data-science" id="toc-observability-of-unit-outputs-in-data-science" class="nav-link" data-scroll-target="#observability-of-unit-outputs-in-data-science"><span class="header-section-number">18.4</span> Observability of unit outputs in data science</a>
   <ul class="collapse">
-  <li><a href="#visual-regression-testing" id="toc-visual-regression-testing" class="nav-link" data-scroll-target="#visual-regression-testing"><span class="header-section-number">14.4.1</span> Visual regression testing</a></li>
-  <li><a href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" id="toc-example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="nav-link" data-scroll-target="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">14.4.2</span> Example tests for altair plots (using object attributes not visual regression testing)</a></li>
+  <li><a href="#visual-regression-testing" id="toc-visual-regression-testing" class="nav-link" data-scroll-target="#visual-regression-testing"><span class="header-section-number">18.4.1</span> Visual regression testing</a></li>
+  <li><a href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" id="toc-example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="nav-link" data-scroll-target="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">18.4.2</span> Example tests for altair plots (using object attributes not visual regression testing)</a></li>
   </ul></li>
-  <li><a href="#testing-in-python-resources" id="toc-testing-in-python-resources" class="nav-link" data-scroll-target="#testing-in-python-resources"><span class="header-section-number">14.5</span> Testing in Python resources</a></li>
-  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">14.6</span> Attribution:</a></li>
+  <li><a href="#testing-in-python-resources" id="toc-testing-in-python-resources" class="nav-link" data-scroll-target="#testing-in-python-resources"><span class="header-section-number">18.5</span> Testing in Python resources</a></li>
+  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">18.6</span> Attribution:</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/data-testing.html">Data Validation</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html">parts/software-testing-for-data-science.qmd</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></h1>
+<h1 class="title"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></h1>
 </div>
 
 
@@ -522,8 +539,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <p>We will walk through some specific examples of each of these later in this chapter.</p>
 <p>How many tests do we write? There is no concrete answer to this question. It is finding the right balance between having enough test cases that you cover a variety of the possible uses cases of your function, ensuring that the correct behaviour occurs in each of these, without spending too much time on writing tests. As with many functions, the possible ways a function could be used, and the many resultant outputs from it means that it is often impossible to test everything.</p>
 </section>
-<section id="workflow-for-writing-functions-and-tests-for-data-science" class="level2" data-number="14.1">
-<h2 data-number="14.1" class="anchored" data-anchor-id="workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">14.1</span> Workflow for writing functions and tests for data science</h2>
+<section id="workflow-for-writing-functions-and-tests-for-data-science" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">18.1</span> Workflow for writing functions and tests for data science</h2>
 <p>How should we get started writing functions and tests for data science? There are many ways one could proceed, however some paths will be more efficient and less error-prone, and more robust than others. Borrowing from software development best practices, one recommended workflow is shown below:</p>
 <ol type="1">
 <li><p><strong>Write the function specifications and documentation - but do not implement the function.</strong> This means that you will have an empty function, that specifies and documents what the name of the function is, what arguments it takes, and what it returns.</p></li>
@@ -533,8 +550,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <li><p><strong>Implement the function by writing the needed code in the function body to pass the tests.</strong></p></li>
 <li><p><strong>Iterate between steps 2-5 to improve the test coverage and function.</strong></p></li>
 </ol>
-<section id="example-of-workflow-for-writing-functions-and-tests-for-data-science" class="level3" data-number="14.1.1">
-<h3 data-number="14.1.1" class="anchored" data-anchor-id="example-of-workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">14.1.1</span> Example of workflow for writing functions and tests for data science</h3>
+<section id="example-of-workflow-for-writing-functions-and-tests-for-data-science" class="level3" data-number="18.1.1">
+<h3 data-number="18.1.1" class="anchored" data-anchor-id="example-of-workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">18.1.1</span> Example of workflow for writing functions and tests for data science</h3>
 <p>Let’s say we want to write a function for a task we repeatedly are performing in our data analysis. For example, summarizing the number of observations in each class. This is a common task performed for almost every classification problem to examine how many classes there are to understand if we are facing a binary or multi-class classification problem, as well as to examine whether there are any class imbalances that we may need to deal with before tuning our models.</p>
 <section id="write-the-function-specifications-and-documentation---but-do-not-implement-the-function" class="level4">
 <h4 class="anchored" data-anchor-id="write-the-function-specifications-and-documentation---but-do-not-implement-the-function">1. Write the function specifications and documentation - but do not implement the function:</h4>
@@ -678,8 +695,8 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </section>
 </section>
 </section>
-<section id="error-test-case-1" class="level3" data-number="14.1.2">
-<h3 data-number="14.1.2" class="anchored" data-anchor-id="error-test-case-1"><span class="header-section-number">14.1.2</span> Error test case #1</h3>
+<section id="error-test-case-1" class="level3" data-number="18.1.2">
+<h3 data-number="18.1.2" class="anchored" data-anchor-id="error-test-case-1"><span class="header-section-number">18.1.2</span> Error test case #1</h3>
 <ul>
 <li>A list with 2 classes, with 2 observations for each class</li>
 </ul>
@@ -970,8 +987,8 @@ Note
 <p><strong>Discussion:</strong> Does test-driven development afford testability? How might it do so? Let’s discuss controllability, observability, isolateablilty, and automatability in our case study of test-driven development of <code>count_classes</code>.</p>
 </section>
 </section>
-<section id="where-do-the-function-and-test-files-go" class="level3" data-number="14.1.3">
-<h3 data-number="14.1.3" class="anchored" data-anchor-id="where-do-the-function-and-test-files-go"><span class="header-section-number">14.1.3</span> Where do the function and test files go?</h3>
+<section id="where-do-the-function-and-test-files-go" class="level3" data-number="18.1.3">
+<h3 data-number="18.1.3" class="anchored" data-anchor-id="where-do-the-function-and-test-files-go"><span class="header-section-number">18.1.3</span> Where do the function and test files go?</h3>
 <p>In the workflow above, we skipped over where we should put our functions we will use in our data analyses, as well as where we put the tests for our function, and how we call those tests!</p>
 <p>We summarize the answer to these questions below, but <strong>highly recommend you explore and test out our demonstration GitHub repository that has a minimal working example of this: <a href="https://github.com/ttimbers/demo-tests-ds-analysis" class="uri">https://github.com/ttimbers/demo-tests-ds-analysis</a></strong></p>
 <p><strong>We also have a Python example here: <a href="https://github.com/ttimbers/demo-tests-ds-analysis-python" class="uri">https://github.com/ttimbers/demo-tests-ds-analysis-python</a></strong></p>
@@ -991,27 +1008,27 @@ Note
 </section>
 </section>
 </section>
-<section id="reproducibly-generating-test-data" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="reproducibly-generating-test-data"><span class="header-section-number">14.2</span> Reproducibly generating test data</h2>
+<section id="reproducibly-generating-test-data" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="reproducibly-generating-test-data"><span class="header-section-number">18.2</span> Reproducibly generating test data</h2>
 <p>As highlighted above, where at all possible, we should use code to generate reproducible, simple and tractable helper data for our tests. When using the <code>testthat</code> R package in R to automate the running of the test suite, the convention is to put such code in a file named <code>helper-FUNCTION_NAME.R</code> which should live in the <code>tests/testthat</code> directory.</p>
 </section>
-<section id="common-types-of-test-levels-in-data-science" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="common-types-of-test-levels-in-data-science"><span class="header-section-number">14.3</span> Common types of test levels in data science</h2>
+<section id="common-types-of-test-levels-in-data-science" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="common-types-of-test-levels-in-data-science"><span class="header-section-number">18.3</span> Common types of test levels in data science</h2>
 <ol type="1">
 <li><p>Unit tests - exercise individual components, usually methods or functions, in isolation. This kind of testing is usually quick to write and the tests incur low maintenance effort since they touch such small parts of the system. They typically ensure that the unit fulfills its contract making test failures more straightforward to understand. <em>This is the kind of tests we wrote for our example for <code>count_classes</code> above.</em></p></li>
 <li><p>Integration tests - exercise groups of components to ensure that their contained units interact correctly together. Integration tests touch much larger pieces of the system and are more prone to spurious failure. Since these tests validate many different units in concert, identifying the root-cause of a specific failure can be difficult. <em>In data science, this might be testing whether several functions that call each other, or run in sequence, work as expected (e.g., tests for a <code>tidymodel</code>’s <code>workflow</code> function)</em></p></li>
 </ol>
 <p><em>Source: <a href="https://github.com/ubccpsc/310/blob/master/resources/readings/Testing.md">CPSC 310 class notes from Reid Holmes, UBC</a></em></p>
 </section>
-<section id="observability-of-unit-outputs-in-data-science" class="level2" data-number="14.4">
-<h2 data-number="14.4" class="anchored" data-anchor-id="observability-of-unit-outputs-in-data-science"><span class="header-section-number">14.4</span> Observability of unit outputs in data science</h2>
+<section id="observability-of-unit-outputs-in-data-science" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="observability-of-unit-outputs-in-data-science"><span class="header-section-number">18.4</span> Observability of unit outputs in data science</h2>
 <p><strong>Observability</strong> is defined as the extent to which the response of the code under test (here our functions) to a test can be verified.</p>
 <p>Questions we should ask when trying to understand how observable our tests are: - What do we have to do to identify pass/fail? - How expensive is it to do this? - Can we extract the result from the code under test? - Do we know enough to identify pass/fail?</p>
 <p><em>Source: <a href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410 class notes from Reid Holmes, UBC</a></em></p>
 <p>These questions are easier to answer and address for code that creates simpler data science objects such as data frames, as in the example above. However, when our code under test does something more complex, such as create a plot object, these questions are harder to answer, or can be answered less fully…</p>
 <p>Let’s talk about how we might test code to create plots!</p>
-<section id="visual-regression-testing" class="level3" data-number="14.4.1">
-<h3 data-number="14.4.1" class="anchored" data-anchor-id="visual-regression-testing"><span class="header-section-number">14.4.1</span> Visual regression testing</h3>
+<section id="visual-regression-testing" class="level3" data-number="18.4.1">
+<h3 data-number="18.4.1" class="anchored" data-anchor-id="visual-regression-testing"><span class="header-section-number">18.4.1</span> Visual regression testing</h3>
 <p>When we use certain data visualization libraries, we might think that we can test all code that generates data visualizations similar to code that generates more traditional data objects, such as data frames.</p>
 <p>For example, when we create a scatter plot object with <code>ggplot2</code>, we can easily observe many of it’s values and attributes. We show an example below:</p>
 <div class="cell">
@@ -1206,8 +1223,8 @@ Exercise 1
 </div>
 </section>
 </section>
-<section id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="level3" data-number="14.4.2">
-<h3 data-number="14.4.2" class="anchored" data-anchor-id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">14.4.2</span> Example tests for altair plots (using object attributes not visual regression testing)</h3>
+<section id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="level3" data-number="18.4.2">
+<h3 data-number="18.4.2" class="anchored" data-anchor-id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">18.4.2</span> Example tests for altair plots (using object attributes not visual regression testing)</h3>
 <p>Here’s a function that creates a scatter plot:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter(df, x_axis, y_axis):</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    chart <span class="op">=</span> alt.Chart(df).mark_line().encode(</span>
@@ -1237,16 +1254,16 @@ Exercise 1
 <span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.encoding.x.axis.tickMinStep <span class="op">==</span> <span class="dv">1</span>, <span class="st">"x-axis small tick step should be 1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="testing-in-python-resources" class="level2" data-number="14.5">
-<h2 data-number="14.5" class="anchored" data-anchor-id="testing-in-python-resources"><span class="header-section-number">14.5</span> Testing in Python resources</h2>
+<section id="testing-in-python-resources" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="testing-in-python-resources"><span class="header-section-number">18.5</span> Testing in Python resources</h2>
 <ul>
 <li>testing in <a href="https://py-pkgs.org/05-testing">Python with Pytest</a> (from the <em>Python packages</em> book)</li>
 <li><a href="https://docs.pytest.org/en/6.2.x/contents.html">Pytest documentation</a></li>
 <li><a href="https://merely-useful.tech/py-rse/testing.html">Testing Software</a> (from the <em>Research Software Engineering with Python</em> book)</li>
 </ul>
 </section>
-<section id="attribution" class="level2" data-number="14.6">
-<h2 data-number="14.6" class="anchored" data-anchor-id="attribution"><span class="header-section-number">14.6</span> Attribution:</h2>
+<section id="attribution" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="attribution"><span class="header-section-number">18.6</span> Attribution:</h2>
 <ul>
 <li><a href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</li>
 <li><a href="http://tidynomicon.tech/">The Tidynomicon</a> by Greg Wilson</li>
@@ -1676,13 +1693,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/130-data-validation.html" class="pagination-link" aria-label="Data validation">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span>
+      <a href="../lectures/180-pipelines-make.html" class="pagination-link" aria-label="Data analysis pipelines with GNU Make">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../parts/automation.html" class="pagination-link" aria-label="Automation">
-        <span class="nav-page-text">Automation</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/141-evaluating-test-suite-quality.html" class="pagination-link" aria-label="Evaluating test suite quality">
+        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

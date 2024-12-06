@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>9&nbsp; Conda lock: reproducible lock files for conda environments – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>19&nbsp; Evaluating test suite quality – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/100-containerization-1.html" rel="next">
-<link href="../lectures/080-virtual-environments.html" rel="prev">
+<link href="../parts/packaging-ci-cd-publish.html" rel="next">
+<link href="../lectures/140-intro-to-testing-code.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -103,17 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-relevance-project.callout {
-  border-left-color: orange;
-}
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
 div.callout-activity.callout {
   border-left-color: blue;
 }
@@ -147,8 +136,48 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
 </style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -162,7 +191,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-conda-lock.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html">parts/software-testing-for-data-science.qmd</a></li><li class="breadcrumb-item"><a href="../lectures/141-evaluating-test-suite-quality.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -277,7 +306,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/090-conda-lock.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/090-conda-lock.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
   </div>
 </li>
@@ -370,7 +399,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/141-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/141-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
@@ -467,23 +496,33 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#what-is-conda-lock" id="toc-what-is-conda-lock" class="nav-link" data-scroll-target="#what-is-conda-lock"><span class="header-section-number">9.1</span> What is conda lock?</a></li>
-  <li><a href="#downsides-of-environment.yml" id="toc-downsides-of-environment.yml" class="nav-link" data-scroll-target="#downsides-of-environment.yml"><span class="header-section-number">9.2</span> Downsides of <code>environment.yml</code></a></li>
-  <li><a href="#what-conda-lock-aims-to-solve" id="toc-what-conda-lock-aims-to-solve" class="nav-link" data-scroll-target="#what-conda-lock-aims-to-solve"><span class="header-section-number">9.3</span> What conda lock aims to solve</a></li>
-  <li><a href="#create-conda-lock-files" id="toc-create-conda-lock-files" class="nav-link" data-scroll-target="#create-conda-lock-files"><span class="header-section-number">9.4</span> Create conda lock files</a></li>
-  <li><a href="#specifying-the-platform" id="toc-specifying-the-platform" class="nav-link" data-scroll-target="#specifying-the-platform"><span class="header-section-number">9.5</span> Specifying the platform</a></li>
-  <li><a href="#create-environments-from-conda-lock-files" id="toc-create-environments-from-conda-lock-files" class="nav-link" data-scroll-target="#create-environments-from-conda-lock-files"><span class="header-section-number">9.6</span> Create environments from conda lock files</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">9.7</span> Conclusion</a></li>
+  <li><a href="#coverage" id="toc-coverage" class="nav-link active" data-scroll-target="#coverage"><span class="header-section-number">19.2</span> Coverage</a>
+  <ul class="collapse">
+  <li><a href="#coverage-metrics" id="toc-coverage-metrics" class="nav-link" data-scroll-target="#coverage-metrics"><span class="header-section-number">19.2.1</span> Coverage metrics:</a></li>
+  <li><a href="#what-exactly-is-a-branch" id="toc-what-exactly-is-a-branch" class="nav-link" data-scroll-target="#what-exactly-is-a-branch"><span class="header-section-number">19.2.2</span> What exactly is a branch?</a></li>
+  </ul></li>
+  <li><a href="#how-are-line-and-branch-coverage-different" id="toc-how-are-line-and-branch-coverage-different" class="nav-link" data-scroll-target="#how-are-line-and-branch-coverage-different"><span class="header-section-number">19.3</span> How are line and branch coverage different?</a>
+  <ul class="collapse">
+  <li><a href="#but-wait-line-coverage-can-be-misleading" id="toc-but-wait-line-coverage-can-be-misleading" class="nav-link" data-scroll-target="#but-wait-line-coverage-can-be-misleading"><span class="header-section-number">19.3.1</span> But wait, line coverage can be misleading…</a></li>
+  <li><a href="#take-home-message" id="toc-take-home-message" class="nav-link" data-scroll-target="#take-home-message"><span class="header-section-number">19.3.2</span> Take home message:</a></li>
+  </ul></li>
+  <li><a href="#calculating-coverage-in-r" id="toc-calculating-coverage-in-r" class="nav-link" data-scroll-target="#calculating-coverage-in-r"><span class="header-section-number">19.4</span> Calculating coverage in R</a></li>
+  <li><a href="#calculating-coverage-in-python" id="toc-calculating-coverage-in-python" class="nav-link" data-scroll-target="#calculating-coverage-in-python"><span class="header-section-number">19.5</span> Calculating coverage in Python</a>
+  <ul class="collapse">
+  <li><a href="#calculating-coverage-in-python-1" id="toc-calculating-coverage-in-python-1" class="nav-link" data-scroll-target="#calculating-coverage-in-python-1"><span class="header-section-number">19.5.1</span> Calculating coverage in Python</a></li>
+  <li><a href="#how-does-coverage-in-python-actually-count-line-coverage" id="toc-how-does-coverage-in-python-actually-count-line-coverage" class="nav-link" data-scroll-target="#how-does-coverage-in-python-actually-count-line-coverage"><span class="header-section-number">19.5.2</span> How does <code>coverage</code> in Python actually count line coverage?</a></li>
+  <li><a href="#how-does-coverage-in-python-actually-branch-coverage" id="toc-how-does-coverage-in-python-actually-branch-coverage" class="nav-link" data-scroll-target="#how-does-coverage-in-python-actually-branch-coverage"><span class="header-section-number">19.5.3</span> How does <code>coverage</code> in Python actually branch coverage?</a></li>
+  </ul></li>
+  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">19.6</span> Attribution:</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/090-conda-lock.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html">parts/software-testing-for-data-science.qmd</a></li><li class="breadcrumb-item"><a href="../lectures/141-evaluating-test-suite-quality.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></h1>
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></h1>
 </div>
 
 
@@ -500,23 +539,193 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </header>
 
 
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
-<ol type="1">
-<li>Describe what a conda lock file is and how it differs from a conda <code>environment.yml</code> file</li>
-<li>Create a conda lock file from a conda environment for any of the major operating systems (Windows, linux, Mac) and processor chips (intel vs arm)</li>
-<li>Create a conda environment from a lock file</li>
-</ol>
+<p>We really want to know how well the code performs its expected tasks and how robustly it responds to unexpected inputs and situations. Answering this complex and qualitative question involves balancing tests value (e.g., protection against regressions and bugs introduced by refactoring) and tests cost (e.g., time for creation and upkeep, time to run the tests). This is hard to do, and takes a lot of time. Also, as hinted in the previous sentence, it is not very quantifiable.</p>
+<p>Code coverage is a way to more simply assess code quality - it is useful to answer the question does the test suite validate all the code? This is an assessment that also attempts to be more quantitative and is popular because it can often be calculated automatically. However it does not factor time or test value, so we have to take it with a grain of salt.</p>
+<p><em>Source: <a href="https://github.com/ubccpsc/310/blob/master/resources/readings/WhiteBoxTesting.md">CPSC 310 class notes from Reid Holmes, UBC</a></em></p>
+<blockquote class="blockquote">
+<h2 id="black-box-white-box-testing" data-number="19.1" class="anchored"><span class="header-section-number">19.1</span> Black box &amp; white box testing</h2>
+<p>Up until now, we have primarily been focused on deriving tests when thinking about the code specifications - what is the functionality of the code, and does it do what we expect. For example, most of the tests we wrote for the <code>count_classes</code> function would fall under the guise of <strong>black box testing</strong>. After we follow our TDD-inspired workflow for writing functions and tests for data science, we may want to look inside our code and do some testing of how it is implemented. This would fall under the umbrella of <strong>white box testing</strong> and code coverage can be very helpful here to identify portions of code that is not being tested well, or at all.</p>
+<p><strong>Black box testing:</strong> is a method of software testing that examines the functionality of an application without peering into its internal structures or workings. This method of test can be applied virtually to every level of software testing: unit, integration, system and acceptance. It is sometimes referred to as specification-based testing.</p>
+<p><strong>White box testing:</strong> is a method of software testing that tests internal structures or workings of an application, as opposed to its functionality (<em>i.e.</em> black-box testing). In white-box testing an internal perspective of the system, as well as programming skills, are used to design test cases.</p>
+<p><em>Source: <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></em></p>
+</blockquote>
+<section id="coverage" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="coverage"><span class="header-section-number">19.2</span> Coverage</h2>
+<p><strong>Definition:</strong> Proportion of system being executed by the test suite.</p>
+<ul>
+<li>usually reported as a percentage: <span class="math display">\[Coverage = \frac{covered}{(covered + uncovered)} * 100\]</span></li>
+</ul>
+<section id="coverage-metrics" class="level3" data-number="19.2.1">
+<h3 data-number="19.2.1" class="anchored" data-anchor-id="coverage-metrics"><span class="header-section-number">19.2.1</span> Coverage metrics:</h3>
+<p>There are many, but here are the ones our automated tools in this course will calculate for you:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 51%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Description</th>
+<th>Dependent upon control flow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>line</td>
+<td>lines of code that tests execute</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>branch</td>
+<td>number of branches (independent code segments) that tests execute</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="what-is-conda-lock" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="what-is-conda-lock"><span class="header-section-number">9.1</span> What is conda lock?</h2>
-<p>Conda lock is a tool that is able to resolve all the dependencies for an environment and save them into a fully reproducible lock file for conda environments. It’s similar to an <code>environment.yml</code> file in that both files will specify packages in an environment, but the conda lock file specifically tells the installer everything specified in the file is exactly what the platform needs to install the environment.</p>
+<section id="what-exactly-is-a-branch" class="level3" data-number="19.2.2">
+<h3 data-number="19.2.2" class="anchored" data-anchor-id="what-exactly-is-a-branch"><span class="header-section-number">19.2.2</span> What exactly is a branch?</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Branch 1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (condition_met) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Branch 2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  z</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Adapted from: <a href="http://www.ncover.com/blog/code-coverage-metrics-branch-coverage/" class="uri">http://www.ncover.com/blog/code-coverage-metrics-branch-coverage/</a></em></p>
 </section>
-<section id="downsides-of-environment.yml" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="downsides-of-environment.yml"><span class="header-section-number">9.2</span> Downsides of <code>environment.yml</code></h2>
-<p>First let’s review the <code>environment.yml</code> and point out some of its problems. Conda’s <code>environment.yml</code> file is one way to create a reproducible conda environment.</p>
-<p>This file can be created with the <code>conda env export</code> command.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="how-are-line-and-branch-coverage-different" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="how-are-line-and-branch-coverage-different"><span class="header-section-number">19.3</span> How are line and branch coverage different?</h2>
+<p>Consider the same example we just saw and the unit test below, let’s manually calculate the coverage using line and branch coverage metrics:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="sc">|</span>  my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="sc">|</span>  <span class="co"># Branch 1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>  <span class="sc">|</span>    <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">"pony"</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>  <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>  <span class="sc">|</span>    }</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="sc">|</span>    <span class="co"># Branch 2</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>  <span class="sc">|</span>    <span class="cf">else</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span> <span class="sc">|</span>    }</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">|</span>    z</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span> <span class="sc">|</span>  }</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="sc">|</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span> <span class="sc">|</span>  <span class="fu">test_that</span>(<span class="st">"ponies are actually unicorns"</span>, {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">|</span>    <span class="fu">expect_equal</span>(<span class="fu">my_function</span>(<span class="st">"pony"</span>), (<span class="st">"Actually a unicorn"</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span> <span class="sc">|</span>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Note: function definitions are not counted as lines when calculating coverage</em></p>
+<section id="using-branch-as-the-coverage-metric" class="level4">
+<h4 class="anchored" data-anchor-id="using-branch-as-the-coverage-metric">Using branch as the coverage metric:</h4>
+<p>Branch 1 (lines 3-5) is covered by the test, because <code>if (x == "pony")</code> evaluates to true. Therefore we have one branch covered, and one branch uncovered (lines 8-10), resulting in 50% branch coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 50\%\)</span></p>
+</section>
+<section id="using-line-as-the-coverage-metric" class="level4">
+<h4 class="anchored" data-anchor-id="using-line-as-the-coverage-metric">Using line as the coverage metric:</h4>
+<p>Lines 3-5 and 12 are executed, and lines 8-10 are not (function definitions are not typically counted in line coverage). There fore we have 4 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{4}{(4 + 3)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 57\%\)</span></p>
+<p>In this case, both metrics give us relatively similar estimates of code coverage.</p>
+</section>
+<section id="but-wait-line-coverage-can-be-misleading" class="level3" data-number="19.3.1">
+<h3 data-number="19.3.1" class="anchored" data-anchor-id="but-wait-line-coverage-can-be-misleading"><span class="header-section-number">19.3.1</span> But wait, line coverage can be misleading…</h3>
+<p>Let’s alter our function and re-calculate line and branch coverage:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="sc">|</span>  my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="sc">|</span>  <span class="co"># Branch 1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>  <span class="sc">|</span>    <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">"pony"</span>) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>  <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>  <span class="sc">|</span>      <span class="fu">print</span>(z)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"some important message"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"another important message"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"a less important message"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"just makin' stuff up here..."</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"out of things to say..."</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"how creative can I be..."</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"I guess not very..."</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="sc">|</span>    }</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span> <span class="sc">|</span>    <span class="co"># Branch 2</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">|</span>    <span class="cf">else</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span> <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span> <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span> <span class="sc">|</span>    }</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span> <span class="sc">|</span>    z</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span> <span class="sc">|</span>  }</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span> <span class="sc">|</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span> <span class="sc">|</span>  <span class="fu">test_that</span>(<span class="st">"ponies are actually unicorns"</span>, {</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span> <span class="sc">|</span>    <span class="fu">expect_equal</span>(<span class="fu">my_function</span>(<span class="st">"pony"</span>), (<span class="st">"Actually a unicorn"</span>))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span> <span class="sc">|</span>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="using-branch-as-the-coverage-metric-1" class="level4">
+<h4 class="anchored" data-anchor-id="using-branch-as-the-coverage-metric-1">Using branch as the coverage metric:</h4>
+<p>Branch 1 (lines 3-13) is covered by the test, because <code>if (x == "pony")</code> evaluates to true. Therefore we have one branch covered, and one branch uncovered (lines 16-18), resulting in 50% branch coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 50\%\)</span></p>
+</section>
+<section id="using-line-as-the-coverage-metric-1" class="level4">
+<h4 class="anchored" data-anchor-id="using-line-as-the-coverage-metric-1">Using line as the coverage metric:</h4>
+<p>Lines 3-13 and 20 are executed, and lines 16-18 are not (function definitions are not typically counted in line coverage). There fore we have 12 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{12}{(12 + 3)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 80\%\)</span></p>
+<p>In this case, the different metrics give us very different estimates of code coverage! 🤯</p>
+</section>
+</section>
+<section id="take-home-message" class="level3" data-number="19.3.2">
+<h3 data-number="19.3.2" class="anchored" data-anchor-id="take-home-message"><span class="header-section-number">19.3.2</span> Take home message:</h3>
+<p>Use branch coverage when you can, especially if your code uses control flow!</p>
+</section>
+</section>
+<section id="calculating-coverage-in-r" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="calculating-coverage-in-r"><span class="header-section-number">19.4</span> Calculating coverage in R</h2>
+<p>We use the <a href="https://covr.r-lib.org/"><code>covr</code></a> R package to do this.</p>
+<p>Install via R console:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"covr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To calculate line coverage and have it show in the viewer pane in RStudio:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covr<span class="sc">::</span><span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Currently <code>covr</code> does not have the functionality to calculate branch coverage. Thus this is up to you in R to calculate this by hand if you really want to know.</p>
+<blockquote class="blockquote">
+<p>Why has this not been implemented? It has been in an now unsupported package (see <a href="https://github.com/MangoTheCat/testCoverage">here</a>), but its implementation was too complicated for others to understand. Automating the calculation of branch coverage is non-trivial, and this is a perfect demonstration of that.</p>
+</blockquote>
+</section>
+<section id="calculating-coverage-in-python" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="calculating-coverage-in-python"><span class="header-section-number">19.5</span> Calculating coverage in Python</h2>
+<p>We use the plugin tool <a href="https://github.com/pytest-dev/pytest-cov"><code>pytest-cov</code></a> to do this.</p>
+<p>Install as a package via conda:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install pytest-cov</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="calculating-coverage-in-python-1" class="level3" data-number="19.5.1">
+<h3 data-number="19.5.1" class="anchored" data-anchor-id="calculating-coverage-in-python-1"><span class="header-section-number">19.5.1</span> Calculating coverage in Python</h3>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--cov</span><span class="op">=&lt;</span>directory<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--cov-branch</span> <span class="at">--cov</span><span class="op">=&lt;</span>directory<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="how-does-coverage-in-python-actually-count-line-coverage" class="level3" data-number="19.5.2">
+<h3 data-number="19.5.2" class="anchored" data-anchor-id="how-does-coverage-in-python-actually-count-line-coverage"><span class="header-section-number">19.5.2</span> How does <code>coverage</code> in Python actually count line coverage?</h3>
+<ul>
+<li>the output from <code>poetry run pytest --cov=src</code> gives a table that looks like this:</li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">----------</span> coverage: platform darwin, python 3.7.6-final-0 <span class="at">-----------</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Name</span>                  Stmts   Miss  Cover</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------------------------------------</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">big_abs/big_abs.py</span>        8      2    75%</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------------------------------------</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TOTAL</span>                     9      2    78%</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the column labelled as “Stmts”, coverage is calculating all possible line jumps that could have been executed (these line jumps are sometimes called arcs). This is essentially covered + uncovered lines of code.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -527,187 +736,64 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can read more on managing conda environments in the conda documentation: &lt;<a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html" class="uri">https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html</a></p>
+<p>This leads coverage to count two statements on one line that are separated by a “;” (e.g., print(“hello”); print(“there”)) as one statement, as well as calculating a single statement that is spread across two lines as one statement.</p>
 </div>
 </div>
-<p>One of the issues with this method is that it will capture all the installed packages and dependencies in the current conda environment into an <code>environment.yml</code>. That sounds great! Until you realize that it also captures any needed OS-specific dependencies, and also writes a <code>prefix</code> line in the file. Both of these prevent a fully reproducible file across multiple machines and collaborators.</p>
-<p>We can partially solve this issue by using the <code>--from-history</code> flag.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This will only include packages that were explicitly installed, without the dependencies. If you manually go remove the <code>prefix</code> line, this is a good way to create an <code>environment.yml</code> file that is also compatible across platforms.</p>
-<p>Finally, even if you manually curate an <code>environment.yml</code>, you still have to go through the conda (or mamba) solver to make sure all listed package versions are compatible with each other, and install any missing dependencies. The main issue is, the solver still takes time.</p>
+<p>In the column labelled as “Miss”, this is the number of line jumps not executed by the tests. So our covered lines of code is “Stmts” - “Miss”.</p>
+<p>The coverage percentage in this scenario is calculated by: <span class="math display">\[Coverage = \frac{(Stmts - Miss)}{Stmts}\]</span> <span class="math display">\[Coverage = \frac{8 - 2}{8} * 100 = 75\%\]</span></p>
 </section>
-<section id="what-conda-lock-aims-to-solve" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="what-conda-lock-aims-to-solve"><span class="header-section-number">9.3</span> What conda lock aims to solve</h2>
-<p>When we use <code>conda install</code> to install a package, the solver will look up the version of the package you are installing and make sure any currently installed package version are compatible with the package. In this way using <code>conda env export</code> will report the same result of a reproducible environment.</p>
-<p>But, when we ran <code>conda install</code>, we have already spent the time for the solver to do its work. The main problem conda lock solves is specifying an environment file similar to <code>environment.yml</code>, but it also signals to the installer that the solver has already been run and does not need to run again. This creates an environment file that can also be used to speed up subsequent environment setups.</p>
-<p>When we try to install from an <code>environment.yml</code> file, there’s no guarantee that the packages listed include the versions full dependency tree. Conda lock does provide that guarantee that all the packages listed in the file will have a version and full dependency tree. That’s why the solver does not need to run again.</p>
-<p>Finally, you can tell conda lock to do the solving for other platforms. So the solver can be run for operating systems other than the one you are working in. This is useful when you are collaborating with people using different platforms and also creating environment files (i.e., lock files) for docker containers.</p>
-<div class="callout callout-style-default callout-definition callout-titled">
+<section id="how-does-coverage-in-python-actually-branch-coverage" class="level3" data-number="19.5.3">
+<h3 data-number="19.5.3" class="anchored" data-anchor-id="how-does-coverage-in-python-actually-branch-coverage"><span class="header-section-number">19.5.3</span> How does <code>coverage</code> in Python actually branch coverage?</h3>
+<ul>
+<li>the output from <code>poetry run pytest --cov-branch --cov=src</code> gives a table that looks like this:</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">----------</span> coverage: platform darwin, python 3.7.6-final-0 <span class="at">-----------</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Name</span>                  Stmts   Miss Branch BrPart  Cover</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">big_abs/big_abs.py</span>        8      2      6      3    64%</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TOTAL</span>                     9      2      6      3    67%</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the column labelled as “Branch”, coverage is actually counting the number of possible jumps from branch points. This is essentially covered + uncovered branches of code.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Conda Lock
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A <code>conda-lock</code> file is a file that specifies all the packages, its versions, and the full dependency tree to recreate a conda environment. It’s main benefit is that when using the conda-lock file, the solver no longer needs to be run, and can be created to target specific operating system platforms.</p>
+<p>Because coverage is using line jumps to count branches, each <code>if</code> inherently has an <code>else</code> even if its not explicitly written in the code.</p>
 </div>
 </div>
-<p>You can learn more about conda-lock in the documentation: <a href="https://conda.github.io/conda-lock/" class="uri">https://conda.github.io/conda-lock/</a></p>
-</section>
-<section id="create-conda-lock-files" class="level2" data-number="9.4">
-<h2 data-number="9.4" class="anchored" data-anchor-id="create-conda-lock-files"><span class="header-section-number">9.4</span> Create conda lock files</h2>
-<p>Conda lock is a separate tool that needs to be installed first, it’s not installed by default in the base conda environment. Conda-lock also relies on a source file, we’ll be using <code>environment.yml</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge conda-lock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-exercise callout-titled">
+<p>In the column labelled as “BrPart”, this is the number of of possible jumps from branch points executed by the tests. This is essentially our covered branches of code.</p>
+<p>The branch coverage percentage in this tool is calculated by:</p>
+<p><span class="math display">\[Coverage = \frac{(Stmts\:executed + BrPart)}{(Stmts + Branch)}\]</span></p>
+<p><span class="math display">\[Coverage = \frac{((Stmts - Miss) + BrPart)}{(Stmts + Branch)}\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Exercise 1
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You may want to install <code>conda-lock</code> into a new environment, especially if you want to follow along and do the exercises in this chapter.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> condalock conda-lock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Since you are using a <code>conda install</code>, this will take some time for the solver to resolve. Note, we are just installing <code>conda-lock</code> in the environment, we are not installing python yet.</p>
-<p>Don’t forget to activate your environment</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate condalock</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can see this formula actually includes both line and branch coverage in this calculation.</p>
 </div>
 </div>
-<p>When creating conda-lock files there are 2 different types of files that can be created, <code>conda-lock.yml</code> or <code>conda-&lt;platform&gt;.lock</code> file. The <code>conda-lock.yml</code> is the newer unified multi-platform lockfile that is the default generated from conda-lock &gt; 1.0. The <code>conda-&lt;platform&gt;.lock</code> is the older platform specific lock files you can create, e.g., <code>conda-linux-64.lock</code>.</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 2
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Let’s create our first <code>conda-lock.yml</code> file</p>
-<section id="step-1-environment-setup" class="level4">
-<h4 class="anchored" data-anchor-id="step-1-environment-setup">Step 1: Environment Setup</h4>
-<p>Let’s populate our current environment by installing pandas, and create an <code>environment.yml</code> file.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install pandas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We’ll take a note here on how long this took to install. It may take about 14 seconds depending on your system and computer specs.</p>
-<p>Let’s save our current environment into a file</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="op">&gt;</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You should see something like this</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> condalock</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-lock</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pandas</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">prefix</span><span class="kw">:</span><span class="at"> /home/dan/.pyenv/versions/miniforge3-latest/envs/condalock</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You’ll notice that <code>python</code> is not listed in the <code>environment.yml</code> file. That’s because we only explicitly installed <code>pandas</code>, <code>python</code> is installed as part of the dependency resolution.</p>
-<p>You’ll see <code>python</code> in the environment if you search for it in the environment.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env export <span class="kw">|</span> <span class="fu">grep</span> python</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> brotli-python=1.1.0=py313h46c70d0_2</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> gitpython=3.1.43=pyhd8ed1ab_0</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> msgpack-python=1.1.0=py313h33d0bda_0</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> python=3.13.0=h9ebbce0_100_cp313</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> python-dateutil=2.9.0=pyhd8ed1ab_0</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> python-tzdata=2024.2=pyhd8ed1ab_0</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> python_abi=3.13=5_cp313</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>So for <code>big_abs/big_abs.py</code> 64% was calculated from: <span class="math display">\[Coverage = \frac{((8 - 2) + 3)}{(8 + 6)} * 100 = 64\%\]</span></p>
 </section>
-<section id="step-2-create-a-conda-lock.yml-file" class="level4">
-<h4 class="anchored" data-anchor-id="step-2-create-a-conda-lock.yml-file">Step 2: Create a <code>conda-lock.yml</code> file</h4>
-<p>We will now use the <code>environment.yml</code> file to create our <code>conda-lock.yml</code> file.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> lock <span class="at">--file</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You’ll see that it will create a multi-platform lock file. We can look into only creating platform specific lock files next.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda-lock lock <span class="at">--file</span> environment.yml</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Locking</span> dependencies for [<span class="st">'linux-64'</span>, <span class="st">'osx-64'</span>, <span class="st">'osx-arm64'</span>, <span class="st">'win-64'</span>]...</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:conda_lock.conda_solver:linux-64</span> using specs [<span class="st">'conda-lock'</span>, <span class="st">'pandas'</span>]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:conda_lock.conda_solver:osx-64</span> using specs [<span class="st">'conda-lock'</span>, <span class="st">'pandas'</span>]</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:conda_lock.conda_solver:osx-arm64</span> using specs [<span class="st">'conda-lock'</span>, <span class="st">'pandas'</span>]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:conda_lock.conda_solver:win-64</span> using specs [<span class="st">'conda-lock'</span>, <span class="st">'pandas'</span>]</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">-</span> Install lock using: conda-lock install <span class="at">--name</span> YOURENV conda-lock.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You will now see a <code>conda-lock.yml</code> file for all the platforms.</p>
-<p>This particular file (on this specific machine) has almost 5000 lines</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> conda-lock.yml</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">4944</span> conda-lock.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you run into an error, try manually deleting any exiting <code>conda-lock.yml</code> file in your directory and try again.</p>
-</div>
-</div>
 </section>
-</div>
-</div>
-<p>You can learn more about <code>conda-lock</code> flags (i.e., options) in the documentation: <a href="https://conda.github.io/conda-lock/flags/" class="uri">https://conda.github.io/conda-lock/flags/</a></p>
-<p>The CLI Reference will list all the commands for <code>conda-lock</code>: <a href="https://conda.github.io/conda-lock/cli/gen/" class="uri">https://conda.github.io/conda-lock/cli/gen/</a></p>
-</section>
-<section id="specifying-the-platform" class="level2" data-number="9.5">
-<h2 data-number="9.5" class="anchored" data-anchor-id="specifying-the-platform"><span class="header-section-number">9.5</span> Specifying the platform</h2>
-<p>By default you’ll see <code>conda-lock</code> solve for multiple dependencies: <code>['linux-64', 'osx-64', 'osx-arm64', 'win-64']</code>. Depending on the size of your environment, this may take a long time, especially if you only need to target a single platform (or a subset of platforms). we can use the <code>-p</code> or <code>--platform</code> for the <code>lock</code> command.</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 3
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>We can generate a subset of platforms with the <code>-p</code> or <code>--platform</code> flag. If you are doing this example after the previous example, remember to delete the existing <code>conda-lock.yml</code> file.</p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Caution
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Be careful, the <code>-p</code> flag does not mean the same for all the <code>conda-lock</code> commands.</p>
-</div>
-</div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> lock <span class="at">--file</span> environment.yml <span class="at">-p</span> linux-64</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Our new files has much fewer lines, because it contains packages for fewer platforms.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> conda-lock.yml</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1403</span> conda-lock.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</section>
-<section id="create-environments-from-conda-lock-files" class="level2" data-number="9.6">
-<h2 data-number="9.6" class="anchored" data-anchor-id="create-environments-from-conda-lock-files"><span class="header-section-number">9.6</span> Create environments from conda lock files</h2>
-<p>Now that we have a <code>conda-lock.yml</code> file, we can use it to create a new environment with the <code>install</code> command</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise 4
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Let’s use our <code>conda-lock.yml</code> file to create a new environment called <code>condalock-new</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> install <span class="at">--name</span> condalock-new conda-lock.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>When we timed this install, the new environment was created in 6 seconds. This much faster than using <code>conda install</code> and relying on the solver.</p>
-<p>We can now activate this environment with <code>conda activate condalock-new</code></p>
-</div>
-</div>
-</section>
-<section id="conclusion" class="level2" data-number="9.7">
-<h2 data-number="9.7" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">9.7</span> Conclusion</h2>
-<p>There are many ways of creating a reproducible compute environment. <code>conda</code> comes with a mechanism to create an <code>environment.yml</code> file, but there are a few downsides with using <code>environment.yml</code> with <code>conda</code>, mainly sharing environments causes everyone to go through the same solving process. <code>conda-lock</code> uses the <code>environment.yml</code> file to create a different kind of environment file, <code>conda-lock.yml</code>, and provides a way where only one person needs to compute the dependency solver, everyone else who uses this new file to create or update an environment will have a much faster environment setup.</p>
+<section id="attribution" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="attribution"><span class="header-section-number">19.6</span> Attribution:</h2>
+<ul>
+<li><a href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</li>
+<li><a href="http://tidynomicon.tech/">The Tidynomicon</a> by Greg Wilson</li>
+<li><a href="https://github.com/ubccpsc/310/tree/2019sept">CPSC 310</a> and <a href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410</a> class notes by Reid Holmes, UBC</li>
+</ul>
 
 
 </section>
@@ -1132,13 +1218,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/080-virtual-environments.html" class="pagination-link" aria-label="Virtual environments">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></span>
+      <a href="../lectures/140-intro-to-testing-code.html" class="pagination-link" aria-label="Introduction to testing code for data science">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/100-containerization-1.html" class="pagination-link" aria-label="Introduction to containerization">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../parts/packaging-ci-cd-publish.html" class="pagination-link" aria-label="Packages and Continuous Integration + Deployment">
+        <span class="nav-page-text">Packages and Continuous Integration + Deployment</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
