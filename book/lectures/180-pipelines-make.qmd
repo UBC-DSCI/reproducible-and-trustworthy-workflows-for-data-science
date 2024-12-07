@@ -348,6 +348,28 @@ clean :
 	rm -rf report/count_report.html
 ```
 
+## PHONY Targets
+
+So far our make files contains multiple targets.
+Some of these targets point to the name of a file,
+and others, e.g., `clean` and `all`, are not names of a particular file.
+When we have a target that is really a name for a recipe, these are known as phony targets.
+
+The main reason for phony targets is to avoid a conflict with a file of the same name.
+In order to create a phony garget we use the `.PHONY` at the top of our `Makefile`
+and space separate the target names.
+By convention we list all the phony targets at the top of the file in 1 place.
+Sometimes you may see multiple `.PHONY:` calls right above the recipe for a phony target.
+Pay attention to how it is spelled, `.PHONY`.
+
+In order to declare our `clean` and `all` targets as a phony target we would put this
+line at the top of our `Makefile`
+
+```make
+.PHONY: all clean
+```
+
+
 ## Improving the Makefile
 
 Adding `PHONY` targets to run parts of the analysis (e.g., just counting the words,
@@ -374,6 +396,8 @@ creating the following PHONY targets:
 
 # example usage:
 # make all
+
+.PHONY: all dats figs clean-dats clean-figs clean-all
 
 # run entire analysis
 all: report/count_report.html
