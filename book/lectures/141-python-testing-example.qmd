@@ -14,7 +14,7 @@ as well as to examine whether there are any class imbalances
 that we may need to deal with before tuning our models.
 
 #### 1. Write the function specifications and documentation - but do not implement the function:
-The first thing we should do is write the function specifications and documentation. This can effectively represented by an empty function and `roxygen2`-styled documentation in R as shown below:
+The first thing we should do is write the function specifications and documentation. This can effectively represented by an empty function and docstrings in Python as shown below:
 
 ```{python}
 # translated my R Code to Python using ChatGPT.
@@ -348,8 +348,6 @@ two_classes_2_and_1_obs_output = pd.DataFrame(
 
 one_class_2_obs_output = pd.DataFrame({"class": ["class1"], "count": [2]})
 
-empty_df_output = pd.DataFrame({"class": [], "count": []})
-
 ```
 
 ##### 4. Write the tests to evaluate your function based on the planned test cases and test data:
@@ -372,13 +370,13 @@ import pytest
 def test_count_classes_succes():
   assert isinstance(count_classes(two_classes_2_obs, "class_labels"), pd.DataFrame)
   assert count_classes(two_classes_2_obs, "class_labels").equals(two_classes_2_obs_output)
-  assert count_classes(two_classes_1_obs, "class_labels").equals(two_classes_1_obs_output)
+  assert count_classes(two_classes_2_and_1_obs, "class_labels").equals(two_classes_2_and_1_obs_output)
 
 # `count_classes` should return an empty data frame, or tibble,
 # if the input to the function is an empty data frame
 def test_count_classes_edge():
   assert count_classes(one_class_2_obs, "class_labels").equals(one_class_2_obs_output)
-  assert count_classes(empty_df, "class_labels").equals(empty_df_output)
+  assert count_classes(empty_df, "class_labels").empty
 
 # `count_classes` should throw an error when incorrect types
 # are passed to the data frame argument
@@ -459,13 +457,13 @@ import pytest
 def test_count_classes_succes():
   assert isinstance(count_classes(two_classes_2_obs, "class_labels"), pd.DataFrame)
   assert count_classes(two_classes_2_obs, "class_labels").equals(two_classes_2_obs_output)
-  assert count_classes(two_classes_1_obs, "class_labels").equals(two_classes_1_obs_output)
+  assert count_classes(two_classes_2_and_1_obs, "class_labels").equals(two_classes_2_and_1_obs_output)
 
 # `count_classes` should return an empty data frame, or tibble,
 # if the input to the function is an empty data frame
 def test_count_classes_edge():
   assert count_classes(one_class_2_obs, "class_labels").equals(one_class_2_obs_output)
-  assert count_classes(empty_df, "class_labels").equals(empty_df_output)
+  assert count_classes(empty_df, "class_labels").empty
 
 # `count_classes` should throw an error when incorrect types
 # are passed to the data frame argument
@@ -509,7 +507,9 @@ We can do that via:
 
 ```{python}
 import sys
-sys.path.append('..')
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from src.count_classes import count_classes
 ```
 
 #### Where do the tests go?
