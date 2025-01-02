@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>36&nbsp; Copyright and licenses – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>25&nbsp; Packaging: R – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/230-reproducibility-wrap-up.html" rel="next">
-<link href="../parts/licenses-copyright-wrapup.html" rel="prev">
+<link href="../lectures/193-packaging-conclusion.html" rel="next">
+<link href="../lectures/191-packaging-python.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,15 +103,15 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-relevance-project.callout {
-  border-left-color: orange;
+div.callout-definition.callout {
+  border-left-color: pink;
 }
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
 }
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 div.callout-activity.callout {
@@ -91,17 +125,6 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -111,6 +134,17 @@ div.callout-exercise.callout-style-default > .callout-header {
 div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
   content: '🏋️';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 </style>
@@ -128,7 +162,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/192-packaging-r.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -383,7 +417,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
@@ -482,7 +516,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
@@ -533,45 +567,28 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</a></li>
-  <li><a href="#full-disclosure---i-am-not-a-lawyer" id="toc-full-disclosure---i-am-not-a-lawyer" class="nav-link" data-scroll-target="#full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</a></li>
-  <li><a href="#software-falls-under-copyright-law" id="toc-software-falls-under-copyright-law" class="nav-link" data-scroll-target="#software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</a></li>
-  <li><a href="#canadian-copyright-law-rights-for-software-code" id="toc-canadian-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</a></li>
-  <li><a href="#us-copyright-law-rights-for-software-code" id="toc-us-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</a></li>
-  <li><a href="#who-has-copyright-ownership" id="toc-who-has-copyright-ownership" class="nav-link" data-scroll-target="#who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#essential-r-package-files" id="toc-essential-r-package-files" class="nav-link" data-scroll-target="#essential-r-package-files"><span class="header-section-number">25.1</span> Essential R package files</a></li>
+  <li><a href="#getting-to-know-a-description-files-contents" id="toc-getting-to-know-a-description-files-contents" class="nav-link" data-scroll-target="#getting-to-know-a-description-files-contents"><span class="header-section-number">25.2</span> Getting to know a <code>DESCRIPTION</code> file’s contents</a></li>
+  <li><a href="#manrd-files" id="toc-manrd-files" class="nav-link" data-scroll-target="#manrd-files"><span class="header-section-number">25.3</span> <code>man/*Rd</code> files</a></li>
+  <li><a href="#namespace-file" id="toc-namespace-file" class="nav-link" data-scroll-target="#namespace-file"><span class="header-section-number">25.4</span> <code>NAMESPACE</code> file</a></li>
+  <li><a href="#dealing-with-other-package-dependencies-in-your-package" id="toc-dealing-with-other-package-dependencies-in-your-package" class="nav-link" data-scroll-target="#dealing-with-other-package-dependencies-in-your-package"><span class="header-section-number">25.5</span> Dealing with other package dependencies in your package</a>
   <ul class="collapse">
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-for-hire" id="toc-who-owns-the-code-in-the-case-of-work-made-for-hire" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</a></li>
-  <li><a href="#implications-when-you-forgoe-copyright-ownership" id="toc-implications-when-you-forgoe-copyright-ownership" class="nav-link" data-scroll-target="#implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</a></li>
+  <li><a href="#dealing-with-package-dependencies-in-r" id="toc-dealing-with-package-dependencies-in-r" class="nav-link" data-scroll-target="#dealing-with-package-dependencies-in-r"><span class="header-section-number">25.5.1</span> Dealing with package dependencies in R</a></li>
   </ul></li>
-  <li><a href="#why-do-i-need-a-license" id="toc-why-do-i-need-a-license" class="nav-link" data-scroll-target="#why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</a></li>
-  <li><a href="#why-do-i-need-a-license-contd" id="toc-why-do-i-need-a-license-contd" class="nav-link" data-scroll-target="#why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</a></li>
-  <li><a href="#how-do-licenses-work" id="toc-how-do-licenses-work" class="nav-link" data-scroll-target="#how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</a></li>
-  <li><a href="#how-to-choose-a-license" id="toc-how-to-choose-a-license" class="nav-link" data-scroll-target="#how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</a></li>
-  <li><a href="#how-to-choose-a-license-contd" id="toc-how-to-choose-a-license-contd" class="nav-link" data-scroll-target="#how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</a></li>
-  <li><a href="#choosing-a-software-license" id="toc-choosing-a-software-license" class="nav-link" data-scroll-target="#choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</a></li>
-  <li><a href="#open-source-software-is-used-in-business" id="toc-open-source-software-is-used-in-business" class="nav-link" data-scroll-target="#open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</a>
-  <ul class="collapse">
-  <li><a href="#an-ethical-license-for-open-source-projects" id="toc-an-ethical-license-for-open-source-projects" class="nav-link" data-scroll-target="#an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</a></li>
-  </ul></li>
-  <li><a href="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" id="toc-how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="nav-link" data-scroll-target="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</a></li>
-  <li><a href="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" id="toc-but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="nav-link" data-scroll-target="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</a>
-  <ul class="collapse">
-  <li><a href="#creative-commons-licences" id="toc-creative-commons-licences" class="nav-link" data-scroll-target="#creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</a></li>
-  </ul></li>
-  <li><a href="#explore-some-licenses" id="toc-explore-some-licenses" class="nav-link" data-scroll-target="#explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</a></li>
-  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">36.17</span> Resources:</a></li>
-  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">36.18</span> Attribution:</a></li>
+  <li><a href="#package-documentation-for-r" id="toc-package-documentation-for-r" class="nav-link" data-scroll-target="#package-documentation-for-r"><span class="header-section-number">25.6</span> Package documentation for R</a></li>
+  <li><a href="#code-level-documentation-roxygen-style-comments" id="toc-code-level-documentation-roxygen-style-comments" class="nav-link" data-scroll-target="#code-level-documentation-roxygen-style-comments"><span class="header-section-number">25.7</span> Code-level documentation (Roxygen-style comments)</a></li>
+  <li><a href="#vignettes" id="toc-vignettes" class="nav-link" data-scroll-target="#vignettes"><span class="header-section-number">25.8</span> Vignettes</a></li>
+  <li><a href="#package-websites-via-pkgdown" id="toc-package-websites-via-pkgdown" class="nav-link" data-scroll-target="#package-websites-via-pkgdown"><span class="header-section-number">25.9</span> Package websites (via <code>pkgdown</code>)</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/192-packaging-r.html"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></h1>
+<h1 class="title"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></h1>
 </div>
 
 
@@ -588,260 +605,182 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="36.1">
-<h2 data-number="36.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</h2>
-<p>By the end of this lecture, students should be able to: - Explain who owns the copyright of code they write in a give situation, and why - Choose an appropriate license for software (i.e., packages or analysis code) - Choose an appropriate license for your non-software materials</p>
-</section>
-<section id="full-disclosure---i-am-not-a-lawyer" class="level2" data-number="36.2">
-<h2 data-number="36.2" class="anchored" data-anchor-id="full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</h2>
-</section>
-<section id="software-falls-under-copyright-law" class="level2" data-number="36.3">
-<h2 data-number="36.3" class="anchored" data-anchor-id="software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</h2>
-<ul>
-<li><p>In both the US and Canada, software code falls under copyright law</p></li>
-<li><p>knowing who owns the copyright of software code is critical because the owner controls if and how the code may be:</p>
-<ul>
-<li>copied</li>
-<li>distributed</li>
-<li>sold</li>
-<li>modified</li>
-<li>essentially, made profitable</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Copyright protects only the language and words used to express ideas, concepts and themes, not the ideas, concepts or themes themselves.</p>
-</blockquote>
-</section>
-<section id="canadian-copyright-law-rights-for-software-code" class="level2" data-number="36.4">
-<h2 data-number="36.4" class="anchored" data-anchor-id="canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</h2>
-<p>In Canada, the copyright owner is afforded the following rights:</p>
-<ul>
-<li>Economic rights:
-<ul>
-<li>the right to produce, reproduce, publish, translate, authorize &amp; convert a work</li>
-</ul></li>
-<li>Moral rights:
-<ul>
-<li>the right to claim authorship, the right to remain anonymous, or the right to use a pseudonym or pen name</li>
-<li>the right to integrity</li>
-<li>the right of association</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Economic rights can be transferred to entities that are not the author, whereas moral rights cannot, they can however, be waived.</p>
-</blockquote>
-</section>
-<section id="us-copyright-law-rights-for-software-code" class="level2" data-number="36.5">
-<h2 data-number="36.5" class="anchored" data-anchor-id="us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</h2>
-<p>In the US, the copyright owner is afforded four rights:</p>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <ol type="1">
-<li>The right to reproduce the code</li>
-<li>The right to create “derivative works” based on the code</li>
-<li>The right to distribute copies of the code</li>
-<li>The right to “display” the code</li>
+<li>Be able to distinguish between essential software package elements (required to make a minimal software package) and those that are not essential but act to improve the user and developer experiences.</li>
+<li>Define what a namespace is.</li>
+<li>Explain the role of the code within the following software package files:</li>
+</ol>
+<ul>
+<li>R
+<ul>
+<li><code>DESCRIPTION</code></li>
+<li><code>NAMESPACE</code></li>
+<li><code>man/*.Rd</code></li>
+</ul></li>
+</ul>
+<ol start="5" type="1">
+<li>Compare and contrast how the Cookiecutter project template tool sets up a software package structure to how <code>devtools</code> and <code>usethis</code> set up a software package.</li>
+<li>Generate well formatted function and package-level documentation for software packages using available tools (e.g., <code>Roxygen2</code> and <code>pkgdown</code> in R)</li>
 </ol>
 </section>
-<section id="who-has-copyright-ownership" class="level2" data-number="36.6">
-<h2 data-number="36.6" class="anchored" data-anchor-id="who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</h2>
-<p>This is a complicated question, and the answer starts with it depends…</p>
-<p>So let’s start with the simplest case, you author the code and you are doing this for yourself (<em>i.e.</em>, not for your employer, not for a client, etc).</p>
+<section id="essential-r-package-files" class="level2" data-number="25.1">
+<h2 data-number="25.1" class="anchored" data-anchor-id="essential-r-package-files"><span class="header-section-number">25.1</span> Essential R package files</h2>
+<p>Using the project layout we recommend for this course, here is a R package structure with only the most essential files.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> DESCRIPTION</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> man</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   ├── functionA.Rd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span>   └── functionB.Rd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> NAMESPACE</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> R</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> functions.R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What do each of these do?</p>
 <ul>
-<li><p>In such a case, you (<strong>the person who typed the code</strong>) automatically become the copyright owner.</p></li>
-<li><p>In both Canada and the USA, you do not need to need to affix the copyright symbol © to your work (some other countries do require this however).</p></li>
+<li><p><code>DESCRIPTION</code> stores all the metadata and dependency installation instructions for the package.</p></li>
+<li><p>The <code>man</code> directory contains the function documentation in <code>.Rd</code> files (one per function). The contents are from these are generated from the <code>ROxygen2</code> function documentation in the <code>R/*.R</code> files.</p></li>
+<li><p>Unsurprisingly, the <code>NAMESPACE</code> file is important in defining your package’s namespace.</p></li>
+<li><p><code>R</code> is the directory for the <code>*.R</code> files which contain your exported (i.e., user-facing) functions.</p></li>
+<li><p><code>functions.R</code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
 </ul>
-<blockquote class="blockquote">
-<p>Although the copyright symbol © is not required, it is often used in copyrighted works (along with the name of the copyright owner and the year of first publication) to clearly identify that the code is protected by copyright.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>In both Canada and the US, it is possible (and advisable) to register your copyright as evidence that a copyright exists and who the owner is.</p>
-</blockquote>
-<blockquote class="blockquote">
-<ul>
-<li>🇨🇦 <a href="https://www.ic.gc.ca/eic/site/cipointernet-internetopic.nsf/eng/wr03915.html">Canadian Registration of copyright—filing online</a></li>
-<li>🇺🇸 <a href="https://www.copyright.gov/registration/">USA Copyright Registration Portal</a></li>
-</ul>
-</blockquote>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="level3" data-number="36.6.1">
-<h3 data-number="36.6.1" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</h3>
-<p>In both Canada and the US, if you write code for work as an employee the copyright ownership is typically assigned to the employer.</p>
-<p>The specifics differ a little for Canada and the US, and so we’ll discuss each separately.</p>
 </section>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="level3" data-number="36.6.2">
-<h3 data-number="36.6.2" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</h3>
-<p>In the Canada, software code is defined as “work made in the course of employment” (and therefore the copyright ownership is assigned to the employer) if:</p>
-<ul>
-<li>The author of the code was in the employment of some other entity under a contract <strong>of</strong> service or apprenticeship and the code was written in the course of their employment by that entity. <strong>And</strong> there exists no agreement (written, or otherwise, and even potentially even presumed) that the employee retains ownership of copyright for the code written during the term of their employment.</li>
-</ul>
-<blockquote class="blockquote">
-<p>Note the bolding of the “of” in the sentence above. This is an important distinction from a contract <strong>for</strong> services (in which the author of the code acts more like an independent consultant, and in such a case it does not appear that “work made in the course of employment” would apply). In this case, the default position is usually that the contractor retains copyright ownership of the work they create, unless the contract specifically assigns copyright to the client. However, usually such a contract is asked for.</p>
-</blockquote>
+<section id="getting-to-know-a-description-files-contents" class="level2" data-number="25.2">
+<h2 data-number="25.2" class="anchored" data-anchor-id="getting-to-know-a-description-files-contents"><span class="header-section-number">25.2</span> Getting to know a <code>DESCRIPTION</code> file’s contents</h2>
+<p>Here is an example <code>DESCRIPTION</code> file:</p>
+<pre><code>Package: foofactors                                                         ┐
+Title: Make Factors Less Aggravating                                        │
+Version: 0.0.0.9000                                                         │
+Authors@R:                                                                  │
+    person(given = "Tiffany",                                               │ Package metadata
+           family = "Timbers",                                              │
+           role = c("aut", "cre"),                                          │
+           email = "tiffany.timbers@gmail.com",                             │
+           comment = c(ORCID = "0000-0002-2667-376X"))                      │
+Description: Factors have driven people to extreme measures, like ordering  │
+    custom conference ribbons and laptop stickers to express how HELLNO we  │
+    feel about stringsAsFactors. And yet, sometimes you need them. Can they │
+    be made less maddening? Let's find out.                                 │
+License: MIT + file LICENSE                                                 │
+Encoding: UTF-8                                                             │
+LazyData: true                                                              ┘
+Roxygen: list(markdown = TRUE)                                              ┐
+RoxygenNote: 7.0.2                                                          │ Developer dependencies
+Suggests:                                                                   │
+    testthat (&gt;= 2.1.0),                                                    │
+    covr                                                                    ┘
+Imports:                                                                    ┐ User function dependencies
+    forcats                                                                 ┘
+URL: https://github.com/ttimbers/foofactors                                 ┐ More package metadata
+BugReports: https://github.com/ttimbers/foofactors/issues                   ┘</code></pre>
+<p>This is equivalent to the <code>pyproject.toml</code> file in Python packages. Again, almost everything in it is customizable based on your package’s specifics.</p>
 </section>
-<section id="who-owns-the-code-in-the-case-of-work-made-for-hire" class="level3" data-number="36.6.3">
-<h3 data-number="36.6.3" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</h3>
-<p>In the US, software code is defined as “work-made-for-hire” (and therefore the copyright ownership is assigned to the employer) if either:</p>
+<section id="manrd-files" class="level2" data-number="25.3">
+<h2 data-number="25.3" class="anchored" data-anchor-id="manrd-files"><span class="header-section-number">25.3</span> <code>man/*Rd</code> files</h2>
+<p>The <code>man</code> directory contains the function documentation in <code>.Rd</code> files (one per function). These can be created from the function’s <code>roxygen2</code> documentation using <code>devtools::document</code>. They use a custom syntax that is loosely based on LaTeX, which can be rendered to different formats for sharing with the package users.</p>
+<p>For example, this <code>roxygen2</code> documention in <code>R/fbind.R</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Bind two factors</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' Create a new factor from two existing factors, where the new factor's levels</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' are the union of the levels of the input factors.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param a factor</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param b factor</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return factor</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#' fbind(iris$Species[c(1, 51, 101)], PlantGrowth$group[c(1, 11, 21)])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>gives this syntax (loosely based on LaTeX) in <code>man/bind.Rd</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode latex code-with-copy"><code class="sourceCode latex"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">% Generated by roxygen2: do not edit by hand</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">% Please edit documentation in R/fcount.R</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">\name</span>{fcount}</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">\alias</span>{fcount}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">\title</span>{Make a sorted frequency table for a factor}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">\usage</span>{</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>fcount(x)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">\arguments</span>{</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">\item</span>{x}{factor}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">\value</span>{</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>A tibble</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">\description</span>{</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>Make a sorted frequency table for a factor</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="fu">\examples</span>{</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>fcount(iris<span class="ss">$Species)</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ss">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="namespace-file" class="level2" data-number="25.4">
+<h2 data-number="25.4" class="anchored" data-anchor-id="namespace-file"><span class="header-section-number">25.4</span> <code>NAMESPACE</code> file</h2>
+<p>In it are commands applied to R objects. Common commands include indicating that a function should be exported from your package, and/or that a another package should be imported to be used internally. The contents of this file are best to be created automatically using <code>devtools</code> to pull this information from the package function’s <code>roxygen2</code> documentation (exports) and the <code>DESCRIPTION</code> file (imports).</p>
+<p>Here’s an example <code>NAMESPACE</code> file:</p>
+<pre><code># Generated by roxygen2: do not edit by hand
+
+export(compare)
+export(expect_equal)
+import(rlang)
+importFrom(brio,readLines)</code></pre>
+</section>
+<section id="dealing-with-other-package-dependencies-in-your-package" class="level2" data-number="25.5">
+<h2 data-number="25.5" class="anchored" data-anchor-id="dealing-with-other-package-dependencies-in-your-package"><span class="header-section-number">25.5</span> Dealing with other package dependencies in your package</h2>
+<section id="dealing-with-package-dependencies-in-r" class="level3" data-number="25.5.1">
+<h3 data-number="25.5.1" class="anchored" data-anchor-id="dealing-with-package-dependencies-in-r"><span class="header-section-number">25.5.1</span> Dealing with package dependencies in R</h3>
+<ul>
+<li><p>When we write code in our package that uses functions from other packages we need to import those functions from the namespace of their packages.</p></li>
+<li><p>In R, we do this via <code>use_package</code>, which adds that package to the “Imports” section of DESCRIPTION</p></li>
+<li><p>We also need to refer to that package in our function code, there are two ways to do this:</p>
 <ol type="1">
-<li><p>The writing of the code is done by an employee in the scope of their employment</p></li>
-<li><p>The writing of the code was specially ordered or commissioned for use in one of ten defined categories (listed <a href="https://www.ny-trademark-lawyer.com/copyright-basics-and-works-made-for-hire.html">here</a>). There must be a written agreement signed by the developer that explicitly states the work is “work-made-for-hire”.</p></li>
-</ol>
+<li>refer the function by <code>package::fun_name</code> (e.g., <code>dplyer::filter</code>) whenever you use the function in your code</li>
+<li>add the function to your packages namespace so that you can just refer to it as your normally would. To do this add <code>@importFrom &lt;package_name&gt; &lt;function_or_operator&gt;</code> to the Roxygen documentation of the function that you would like to use the function from the other package in and then use <code>document()</code> to update the DESCRIPTION and NAMESPACE file.</li>
+</ol></li>
+</ul>
+<p><em>It is recommended to use method 1 (<code>pkg::fun_name</code>) because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you). The trade off is that it’s a little more work to write.</em></p>
 </section>
-<section id="implications-when-you-forgoe-copyright-ownership" class="level3" data-number="36.6.4">
-<h3 data-number="36.6.4" class="anchored" data-anchor-id="implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</h3>
-<p>When you forgoe copyright ownership, such as in a “work-made-for-hire” situation, if you want to use any of the code that you wrote for that piece of work again in another project, you would need to negotiate a licence to use the code you wrote, the same way any other third-party would…</p>
-<p>Are there things one we can do to mitigate this? Possibly, some things include:</p>
+</section>
+<section id="package-documentation-for-r" class="level2" data-number="25.6">
+<h2 data-number="25.6" class="anchored" data-anchor-id="package-documentation-for-r"><span class="header-section-number">25.6</span> Package documentation for R</h2>
+<p>There are several levels of documentation possible for R packages: - code-level documentation (Roxygen-style comments) - vignettes - package websites (via <code>pkgdown</code>)</p>
+</section>
+<section id="code-level-documentation-roxygen-style-comments" class="level2" data-number="25.7">
+<h2 data-number="25.7" class="anchored" data-anchor-id="code-level-documentation-roxygen-style-comments"><span class="header-section-number">25.7</span> Code-level documentation (Roxygen-style comments)</h2>
 <ul>
-<li><p>(in a consulting position) negotiating that the client purchase a license to the code you write, as opposed to hiring you to write the code</p></li>
-<li><p>At the beginning of the project, negotiating which code is core to the work, and thus should fall under “work-made-for-hire” and what (pre-built) code (e.g., packages, scripts) are outside the core work and should not.</p></li>
+<li>We learned the basics of how to write Roxygen-style comments in DSCI 511</li>
+<li>In the package context, there are Namespace tags you should know about:
+<ul>
+<li><code>@export</code> - this should be added to all package functions you want your user to know about</li>
+<li><code>@NoRd</code> - this should be added to helper/internal helper functions that you don’t want your user to know about</li>
+</ul></li>
 </ul>
 </section>
-</section>
-<section id="why-do-i-need-a-license" class="level2" data-number="36.7">
-<h2 data-number="36.7" class="anchored" data-anchor-id="why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</h2>
+<section id="vignettes" class="level2" data-number="25.8">
+<h2 data-number="25.8" class="anchored" data-anchor-id="vignettes"><span class="header-section-number">25.8</span> Vignettes</h2>
+<p>It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. Think of your vignette as a demonstration of how someone would use your function to solve a problem.</p>
 <ul>
-<li><p>As mentioned above, creative works (like software code) are automatically eligible for intellectual property (and thus copyright) protection</p></li>
-<li><p>Reusing creative works without a license is dangerous, because the copyright holders could sue you for copyright infringement</p></li>
-<li><p>Thus, if you publicly share your creative work (<em>i.e.</em>, software code), you should let others know if and how they can reuse it</p></li>
-<li><p>This is done via the inclusion of a <code>LICENSE</code> or <code>LICENSE.txt</code> file in the base directory of the repository that clearly states under which license the content is being made available</p></li>
+<li><p>It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.</p></li>
+<li><p>To create a template for your vignette, run: <code>usethis::use_vignette("package_name-vignette")</code></p></li>
+<li><p>Add content to that file and knit it when done.</p></li>
 </ul>
+<p>As an example, here’s the <code>dplyr</code> vignette: <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html" class="uri">https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html</a></p>
 </section>
-<section id="why-do-i-need-a-license-contd" class="level2" data-number="36.8">
-<h2 data-number="36.8" class="anchored" data-anchor-id="why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</h2>
+<section id="package-websites-via-pkgdown" class="level2" data-number="25.9">
+<h2 data-number="25.9" class="anchored" data-anchor-id="package-websites-via-pkgdown"><span class="header-section-number">25.9</span> Package websites (via <a href="https://pkgdown.r-lib.org/"><code>pkgdown</code></a>)</h2>
 <ul>
-<li><p>Unless you include a license that specifies otherwise, nobody else can copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation.</p></li>
-<li><p>Once the work has other contributors (each a copyright holder), <strong>“nobody” starts including you</strong>!</p></li>
+<li><p>Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others.</p></li>
+<li><p>The <code>pkgdown</code> R package let’s you build a beautiful website for your R package in 4 steps!</p>
+<ol type="1">
+<li><p>Turn on GitHub pages in your package repository, setting <code>main branch / docs folder</code> as the source.</p></li>
+<li><p>Install <code>pkgdown</code>: `install.packages(“pkgdown”)</p></li>
+<li><p>Run <code>pkgdown::build_site()</code> from the root of your project, and commit and push the changes made by this.</p></li>
+<li><p>Push your code, including the <code>docs</code> directory to GitHub.com</p></li>
+</ol></li>
 </ul>
-</section>
-<section id="how-do-licenses-work" class="level2" data-number="36.9">
-<h2 data-number="36.9" class="anchored" data-anchor-id="how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</h2>
-<p>A license solves this problem by granting rights to others (the licensees) that they would otherwise not have. What rights are being granted under which conditions differs, often only slightly, from one license to another.</p>
+<p>In addition to the beautiful website, <code>pkgdown</code> automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉</p>
 <blockquote class="blockquote">
-<p><em>Note: licenses are legal documents and written by legal experts. Most of you do not have the legal expertise to write your own license, so DO NOT do this. Instead, choose an already written one that best suits your situation.</em></p>
+<p>Note you can also configure a GitHub Actions workflow to automate the rebuilding of the <code>pkgdown</code> site anytime changes are pushed to your package’s GitHub repository. We will discuss this later in the course under the topic of continuous deployment.</p>
 </blockquote>
-</section>
-<section id="how-to-choose-a-license" class="level2" data-number="36.10">
-<h2 data-number="36.10" class="anchored" data-anchor-id="how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</h2>
-<p>In practice, a few licenses are by far the most popular, and <a href="https://choosealicense.com/">choosealicense.com</a> will help you find a common license that suits your needs. Important considerations include:</p>
-<ul>
-<li><p>Whether you require people distributing derivative works to also require others to distribute their derivative works in the same way.</p></li>
-<li><p>Whether the content you are licensing is source code, and if it is, whether you want to require that derivatives of your work to share the source code</p></li>
-</ul>
-</section>
-<section id="how-to-choose-a-license-contd" class="level2" data-number="36.11">
-<h2 data-number="36.11" class="anchored" data-anchor-id="how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</h2>
-<ul>
-<li><p>Choose a license that is in common use</p></li>
-<li><p>this makes life easier for contributors and users, because they are more likely to already be familiar with the license and don’t have to wade through a bunch of jargon to decide if they’re ok with it</p></li>
-</ul>
-</section>
-<section id="choosing-a-software-license" class="level2" data-number="36.12">
-<h2 data-number="36.12" class="anchored" data-anchor-id="choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</h2>
-<p>Let’s visit <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></p>
-</section>
-<section id="open-source-software-is-used-in-business" class="level2" data-number="36.13">
-<h2 data-number="36.13" class="anchored" data-anchor-id="open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</h2>
-<ul>
-<li><a href="https://rstudio.com/about/customer-stories/">RStudio Customer Stories</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-</ul>
-<section id="an-ethical-license-for-open-source-projects" class="level3" data-number="36.13.1">
-<h3 data-number="36.13.1" class="anchored" data-anchor-id="an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</h3>
-<ul>
-<li><a href="https://firstdonoharm.dev/">The Hippocratic License</a></li>
-</ul>
-</section>
-</section>
-<section id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="level2" data-number="36.14">
-<h2 data-number="36.14" class="anchored" data-anchor-id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</h2>
-<p>If you substantially use licensed code in your project, you need to ensure you satisfy the license the code was shared under. For example, for the MIT license, you should include the original copyright notice and the MIT License text. This requirement is part of the license terms, ensuring that the original authors receive credit for their work and that the recipients of the software are aware of the terms under which it is provided.</p>
-<p>Below is an example of how a <code>LICENSE</code> file might look when incorporating MIT-licensed code into a new project that is also distributed under the MIT License. This example includes both the original copyright notice for the incorporated code and a copyright notice for the new project.</p>
-<pre><code>MIT License
-
-Copyright (c) [year of new project's creation] [New Project's Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
----
-
-For the portions of the project that are derived from [Original Project Name] (https://github.com/original/project/url):
-
-MIT License
-
-Copyright (c) [year of original project's creation] [Original Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</code></pre>
-</section>
-<section id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="level2" data-number="36.15">
-<h2 data-number="36.15" class="anchored" data-anchor-id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</h2>
-<p>As you all know, code is only one part of what Data Scientists do. We also create visualizations, write reports, create and give presentations, write tutorials, et cetera.</p>
-<p>The licenses we have explored so far do not really fit these kinds of work, is there something that does?</p>
-<p>Yes! The <a href="https://creativecommons.org/">Creative Commons</a> licences were created for such works and they are now widely used in academia and the publishing industry.</p>
-<section id="creative-commons-licences" class="level3" data-number="36.15.1">
-<h3 data-number="36.15.1" class="anchored" data-anchor-id="creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</h3>
-<ul>
-<li><a href="https://chooser-beta.creativecommons.org/">Choose a Creative Commons license</a></li>
-<li><a href="https://wiki.creativecommons.org/wiki/Considerations_for_licensors_and_licensees#Considerations_for_licensors">Considerations for licensors</a></li>
-</ul>
-<p><img src="http://images.huffingtonpost.com/2014-03-25-creativecommonslicenses-thumb.jpg" width="500"></p>
-<p><em>Source: <a href="https://wiki.creativecommons.org/images/a/a4/Creativecommons-how-to-license-poster_eng.pdf">“How to License Poster”</a> by Creative Commons is licensed under CC BY 4.0</em></p>
-</section>
-</section>
-<section id="explore-some-licenses" class="level2" data-number="36.16">
-<h2 data-number="36.16" class="anchored" data-anchor-id="explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</h2>
-<ul>
-<li><a href="https://github.com/git/git">Git</a>, the source-code management tool</li>
-<li><a href="https://github.com/python/cpython">CPython</a>, the standard implementation of the Python language</li>
-<li><a href="https://github.com/jupyter">Jupyter</a>, the project behind the web-based Python notebooks we’ll be using</li>
-<li><a href="https://github.com/ether/etherpad-lite">EtherPad</a>, a real-time collaborative editor</li>
-</ul>
-</section>
-<section id="resources" class="level2" data-number="36.17">
-<h2 data-number="36.17" class="anchored" data-anchor-id="resources"><span class="header-section-number">36.17</span> Resources:</h2>
-<ul>
-<li><a href="https://asp-software.org/www/misv_resources/business-articles/who-owns-the-code/">Who Owns The Code?</a></li>
-<li><a href="https://www.ualberta.ca/faculty-and-staff/copyright/intro-to-copyright-law/canadian-copyright-law.html">Canadian Copyright Law - University of Alberta</a></li>
-<li><a href="https://www.smartbiggar.ca/insights/publication/do-you-actually-own-the-ip-generated-by-your-canadian-employees-">Do you actually own the IP generated by your Canadian employees?</a></li>
-<li><a href="https://laws-lois.justice.gc.ca/eng/acts/C-42/page-4.html#h-102834">Ownership of Copyright - Canadian Copyright Act</a></li>
-<li><a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-faq.en.html">Frequently Asked Questions about the GNU Licenses</a></li>
-</ul>
-</section>
-<section id="attribution" class="level2" data-number="36.18">
-<h2 data-number="36.18" class="anchored" data-anchor-id="attribution"><span class="header-section-number">36.18</span> Attribution:</h2>
-<ul>
-<li>materials on licenses have been borrowed and derived from the <a href="https://software-carpentry.org/">Software Carpentry</a> <a href="http://swcarpentry.github.io/git-novice/11-licensing/index.html">Version Control with Git - Licensing lesson</a> (licensed with the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>) and <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a> (licensed with the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>).</li>
-</ul>
 
 
 </section>
@@ -1266,13 +1205,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/licenses-copyright-wrapup.html" class="pagination-link" aria-label="Wrap Up">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Wrap Up</span>
+      <a href="../lectures/191-packaging-python.html" class="pagination-link" aria-label="Packaging: Python">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/230-reproducibility-wrap-up.html" class="pagination-link" aria-label="Workflows for reproducibile and trustworthy data science wrap-up">
-        <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/193-packaging-conclusion.html" class="pagination-link" aria-label="Packaging: Conclusion">
+        <span class="nav-page-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>36&nbsp; Copyright and licenses – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>24&nbsp; Packaging: Python – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/230-reproducibility-wrap-up.html" rel="next">
-<link href="../parts/licenses-copyright-wrapup.html" rel="prev">
+<link href="../lectures/192-packaging-r.html" rel="next">
+<link href="../lectures/190-packaging-intro-python-r.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,6 +103,28 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -91,28 +147,6 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: green;
-}
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
-  background-image: none;
-}
 </style>
 
 
@@ -128,7 +162,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/191-packaging-python.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -377,7 +411,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/191-packaging-python.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/191-packaging-python.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
   </div>
 </li>
@@ -482,7 +516,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
@@ -533,45 +567,25 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</a></li>
-  <li><a href="#full-disclosure---i-am-not-a-lawyer" id="toc-full-disclosure---i-am-not-a-lawyer" class="nav-link" data-scroll-target="#full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</a></li>
-  <li><a href="#software-falls-under-copyright-law" id="toc-software-falls-under-copyright-law" class="nav-link" data-scroll-target="#software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</a></li>
-  <li><a href="#canadian-copyright-law-rights-for-software-code" id="toc-canadian-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</a></li>
-  <li><a href="#us-copyright-law-rights-for-software-code" id="toc-us-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</a></li>
-  <li><a href="#who-has-copyright-ownership" id="toc-who-has-copyright-ownership" class="nav-link" data-scroll-target="#who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#essential-python-package-files" id="toc-essential-python-package-files" class="nav-link" data-scroll-target="#essential-python-package-files"><span class="header-section-number">24.1</span> Essential Python package files</a></li>
+  <li><a href="#getting-to-know-a-pyproject.toml-files-contents" id="toc-getting-to-know-a-pyproject.toml-files-contents" class="nav-link" data-scroll-target="#getting-to-know-a-pyproject.toml-files-contents"><span class="header-section-number">24.2</span> Getting to know a <code>pyproject.toml</code> file’s contents</a></li>
+  <li><a href="#getting-to-know-a-__init__.py-files-contents" id="toc-getting-to-know-a-__init__.py-files-contents" class="nav-link" data-scroll-target="#getting-to-know-a-__init__.py-files-contents"><span class="header-section-number">24.3</span> Getting to know a <code>__init__.py</code> file’s contents</a></li>
+  <li><a href="#docs-and-.githubworkflowsci-cd.yml" id="toc-docs-and-.githubworkflowsci-cd.yml" class="nav-link" data-scroll-target="#docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">24.4</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></a>
   <ul class="collapse">
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-for-hire" id="toc-who-owns-the-code-in-the-case-of-work-made-for-hire" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</a></li>
-  <li><a href="#implications-when-you-forgoe-copyright-ownership" id="toc-implications-when-you-forgoe-copyright-ownership" class="nav-link" data-scroll-target="#implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</a></li>
+  <li><a href="#docs" id="toc-docs" class="nav-link" data-scroll-target="#docs"><span class="header-section-number">24.4.1</span> <code>docs/*</code></a></li>
+  <li><a href="#githubworkflowsci-cd.yml" id="toc-githubworkflowsci-cd.yml" class="nav-link" data-scroll-target="#githubworkflowsci-cd.yml"><span class="header-section-number">24.4.2</span> <code>.github/workflows/ci-cd.yml</code></a></li>
   </ul></li>
-  <li><a href="#why-do-i-need-a-license" id="toc-why-do-i-need-a-license" class="nav-link" data-scroll-target="#why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</a></li>
-  <li><a href="#why-do-i-need-a-license-contd" id="toc-why-do-i-need-a-license-contd" class="nav-link" data-scroll-target="#why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</a></li>
-  <li><a href="#how-do-licenses-work" id="toc-how-do-licenses-work" class="nav-link" data-scroll-target="#how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</a></li>
-  <li><a href="#how-to-choose-a-license" id="toc-how-to-choose-a-license" class="nav-link" data-scroll-target="#how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</a></li>
-  <li><a href="#how-to-choose-a-license-contd" id="toc-how-to-choose-a-license-contd" class="nav-link" data-scroll-target="#how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</a></li>
-  <li><a href="#choosing-a-software-license" id="toc-choosing-a-software-license" class="nav-link" data-scroll-target="#choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</a></li>
-  <li><a href="#open-source-software-is-used-in-business" id="toc-open-source-software-is-used-in-business" class="nav-link" data-scroll-target="#open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</a>
-  <ul class="collapse">
-  <li><a href="#an-ethical-license-for-open-source-projects" id="toc-an-ethical-license-for-open-source-projects" class="nav-link" data-scroll-target="#an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</a></li>
-  </ul></li>
-  <li><a href="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" id="toc-how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="nav-link" data-scroll-target="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</a></li>
-  <li><a href="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" id="toc-but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="nav-link" data-scroll-target="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</a>
-  <ul class="collapse">
-  <li><a href="#creative-commons-licences" id="toc-creative-commons-licences" class="nav-link" data-scroll-target="#creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</a></li>
-  </ul></li>
-  <li><a href="#explore-some-licenses" id="toc-explore-some-licenses" class="nav-link" data-scroll-target="#explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</a></li>
-  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">36.17</span> Resources:</a></li>
-  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">36.18</span> Attribution:</a></li>
+  <li><a href="#cookiecutter-project-templates" id="toc-cookiecutter-project-templates" class="nav-link" data-scroll-target="#cookiecutter-project-templates"><span class="header-section-number">24.5</span> Cookiecutter project templates</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/191-packaging-python.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></h1>
+<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></h1>
 </div>
 
 
@@ -588,260 +602,178 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="36.1">
-<h2 data-number="36.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</h2>
-<p>By the end of this lecture, students should be able to: - Explain who owns the copyright of code they write in a give situation, and why - Choose an appropriate license for software (i.e., packages or analysis code) - Choose an appropriate license for your non-software materials</p>
-</section>
-<section id="full-disclosure---i-am-not-a-lawyer" class="level2" data-number="36.2">
-<h2 data-number="36.2" class="anchored" data-anchor-id="full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</h2>
-</section>
-<section id="software-falls-under-copyright-law" class="level2" data-number="36.3">
-<h2 data-number="36.3" class="anchored" data-anchor-id="software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</h2>
-<ul>
-<li><p>In both the US and Canada, software code falls under copyright law</p></li>
-<li><p>knowing who owns the copyright of software code is critical because the owner controls if and how the code may be:</p>
-<ul>
-<li>copied</li>
-<li>distributed</li>
-<li>sold</li>
-<li>modified</li>
-<li>essentially, made profitable</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Copyright protects only the language and words used to express ideas, concepts and themes, not the ideas, concepts or themes themselves.</p>
-</blockquote>
-</section>
-<section id="canadian-copyright-law-rights-for-software-code" class="level2" data-number="36.4">
-<h2 data-number="36.4" class="anchored" data-anchor-id="canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</h2>
-<p>In Canada, the copyright owner is afforded the following rights:</p>
-<ul>
-<li>Economic rights:
-<ul>
-<li>the right to produce, reproduce, publish, translate, authorize &amp; convert a work</li>
-</ul></li>
-<li>Moral rights:
-<ul>
-<li>the right to claim authorship, the right to remain anonymous, or the right to use a pseudonym or pen name</li>
-<li>the right to integrity</li>
-<li>the right of association</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Economic rights can be transferred to entities that are not the author, whereas moral rights cannot, they can however, be waived.</p>
-</blockquote>
-</section>
-<section id="us-copyright-law-rights-for-software-code" class="level2" data-number="36.5">
-<h2 data-number="36.5" class="anchored" data-anchor-id="us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</h2>
-<p>In the US, the copyright owner is afforded four rights:</p>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <ol type="1">
-<li>The right to reproduce the code</li>
-<li>The right to create “derivative works” based on the code</li>
-<li>The right to distribute copies of the code</li>
-<li>The right to “display” the code</li>
+<li>Be able to distinguish between essential software package elements (required to make a minimal software package) and those that are not essential but act to improve the user and developer experiences.</li>
+<li>Define what a namespace is.</li>
+<li>Explain the role of the code within the following software package files:</li>
+</ol>
+<ul>
+<li>Python
+<ul>
+<li><code>pyproject.toml</code></li>
+<li><code>__init__.py</code></li>
+<li><code>docs/*</code></li>
+<li><code>.github/workflows/ci-cd.yml</code></li>
+</ul></li>
+</ul>
+<ol start="4" type="1">
+<li>Explain at a high level how the Cookiecutter project template tool works.</li>
+<li>Generate well formatted function and package-level documentation for software packages using available tools (e.g., numpy-style dosctrings and Sphinx in Python)</li>
 </ol>
 </section>
-<section id="who-has-copyright-ownership" class="level2" data-number="36.6">
-<h2 data-number="36.6" class="anchored" data-anchor-id="who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</h2>
-<p>This is a complicated question, and the answer starts with it depends…</p>
-<p>So let’s start with the simplest case, you author the code and you are doing this for yourself (<em>i.e.</em>, not for your employer, not for a client, etc).</p>
+<section id="essential-python-package-files" class="level2" data-number="24.1">
+<h2 data-number="24.1" class="anchored" data-anchor-id="essential-python-package-files"><span class="header-section-number">24.1</span> Essential Python package files</h2>
+<p>Using the project layout we recommend for this course, here is a Python package structure with only the most essential files.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pkg</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pyproject.toml</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> src</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> pkg</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> __init__.py</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> module.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What do each of these do?</p>
 <ul>
-<li><p>In such a case, you (<strong>the person who typed the code</strong>) automatically become the copyright owner.</p></li>
-<li><p>In both Canada and the USA, you do not need to need to affix the copyright symbol © to your work (some other countries do require this however).</p></li>
+<li><p><code>pyproject.toml</code> stores all the metadata and install instructions for the package.</p></li>
+<li><p>The presence of the <code>src</code> directory defines the code that will form the installable version of your package (meaning that users only get this code when they install the package, and that developers must install the package before running their tests).</p></li>
+<li><p><code>__init__.py</code> tells Python that a directory is a package. They can be left empty, or they can also be used to add objects to the package’s namespace, provide documentation, and/or run other initialization code.</p></li>
+<li><p><code>module.py</code> (this one can be named something else!) contains the functions you would like to share with your package users.</p></li>
 </ul>
-<blockquote class="blockquote">
-<p>Although the copyright symbol © is not required, it is often used in copyrighted works (along with the name of the copyright owner and the year of first publication) to clearly identify that the code is protected by copyright.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>In both Canada and the US, it is possible (and advisable) to register your copyright as evidence that a copyright exists and who the owner is.</p>
-</blockquote>
-<blockquote class="blockquote">
-<ul>
-<li>🇨🇦 <a href="https://www.ic.gc.ca/eic/site/cipointernet-internetopic.nsf/eng/wr03915.html">Canadian Registration of copyright—filing online</a></li>
-<li>🇺🇸 <a href="https://www.copyright.gov/registration/">USA Copyright Registration Portal</a></li>
-</ul>
-</blockquote>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="level3" data-number="36.6.1">
-<h3 data-number="36.6.1" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</h3>
-<p>In both Canada and the US, if you write code for work as an employee the copyright ownership is typically assigned to the employer.</p>
-<p>The specifics differ a little for Canada and the US, and so we’ll discuss each separately.</p>
 </section>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="level3" data-number="36.6.2">
-<h3 data-number="36.6.2" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</h3>
-<p>In the Canada, software code is defined as “work made in the course of employment” (and therefore the copyright ownership is assigned to the employer) if:</p>
-<ul>
-<li>The author of the code was in the employment of some other entity under a contract <strong>of</strong> service or apprenticeship and the code was written in the course of their employment by that entity. <strong>And</strong> there exists no agreement (written, or otherwise, and even potentially even presumed) that the employee retains ownership of copyright for the code written during the term of their employment.</li>
-</ul>
-<blockquote class="blockquote">
-<p>Note the bolding of the “of” in the sentence above. This is an important distinction from a contract <strong>for</strong> services (in which the author of the code acts more like an independent consultant, and in such a case it does not appear that “work made in the course of employment” would apply). In this case, the default position is usually that the contractor retains copyright ownership of the work they create, unless the contract specifically assigns copyright to the client. However, usually such a contract is asked for.</p>
-</blockquote>
+<section id="getting-to-know-a-pyproject.toml-files-contents" class="level2" data-number="24.2">
+<h2 data-number="24.2" class="anchored" data-anchor-id="getting-to-know-a-pyproject.toml-files-contents"><span class="header-section-number">24.2</span> Getting to know a <code>pyproject.toml</code> file’s contents</h2>
+<p>Here is an example <code>pyproject.toml</code> file:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry]</span>                                         <span class="er">┐</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"pycounts_tt_2024"</span>                             <span class="er">│</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span>                                     <span class="er">│</span> <span class="dt">Package</span> <span class="dt">metadata</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">"Calculate word counts in a text file!"</span> <span class="er">│</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">authors</span> <span class="op">=</span> <span class="op">[</span><span class="st">"Tiffany Timbers"</span><span class="op">]</span>                         <span class="er">│</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dt">license</span> <span class="op">=</span> <span class="st">"MIT"</span>                                       <span class="er">│</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dt">readme</span> <span class="op">=</span> <span class="st">"README.md"</span>                                  <span class="er">┘</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.dependencies]</span>                            <span class="er">┐</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="dt">python</span> <span class="op">=</span> <span class="st">"&gt;=3.9"</span>                                      <span class="er">│</span> <span class="dt">User</span> <span class="dt">function</span> <span class="dt">dependencies</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dt">matplotlib</span> <span class="op">=</span> <span class="st">"&gt;=3.8.2"</span>                                <span class="er">┘</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.dev-dependencies]</span>                        <span class="er">┐</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                                                      <span class="er">│</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.group.dev.dependencies]</span>                  <span class="er">│</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="dt">pytest</span> <span class="op">=</span> <span class="st">"&gt;=7.4.4"</span>                                    <span class="er">│</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="dt">pytest-cov</span> <span class="op">=</span> <span class="st">"&gt;=4.1.0"</span>                                <span class="er">│</span> <span class="dt">Developer</span> <span class="dt">dependencies</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="dt">jupyter</span> <span class="op">=</span> <span class="st">"&gt;=1.0.0"</span>                                   <span class="er">│</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="dt">myst-nb</span> <span class="op">=</span> <span class="op">{</span><span class="dt">version</span><span class="op"> =</span> <span class="st">"^1.0.0"</span><span class="op">, </span><span class="dt">python</span><span class="op"> =</span> <span class="st">"^3.9"</span><span class="op">}</span>       <span class="er">│</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="dt">sphinx-autoapi</span> <span class="op">=</span> <span class="st">"^3.0.0"</span>                             <span class="er">│</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="dt">sphinx-rtd-theme</span> <span class="op">=</span> <span class="st">"^2.0.0"</span>                           <span class="er">┘</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="kw">[build-system]</span>                                        <span class="er">┐</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"poetry-core&gt;=1.0.0"</span><span class="op">]</span>                     <span class="er">│</span> <span class="dt">Package</span> <span class="dt">build</span> <span class="dt">dependencies</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="dt">build-backend</span> <span class="op">=</span> <span class="st">"poetry.core.masonry.api"</span>             <span class="er">┘</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Almost everything inside this file is customizable based on your package. Even the build system! <code>pyproject.toml</code> can also be used with other build tools such as setuptools and flit! If you are interested in learning more, checkout the <a href="https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html">Python Packaging Tools guide</a> from PyOpenSci.</p>
 </section>
-<section id="who-owns-the-code-in-the-case-of-work-made-for-hire" class="level3" data-number="36.6.3">
-<h3 data-number="36.6.3" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</h3>
-<p>In the US, software code is defined as “work-made-for-hire” (and therefore the copyright ownership is assigned to the employer) if either:</p>
+<section id="getting-to-know-a-__init__.py-files-contents" class="level2" data-number="24.3">
+<h2 data-number="24.3" class="anchored" data-anchor-id="getting-to-know-a-__init__.py-files-contents"><span class="header-section-number">24.3</span> Getting to know a <code>__init__.py</code> file’s contents</h2>
+<p>As mentioned earlier, this file can serve it’s essential package function of telling Python that this directory is a package by just existing and being empty. It can however serve other purposes. Let’s discuss the code that exists in the <code>py-pkgs-cookiecutter</code> template:</p>
+<p>The <code>py-pkgs-cookiecutter</code> we used to create our <code>pycounts</code> package (<a href="https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure">Section 3.2.2</a>) already populated our <code>__init__.py</code> file with this code for us:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read version from installed package</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> version(<span class="st">"pycounts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because this code is in <code>__init__.py</code> is executed when the package is imported (this is the case for all <code>__init__.py</code> files, we can ask for the package version with Python code like this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pycounts</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pycounts.__version__</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.1.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the code in <code>__init__.py</code> we get the version from the package metadata, that is derived from <code>pyproject.toml</code>. This allows us to only have to update the version of our package in one place when we bump to a new version.</p>
+<p>What other kinds of interesting things can we do with <code>__init__.py</code>? Well we can use it to control the import behavior of a package. For example, there are currently only two main functions that users will commonly use from our <code>pycounts</code> package: <code>pycounts.count_words()</code> and <code>plotting.plot_words()</code>. Users have to type the full path to these functions to import them:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.pycounts <span class="im">import</span> count_words</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.plotting <span class="im">import</span> plot_words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we import those core functions in <code>pycounts</code>’s <code>__init__.py</code> file, which would bind them to the package namespace, we can make our user’s experience of loading them easier!</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read version from installed package</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> version(<span class="va">__name__</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># populate package namespace</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.pycounts <span class="im">import</span> count_words</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.plotting <span class="im">import</span> plot_words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The functions are now bound to the pycounts namespace, so users can access them like this:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pycounts</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pycounts.count_words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>function count_words<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>What is a namespace again? A “namespace” is a set of names that are used to identify and refer to objects of various kinds (source: <a href="https://en.wikipedia.org/wiki/Namespace">Wikipedia</a>).</p>
+</section>
+<section id="docs-and-.githubworkflowsci-cd.yml" class="level2" data-number="24.4">
+<h2 data-number="24.4" class="anchored" data-anchor-id="docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">24.4</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></h2>
+<p>We will cover both these topics in greater detail later (<code>docs/*</code> in the documentation chapter/lecture and <code>.github/workflows/ci-cd.yml</code> in the continuous integration and deployment chapter/lecture), but for now it’s helpful to get a bit better of an idea of these files and what they are doing.</p>
+<section id="docs" class="level3" data-number="24.4.1">
+<h3 data-number="24.4.1" class="anchored" data-anchor-id="docs"><span class="header-section-number">24.4.1</span> <code>docs/*</code></h3>
+<p>To keep things organized, to and to make the package documentation easier to automate, we keep the documentation files in the <code>docs</code> directory and use a <code>Makefile</code> (or <code>make.bat</code> on Windows) therein to automate their rendering.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docs</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> changelog.md</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> conduct.md</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> conf.py</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> contributing.md</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> example.ipynb</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> index.md</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> make.bat</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>   <span class="ex">└──</span> requirements.txt <span class="er">(</span><span class="ex">deprecated</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that many of these files also commonly exist in the root of projects and people expect to find them there!!! These include:</p>
+<ul>
+<li>changelog.md</li>
+<li>conduct.md</li>
+<li>contributing.md</li>
+</ul>
+<p>So what we have done is pointed the <code>doc/*.md</code>’s of these files to the contents these files in the project root. And at rendering, their content will be used instead! If you look at the raw source of one of these files (e.g., conduct.md) you will see:</p>
+<p><img src="../img/python-docs-md-content.png" width="500"></p>
+<p>This helps keep our docs up to date by not having two places to update them!</p>
+<p><code>conf.py</code> is a configuration file that specifies style and formatting for the documentation. In this course we will not be modifying it, but if you wanted you can! To do this, please first read the docs for <a href="https://www.sphinx-doc.org/en/master/usage/configuration.html">Sphinx configuration here</a>.</p>
+<p>The <code>requirements.txt</code> file in the <code>pypkgs-cookiecutter</code> template is now deprecated and will be removed in a future version. All dependencies are now managed by <code>pyproject.toml</code>.</p>
+</section>
+<section id="githubworkflowsci-cd.yml" class="level3" data-number="24.4.2">
+<h3 data-number="24.4.2" class="anchored" data-anchor-id="githubworkflowsci-cd.yml"><span class="header-section-number">24.4.2</span> <code>.github/workflows/ci-cd.yml</code></h3>
+<p>This file contains automation code for continuous integration and delivery of our Python software package, reading the steps in this file you will see that it does the following:</p>
 <ol type="1">
-<li><p>The writing of the code is done by an employee in the scope of their employment</p></li>
-<li><p>The writing of the code was specially ordered or commissioned for use in one of ten defined categories (listed <a href="https://www.ny-trademark-lawyer.com/copyright-basics-and-works-made-for-hire.html">here</a>). There must be a written agreement signed by the developer that explicitly states the work is “work-made-for-hire”.</p></li>
+<li>Continuous integration tasks:</li>
 </ol>
-</section>
-<section id="implications-when-you-forgoe-copyright-ownership" class="level3" data-number="36.6.4">
-<h3 data-number="36.6.4" class="anchored" data-anchor-id="implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</h3>
-<p>When you forgoe copyright ownership, such as in a “work-made-for-hire” situation, if you want to use any of the code that you wrote for that piece of work again in another project, you would need to negotiate a licence to use the code you wrote, the same way any other third-party would…</p>
-<p>Are there things one we can do to mitigate this? Possibly, some things include:</p>
 <ul>
-<li><p>(in a consulting position) negotiating that the client purchase a license to the code you write, as opposed to hiring you to write the code</p></li>
-<li><p>At the beginning of the project, negotiating which code is core to the work, and thus should fall under “work-made-for-hire” and what (pre-built) code (e.g., packages, scripts) are outside the core work and should not.</p></li>
+<li>installs your package</li>
+<li>runs the test suite</li>
+<li>calculates test coverage</li>
 </ul>
-</section>
-</section>
-<section id="why-do-i-need-a-license" class="level2" data-number="36.7">
-<h2 data-number="36.7" class="anchored" data-anchor-id="why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</h2>
+<ol start="2" type="1">
+<li>Continuous deployment tasks:</li>
+</ol>
 <ul>
-<li><p>As mentioned above, creative works (like software code) are automatically eligible for intellectual property (and thus copyright) protection</p></li>
-<li><p>Reusing creative works without a license is dangerous, because the copyright holders could sue you for copyright infringement</p></li>
-<li><p>Thus, if you publicly share your creative work (<em>i.e.</em>, software code), you should let others know if and how they can reuse it</p></li>
-<li><p>This is done via the inclusion of a <code>LICENSE</code> or <code>LICENSE.txt</code> file in the base directory of the repository that clearly states under which license the content is being made available</p></li>
+<li>bumps the package software version, as well as prepares and creates a GitHub release of the package</li>
+<li>builds the package</li>
+<li>publishes it to the package repository (i.e., TestPyPI or PyPI, or both)</li>
 </ul>
+<p>When we first start building our packages, the GitHub Actions workflows for most of these things will fail. That is to be expected! As you complete the tasks for setting each of these up (e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets, etc) then the GitHub Actions workflows should start passing. This is a consequence of the philosophy of the <code>pypkgs-cookiecutter</code> template tool.</p>
 </section>
-<section id="why-do-i-need-a-license-contd" class="level2" data-number="36.8">
-<h2 data-number="36.8" class="anchored" data-anchor-id="why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</h2>
+</section>
+<section id="cookiecutter-project-templates" class="level2" data-number="24.5">
+<h2 data-number="24.5" class="anchored" data-anchor-id="cookiecutter-project-templates"><span class="header-section-number">24.5</span> Cookiecutter project templates</h2>
+<p><a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> is a general Python tool for repeatedly generating a desired file and directory structure.</p>
+<p>Many many many Python <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> templates already exist, this search on GitHub (linked to from the <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> documentation) identifies 9000 repositories!!!</p>
 <ul>
-<li><p>Unless you include a license that specifies otherwise, nobody else can copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation.</p></li>
-<li><p>Once the work has other contributors (each a copyright holder), <strong>“nobody” starts including you</strong>!</p></li>
+<li><a href="https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories" class="uri">https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories</a></li>
 </ul>
-</section>
-<section id="how-do-licenses-work" class="level2" data-number="36.9">
-<h2 data-number="36.9" class="anchored" data-anchor-id="how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</h2>
-<p>A license solves this problem by granting rights to others (the licensees) that they would otherwise not have. What rights are being granted under which conditions differs, often only slightly, from one license to another.</p>
-<blockquote class="blockquote">
-<p><em>Note: licenses are legal documents and written by legal experts. Most of you do not have the legal expertise to write your own license, so DO NOT do this. Instead, choose an already written one that best suits your situation.</em></p>
-</blockquote>
-</section>
-<section id="how-to-choose-a-license" class="level2" data-number="36.10">
-<h2 data-number="36.10" class="anchored" data-anchor-id="how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</h2>
-<p>In practice, a few licenses are by far the most popular, and <a href="https://choosealicense.com/">choosealicense.com</a> will help you find a common license that suits your needs. Important considerations include:</p>
+<p>How does it work? It uses the concept of code templating and uses the <a href="https://jinja.palletsprojects.com/en/3.1.x/"><code>Jinja</code></a> templating engine. Special syntax (involving <code>{{</code>) is used to specify parts of the code that should be “filled in” with user input (from a function call if interacting directly with the <code>Jinja</code> API, or the keyboard if using <code>Cookiecutter</code>). The input is then used to replace the placeholder text in the code (denoted by the special syntax involving <code>{{</code>). This allows template code to be automatically filled in and reused again and again!</p>
+<div class="callout callout-style-default callout-exercise callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let’s explore the <code>pypkgs-cookiecutter</code> to get to know how the Cookiecutter project template tool works in the case of <code>pypkgs-cookiecutter</code>, and in general!</p>
 <ul>
-<li><p>Whether you require people distributing derivative works to also require others to distribute their derivative works in the same way.</p></li>
-<li><p>Whether the content you are licensing is source code, and if it is, whether you want to require that derivatives of your work to share the source code</p></li>
+<li>Go to: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter</a></li>
+<li>Looks at: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json</a></li>
+<li>Look for all the places you see <code>{ cookiecutter.__SOMETHING }</code></li>
 </ul>
-</section>
-<section id="how-to-choose-a-license-contd" class="level2" data-number="36.11">
-<h2 data-number="36.11" class="anchored" data-anchor-id="how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</h2>
-<ul>
-<li><p>Choose a license that is in common use</p></li>
-<li><p>this makes life easier for contributors and users, because they are more likely to already be familiar with the license and don’t have to wade through a bunch of jargon to decide if they’re ok with it</p></li>
-</ul>
-</section>
-<section id="choosing-a-software-license" class="level2" data-number="36.12">
-<h2 data-number="36.12" class="anchored" data-anchor-id="choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</h2>
-<p>Let’s visit <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></p>
-</section>
-<section id="open-source-software-is-used-in-business" class="level2" data-number="36.13">
-<h2 data-number="36.13" class="anchored" data-anchor-id="open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</h2>
-<ul>
-<li><a href="https://rstudio.com/about/customer-stories/">RStudio Customer Stories</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-</ul>
-<section id="an-ethical-license-for-open-source-projects" class="level3" data-number="36.13.1">
-<h3 data-number="36.13.1" class="anchored" data-anchor-id="an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</h3>
-<ul>
-<li><a href="https://firstdonoharm.dev/">The Hippocratic License</a></li>
-</ul>
-</section>
-</section>
-<section id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="level2" data-number="36.14">
-<h2 data-number="36.14" class="anchored" data-anchor-id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</h2>
-<p>If you substantially use licensed code in your project, you need to ensure you satisfy the license the code was shared under. For example, for the MIT license, you should include the original copyright notice and the MIT License text. This requirement is part of the license terms, ensuring that the original authors receive credit for their work and that the recipients of the software are aware of the terms under which it is provided.</p>
-<p>Below is an example of how a <code>LICENSE</code> file might look when incorporating MIT-licensed code into a new project that is also distributed under the MIT License. This example includes both the original copyright notice for the incorporated code and a copyright notice for the new project.</p>
-<pre><code>MIT License
-
-Copyright (c) [year of new project's creation] [New Project's Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
----
-
-For the portions of the project that are derived from [Original Project Name] (https://github.com/original/project/url):
-
-MIT License
-
-Copyright (c) [year of original project's creation] [Original Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</code></pre>
-</section>
-<section id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="level2" data-number="36.15">
-<h2 data-number="36.15" class="anchored" data-anchor-id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</h2>
-<p>As you all know, code is only one part of what Data Scientists do. We also create visualizations, write reports, create and give presentations, write tutorials, et cetera.</p>
-<p>The licenses we have explored so far do not really fit these kinds of work, is there something that does?</p>
-<p>Yes! The <a href="https://creativecommons.org/">Creative Commons</a> licences were created for such works and they are now widely used in academia and the publishing industry.</p>
-<section id="creative-commons-licences" class="level3" data-number="36.15.1">
-<h3 data-number="36.15.1" class="anchored" data-anchor-id="creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</h3>
-<ul>
-<li><a href="https://chooser-beta.creativecommons.org/">Choose a Creative Commons license</a></li>
-<li><a href="https://wiki.creativecommons.org/wiki/Considerations_for_licensors_and_licensees#Considerations_for_licensors">Considerations for licensors</a></li>
-</ul>
-<p><img src="http://images.huffingtonpost.com/2014-03-25-creativecommonslicenses-thumb.jpg" width="500"></p>
-<p><em>Source: <a href="https://wiki.creativecommons.org/images/a/a4/Creativecommons-how-to-license-poster_eng.pdf">“How to License Poster”</a> by Creative Commons is licensed under CC BY 4.0</em></p>
-</section>
-</section>
-<section id="explore-some-licenses" class="level2" data-number="36.16">
-<h2 data-number="36.16" class="anchored" data-anchor-id="explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</h2>
-<ul>
-<li><a href="https://github.com/git/git">Git</a>, the source-code management tool</li>
-<li><a href="https://github.com/python/cpython">CPython</a>, the standard implementation of the Python language</li>
-<li><a href="https://github.com/jupyter">Jupyter</a>, the project behind the web-based Python notebooks we’ll be using</li>
-<li><a href="https://github.com/ether/etherpad-lite">EtherPad</a>, a real-time collaborative editor</li>
-</ul>
-</section>
-<section id="resources" class="level2" data-number="36.17">
-<h2 data-number="36.17" class="anchored" data-anchor-id="resources"><span class="header-section-number">36.17</span> Resources:</h2>
-<ul>
-<li><a href="https://asp-software.org/www/misv_resources/business-articles/who-owns-the-code/">Who Owns The Code?</a></li>
-<li><a href="https://www.ualberta.ca/faculty-and-staff/copyright/intro-to-copyright-law/canadian-copyright-law.html">Canadian Copyright Law - University of Alberta</a></li>
-<li><a href="https://www.smartbiggar.ca/insights/publication/do-you-actually-own-the-ip-generated-by-your-canadian-employees-">Do you actually own the IP generated by your Canadian employees?</a></li>
-<li><a href="https://laws-lois.justice.gc.ca/eng/acts/C-42/page-4.html#h-102834">Ownership of Copyright - Canadian Copyright Act</a></li>
-<li><a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-faq.en.html">Frequently Asked Questions about the GNU Licenses</a></li>
-</ul>
-</section>
-<section id="attribution" class="level2" data-number="36.18">
-<h2 data-number="36.18" class="anchored" data-anchor-id="attribution"><span class="header-section-number">36.18</span> Attribution:</h2>
-<ul>
-<li>materials on licenses have been borrowed and derived from the <a href="https://software-carpentry.org/">Software Carpentry</a> <a href="http://swcarpentry.github.io/git-novice/11-licensing/index.html">Version Control with Git - Licensing lesson</a> (licensed with the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>) and <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a> (licensed with the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>).</li>
-</ul>
+</div>
+</div>
 
 
 </section>
@@ -1266,13 +1198,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/licenses-copyright-wrapup.html" class="pagination-link" aria-label="Wrap Up">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Wrap Up</span>
+      <a href="../lectures/190-packaging-intro-python-r.html" class="pagination-link" aria-label="Introduction to R &amp; Python packages">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/230-reproducibility-wrap-up.html" class="pagination-link" aria-label="Workflows for reproducibile and trustworthy data science wrap-up">
-        <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/192-packaging-r.html" class="pagination-link" aria-label="Packaging: R">
+        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

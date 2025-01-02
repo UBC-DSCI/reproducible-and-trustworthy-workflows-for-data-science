@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>36&nbsp; Copyright and licenses – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>22&nbsp; Evaluating test suite quality – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/230-reproducibility-wrap-up.html" rel="next">
-<link href="../parts/licenses-copyright-wrapup.html" rel="prev">
+<link href="../parts/packaging.html" rel="next">
+<link href="../lectures/143-observability-of-code-outputs.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,26 +103,15 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-relevance-project.callout {
-  border-left-color: orange;
+div.callout-exercise.callout {
+  border-left-color: green;
 }
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
 }
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -102,19 +125,59 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
-div.callout-exercise.callout {
-  border-left-color: green;
+div.callout-activity.callout {
+  border-left-color: blue;
 }
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 </style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -128,7 +191,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/144-evaluating-test-suite-quality.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -354,7 +417,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/144-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/144-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
@@ -482,7 +545,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
@@ -533,45 +596,35 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</a></li>
-  <li><a href="#full-disclosure---i-am-not-a-lawyer" id="toc-full-disclosure---i-am-not-a-lawyer" class="nav-link" data-scroll-target="#full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</a></li>
-  <li><a href="#software-falls-under-copyright-law" id="toc-software-falls-under-copyright-law" class="nav-link" data-scroll-target="#software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</a></li>
-  <li><a href="#canadian-copyright-law-rights-for-software-code" id="toc-canadian-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</a></li>
-  <li><a href="#us-copyright-law-rights-for-software-code" id="toc-us-copyright-law-rights-for-software-code" class="nav-link" data-scroll-target="#us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</a></li>
-  <li><a href="#who-has-copyright-ownership" id="toc-who-has-copyright-ownership" class="nav-link" data-scroll-target="#who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#what-is-code-coverage" id="toc-what-is-code-coverage" class="nav-link" data-scroll-target="#what-is-code-coverage"><span class="header-section-number">22.1</span> What is code coverage</a></li>
+  <li><a href="#coverage" id="toc-coverage" class="nav-link" data-scroll-target="#coverage"><span class="header-section-number">22.2</span> Coverage</a>
   <ul class="collapse">
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" id="toc-who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</a></li>
-  <li><a href="#who-owns-the-code-in-the-case-of-work-made-for-hire" id="toc-who-owns-the-code-in-the-case-of-work-made-for-hire" class="nav-link" data-scroll-target="#who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</a></li>
-  <li><a href="#implications-when-you-forgoe-copyright-ownership" id="toc-implications-when-you-forgoe-copyright-ownership" class="nav-link" data-scroll-target="#implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</a></li>
+  <li><a href="#coverage-metrics" id="toc-coverage-metrics" class="nav-link" data-scroll-target="#coverage-metrics"><span class="header-section-number">22.2.1</span> Coverage metrics:</a></li>
+  <li><a href="#what-exactly-is-a-branch" id="toc-what-exactly-is-a-branch" class="nav-link" data-scroll-target="#what-exactly-is-a-branch"><span class="header-section-number">22.2.2</span> What exactly is a branch?</a></li>
   </ul></li>
-  <li><a href="#why-do-i-need-a-license" id="toc-why-do-i-need-a-license" class="nav-link" data-scroll-target="#why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</a></li>
-  <li><a href="#why-do-i-need-a-license-contd" id="toc-why-do-i-need-a-license-contd" class="nav-link" data-scroll-target="#why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</a></li>
-  <li><a href="#how-do-licenses-work" id="toc-how-do-licenses-work" class="nav-link" data-scroll-target="#how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</a></li>
-  <li><a href="#how-to-choose-a-license" id="toc-how-to-choose-a-license" class="nav-link" data-scroll-target="#how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</a></li>
-  <li><a href="#how-to-choose-a-license-contd" id="toc-how-to-choose-a-license-contd" class="nav-link" data-scroll-target="#how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</a></li>
-  <li><a href="#choosing-a-software-license" id="toc-choosing-a-software-license" class="nav-link" data-scroll-target="#choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</a></li>
-  <li><a href="#open-source-software-is-used-in-business" id="toc-open-source-software-is-used-in-business" class="nav-link" data-scroll-target="#open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</a>
+  <li><a href="#how-are-line-and-branch-coverage-different" id="toc-how-are-line-and-branch-coverage-different" class="nav-link" data-scroll-target="#how-are-line-and-branch-coverage-different"><span class="header-section-number">22.3</span> How are line and branch coverage different?</a>
   <ul class="collapse">
-  <li><a href="#an-ethical-license-for-open-source-projects" id="toc-an-ethical-license-for-open-source-projects" class="nav-link" data-scroll-target="#an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</a></li>
+  <li><a href="#but-wait-line-coverage-can-be-misleading" id="toc-but-wait-line-coverage-can-be-misleading" class="nav-link" data-scroll-target="#but-wait-line-coverage-can-be-misleading"><span class="header-section-number">22.3.1</span> But wait, line coverage can be misleading…</a></li>
+  <li><a href="#take-home-message" id="toc-take-home-message" class="nav-link" data-scroll-target="#take-home-message"><span class="header-section-number">22.3.2</span> Take home message:</a></li>
   </ul></li>
-  <li><a href="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" id="toc-how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="nav-link" data-scroll-target="#how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</a></li>
-  <li><a href="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" id="toc-but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="nav-link" data-scroll-target="#but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</a>
+  <li><a href="#calculating-coverage-in-r" id="toc-calculating-coverage-in-r" class="nav-link" data-scroll-target="#calculating-coverage-in-r"><span class="header-section-number">22.4</span> Calculating coverage in R</a></li>
+  <li><a href="#calculating-coverage-in-python" id="toc-calculating-coverage-in-python" class="nav-link" data-scroll-target="#calculating-coverage-in-python"><span class="header-section-number">22.5</span> Calculating coverage in Python</a>
   <ul class="collapse">
-  <li><a href="#creative-commons-licences" id="toc-creative-commons-licences" class="nav-link" data-scroll-target="#creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</a></li>
+  <li><a href="#calculating-coverage-in-python-1" id="toc-calculating-coverage-in-python-1" class="nav-link" data-scroll-target="#calculating-coverage-in-python-1"><span class="header-section-number">22.5.1</span> Calculating coverage in Python</a></li>
+  <li><a href="#how-does-coverage-in-python-actually-count-line-coverage" id="toc-how-does-coverage-in-python-actually-count-line-coverage" class="nav-link" data-scroll-target="#how-does-coverage-in-python-actually-count-line-coverage"><span class="header-section-number">22.5.2</span> How does <code>coverage</code> in Python actually count line coverage?</a></li>
+  <li><a href="#how-does-coverage-in-python-actually-branch-coverage" id="toc-how-does-coverage-in-python-actually-branch-coverage" class="nav-link" data-scroll-target="#how-does-coverage-in-python-actually-branch-coverage"><span class="header-section-number">22.5.3</span> How does <code>coverage</code> in Python actually branch coverage?</a></li>
   </ul></li>
-  <li><a href="#explore-some-licenses" id="toc-explore-some-licenses" class="nav-link" data-scroll-target="#explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</a></li>
-  <li><a href="#resources" id="toc-resources" class="nav-link" data-scroll-target="#resources"><span class="header-section-number">36.17</span> Resources:</a></li>
-  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">36.18</span> Attribution:</a></li>
+  <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution"><span class="header-section-number">22.6</span> Attribution</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/220-licenses-and-copyright.html"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/144-evaluating-test-suite-quality.html"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></h1>
+<h1 class="title"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></h1>
 </div>
 
 
@@ -588,259 +641,293 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="36.1">
-<h2 data-number="36.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">36.1</span> Learning objectives:</h2>
-<p>By the end of this lecture, students should be able to: - Explain who owns the copyright of code they write in a give situation, and why - Choose an appropriate license for software (i.e., packages or analysis code) - Choose an appropriate license for your non-software materials</p>
-</section>
-<section id="full-disclosure---i-am-not-a-lawyer" class="level2" data-number="36.2">
-<h2 data-number="36.2" class="anchored" data-anchor-id="full-disclosure---i-am-not-a-lawyer"><span class="header-section-number">36.2</span> FULL DISCLOSURE - I AM NOT A LAWYER!</h2>
-</section>
-<section id="software-falls-under-copyright-law" class="level2" data-number="36.3">
-<h2 data-number="36.3" class="anchored" data-anchor-id="software-falls-under-copyright-law"><span class="header-section-number">36.3</span> Software falls under copyright law 🇨🇦🇺🇸</h2>
-<ul>
-<li><p>In both the US and Canada, software code falls under copyright law</p></li>
-<li><p>knowing who owns the copyright of software code is critical because the owner controls if and how the code may be:</p>
-<ul>
-<li>copied</li>
-<li>distributed</li>
-<li>sold</li>
-<li>modified</li>
-<li>essentially, made profitable</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Copyright protects only the language and words used to express ideas, concepts and themes, not the ideas, concepts or themes themselves.</p>
-</blockquote>
-</section>
-<section id="canadian-copyright-law-rights-for-software-code" class="level2" data-number="36.4">
-<h2 data-number="36.4" class="anchored" data-anchor-id="canadian-copyright-law-rights-for-software-code"><span class="header-section-number">36.4</span> Canadian copyright law rights for software code 🇨🇦</h2>
-<p>In Canada, the copyright owner is afforded the following rights:</p>
-<ul>
-<li>Economic rights:
-<ul>
-<li>the right to produce, reproduce, publish, translate, authorize &amp; convert a work</li>
-</ul></li>
-<li>Moral rights:
-<ul>
-<li>the right to claim authorship, the right to remain anonymous, or the right to use a pseudonym or pen name</li>
-<li>the right to integrity</li>
-<li>the right of association</li>
-</ul></li>
-</ul>
-<blockquote class="blockquote">
-<p>Economic rights can be transferred to entities that are not the author, whereas moral rights cannot, they can however, be waived.</p>
-</blockquote>
-</section>
-<section id="us-copyright-law-rights-for-software-code" class="level2" data-number="36.5">
-<h2 data-number="36.5" class="anchored" data-anchor-id="us-copyright-law-rights-for-software-code"><span class="header-section-number">36.5</span> US copyright law rights for software code 🇺🇸</h2>
-<p>In the US, the copyright owner is afforded four rights:</p>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <ol type="1">
-<li>The right to reproduce the code</li>
-<li>The right to create “derivative works” based on the code</li>
-<li>The right to distribute copies of the code</li>
-<li>The right to “display” the code</li>
+<li>Define code, test and branch coverage, and explain why high coverage in each of these metrics is desired.</li>
+<li>Calculate code coverage in R and Python</li>
+<li>Manage package dependencies in R and Python packages</li>
 </ol>
 </section>
-<section id="who-has-copyright-ownership" class="level2" data-number="36.6">
-<h2 data-number="36.6" class="anchored" data-anchor-id="who-has-copyright-ownership"><span class="header-section-number">36.6</span> Who has copyright ownership? 🇨🇦🇺🇸</h2>
-<p>This is a complicated question, and the answer starts with it depends…</p>
-<p>So let’s start with the simplest case, you author the code and you are doing this for yourself (<em>i.e.</em>, not for your employer, not for a client, etc).</p>
+<section id="what-is-code-coverage" class="level2" data-number="22.1">
+<h2 data-number="22.1" class="anchored" data-anchor-id="what-is-code-coverage"><span class="header-section-number">22.1</span> What is code coverage</h2>
+<p>We really want to know how well the code performs its expected tasks and how robustly it responds to unexpected inputs and situations. Answering this complex and qualitative question involves balancing tests value (e.g., protection against regressions and bugs introduced by refactoring) and tests cost (e.g., time for creation and upkeep, time to run the tests). This is hard to do, and takes a lot of time. Also, as hinted in the previous sentence, it is not very quantifiable.</p>
+<p>Code coverage is a way to more simply assess code quality - it is useful to answer the question does the test suite validate all the code? This is an assessment that also attempts to be more quantitative and is popular because it can often be calculated automatically. However it does not factor time or test value, so we have to take it with a grain of salt.</p>
+<p><em>Source: <a href="https://github.com/ubccpsc/310/blob/master/resources/readings/WhiteBoxTesting.md">CPSC 310 class notes from Reid Holmes, UBC</a></em></p>
+<div class="callout callout-style-default callout-definition callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“Black box &amp; white box testing</p>
+<p>“Up until now, we have primarily been focused on deriving tests when thinking about the code specifications - what is the functionality of the code, and does it do what we expect. For example, most of the tests we wrote for the <code>count_classes</code> function would fall under the guise of <strong>black box testing</strong>. After we follow our TDD-inspired workflow for writing functions and tests for data science, we may want to look inside our code and do some testing of how it is implemented. This would fall under the umbrella of <strong>white box testing</strong> and code coverage can be very helpful here to identify portions of code that is not being tested well, or at all.</p>
+<p>” <strong>Black box testing:</strong> is a method of software testing that examines the functionality of an application without peering into its internal structures or workings. This method of test can be applied virtually to every level of software testing: unit, integration, system and acceptance. It is sometimes referred to as specification-based testing.</p>
+<p>” <strong>White box testing:</strong> is a method of software testing that tests internal structures or workings of an application, as opposed to its functionality (<em>i.e.</em> black-box testing). In white-box testing an internal perspective of the system, as well as programming skills, are used to design test cases.</p>
+<p>“<em>Source: <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></em></p>
+</div>
+</div>
+</section>
+<section id="coverage" class="level2" data-number="22.2">
+<h2 data-number="22.2" class="anchored" data-anchor-id="coverage"><span class="header-section-number">22.2</span> Coverage</h2>
+<div class="callout callout-style-default callout-definition callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition:</strong> Proportion of system being executed by the test suite.</p>
 <ul>
-<li><p>In such a case, you (<strong>the person who typed the code</strong>) automatically become the copyright owner.</p></li>
-<li><p>In both Canada and the USA, you do not need to need to affix the copyright symbol © to your work (some other countries do require this however).</p></li>
+<li>usually reported as a percentage: <span class="math display">\[Coverage = \frac{covered}{(covered + uncovered)} * 100\]</span></li>
 </ul>
+</div>
+</div>
+<section id="coverage-metrics" class="level3" data-number="22.2.1">
+<h3 data-number="22.2.1" class="anchored" data-anchor-id="coverage-metrics"><span class="header-section-number">22.2.1</span> Coverage metrics:</h3>
+<p>There are many, but here are the ones our automated tools in this course will calculate for you:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 51%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Description</th>
+<th>Dependent upon control flow</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>line</td>
+<td>lines of code that tests execute</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>branch</td>
+<td>number of branches (independent code segments) that tests execute</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-exactly-is-a-branch" class="level3" data-number="22.2.2">
+<h3 data-number="22.2.2" class="anchored" data-anchor-id="what-exactly-is-a-branch"><span class="header-section-number">22.2.2</span> What exactly is a branch?</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Branch 1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (condition_met) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Branch 2</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  z</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><em>Adapted from: <a href="http://www.ncover.com/blog/code-coverage-metrics-branch-coverage/" class="uri">http://www.ncover.com/blog/code-coverage-metrics-branch-coverage/</a></em></p>
+</section>
+</section>
+<section id="how-are-line-and-branch-coverage-different" class="level2" data-number="22.3">
+<h2 data-number="22.3" class="anchored" data-anchor-id="how-are-line-and-branch-coverage-different"><span class="header-section-number">22.3</span> How are line and branch coverage different?</h2>
+<p>Consider the same example we just saw and the unit test below, let’s manually calculate the coverage using line and branch coverage metrics:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="sc">|</span>  my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="sc">|</span>  <span class="co"># Branch 1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>  <span class="sc">|</span>    <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">"pony"</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>  <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>  <span class="sc">|</span>    }</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="sc">|</span>    <span class="co"># Branch 2</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>  <span class="sc">|</span>    <span class="cf">else</span> {</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span> <span class="sc">|</span>    }</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">|</span>    z</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span> <span class="sc">|</span>  }</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="sc">|</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span> <span class="sc">|</span>  <span class="fu">test_that</span>(<span class="st">"ponies are actually unicorns"</span>, {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">|</span>    <span class="fu">expect_equal</span>(<span class="fu">my_function</span>(<span class="st">"pony"</span>), (<span class="st">"Actually a unicorn"</span>))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span> <span class="sc">|</span>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><em>Note: function definitions are not counted as lines when calculating coverage</em></p>
+<section id="using-branch-as-the-coverage-metric" class="level4">
+<h4 class="anchored" data-anchor-id="using-branch-as-the-coverage-metric">Using branch as the coverage metric:</h4>
+<p>Branch 1 (lines 3-5) is covered by the test, because <code>if (x == "pony")</code> evaluates to true. Therefore we have one branch covered, and one branch uncovered (lines 8-10), resulting in 50% branch coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 50\%\)</span></p>
+</section>
+<section id="using-line-as-the-coverage-metric" class="level4">
+<h4 class="anchored" data-anchor-id="using-line-as-the-coverage-metric">Using line as the coverage metric:</h4>
+<p>Lines 3-5 and 12 are executed, and lines 8-10 are not (function definitions are not typically counted in line coverage). There fore we have 4 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{4}{(4 + 3)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 57\%\)</span></p>
+<p>In this case, both metrics give us relatively similar estimates of code coverage.</p>
+</section>
+<section id="but-wait-line-coverage-can-be-misleading" class="level3" data-number="22.3.1">
+<h3 data-number="22.3.1" class="anchored" data-anchor-id="but-wait-line-coverage-can-be-misleading"><span class="header-section-number">22.3.1</span> But wait, line coverage can be misleading…</h3>
+<p>Let’s alter our function and re-calculate line and branch coverage:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  <span class="sc">|</span>  my_function <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  <span class="sc">|</span>  <span class="co"># Branch 1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span>  <span class="sc">|</span>    <span class="cf">if</span> (x <span class="sc">==</span> <span class="st">"pony"</span>) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span>  <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_a</span>(x)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span>  <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_b</span>(y)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span>  <span class="sc">|</span>      <span class="fu">print</span>(z)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"some important message"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"another important message"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="dv">9</span>  <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"a less important message"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"just makin' stuff up here..."</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"out of things to say..."</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"how creative can I be..."</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dv">13</span> <span class="sc">|</span>      <span class="fu">print</span>(<span class="st">"I guess not very..."</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dv">14</span> <span class="sc">|</span>    }</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dv">15</span> <span class="sc">|</span>    <span class="co"># Branch 2</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="dv">16</span> <span class="sc">|</span>    <span class="cf">else</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="dv">17</span> <span class="sc">|</span>      y <span class="ot">=</span> <span class="fu">function_b</span>(x)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="dv">18</span> <span class="sc">|</span>      z <span class="ot">=</span> <span class="fu">function_c</span>(y)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="dv">19</span> <span class="sc">|</span>    }</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="dv">20</span> <span class="sc">|</span>    z</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span> <span class="sc">|</span>  }</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="dv">22</span> <span class="sc">|</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="dv">23</span> <span class="sc">|</span>  <span class="fu">test_that</span>(<span class="st">"ponies are actually unicorns"</span>, {</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="dv">24</span> <span class="sc">|</span>    <span class="fu">expect_equal</span>(<span class="fu">my_function</span>(<span class="st">"pony"</span>), (<span class="st">"Actually a unicorn"</span>))</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="dv">25</span> <span class="sc">|</span>  })</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="using-branch-as-the-coverage-metric-1" class="level4">
+<h4 class="anchored" data-anchor-id="using-branch-as-the-coverage-metric-1">Using branch as the coverage metric:</h4>
+<p>Branch 1 (lines 3-13) is covered by the test, because <code>if (x == "pony")</code> evaluates to true. Therefore we have one branch covered, and one branch uncovered (lines 16-18), resulting in 50% branch coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{1}{(1 + 1)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 50\%\)</span></p>
+</section>
+<section id="using-line-as-the-coverage-metric-1" class="level4">
+<h4 class="anchored" data-anchor-id="using-line-as-the-coverage-metric-1">Using line as the coverage metric:</h4>
+<p>Lines 3-13 and 20 are executed, and lines 16-18 are not (function definitions are not typically counted in line coverage). There fore we have 12 lines covered, and 3 lines uncovered, resulting in 57% line coverage when we plug these numbers into our formula.</p>
+<p><span class="math inline">\(Coverage = \frac{covered}{(covered + uncovered)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = \frac{12}{(12 + 3)} * 100\)</span></p>
+<p><span class="math inline">\(Coverage = 80\%\)</span></p>
+<p>In this case, the different metrics give us very different estimates of code coverage! 🤯</p>
+</section>
+</section>
+<section id="take-home-message" class="level3" data-number="22.3.2">
+<h3 data-number="22.3.2" class="anchored" data-anchor-id="take-home-message"><span class="header-section-number">22.3.2</span> Take home message:</h3>
+<p>Use branch coverage when you can, especially if your code uses control flow!</p>
+</section>
+</section>
+<section id="calculating-coverage-in-r" class="level2" data-number="22.4">
+<h2 data-number="22.4" class="anchored" data-anchor-id="calculating-coverage-in-r"><span class="header-section-number">22.4</span> Calculating coverage in R</h2>
+<p>We use the <a href="https://covr.r-lib.org/"><code>covr</code></a> R package to do this.</p>
+<p>Install via R console:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"covr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To calculate line coverage and have it show in the viewer pane in RStudio:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>covr<span class="sc">::</span><span class="fu">report</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Currently <code>covr</code> does not have the functionality to calculate branch coverage. Thus this is up to you in R to calculate this by hand if you really want to know.</p>
 <blockquote class="blockquote">
-<p>Although the copyright symbol © is not required, it is often used in copyrighted works (along with the name of the copyright owner and the year of first publication) to clearly identify that the code is protected by copyright.</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>In both Canada and the US, it is possible (and advisable) to register your copyright as evidence that a copyright exists and who the owner is.</p>
-</blockquote>
-<blockquote class="blockquote">
-<ul>
-<li>🇨🇦 <a href="https://www.ic.gc.ca/eic/site/cipointernet-internetopic.nsf/eng/wr03915.html">Canadian Registration of copyright—filing online</a></li>
-<li>🇺🇸 <a href="https://www.copyright.gov/registration/">USA Copyright Registration Portal</a></li>
-</ul>
-</blockquote>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment" class="level3" data-number="36.6.1">
-<h3 data-number="36.6.1" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment"><span class="header-section-number">36.6.1</span> Who owns the code in the case of “work made in the course of employment”?</h3>
-<p>In both Canada and the US, if you write code for work as an employee the copyright ownership is typically assigned to the employer.</p>
-<p>The specifics differ a little for Canada and the US, and so we’ll discuss each separately.</p>
-</section>
-<section id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1" class="level3" data-number="36.6.2">
-<h3 data-number="36.6.2" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-in-the-course-of-employment-1"><span class="header-section-number">36.6.2</span> Who owns the code in the case of “work made in the course of employment”? 🇨🇦</h3>
-<p>In the Canada, software code is defined as “work made in the course of employment” (and therefore the copyright ownership is assigned to the employer) if:</p>
-<ul>
-<li>The author of the code was in the employment of some other entity under a contract <strong>of</strong> service or apprenticeship and the code was written in the course of their employment by that entity. <strong>And</strong> there exists no agreement (written, or otherwise, and even potentially even presumed) that the employee retains ownership of copyright for the code written during the term of their employment.</li>
-</ul>
-<blockquote class="blockquote">
-<p>Note the bolding of the “of” in the sentence above. This is an important distinction from a contract <strong>for</strong> services (in which the author of the code acts more like an independent consultant, and in such a case it does not appear that “work made in the course of employment” would apply). In this case, the default position is usually that the contractor retains copyright ownership of the work they create, unless the contract specifically assigns copyright to the client. However, usually such a contract is asked for.</p>
+<p>Why has this not been implemented? It has been in an now unsupported package (see <a href="https://github.com/MangoTheCat/testCoverage">here</a>), but its implementation was too complicated for others to understand. Automating the calculation of branch coverage is non-trivial, and this is a perfect demonstration of that.</p>
 </blockquote>
 </section>
-<section id="who-owns-the-code-in-the-case-of-work-made-for-hire" class="level3" data-number="36.6.3">
-<h3 data-number="36.6.3" class="anchored" data-anchor-id="who-owns-the-code-in-the-case-of-work-made-for-hire"><span class="header-section-number">36.6.3</span> Who owns the code in the case of “work-made-for-hire”? 🇺🇸</h3>
-<p>In the US, software code is defined as “work-made-for-hire” (and therefore the copyright ownership is assigned to the employer) if either:</p>
-<ol type="1">
-<li><p>The writing of the code is done by an employee in the scope of their employment</p></li>
-<li><p>The writing of the code was specially ordered or commissioned for use in one of ten defined categories (listed <a href="https://www.ny-trademark-lawyer.com/copyright-basics-and-works-made-for-hire.html">here</a>). There must be a written agreement signed by the developer that explicitly states the work is “work-made-for-hire”.</p></li>
-</ol>
+<section id="calculating-coverage-in-python" class="level2" data-number="22.5">
+<h2 data-number="22.5" class="anchored" data-anchor-id="calculating-coverage-in-python"><span class="header-section-number">22.5</span> Calculating coverage in Python</h2>
+<p>We use the plugin tool <a href="https://github.com/pytest-dev/pytest-cov"><code>pytest-cov</code></a> to do this.</p>
+<p>Install as a package via conda:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install pytest-cov</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="calculating-coverage-in-python-1" class="level3" data-number="22.5.1">
+<h3 data-number="22.5.1" class="anchored" data-anchor-id="calculating-coverage-in-python-1"><span class="header-section-number">22.5.1</span> Calculating coverage in Python</h3>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--cov</span><span class="op">=&lt;</span>directory<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To calculate line coverage and print it to the terminal:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pytest</span> <span class="at">--cov-branch</span> <span class="at">--cov</span><span class="op">=&lt;</span>directory<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="implications-when-you-forgoe-copyright-ownership" class="level3" data-number="36.6.4">
-<h3 data-number="36.6.4" class="anchored" data-anchor-id="implications-when-you-forgoe-copyright-ownership"><span class="header-section-number">36.6.4</span> Implications when you forgoe copyright ownership</h3>
-<p>When you forgoe copyright ownership, such as in a “work-made-for-hire” situation, if you want to use any of the code that you wrote for that piece of work again in another project, you would need to negotiate a licence to use the code you wrote, the same way any other third-party would…</p>
-<p>Are there things one we can do to mitigate this? Possibly, some things include:</p>
+<section id="how-does-coverage-in-python-actually-count-line-coverage" class="level3" data-number="22.5.2">
+<h3 data-number="22.5.2" class="anchored" data-anchor-id="how-does-coverage-in-python-actually-count-line-coverage"><span class="header-section-number">22.5.2</span> How does <code>coverage</code> in Python actually count line coverage?</h3>
 <ul>
-<li><p>(in a consulting position) negotiating that the client purchase a license to the code you write, as opposed to hiring you to write the code</p></li>
-<li><p>At the beginning of the project, negotiating which code is core to the work, and thus should fall under “work-made-for-hire” and what (pre-built) code (e.g., packages, scripts) are outside the core work and should not.</p></li>
+<li>the output from <code>poetry run pytest --cov=src</code> gives a table that looks like this:</li>
 </ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">----------</span> coverage: platform darwin, python 3.7.6-final-0 <span class="at">-----------</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Name</span>                  Stmts   Miss  Cover</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------------------------------------</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">big_abs/big_abs.py</span>        8      2    75%</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-----------------------------------------</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TOTAL</span>                     9      2    78%</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the column labelled as “Stmts”, coverage is calculating all possible line jumps that could have been executed (these line jumps are sometimes called arcs). This is essentially covered + uncovered lines of code.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This leads coverage to count two statements on one line that are separated by a “;” (e.g., print(“hello”); print(“there”)) as one statement, as well as calculating a single statement that is spread across two lines as one statement.</p>
+</div>
+</div>
+<p>In the column labelled as “Miss”, this is the number of line jumps not executed by the tests. So our covered lines of code is “Stmts” - “Miss”.</p>
+<p>The coverage percentage in this scenario is calculated by: <span class="math display">\[Coverage = \frac{(Stmts - Miss)}{Stmts}\]</span> <span class="math display">\[Coverage = \frac{8 - 2}{8} * 100 = 75\%\]</span></p>
 </section>
-</section>
-<section id="why-do-i-need-a-license" class="level2" data-number="36.7">
-<h2 data-number="36.7" class="anchored" data-anchor-id="why-do-i-need-a-license"><span class="header-section-number">36.7</span> Why do I need a license?</h2>
+<section id="how-does-coverage-in-python-actually-branch-coverage" class="level3" data-number="22.5.3">
+<h3 data-number="22.5.3" class="anchored" data-anchor-id="how-does-coverage-in-python-actually-branch-coverage"><span class="header-section-number">22.5.3</span> How does <code>coverage</code> in Python actually branch coverage?</h3>
 <ul>
-<li><p>As mentioned above, creative works (like software code) are automatically eligible for intellectual property (and thus copyright) protection</p></li>
-<li><p>Reusing creative works without a license is dangerous, because the copyright holders could sue you for copyright infringement</p></li>
-<li><p>Thus, if you publicly share your creative work (<em>i.e.</em>, software code), you should let others know if and how they can reuse it</p></li>
-<li><p>This is done via the inclusion of a <code>LICENSE</code> or <code>LICENSE.txt</code> file in the base directory of the repository that clearly states under which license the content is being made available</p></li>
+<li>the output from <code>poetry run pytest --cov-branch --cov=src</code> gives a table that looks like this:</li>
 </ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">----------</span> coverage: platform darwin, python 3.7.6-final-0 <span class="at">-----------</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Name</span>                  Stmts   Miss Branch BrPart  Cover</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">big_abs/big_abs.py</span>        8      2      6      3    64%</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">TOTAL</span>                     9      2      6      3    67%</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the column labelled as “Branch”, coverage is actually counting the number of possible jumps from branch points. This is essentially covered + uncovered branches of code.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because coverage is using line jumps to count branches, each <code>if</code> inherently has an <code>else</code> even if its not explicitly written in the code.</p>
+</div>
+</div>
+<p>In the column labelled as “BrPart”, this is the number of of possible jumps from branch points executed by the tests. This is essentially our covered branches of code.</p>
+<p>The branch coverage percentage in this tool is calculated by:</p>
+<p><span class="math display">\[Coverage = \frac{(Stmts\:executed + BrPart)}{(Stmts + Branch)}\]</span></p>
+<p><span class="math display">\[Coverage = \frac{((Stmts - Miss) + BrPart)}{(Stmts + Branch)}\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can see this formula actually includes both line and branch coverage in this calculation.</p>
+</div>
+</div>
+<p>So for <code>big_abs/big_abs.py</code> 64% was calculated from: <span class="math display">\[Coverage = \frac{((8 - 2) + 3)}{(8 + 6)} * 100 = 64\%\]</span></p>
 </section>
-<section id="why-do-i-need-a-license-contd" class="level2" data-number="36.8">
-<h2 data-number="36.8" class="anchored" data-anchor-id="why-do-i-need-a-license-contd"><span class="header-section-number">36.8</span> Why do I need a license? (cont’d)</h2>
+</section>
+<section id="attribution" class="level2" data-number="22.6">
+<h2 data-number="22.6" class="anchored" data-anchor-id="attribution"><span class="header-section-number">22.6</span> Attribution</h2>
 <ul>
-<li><p>Unless you include a license that specifies otherwise, nobody else can copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation.</p></li>
-<li><p>Once the work has other contributors (each a copyright holder), <strong>“nobody” starts including you</strong>!</p></li>
-</ul>
-</section>
-<section id="how-do-licenses-work" class="level2" data-number="36.9">
-<h2 data-number="36.9" class="anchored" data-anchor-id="how-do-licenses-work"><span class="header-section-number">36.9</span> How do licenses work?</h2>
-<p>A license solves this problem by granting rights to others (the licensees) that they would otherwise not have. What rights are being granted under which conditions differs, often only slightly, from one license to another.</p>
-<blockquote class="blockquote">
-<p><em>Note: licenses are legal documents and written by legal experts. Most of you do not have the legal expertise to write your own license, so DO NOT do this. Instead, choose an already written one that best suits your situation.</em></p>
-</blockquote>
-</section>
-<section id="how-to-choose-a-license" class="level2" data-number="36.10">
-<h2 data-number="36.10" class="anchored" data-anchor-id="how-to-choose-a-license"><span class="header-section-number">36.10</span> How to choose a license</h2>
-<p>In practice, a few licenses are by far the most popular, and <a href="https://choosealicense.com/">choosealicense.com</a> will help you find a common license that suits your needs. Important considerations include:</p>
-<ul>
-<li><p>Whether you require people distributing derivative works to also require others to distribute their derivative works in the same way.</p></li>
-<li><p>Whether the content you are licensing is source code, and if it is, whether you want to require that derivatives of your work to share the source code</p></li>
-</ul>
-</section>
-<section id="how-to-choose-a-license-contd" class="level2" data-number="36.11">
-<h2 data-number="36.11" class="anchored" data-anchor-id="how-to-choose-a-license-contd"><span class="header-section-number">36.11</span> How to choose a license (cont’d)</h2>
-<ul>
-<li><p>Choose a license that is in common use</p></li>
-<li><p>this makes life easier for contributors and users, because they are more likely to already be familiar with the license and don’t have to wade through a bunch of jargon to decide if they’re ok with it</p></li>
-</ul>
-</section>
-<section id="choosing-a-software-license" class="level2" data-number="36.12">
-<h2 data-number="36.12" class="anchored" data-anchor-id="choosing-a-software-license"><span class="header-section-number">36.12</span> Choosing a software license</h2>
-<p>Let’s visit <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></p>
-</section>
-<section id="open-source-software-is-used-in-business" class="level2" data-number="36.13">
-<h2 data-number="36.13" class="anchored" data-anchor-id="open-source-software-is-used-in-business"><span class="header-section-number">36.13</span> Open source software is used in business</h2>
-<ul>
-<li><a href="https://rstudio.com/about/customer-stories/">RStudio Customer Stories</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-</ul>
-<section id="an-ethical-license-for-open-source-projects" class="level3" data-number="36.13.1">
-<h3 data-number="36.13.1" class="anchored" data-anchor-id="an-ethical-license-for-open-source-projects"><span class="header-section-number">36.13.1</span> An Ethical License for Open Source Projects</h3>
-<ul>
-<li><a href="https://firstdonoharm.dev/">The Hippocratic License</a></li>
-</ul>
-</section>
-</section>
-<section id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed" class="level2" data-number="36.14">
-<h2 data-number="36.14" class="anchored" data-anchor-id="how-do-i-cite-the-code-i-used-from-another-project-that-was-openly-licensed"><span class="header-section-number">36.14</span> How do I cite the code I used from another project that was openly licensed?</h2>
-<p>If you substantially use licensed code in your project, you need to ensure you satisfy the license the code was shared under. For example, for the MIT license, you should include the original copyright notice and the MIT License text. This requirement is part of the license terms, ensuring that the original authors receive credit for their work and that the recipients of the software are aware of the terms under which it is provided.</p>
-<p>Below is an example of how a <code>LICENSE</code> file might look when incorporating MIT-licensed code into a new project that is also distributed under the MIT License. This example includes both the original copyright notice for the incorporated code and a copyright notice for the new project.</p>
-<pre><code>MIT License
-
-Copyright (c) [year of new project's creation] [New Project's Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
----
-
-For the portions of the project that are derived from [Original Project Name] (https://github.com/original/project/url):
-
-MIT License
-
-Copyright (c) [year of original project's creation] [Original Author or Organization]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</code></pre>
-</section>
-<section id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it" class="level2" data-number="36.15">
-<h2 data-number="36.15" class="anchored" data-anchor-id="but-not-all-my-creative-data-science-work-is-code-how-do-i-license-it"><span class="header-section-number">36.15</span> But not all my creative Data Science work is code, how do I license it?</h2>
-<p>As you all know, code is only one part of what Data Scientists do. We also create visualizations, write reports, create and give presentations, write tutorials, et cetera.</p>
-<p>The licenses we have explored so far do not really fit these kinds of work, is there something that does?</p>
-<p>Yes! The <a href="https://creativecommons.org/">Creative Commons</a> licences were created for such works and they are now widely used in academia and the publishing industry.</p>
-<section id="creative-commons-licences" class="level3" data-number="36.15.1">
-<h3 data-number="36.15.1" class="anchored" data-anchor-id="creative-commons-licences"><span class="header-section-number">36.15.1</span> Creative Commons licences</h3>
-<ul>
-<li><a href="https://chooser-beta.creativecommons.org/">Choose a Creative Commons license</a></li>
-<li><a href="https://wiki.creativecommons.org/wiki/Considerations_for_licensors_and_licensees#Considerations_for_licensors">Considerations for licensors</a></li>
-</ul>
-<p><img src="http://images.huffingtonpost.com/2014-03-25-creativecommonslicenses-thumb.jpg" width="500"></p>
-<p><em>Source: <a href="https://wiki.creativecommons.org/images/a/a4/Creativecommons-how-to-license-poster_eng.pdf">“How to License Poster”</a> by Creative Commons is licensed under CC BY 4.0</em></p>
-</section>
-</section>
-<section id="explore-some-licenses" class="level2" data-number="36.16">
-<h2 data-number="36.16" class="anchored" data-anchor-id="explore-some-licenses"><span class="header-section-number">36.16</span> Explore some licenses:</h2>
-<ul>
-<li><a href="https://github.com/git/git">Git</a>, the source-code management tool</li>
-<li><a href="https://github.com/python/cpython">CPython</a>, the standard implementation of the Python language</li>
-<li><a href="https://github.com/jupyter">Jupyter</a>, the project behind the web-based Python notebooks we’ll be using</li>
-<li><a href="https://github.com/ether/etherpad-lite">EtherPad</a>, a real-time collaborative editor</li>
-</ul>
-</section>
-<section id="resources" class="level2" data-number="36.17">
-<h2 data-number="36.17" class="anchored" data-anchor-id="resources"><span class="header-section-number">36.17</span> Resources:</h2>
-<ul>
-<li><a href="https://asp-software.org/www/misv_resources/business-articles/who-owns-the-code/">Who Owns The Code?</a></li>
-<li><a href="https://www.ualberta.ca/faculty-and-staff/copyright/intro-to-copyright-law/canadian-copyright-law.html">Canadian Copyright Law - University of Alberta</a></li>
-<li><a href="https://www.smartbiggar.ca/insights/publication/do-you-actually-own-the-ip-generated-by-your-canadian-employees-">Do you actually own the IP generated by your Canadian employees?</a></li>
-<li><a href="https://laws-lois.justice.gc.ca/eng/acts/C-42/page-4.html#h-102834">Ownership of Copyright - Canadian Copyright Act</a></li>
-<li><a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a></li>
-<li><a href="http://www.rosenlaw.com/html/GPL.pdf">The Unreasonable Fear of Infection</a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-faq.en.html">Frequently Asked Questions about the GNU Licenses</a></li>
-</ul>
-</section>
-<section id="attribution" class="level2" data-number="36.18">
-<h2 data-number="36.18" class="anchored" data-anchor-id="attribution"><span class="header-section-number">36.18</span> Attribution:</h2>
-<ul>
-<li>materials on licenses have been borrowed and derived from the <a href="https://software-carpentry.org/">Software Carpentry</a> <a href="http://swcarpentry.github.io/git-novice/11-licensing/index.html">Version Control with Git - Licensing lesson</a> (licensed with the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>) and <a href="https://choosealicense.com/" class="uri">https://choosealicense.com/</a> (licensed with the <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>).</li>
+<li><a href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</li>
+<li><a href="http://tidynomicon.tech/">The Tidynomicon</a> by Greg Wilson</li>
+<li><a href="https://github.com/ubccpsc/310/tree/2019sept">CPSC 310</a> and <a href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410</a> class notes by Reid Holmes, UBC</li>
 </ul>
 
 
@@ -1266,13 +1353,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/licenses-copyright-wrapup.html" class="pagination-link" aria-label="Wrap Up">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Wrap Up</span>
+      <a href="../lectures/143-observability-of-code-outputs.html" class="pagination-link" aria-label="Observability of unit outputs in data science">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Observability of unit outputs in data science</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/230-reproducibility-wrap-up.html" class="pagination-link" aria-label="Workflows for reproducibile and trustworthy data science wrap-up">
-        <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../parts/packaging.html" class="pagination-link" aria-label="Packaging">
+        <span class="nav-page-text">Packaging</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
