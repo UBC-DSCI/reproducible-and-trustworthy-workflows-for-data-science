@@ -1,0 +1,169 @@
+---
+title: "Package Documentation: Python"
+---
+
+## Learning objectives
+
+- Generate well formatted function and package-level documentation for Python packages using Sphinx & Read the Docs
+
+## Package-level documentation for Python
+
+There are several levels of documentation possible for Python packages:
+- code-level documentation (formatted docstrings)
+- package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
+- package websites (via [Read the Docs](https://readthedocs.org/))
+
+## Code & package-level documentation
+
+- We learned the basics of how to write formatted docstrings using numpy-style documentation.
+
+- These docstrings can not only be accessed via `?function_name`, but can also be used to automatically generate package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
+
+- We already did this with our toy `foocat` package by:
+    - adding sphinx as a dev dependency via `poetry add --dev sphinx`
+    - create the `.rst` files for your package functions by running: `poetry run sphinx-apidoc -f -o docs/source <package_name>` from the project root
+    - and then ran `poetry run make html` from the docs directory
+
+## Code & package-level documentation
+
+- To have `sphinx` correctly render the docstring as package-level documentation, we need to either write our docstrings in the correct format for restructured text (RST) or we can use the `sphinx` extension `napolean` that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).
+
+### Example of RST formatted docstrings:
+
+```
+:type path: str
+:param field_storage: The :class:`FileStorage` instance to wrap
+:type field_storage: FileStorage
+:param temporary: Whether or not to delete the file when the File
+   instance is destructed
+:type temporary: bool
+:returns: A buffered writable file descriptor
+:rtype: BufferedFileStorage
+```
+
+### Example of Numpy-style docstrings:
+
+```
+Summary line.
+
+    Extended description of function.
+
+    Parameters
+    ----------
+    arg1 : int
+        Description of arg1
+    arg2 : str
+        Description of arg2
+
+    Returns
+    -------
+    bool
+        Description of return value
+```
+
+## Code & package-level documentation
+
+When using Numpy-style docstrings, we need to do the following:
+
+- add `sphinxcontrib-napoleon` as a dev dependency via `poetry add --dev`
+
+- add `extensions = ['sphinx.ext.napoleon']` to the docs configuration file (`docs/conf.py`) - we have already done this for you in the Cookiecutter template.
+
+## Editing & Rendering package-level documentation
+
+- As we did in the toy `foocat` package, we render the docs via running `poetry run make html` from the docs directory
+
+- *Note: it is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.*
+
+## Adding new page to your package-level documentation
+
+How do we add new pages to our Python package-level documentation? The pages that show up in the rendered document on ReadtheDocs are controlled by [`docs/index.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md).
+
+Let's take a look at the [raw version of that file from our `pypkgs-cookiecutter`](https://raw.githubusercontent.com/py-pkgs/py-pkgs-cookiecutter/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md):
+
+<img src="img/index-raw.png" width=300>
+
+This results in a side bar on our webpage that looks like this:
+
+<img src="img/original-index.png" width=700>
+
+Thus, to add new pages, we add them to the `toctree` list. They will then show up in that position in the rendered side bar.
+
+What if we want headers in our side bar?
+To do this, we need to add multiple `toctree`'s and add a caption.
+Here's an example:
+
+<img src="img/index-raw-headers.png" width=300>
+
+Which will result in this rendering:
+
+<img src="img/rendered-index-headers.png" width=1000>
+
+
+
+## Vignettes/tutorials
+
+It is common for packages to have vignettes/tutorials (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. In your Python package, this ideally might go in an "Examples" section of the docs. The `pypkgs-cookiecutter` gives a template file for you to use as a starting place (`docs/example.ipynb`). As indicated in the section above you can rename this file and add others, just make sure you update the `toctree` in `docs/index.md`.
+
+Here are some good examples of vignettes/tutorials from packages you know and love:
+
+-   <https://altair-viz.github.io/case_studies/exploring-weather.html>
+
+-   <https://matplotlib.org/stable/tutorials/images.html>
+
+-   <https://pandas.pydata.org/docs/user_guide/groupby.html>
+
+### Package websites (via [Read the Docs](https://readthedocs.org/))
+
+The standard practice for hosting and sharing docs in the Python community is to use [Read the Docs](https://readthedocs.org/)
+
+- Similar to codecov.io, to use Read the Docs with our package, we need to link it to our GitHub repository
+
+- Read the Docs then checks out the files from the GitHub repo and uses their remote machines to render and serve your documentation
+
+- To do this, Read the Docs needs access to the packages `pyproject.toml` file. This is done via the creation of a `.readthedocs.yml` file in the root of your project that looks like this:
+
+```yaml
+# .readthedocs.yaml
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+
+# Required
+version: 2
+
+# Set the OS, Python version and other tools you might need
+build:
+  os: ubuntu-22.04
+  tools:
+    python: "3.9"
+  jobs:
+    post_create_environment:
+      # Install poetry
+      # https://python-poetry.org/docs/#installing-manually
+      - pip install poetry
+      # Tell poetry to not use a virtual environment
+      - poetry config virtualenvs.create false
+    post_install:
+      # Install dependencies with 'docs' dependency group
+      # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
+      - poetry install
+
+# Build documentation in the "docs/" directory with Sphinx
+sphinx:
+  configuration: docs/conf.py
+```
+
+*note 1 - the version of Python specified here has to be a version that your package can be installed with!*
+
+*note 2 - all your documentation dependencies need to be in `pyproject.toml` for ReadtheDocs to be able to successfully render your docs!*
+
+## Publishing your Python package for this milestone:
+
+To get your packages README and important links to show-up on the TestPyPI and PyPI pages for your package, add the following information to the [tool.poetry] table in pyproject.toml
+
+```
+readme = "README.md"
+homepage = "https://github.com/<github_username>/<github_repo>"
+repository = "https://github.com/<github_username>/<github_repo>"
+documentation = 'https://<package_name>.readthedocs.io'
+```

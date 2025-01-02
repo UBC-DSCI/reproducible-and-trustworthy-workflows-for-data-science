@@ -2,17 +2,9 @@
 title: Automated testing and continuous integration
 ---
 
-## Topic learning objectives
+## Learning Objectives {.unnumbered}
 
-By the end of this topic, students should be able to:
-
-1. Argue the costs and benefits of using automated test infrastructure
-2. Use a testing framework (e.g., `testhat`) to automate the running of a
-project's entire test suite
-3. Use a continuous integration (e.g., GitHub Actions) to automate the running of the
-test suite using the testing framework
-4. Incorporate non-code-functionality tests such as style/format checkers into a testing
-pipeline
+{{< include ../learning_objectives/200-ci_gha.qmd >}}
 
 ## Continuous Integration (CI)
 
@@ -50,7 +42,8 @@ You have already interacted with GitHub Actions in this class! We used it to:
 
 2. Generate a pull request in the [`review-my-pull-request` repo](https://github.com/ttimbers/review-my-pull-request) upon push to the "pr" branch: : <https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml>
 
-### Exercise: Getting to know GitHub Actions workflows
+:::{.exercise}
+Getting to know GitHub Actions workflows
 
 We are going to each create our own GitHub Actions workflow. This workflow is a very simple toy example where we run some `echo` shell commands to print things to the runner's terminal.
 
@@ -79,11 +72,11 @@ We are going to each create our own GitHub Actions workflow. This workflow is a 
     Click on the arrow inside the build logs to expand a section and see the output of the action:
 
     <img src="../img/check-logs3.png" width=600>
-
+:::
 
 ### GitHub Actions workflow file:
 
-A `YAML` file that lives in the `.github/workflows` directory or your repository which speciies your workflow.
+A `YAML` file that lives in the `.github/workflows` directory or your repository which species your workflow.
 
 ```yaml
 # This is a basic workflow to help you get started with Actions
@@ -126,6 +119,7 @@ jobs:
 ```
 
 The file above has:
+
 - 3 possible event triggers (push to main, pull request to main, or manual dispatch through the Actions tab)
 - runs on an Ubuntu OS
 - one job called "build"
@@ -141,13 +135,14 @@ Steps can consist commands or actions. Let's spend some time to discuss what eac
 
 Steps that use commands look like the one shown below. They consist of a `name` and a `run` parameter. The commands listed after `run` are run in the runner's shell:
 
-```
+```yaml
 - name: Run a one-line script
       run: echo Hello, world!
 ```
 
 As shown in the file above, we can run multiple commands in a step using the `|` character:
-```
+
+```yaml
 - name: Run a multi-line script
       run: |
         echo Add other actions to build,
@@ -158,7 +153,7 @@ As shown in the file above, we can run multiple commands in a step using the `|`
 
 Steps that use actions look like the one shown below (which builds and publishes Docker containers). They always have a `uses` parameter, and often also have `name` and `with` parameters. The `uses` parameter specifies which action to use, and the `with` parameters provide arguments to those actions. The `@master` at the name of the `uses` line, specifies whether to use the version at the head of the actions default branch, or a specific version (*e.g.,* `@v2`).
 
-```
+```yaml
 - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
@@ -168,10 +163,13 @@ Steps that use actions look like the one shown below (which builds and publishes
 ```
 
 Actions commonly perform one task in a workflow. There are two ways to build actions, either using JavaScript or by creating a Docker container that runs a shell script. For the latter such actions are defined by:
+
 - a Dockerfile
 - a shell script to run inside the Docker container
 
-> In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are intersted in learning more, I point you to the documentation below.
+:::{.callout-note}
+In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are interested in learning more, I point you to the documentation below.
+:::
 
 #### Optional:
 
@@ -185,69 +183,7 @@ Read the docs here to learn how to build your own Docker container GitHub action
 Read the docs here to learn how to build your own JavaScript GitHub action:
 <https://help.github.com/en/actions/building-actions/creating-a-javascript-action>
 
-## Case study: a simplified version of the R `check-release.yaml` workflow:
 
-- Let's break down a simplified and well annotated version of the R `check-release.yaml` workflow file
-([full workflow here](https://github.com/r-lib/actions/blob/v2-branch/examples/check-release.yaml))
-to better understand a real use case of GitHub Actions.
-
-```
-on: [push, pull_request]
-
-name: R-CMD-check
-
-jobs:
-  R-CMD-check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout files from GitHub version control repository
-        uses: actions/checkout@v2
-
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
-
-      - name: Install R packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
-
-      - name: Checks if R package can be installed
-        uses: r-lib/actions/check-r-package@v2
-```
-
-### Exercise: Orientating ourselves with the `check-release.yaml` workflow
-
-Let's answer the following questions to start better understanding the `check-release.yaml` workflow.
-
-1. How many jobs are there?
-
-2. How many steps are there?
-
-3. What which steps are actions and which are commands
-
-4. What is the type of runner
-
-5. What events trigger this workflow?
-
-### Exercise: Adding the `check-release.yaml` workflow to your R package repository
-
-There are two ways you can do this. Manually via the GitHub interface:
-
-1. Go to the actions tab for your GitHub repository
-
-2. Click on "*set up a workflow yourself*"
-
-3. Delete the template action provided to you, and paste the `check-release.yaml` file above into the text editor. Rename the file `check-release.yaml`.
-
-4. Click "Start commit", enter a commit message and then click "Commit".
-
-Or using the `usethis::use_github_action` package convenience function:
-
-1. In the R console run `usethis::use_github_action("check-release")`
-
-2. Put the new `check-release.yaml` file in `.github/workflows` under local version control and push the commit to GitHub.
 
 ## Storing and use GitHub Actions credentials safely via GitHub Secrets
 
@@ -263,7 +199,7 @@ See GitHub's help docs for how to do this: <https://help.github.com/en/actions/c
 
 What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow. You access this token in your workflow file via:
 
-```
+```yaml
 ${{ secrets.GITHUB_TOKEN }}
 ```
 
@@ -271,7 +207,7 @@ ${{ secrets.GITHUB_TOKEN }}
 
 Sometimes our commands or actions need environment variables. In both of these scenarios, we create environment variables and access them within a step via:
 
-```
+```yaml
 steps:
   - name: Hello env vars
     run: echo $VARIABLE_NAME1 $VARIABLE_NAME2
@@ -289,7 +225,7 @@ How do we ensure this? Well, we could have several GitHub Action workflows, each
 
 A more efficient way to do this with GitHub Actions workflows is to use matrix workflows. In these workflows, we use a matrix variable, which we specify as:
 
-```
+```yaml
 strategy:
   matrix:
     <variable_name>: [<value1>, <value2>]
@@ -297,17 +233,18 @@ strategy:
 
 which we can refer to in the workflow steps as:
 
-```
+```yaml
 ${{ matrix.<variable_name> }}
 ```
 
 When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.
 
-### Exercise: in English, what does this workflow file do?
+:::{.exercise}
+In English, what does this workflow file do?
 
 Now that we have some understanding of GitHub Actions workflows, let's use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.
 
-```
+```yaml
 on:
   push:
     branches: [main, master]
@@ -349,11 +286,32 @@ jobs:
 
 #### Steps in English:
 
-FILL IN DURING CLASS
+:::{.answer}
+1. checking out the files of the repository to the runner (last commit)
+
+2. Set up and install Python on the runner
+
+3. Use poetry to install dependencies and the package
+
+4. Install the package and its dependencies
+
+5. Run tests and check coverage, generate a coverage report
+
+6. Send the coverage report to codecov.io
+
+7. Renders the documentation (to check there are no errors in this process)
+:::
 
 #### *How many jobs are run? What does each do?*
 
 FILL IN DURING CLASS
+
+:::
+
+:::{.callout-note}
+Note that we omitted the Windows operating system in the example above. The reason for this is that the [`snok/install-poetry@v1`](https://github.com/snok/install-poetry) GitHub action requires more configuration to setup correctly on Windows, and the purpose of the example above was to focus on demonstrating how to use matrices in general using GitHub actions. If you are interested in setting up a runner using `window-latest` please follow the additional configuration instructions here to make it work: <https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows>
+:::
+
 
 ## Setting up GitHub Actions workflows to check tests and test coverage
 
@@ -370,6 +328,22 @@ FILL IN DURING CLASS
 6. Push your local changes to GitHub and sit back and watch the magic happen ✨
 
 ![](https://media.giphy.com/media/3osxYyxqXmZQt7DPtm/giphy.gif)
+
+## Setting up GitHub Actions workflows with R
+
+The dev version of `usethis` has functions that will let you set-up your CI using GitHub Actions with ease! Here's a quickstart guide below, and more details can be found in the [Github actions with R](https://ropenscilabs.github.io/actions_sandbox/) book.
+
+1. Add the `covr` package as a suggested dependendency to your package via: `usethis::use_package("covr", type = "Suggests")`
+
+2. Add a GitHub Actions workflows that runs a comprehensive build check across the major operating systems and runs the test suite and calculates coverage via: `usethis::use_github_action_check_standard()` and `usethis::use_github_action("test-coverage.yaml")`
+
+3. Link your R package GitHub repo with [codecov.io](https://codecov.io/)
+
+4. Copy the [codecov.io](https://codecov.io/) token for that repo from [codecov.io](https://codecov.io/) and add that as a GitHub Secret named `CODECOV_TOKEN`
+
+5. Add the [codecov.io](https://codecov.io/) badge markdown syntax to your `README.Rmd` and knit to render the `README.md` file.
+
+6. Push your local changes to GitHub and sit back and watch the magic happen ✨
 
 ## Additional resources:
 

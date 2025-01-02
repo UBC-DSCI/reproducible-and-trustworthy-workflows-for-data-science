@@ -1,0 +1,62 @@
+---
+title: "Package Documentation: R"
+---
+
+## Learning Objectives
+
+1. Generate well formatted function and package-level documentation for R using `roxygen2` and `pkgdown`
+
+## Package documentation for R
+
+There are several levels of documentation possible for R packages:
+- code-level documentation (Roxygen-style comments)
+- vignettes
+- package websites (via `pkgdown`)
+
+## Code-level documentation (Roxygen-style comments)
+
+- We learned the basics of how to write Roxygen-style comments in DSCI 511
+- In the package context, there are Namespace tags you should know about:
+    - `@export` - this should be added to all package functions you want your user to know about
+    - `@NoRd` - this should be added to helper/internal helper functions that you don't want your user to know about
+
+## Vignettes
+- Think of your vignette as a demonstration of how someone would use your function to solve a problem.
+
+- It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.
+
+- To create a template for your vignette, run:
+    ```
+    usethis::use_vignette("package_name-vignette")
+    ```
+
+- Add content to that file and knit it when done.
+
+As an example, here's the `dplyr` vignette: <https://cran.r-project.org/web/packages/dplyr/vignettes/dplyr.html>
+
+## Package websites (via [`pkgdown](https://pkgdown.r-lib.org/)`)
+
+- Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others
+
+- The `pkgdown` R package let's you build a beautiful website for your R package in 4 steps!
+
+    1. Install `pkgdown`: `install.packages("pkgdown")
+
+    2. Run `pkgdown::build_site()` from the root of your project, and commit and push the changes made by this.
+
+    3. Turn on GitHub pages in your package repository, setting `master branch / docs folder` as the source.
+
+    4. Oh wait, there's no step 4! 🎉
+
+In addition to the beautiful website, `pkgdown` automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉
+
+## Publishing your R package for this milestone:
+
+For this course, we will only publish your package on GitHub, not CRAN. For this to work, you need to push your package code to GitHub and provide users these instructions to download, build and install your package:
+
+```
+# install.packages("devtools")
+devtools::install_github("ttimbers/convertempr")
+```
+
+Next week we will talk about publishing on CRAN.
