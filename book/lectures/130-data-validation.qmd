@@ -1,5 +1,7 @@
 ---
 title: Data validation
+execute:
+  error: true
 ---
 
 ## Learning Objectives {.unnumbered}
@@ -10,71 +12,71 @@ title: Data validation
 
 Regardless of the statistical question you are asking in your data analysis project,
 you will be reading in data to Python or R to visualize and/or model.
-If there are data quality issues, 
+If there are data quality issues,
 these issues will be propagated and will become data visualization
 and/or data model issues. This may remind you of an old saying from the mid 20th century:
 
 *"Garbage in, garbage out."*
 
-Thus, to ensure that our data visualization and/or modeling results are 
+Thus, to ensure that our data visualization and/or modeling results are
 correct, robust and of high quality, it is important that we validate,
 or check, the quality of the data before we perform such analyses.
-It is important to note that data validation is not sufficient for a 
+It is important to note that data validation is not sufficient for a
 correct, robust and of high quality analysis, but it is necessary.
 
 ## Where does data validation fit in data analysis?
 
-If we are going to validate, or check, our data for our data analysis, 
+If we are going to validate, or check, our data for our data analysis,
 at what stage in our analysis should we do this?
-At a minimum, this should be done after data sourcing or extraction, 
+At a minimum, this should be done after data sourcing or extraction,
 but before data is used in any analysis.
-In the context of a project where data splitting is needed 
+In the context of a project where data splitting is needed
 (e.g., predictive questions using supervised machine learning),
 this should be done before the data is split.
 
 <!-- add figure of a data analysis pipeline and an arrow pointing to where this should be done -->
 
-If there are larger, 
-more severe consequences of the data analysis being incorrect 
+If there are larger,
+more severe consequences of the data analysis being incorrect
 (e.g., autonomous driving), and the data undergoes file input/output
-as it is passed through a series of scripts, it may be advisable for 
+as it is passed through a series of scripts, it may be advisable for
 data validation, checking to be done each time the data is read.
 This can be made more efficient by modularizing the data validation/checking
-into functions. This likely should be done however, 
-regardless of the application of the data analysis, 
+into functions. This likely should be done however,
+regardless of the application of the data analysis,
 as modularizing the data validation/checking
-into functions also allows this code to be tested to ensure it is correct, 
-and that invalid data is handled as intended 
+into functions also allows this code to be tested to ensure it is correct,
+and that invalid data is handled as intended
 (more on this in the testing chapter later in this book).
 
-One note of caution for where to perform data validation checks in data analysis 
-where data splitting is needed 
+One note of caution for where to perform data validation checks in data analysis
+where data splitting is needed
 (e.g., splitting data into a training and test set for answering predictive questions)
-is that you want to be sure that the data validation checks 
-do not cause any data leakage between the split data sets. 
-For example, 
-when checking for anomalous correlations between the target/response variable 
-and features/explanatory variables, 
+is that you want to be sure that the data validation checks
+do not cause any data leakage between the split data sets.
+For example,
+when checking for anomalous correlations between the target/response variable
+and features/explanatory variables,
 when attempting to answer a predictive question,
 it would be important to not use the entire data set.
-This is because using the entire dataset for such checks 
-could inadvertently reveal patterns, distributions, 
-or relationships from the test set -- 
-which may impact the analyst's decisions/choices 
-when performing feature and model selection. 
+This is because using the entire dataset for such checks
+could inadvertently reveal patterns, distributions,
+or relationships from the test set --
+which may impact the analyst's decisions/choices
+when performing feature and model selection.
 Given that, data validation checks like this should initially only be done on the training set.
-It may make sense to apply this data validation check also to the test set, 
+It may make sense to apply this data validation check also to the test set,
 but only after finalizing the feature and model selection.
 
 ## Data validation checks
 
-What kind of data validation, or checks, 
+What kind of data validation, or checks,
 should be done to ensure the data is of high quality?
-This does somewhat depend on the type of data being used 
+This does somewhat depend on the type of data being used
 (e.g., tabular, images, language).
 Here we will list validations, or checks, that should be done on tabular data.
-If the reader is interested in validations, or checks, that should be done 
-for more complex data types (e.g., images, language) 
+If the reader is interested in validations, or checks, that should be done
+for more complex data types (e.g., images, language)
 we refer them to the deepchecks checks gallery for data integrity:
 
 - [deepchecks image/vision data integrity checks](https://docs.deepchecks.com/stable/vision/auto_checks/data_integrity/index.html)
@@ -109,27 +111,27 @@ objects easy, readable and robust. Key features of Pandera that we will discuss 
 
 - The ability to define a data schema and use it to validate dataframes and other dataframe-like
 objects
-- Check the types and properties of columns 
+- Check the types and properties of columns
 - Perform statistical validation of data
 - Execute all validation in a lazy manner, so that validation rules are executed before raising an error
 - Handle invalid data in a number of ways, including throwing errors, writing data validation logs, and dropping observations that are invalid
 
 ### Validating data with Pandera
 
-In the simplest use case, 
-Pandera can be use to validate data 
-by first defining an instance of the `DataFrameSchema` class. 
+In the simplest use case,
+Pandera can be use to validate data
+by first defining an instance of the `DataFrameSchema` class.
 This object specifies the properties we expect (and thus would like to check)
-for our dataframe index and columns. 
-After the `DataFrameSchema` instance has been created and defined, 
-the `DataFrameSchema.validate` method 
+for our dataframe index and columns.
+After the `DataFrameSchema` instance has been created and defined,
+the `DataFrameSchema.validate` method
 can be applied to a `pandas.DataFrame` instance to validate, or check,
-all of the properties we specified that we expect for our dataframe index 
+all of the properties we specified that we expect for our dataframe index
 and columns in the `DataFrameSchema` instance.
 
 ### Dataframe Schema
 
-When we create an instance of the `DataFrameSchema` class, 
+When we create an instance of the `DataFrameSchema` class,
 we can specify the the properties we expect (and thus would like to check)
 for our dataframe index and columns.
 
@@ -139,9 +141,9 @@ To create an instance of the `DataFrameSchema` class
 we first import the Pandera package using the alias `pa`,
 and then the function `pa.DataFrameSchema`.
 Below we demonstrate creating an instance of the `DataFrameSchema` class
-for the first two columns of the 
-[Wisconsin Breast Cancer data set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic) 
-from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/) 
+for the first two columns of the
+[Wisconsin Breast Cancer data set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)
+from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/)
 (Dua and Graff 2017).
 
 ```{python}
@@ -158,16 +160,16 @@ schema = pa.DataFrameSchema(
 ```
 
 :::{.callout-note}
-By default all columns listed 
-are required to be in the dataframe for it to pass validation. 
-If we wanted to make a column optional, 
+By default all columns listed
+are required to be in the dataframe for it to pass validation.
+If we wanted to make a column optional,
 we would set `required=False` in the column constructor.
 :::
 
 #### Specifying column types
 
-We can specify the type we expect each column to be, 
-by writing the type as the first argument to `pa.Column`. 
+We can specify the type we expect each column to be,
+by writing the type as the first argument to `pa.Column`.
 Possible values include:
 
 - a string alias, as long as it is recognized by pandas.
@@ -176,12 +178,12 @@ Possible values include:
 -  a pandas extension type: it can be an instance (e.g `pd.CategoricalDtype(["a", "b"])`) or a class (e.g `pandas.CategoricalDtype`) if it can be initialized with default values.
 - a pandera `DataType`: it can also be an instance or a class.
 
-See the Pandera 
-[Data Type Validation docs](https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation) 
+See the Pandera
+[Data Type Validation docs](https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation)
 for details beyond what we present here.
 
-If we continue our example from above, 
-we can specify that we expect the `class` column to be a string 
+If we continue our example from above,
+we can specify that we expect the `class` column to be a string
 and the `mean_radius` column to be a float as shown below:
 
 ```{python}
@@ -196,11 +198,11 @@ schema = pa.DataFrameSchema(
 #### Missingness/null values
 
 By default Column objects assume there should be no null/missing values.
-If you want to allow missing values, 
-you need to set `nullable=True` in the column constructor. 
+If you want to allow missing values,
+you need to set `nullable=True` in the column constructor.
 We demonstrate that below for the `mean_radius` column of our working example.
-Note that we do not set this to be true for our class column 
-as we likely do not want to be working with observations 
+Note that we do not set this to be true for our class column
+as we likely do not want to be working with observations
 where the target/response variable is missing.
 
 ```{python}
@@ -212,18 +214,18 @@ schema = pa.DataFrameSchema(
 )
 ```
 
-If you wanted to allow a percentage of the values for a particular column 
-to be allowed to be missing, 
+If you wanted to allow a percentage of the values for a particular column
+to be allowed to be missing,
 then you could do this by writing a lambda function in a call to `pa.Check`
-in the column constructor. 
-We show an example of that below 
+in the column constructor.
+We show an example of that below
 where allow up to 5% of the `mean_radius` column values to be missing.
 
 :::{.callout-note}
 This is putting the cart a bit before the horse here,
-as we have not yet introduced `pa.Check`. 
-We will do that in the next section, 
-so please fell free to skip this 
+as we have not yet introduced `pa.Check`.
+We will do that in the next section,
+so please fell free to skip this
 and come back to this example after you have read that.
 :::
 
@@ -231,10 +233,10 @@ and come back to this example after you have read that.
 schema = pa.DataFrameSchema(
     {
         "class": pa.Column(str),
-        "mean_radius": pa.Column(float, 
-                                pa.Check(lambda s: s.isna().mean() <= 0.05, 
-                                    element_wise=False, 
-                                    error="Too many null values in 'mean_radius' column."), 
+        "mean_radius": pa.Column(float,
+                                pa.Check(lambda s: s.isna().mean() <= 0.05,
+                                    element_wise=False,
+                                    error="Too many null values in 'mean_radius' column."),
                                 nullable=True)
     }
 )
@@ -243,26 +245,26 @@ schema = pa.DataFrameSchema(
 :::{.callout-note}
 Above we have created our custom check on-the-fly using a `lambda` function.
 We could do this here because the check was fairly simple.
-If we needed a custom check that was more complex 
+If we needed a custom check that was more complex
 (e.g., needs to generate data as part of the check)
-then we would be better to register our custom check. 
-For situations like this, we direct the reader to the 
+then we would be better to register our custom check.
+For situations like this, we direct the reader to the
 [Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions).
 :::
 
 #### Checking values in columns
 
 Pandera has a function `pa.Check` that is useful for checking values within columns.
-For any type of data, 
+For any type of data,
 there is usually some reasonable range of values that we would expect.
 These usually come from domain knowledge about the data.
-For example, 
+For example,
 a column named `age` for a data set about adult human patients age in years
-should probably be an integer and have a range of values between 18 and 122 
+should probably be an integer and have a range of values between 18 and 122
 ([the oldest person whose age has ever been independently verified](https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people#cite_note-5)).
-To specify a check for a range like this, 
+To specify a check for a range like this,
 we can use the `pa.Check.between` method.
-We demonstrate how to do this below with our working example 
+We demonstrate how to do this below with our working example
 to check that the `mean_radius` values are between 5 and 45, inclusive.
 
 ```{python}
@@ -274,9 +276,9 @@ schema = pa.DataFrameSchema(
 )
 ```
 
-In our working example, 
-we might also want to check that the `class` column only contains 
-the strings we think are acceptable for our category label, 
+In our working example,
+we might also want to check that the `class` column only contains
+the strings we think are acceptable for our category label,
 which would be `"Benign"` and `"Malignant"`.
 We can do this using the `pa.Check.isin` method, which we demonstrate below:
 
@@ -293,7 +295,7 @@ There are many more built-in `pa.Check` methods. A list can be found in the Pand
 - <https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html#pandera.api.checks.Check>
 
 If there is a check you wish to do that is not part of the Pandera `Check` API
-you have two options: 
+you have two options:
 
 1) Use a `lambda` function with boolean logic inside of `pa.Check` (good for simple checks, similar to the percentage of missingness in the section above), or
 2) Register our custom check (see how to in [Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions))
@@ -301,10 +303,10 @@ you have two options:
 #### Duplicates
 
 Pandera does not yet have a method to check for duplicate rows in a dataframe,
-however, you can apply `pa.Check` to the entire data frame 
+however, you can apply `pa.Check` to the entire data frame
 using a `lambda` function with boolean logic.
-Thus, we can easily apply Pandas `duplicated` function 
-in a Lambda Function to check for duplicate rows. 
+Thus, we can easily apply Pandas `duplicated` function
+in a Lambda Function to check for duplicate rows.
 We show an example of that below:
 
 ```{python}
@@ -321,8 +323,8 @@ schema = pa.DataFrameSchema(
 
 #### Empty observations
 
-Similar to duplicates, there is no Pandera function for this. 
-So again we can use `pa.Check` applied to the entire data frame 
+Similar to duplicates, there is no Pandera function for this.
+So again we can use `pa.Check` applied to the entire data frame
 using a `lambda` function with boolean logic.
 
 ```{python}
@@ -340,17 +342,17 @@ schema = pa.DataFrameSchema(
 
 ### Data validation
 
-Once we have specified our the properties we expect 
+Once we have specified our the properties we expect
 (and thus would like to check)
-for our dataframe index and columns 
+for our dataframe index and columns
 by creating an instance of `pa.DataFrameSchema`,
-we can use the `pa.DataFrameSchema.validate` method on a dataframe 
+we can use the `pa.DataFrameSchema.validate` method on a dataframe
 to check if the dataframe is valid considering the schema we specified.
 
-To demonstrate this, 
-below we create two very simple versions of the Wisconsin Breast Cancer data set. 
-One which we expect to pass our validation checks, 
-and one where we introduce three data anomalies 
+To demonstrate this,
+below we create two very simple versions of the Wisconsin Breast Cancer data set.
+One which we expect to pass our validation checks,
+and one where we introduce three data anomalies
 that should cause some checks to fail.
 
 First we create two data frames:
@@ -384,26 +386,26 @@ What happens when we pass clearly invalid data?
 schema.validate(invalid_data)
 ```
 
-Wow, that's a lot, but what is clear is that an error was thrown. 
-If we read through the error message to the end we see the important, 
+Wow, that's a lot, but what is clear is that an error was thrown.
+If we read through the error message to the end we see the important,
 and useful piece of the error message:
 
 ```
 pandera.errors.SchemaError: Column 'class' failed element-wise validator number 0: isin(['Benign', 'Malignant']) failure cases: benign
 ```
 
-The error arose because in our `invalid_data`, 
+The error arose because in our `invalid_data`,
 the column `class` contained the string `"benign"`,
-and we specified in our `pa.DataFrameSchema` instance 
-that we only accept two string values in the `class` column, 
+and we specified in our `pa.DataFrameSchema` instance
+that we only accept two string values in the `class` column,
 `"Benign"` and `"Malignant"`.
 
 What about the other errors we expect from our invalid data?
-For example, we there's a value of `-9999` in the `mean_radius` column 
-that is well outside of the range we said was valid in the schema (5, 45), 
-and we have a duplicate row as well? 
+For example, we there's a value of `-9999` in the `mean_radius` column
+that is well outside of the range we said was valid in the schema (5, 45),
+and we have a duplicate row as well?
 Why are these validation errors not reported?
-Pandera's default is to throw an error 
+Pandera's default is to throw an error
 after the first instance of non-valid data.
 To change this behaviour, we can set `lazy=True`.
 When we do this we see that all errors get reported.
@@ -416,32 +418,32 @@ schema.validate(invalid_data, lazy=True)
 ### Handling invalid data
 
 By default Pandera will throw an error when a check is not passed.
-Depending on your situation, this can be a desired expected behaviour 
-(e.g., a static data analysis published in a report) 
-or a very undesired behaviour 
+Depending on your situation, this can be a desired expected behaviour
+(e.g., a static data analysis published in a report)
+or a very undesired behaviour
 that could potentially be dangerous (e.g., autonomous driving application).
 In the latter case, we would want to do something different than throw an error.
-Possibilities we will cover here include dropping invalid observations 
+Possibilities we will cover here include dropping invalid observations
 and writing log files that report the errors.
 
 ### Dropping invalid observations
 
-In an in-production system, 
-dropping non-valid data could be a reasonable path forward 
-instead of throwing an error. 
-Another situation where this might be a reasonable thing to do 
-is when training a machine learning model with a million observations. 
-You don't want to throw an error in the middle of training 
+In an in-production system,
+dropping non-valid data could be a reasonable path forward
+instead of throwing an error.
+Another situation where this might be a reasonable thing to do
+is when training a machine learning model with a million observations.
+You don't want to throw an error in the middle of training
 if only one observation is invalid!
 
-To change the behaviour of `pa.DataFrameSchema.validate` 
+To change the behaviour of `pa.DataFrameSchema.validate`
 to instead return a dataframe with the invalid rows dropped
 we need to do two things:
 
 1. add `drop_invalid_rows=True` to our  `pa.DataFrameSchema` instance
 2. add `lazy=True` to our call to the `pa.DataFrameSchema.validate` method
 
-Below we demonstrate this with our working example. 
+Below we demonstrate this with our working example.
 
 ```{python}
 schema = pa.DataFrameSchema(
@@ -459,8 +461,8 @@ schema = pa.DataFrameSchema(
 schema.validate(invalid_data, lazy=True)
 ```
 
-Hmmm... Why did the duplicate row sneak through? This is because Pandera's 
-dropping rows only works on data, or column, checks, 
+Hmmm... Why did the duplicate row sneak through? This is because Pandera's
+dropping rows only works on data, or column, checks,
 not the DataFrame-wide checks like our checks for duplicates or empty rows.
 Thus to make sure we drop these, we need to rely on Pandas to do this.
 We demonstrate how we can do this below:
@@ -472,15 +474,15 @@ schema.validate(invalid_data, lazy=True).drop_duplicates().dropna(how="all")
 
 ### Writing data validation logs
 
-Is removing the rows sufficient? Not at all! 
-A human should be told that there was invalid data 
-so that upstream data collection, cleaning and transformation processes 
+Is removing the rows sufficient? Not at all!
+A human should be told that there was invalid data
+so that upstream data collection, cleaning and transformation processes
 can be reviewed to minimize the chances of future invalid data.
-One way to do this is to again specify `lazy=True` 
+One way to do this is to again specify `lazy=True`
 so that all errors can be observed and reported.
 Then we can get the `SchemaErrors` and write them to a log file.
 We show below how to do this for our working example
-so that the valid rows are returned as a dataframe named `validated_data` 
+so that the valid rows are returned as a dataframe named `validated_data`
 and the errors are logged as a file called `validation_errors.log`:
 
 ```{python}
@@ -541,7 +543,7 @@ else:
 ## The data validation ecosystem
 
 We have given a tour of one of the packages in the data validation ecosystem,
-however there are a few others that are good to know about. 
+however there are a few others that are good to know about.
 We list the others below:
 
 **Python:**
@@ -561,12 +563,12 @@ We list the others below:
 In particular, the [Deep Checks](https://docs.deepchecks.com) package is quite useful
 due to it's high-level abstraction of several machine learning data validation checks
 that you would have to code manually if you chose to use something like `Pandera` for these.
-Examples from the checklist above include: 
+Examples from the checklist above include:
 
 - [ ] No anomalous correlations between target/response variable and features/explanatory variables^1^
 - [ ] No anomalous correlations between features/explanatory variables^1^
 
-To use this, we first have to create a Deep Checks Dataset object 
+To use this, we first have to create a Deep Checks Dataset object
 (specifying the data set, the target/response variable, and any categorical features):
 
 ```python
@@ -589,7 +591,7 @@ check_feat_lab_corr_result = check_feat_lab_corr.run(dataset=cancer_train_ds)
 ```
 
 Finally, we can check if the result of the `FeatureLabelCorrelation()` validation has failed.
-If it has (i.e., correlation is above the acceptable threshold), 
+If it has (i.e., correlation is above the acceptable threshold),
 we can do something, like raise a ValueError with an appropriate error message:
 
 ```python
@@ -599,15 +601,15 @@ if not check_feat_lab_corr_result.passed_conditions():
 
 :::{.callout-note}
 Notice above the name of the data frame and Deep checks data set?
-It has the word "train" in it. 
-This is important! 
-Some data validation checks can cause data leakage 
-if we perform them on the entire data set 
-before finalizing feature and model selection. 
-Be conscientious about your data validation checks 
+It has the word "train" in it.
+This is important!
+Some data validation checks can cause data leakage
+if we perform them on the entire data set
+before finalizing feature and model selection.
+Be conscientious about your data validation checks
 to ensure they do not data introduce leakage.
 :::
 
-Deep Checks has a nice gallery of different data validation checks 
+Deep Checks has a nice gallery of different data validation checks
 for which it has high-level functions:
 <https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html>
