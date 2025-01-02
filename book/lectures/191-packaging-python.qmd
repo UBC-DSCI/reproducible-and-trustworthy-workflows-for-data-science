@@ -1,0 +1,204 @@
+---
+title: "Packaging: Python"
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/191-packages-python.qmd >}}
+
+## Essential Python package files
+
+Using the project layout we recommend for this course,
+here is a Python package structure with only the most essential files.
+
+```bash
+pkg
+├── pyproject.toml
+└── src
+    └── pkg
+        ├── __init__.py
+        └── module.py
+```
+
+What do each of these do?
+
+- `pyproject.toml` stores all the metadata and install instructions for the package.
+
+- The presence of the `src` directory defines the code that will form the installable version of your package (meaning that users only get this code when they install the package, and that developers must install the package before running their tests).
+
+- `__init__.py` tells Python that a directory is a package. They can be left empty, or they can also be used to add objects to the package’s namespace, provide documentation, and/or run other initialization code.
+
+- `module.py` (this one can be named something else!) contains the functions you would like to share with your package users.
+
+## Getting to know a `pyproject.toml` file's contents
+
+Here is an example `pyproject.toml` file:
+
+```toml
+[tool.poetry]                                         ┐
+name = "pycounts_tt_2024"                             │
+version = "0.1.0"                                     │ Package metadata
+description = "Calculate word counts in a text file!" │
+authors = ["Tiffany Timbers"]                         │
+license = "MIT"                                       │
+readme = "README.md"                                  ┘
+
+[tool.poetry.dependencies]                            ┐
+python = ">=3.9"                                      │ User function dependencies
+matplotlib = ">=3.8.2"                                ┘
+
+[tool.poetry.dev-dependencies]                        ┐
+                                                      │
+[tool.poetry.group.dev.dependencies]                  │
+pytest = ">=7.4.4"                                    │
+pytest-cov = ">=4.1.0"                                │ Developer dependencies
+jupyter = ">=1.0.0"                                   │
+myst-nb = {version = "^1.0.0", python = "^3.9"}       │
+sphinx-autoapi = "^3.0.0"                             │
+sphinx-rtd-theme = "^2.0.0"                           ┘
+
+[build-system]                                        ┐
+requires = ["poetry-core>=1.0.0"]                     │ Package build dependencies
+build-backend = "poetry.core.masonry.api"             ┘
+```
+
+Almost everything inside this file is customizable based on your package. Even the build system!
+`pyproject.toml` can also be used with other build tools such as setuptools and flit!
+If you are interested in learning more, checkout the [Python Packaging Tools guide](https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html) from PyOpenSci.
+
+## Getting to know a `__init__.py` file's contents
+
+As mentioned earlier, this file can serve it's essential package function of telling Python that this directory is a package by just existing and being empty. It can however serve other purposes. Let's discuss the code that exists in the `py-pkgs-cookiecutter` template:
+
+The `py-pkgs-cookiecutter` we used to create our `pycounts` package ([Section 3.2.2](https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure)) already populated our `__init__.py` file with this code for us:
+
+```python
+# read version from installed package
+from importlib.metadata import version
+__version__ = version("pycounts")
+```
+
+Because this code is in `__init__.py` is executed when the package is imported (this is the case for all `__init__.py` files, we can ask for the package version with Python code like this:
+
+```python
+import pycounts
+pycounts.__version__
+```
+
+```python
+0.1.0
+```
+
+In the code in `__init__.py` we get the version from the package metadata, that is derived from `pyproject.toml`. This allows us to only have to update the version of our package in one place when we bump to a new version.
+
+What other kinds of interesting things can we do with `__init__.py`? Well we can use it to control the import behavior of a package. For example, there are currently only two main functions that users will commonly use from our `pycounts` package: `pycounts.count_words()` and `plotting.plot_words()`. Users have to type the full path to these functions to import them:
+
+```python
+from pycounts.pycounts import count_words
+from pycounts.plotting import plot_words
+```
+
+If we import those core functions in `pycounts`’s `__init__.py` file, which would bind them to the package namespace, we can make our user's experience of loading them easier!
+
+```python
+# read version from installed package
+from importlib.metadata import version
+__version__ = version(__name__)
+
+# populate package namespace
+from pycounts.pycounts import count_words
+from pycounts.plotting import plot_words
+```
+
+The functions are now bound to the pycounts namespace, so users can access them like this:
+
+```python
+import pycounts
+pycounts.count_words
+```
+
+```python
+<function count_words>
+
+```
+
+What is a namespace again? A “namespace” is a set of names that are used to identify and refer to objects of various kinds (source: [Wikipedia](https://en.wikipedia.org/wiki/Namespace)).
+
+## `docs/*` and `.github/workflows/ci-cd.yml`
+
+We will cover both these topics in greater detail later
+(`docs/*` in the documentation chapter/lecture and `.github/workflows/ci-cd.yml` in the continuous integration and deployment chapter/lecture),
+but for now it's helpful to get a bit better of an idea of these files and what they are doing.
+
+### `docs/*`
+
+To keep things organized, to and to make the package documentation easier to automate, we keep the documentation files in the `docs` directory and use a `Makefile` (or `make.bat` on Windows) therein to automate their rendering.
+
+```bash
+docs
+   ├── changelog.md
+   ├── conduct.md
+   ├── conf.py
+   ├── contributing.md
+   ├── example.ipynb
+   ├── index.md
+   ├── make.bat
+   └── requirements.txt (deprecated)
+```
+
+Note that many of these files also commonly exist in the root of projects and people expect to find them there!!! These include:
+
+- changelog.md
+- conduct.md
+- contributing.md
+
+So what we have done is pointed the `doc/*.md`'s of these files to the contents these files in the project root. And at rendering, their content will be used instead! If you look at the raw source of one of these files (e.g., conduct.md) you will see:
+
+<img src="../img/python-docs-md-content.png" width=500>
+
+This helps keep our docs up to date by not having two places to update them!
+
+`conf.py` is a configuration file that specifies style and formatting for the documentation. In this course we will not be modifying it, but if you wanted you can! To do this, please first read the docs for [Sphinx configuration here](https://www.sphinx-doc.org/en/master/usage/configuration.html).
+
+The `requirements.txt` file in the `pypkgs-cookiecutter` template is now deprecated and will be removed in a future version. All dependencies are now managed by `pyproject.toml`.
+
+### `.github/workflows/ci-cd.yml`
+
+This file contains automation code for continuous integration and delivery of our Python software package, reading the steps in this file you will see that it does the following:
+
+1. Continuous integration tasks:
+  - installs your package
+  - runs the test suite
+  - calculates test coverage
+2. Continuous deployment tasks:
+  - bumps the package software version, as well as prepares and creates a GitHub release of the package
+  - builds the package
+  - publishes it to the package repository (i.e., TestPyPI or PyPI, or both)
+
+When we first start building our packages, the GitHub Actions workflows for most of these things will fail. That is to be expected! As you complete the tasks for setting each of these up (e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets, etc) then the GitHub Actions workflows should start passing.
+This is a consequence of the philosophy of the `pypkgs-cookiecutter` template tool.
+
+
+## Cookiecutter project templates
+
+[`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) is a general Python tool for repeatedly generating a desired file and directory structure.
+
+Many many many Python [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) templates already exist, this search on GitHub (linked to from the [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) documentation) identifies 9000 repositories!!!
+
+- <https://github.com/search?q=cookiecutter&amp%3Btype=Repositories&type=repositories>
+
+How does it work? It uses the concept of code templating and uses the [`Jinja`](https://jinja.palletsprojects.com/en/3.1.x/) templating engine.
+Special syntax (involving `{{`) is used to specify parts of the code that should be
+"filled in" with user input (from a function call if interacting directly with the `Jinja`
+API, or the keyboard if using `Cookiecutter`).
+The input is then used to replace the placeholder text in the code
+(denoted by the special syntax involving `{{`).
+This allows template code to be automatically filled in and reused again and again!
+
+:::{.exercise}
+Let's explore the `pypkgs-cookiecutter` to get to know how the Cookiecutter project template tool works in the case of `pypkgs-cookiecutter`, and in general!
+
+- Go to: <https://github.com/py-pkgs/py-pkgs-cookiecutter>
+- Looks at: <https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json>
+- Look for all the places you see `{{ cookiecutter.__SOMETHING }}`
+:::

@@ -1,0 +1,103 @@
+
+### What about CD with R packages
+
+- This is not a common practice (yet!). One reason for this could be that CRAN has a policy where they only want to see updates every 1-2 months.
+
+- Semantic versioning is used in Tidyverse R packages, but creating versions is done manually
+
+## Publishing your R package
+
+### Level 1: publishing on GitHub
+
+For this course, we will only publish your package on GitHub, not CRAN. For this to work, you need to push your package code to GitHub and provide users these instructions to download, build and install your package:
+
+```
+# install.packages("devtools")
+devtools::install_github("ttimbers/convertempr")
+```
+
+This is where almost all R packages start out publishing, and continue publishing development versions between releases.
+
+## Level 2: publishing on CRAN
+
+- CRAN (founded in 1997) stands for the "Comprehensive R Archive Network"
+
+- it is a collection of sites which host identical copies of:
+    - R distribution(s)
+    - the contributed extensions (*i.e.,* packages)
+    - documentation for R
+    - binaries (i.e., packages)
+- as of 2012, there were 85 official ‘daily’ mirrors
+
+ *Source: Hornik, K (2012). The Comprehensive R Archive Network. Wiley interdisciplinary reviews. Computational statistics. 4(4): 394-398. [doi:10.1002/wics.1212](https://onlinelibrary-wiley-com.ezproxy.library.ubc.ca/doi/full/10.1002/wics.1212)*
+
+> ### Binary vs source distributions, what's the difference?
+>
+> Binary distributions are pre-compiled (computer readable), whereas source distributions have to be compiled before they are installed.
+>
+> Precompiled binaries are often different for each operating system (e.g., Windows vs Mac)
+
+### Number of packages hosted by CRAN over history
+
+<img src="https://www.researchgate.net/publication/333159083/figure/fig1/AS:759374838517760@1558060478678/Number-of-R-packages-contributed-to-the-Comprehensive-R-Archive-Network-CRAN-as-a.png" width=800>
+
+*Source: ["Reproducibility and Replicability in a Fast-Paced Methodological World"](https://journals.sagepub.com/doi/10.1177/2515245919847421) by Sacha Epskamp*
+
+### What does it mean to be a CRAN package:
+
+**A stamp of authenticity:**
+- passed quality control of the `check` utility
+
+**Ease of installation:**
+- can be installed by users via `install.packages` (it's actually the default!)
+- binaries available for Windows & Mac OS's
+
+**Discoverability:**
+- listed as a package on CRAN
+
+**HOWEVER** - CRAN makes no assertions about the package's usability, or the efficiency and correctness of the computations it performs
+
+### How to submit a package to CRAN
+
+1. Pick a version number.
+2. Run and document `R CMD check`.
+3. Check that you’re aligned with CRAN policies.
+4. Update README.md and NEWS.md.
+5. Submit the package to CRAN.
+6. Prepare for the next version by updating version numbers.
+7. Publicise the new version.
+
+*Source: [Chapter 18 Releasing a package](https://r-pkgs.org/release.html) - R packages book by Hadley Wickham & Jenny Bryan*
+
+### Notes on submitting to CRAN
+
+- CRAN is staffed by volunteers, all of whom have other full-time jobs
+- A typical week has over 100 submissions and only three volunteers to process them all.
+- The less work you make for them the more likely you are to have a pleasant submission experience...
+
+### Notes on submitting to CRAN (cont'd)
+
+Technical things:
+
+- Your package must pass `R CMD check` with the current development version of R (R-devel)
+- it must work on at least two platforms (CRAN uses the following 4 platforms: Windows, Mac OS X, Linux and Solaris) - use GitHub Actions to ensure this before submitting to CRAN!
+
+*If you decide to submit a package to CRAN follow the detailed instructions in [Chapter 18 Releasing a package](https://r-pkgs.org/release.html) fromt the R packages book by Hadley Wickham & Jenny Bryan to do so. If you submit your package to rOpenSci, they will help you get everything in order for submission to CRAN as well!*
+
+CRAN policies: <https://cran.r-project.org/web/packages/policies.html>
+
+Most common problems (from the R packages book):
+
+- The maintainer’s e-mail address must be stable, if they can’t get in touch with you they will remove your package from CRAN.
+
+- You must have clearly identified the copyright holders in DESCRIPTION: if you have included external source code, you must ensure that the license is compatible.
+
+- Do not make external changes without explicit user permission. Don’t write to the file system, change options, install packages, quit R, send information over the internet, open external software, etc.
+
+- Do not submit updates too frequently. The policy suggests a new version once every 1-2 months at most.
+
+### If your submission fails:
+
+Read section 18.6.1 "On failure" from  [Chapter 18 Releasing a package](https://r-pkgs.org/release.html) - R packages book by Hadley Wickham & Jenny Bryan*
+
+TL;DR - Breathe, don't argue, fix what is needed and re-submit.

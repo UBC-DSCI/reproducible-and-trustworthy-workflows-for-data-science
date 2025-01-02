@@ -1,0 +1,73 @@
+---
+title: "Case Study: `pypkgs-cookiecutter`'s `ci.yml` workflow"
+---
+
+Let's break down our [`pypkgs-cookiecutter`'s `ci.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci.yml) workflow file to start to better understand a real use case of GitHub Actions.
+
+```yaml
+name: ci
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    # Set up operating system
+    runs-on: ubuntu-latest
+
+    # Define job steps
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "{{ cookiecutter.python_version }}"
+
+      - name: Check-out repository
+        uses: actions/checkout@v3
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install package
+        run: poetry install
+
+      - name: Test with pytest
+        run: poetry run pytest tests/ --cov={{ cookiecutter.__package_slug }} --cov-report=xml
+
+      - name: Use Codecov to track coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml # coverage report
+
+      - name: Build documentation
+        run: poetry run make html --directory docs/
+```
+
+:::{.exercise}
+Orientating ourselves with the `ci.yml` workflow
+
+Let's answer the following questions to start better understanding the `build.yml` workflow.
+
+1. How many jobs are there?
+
+2. How many steps are there?
+
+3. What which steps are actions and which are commands
+
+4. What is the type of runner
+
+5. What events trigger this workflow?
+:::
+
+:::{.exercise}
+Adding the `ci.yml` workflow to your `pypkgs*` repository
+
+Let's add the `ci.yml` workflow to our `pycounts*` repository from week 1!
+
+1. Go to the actions tab for your GitHub repository
+
+2. Click on "*set up a workflow yourself*"
+
+3. Delete the template action provided to you, and paste the `ci.yml` file above into the text editor. Rename the file `ci.yml`.
+
+4. Click "Start commit", enter a commit message and then click "Commit".
+:::
