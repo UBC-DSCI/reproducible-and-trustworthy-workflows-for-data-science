@@ -12,6 +12,12 @@ Install as a package via conda:
 conda install pytest-cov
 ```
 
+add it as a package development dependency with poetry:
+
+```bash
+poetry add --group dev pytest-cov
+```
+
 ### Calculating coverage in Python
 
 To calculate line coverage and print it to the terminal:
@@ -87,3 +93,59 @@ You can see this formula actually includes both line and branch coverage in this
 
 So for `big_abs/big_abs.py` 64% was calculated from:
 $$Coverage = \frac{((8 - 2) + 3)}{(8 + 6)} * 100 = 64\%$$
+
+## Using our toy package example
+
+Let's go back to our previous packaging function and tests.
+For reference this was our function
+
+
+```{python}
+def count_char(input_string):
+    if not isinstance(input_string, str):
+        raise TypeError(f"Expected input to be str, got {type(input_string)}")
+    len(input_string)
+```
+
+and the tests we wrote
+
+```python
+import pytest
+
+from countchar.count_char import count_char
+
+
+@pytest.fixture
+def text_data():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    return lines
+
+
+def test_line_1(text_data):
+    string = text_data[0]
+    assert count_char(string) == 34
+
+def test_line_2(text_data):
+    string = text_data[1]
+    assert count_char(string) == 10
+
+def test_line_3(text_data):
+    string = text_data[2]
+    assert count_char(string) == 8
+```
+
+We can now look at the line and branch coverage of our current package files
+
+
+```bash
+pytest tests/ --cov=countchar # line coverage
+pytest --cov=countchar --cov-branch # branch coverage
+```
+
+and generate the document for a coverage report
+
+```bash
+pytest --cov=countchar --cov-report html
+```

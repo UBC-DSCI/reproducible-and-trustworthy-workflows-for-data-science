@@ -1,0 +1,324 @@
+---
+title: "Package Testing with Python `pytest`"
+---
+
+We've seen Python testing before and used `pytest` to run all our function tests.
+But now let's see how we can use `pytest` when we are working with a python package.
+
+## Simple Example Package with `pytest` testing
+
+We'll be using the `pytest` and `cookiecutter` package to set up an example python package
+and write tests to be run by `pytest`.
+But first, remember to create a new environment for the packages.
+
+Also remember you need to have `poetry` installed as well.
+
+```bash
+# create and install packages
+conda create -n countchar -c conda-forge python pytest cookiecutter
+
+# remember to activate the environment
+conda activate countchar
+```
+
+Next use `cookiecutter` to create a package template
+
+```bash
+# create the cookiecutter package example
+cookiecutter https://github.com/py-pkgs/py-pkgs-cookiecutter.git
+```
+
+```bash
+author_name [Monty Python]: Daniel Chen
+package_name [mypkg]: countchar
+package_short_description []: Python package using pytest example
+package_version [0.1.0]:
+python_version [3.9]:
+Select open_source_license:
+1 - MIT
+2 - Apache License 2.0
+3 - GNU General Public License v3.0
+4 - Creative Commons Attribution 4.0
+5 - BSD 3-Clause
+6 - Proprietary
+7 - None
+Choose from 1, 2, 3, 4, 5, 6 [1]:
+Select include_github_actions:
+1 - no
+2 - ci
+3 - ci+cd
+Choose from 1, 2, 3 [1]:
+```
+
+### Create a package module
+
+In your `src` folder, we will create a `count_letters` function
+that will take a string and return the number of characters in the string.
+We will be following a test-driven development workflow so we'll create a function
+skeleton first, and then write the tests for the function.
+
+Let's create a `count_char.py` file in the `src` directory
+
+```bash
+countchar
+|
+├── ...
+|
+├── src
+│   └── countchar
+|       └── count_char.py
+```
+
+
+```{python}
+def count_char(input_string):
+    """Count the number of characters in a string.
+
+    Parameters
+    ----------
+    input_string : str
+        The input string whose characters will be counted.
+
+    Returns
+    -------
+    int
+        The number of characters in the input string.
+
+    Examples
+    --------
+    >>> count_char("hello")
+    5
+    >>> count_char("")
+    0
+    >>> count_char("Python is cool")
+    14
+    """
+    pass
+```
+
+:::{.callout-note}
+We are using `pass` in the function body so the function has something in it.
+You cannot define a python function with an empty function body.
+:::
+
+### Create tests in the `test` directory
+
+Next, we will create our tests in the `test` directory.
+Remember, that `pytest` will look for tests in the `test` directory,
+look for files that either begin or end with `test`,
+and run all the functions that begin or end with `test` in that file.
+
+```bash
+countchar
+|
+├── ...
+|
+├── src
+│   └── countchar
+|       └── count_char.py
+└── tests
+    └── test_count_char.py
+```
+
+We will create our test that match the examples we created.
+
+```python
+from countchar.count_char import count_char
+
+def test_count_char():
+
+    string = "hello"
+    expected = 5
+    actual = count_char(string)
+    assert actual == expected
+
+    string = ""
+    expected = 0
+    actual = count_char(string)
+    assert actual == expected
+
+    string = "Python is cool"
+    expected = 14
+    actual = count_char(string)
+    assert actual == expected
+```
+
+Before running our test, we will make sure that our `pyproject.toml` file
+will list `pytest` as a development dependency for our package.
+
+```bash
+poetry add --group dev pytest
+```
+
+Next, we can go and run `pytest`
+
+```bash
+pytest tests/
+```
+
+Since we have not implemented our function all these tests will fail.
+
+Let's go and implement the function.
+
+```{python}
+# our count char function without the docstring to save vertical space
+def count_char(input_string):
+    len(input_string)
+```
+
+and then run `pytest` again.
+
+```bash
+pytest tests/
+```
+
+### Change the implementation logic
+
+The benefit of setting up unit tests, is that if we change something with the implementation,
+we can still be sure the functional unit behaves as we expected.
+For example, we can re-write the counting implementation to use a `for` loop,
+and then still expect all our tests to pass.
+
+```python
+# count_char implementation using a for loop
+def count_char(input_string):
+    count = 0
+    for char in input_string:
+        count += 1
+    return count
+```
+
+## Test for exceptions
+
+Now that we have the basis for our `pytest` unit testing working,
+we may want to add additional input checks into our function,
+and `raise` an error if we can can catch any issues early.
+
+```{python}
+# add an input type check to our function
+def count_char(input_string):
+    if not isinstance(input_string, str):
+        raise TypeError(f"Expected input to be str, got {type(input_string)}")
+    len(input_string)
+```
+
+Next we can add another test for `pytest` that checks the exception.
+
+```python
+import pytest
+
+from countchar.count_char import count_char
+
+
+def test_count_char_wrong_input():
+    with pytest.raises(TypeError):
+        count_char(123)
+```
+
+## Fixtures
+
+Fixtures are useful if you know you will be reusing code that will be be used across
+multiple tests.
+
+Let's create a new file that contains multiple lines of text.
+We will then write tests for each line of the file.
+
+Save the below text into the `tests/text.txt` file.
+
+```
+This is the first line of the file
+the second
+and 3rd
+```
+
+Our package should look like this:
+
+```bash
+countchar
+|
+├── ...
+|
+├── src
+│   └── countchar
+|       └── count_char.py
+└── tests
+    └── test_count_char.py
+    └── text.txt
+```
+
+Now let's write a separate test function for each line of our file.
+
+```python
+import pytest
+
+from countchar.count_char import count_char
+
+
+def test_line_1():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    string = lines[0]
+    assert count_char(string) == 34
+
+def test_line_2():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    string = lines[1]
+    assert count_char(string) == 10
+
+def test_line_3():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    string = lines[2]
+    assert count_char(string) == 8
+
+```
+
+You can see here in the testing code above we are repeadily running
+the same code that reads in the text file.
+
+```python
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+```
+
+We can reduce this duplication with fixtures.
+
+```python
+import pytest
+
+from countchar.count_char import count_char
+
+
+@pytest.fixture
+def text_data():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    return lines
+
+
+def test_line_1(text_data):
+    string = text_data[0]
+    assert count_char(string) == 34
+
+def test_line_2(text_data):
+    string = text_data[1]
+    assert count_char(string) == 10
+
+def test_line_3(text_data):
+    string = text_data[2]
+    assert count_char(string) == 8
+
+```
+
+## More `pytest` features
+
+See the
+[py-pkgs testing chatper](https://py-pkgs.org/05-testing)
+to learn more about testing and`pytest` features
+(e.g., regression testing, and parameterization)
