@@ -215,7 +215,22 @@ def test_count_char_wrong_input():
         count_char(123)
 ```
 
-## Fixtures
+## Reduce repeated test code
+
+There are a few techniques you can use if you find yourself re-using code in your tests.
+
+- Fixtures: provide a mechanism to share setup code between individual tests. For example,
+  if you need to create, load, or connect to the same data source over and over without
+  wanting to copy and paste the same setup code
+- Parameterizations: when the actual test code logic is the same,
+  but the only part that is changing are a few parameters between individual tests.
+  This is useful to consolidate all the same testing logic together, without having
+  to create totally separate test functions that are mostly the same
+- `conftest.py`: this file allows you to re-use and share the same text fixtures across multiple test modules.
+   For example, you have different functions but need the same example data set and fixture setup.
+
+
+### Fixtures
 
 Fixtures are useful if you know you will be reusing code that will be be used across
 multiple tests.
@@ -316,7 +331,7 @@ def test_line_3(text_data):
 
 ```
 
-## Parameterizations
+### Parameterizations
 
 Parameterizations are useful when you have to run the same test with different arguments.
 In our current example, when we are using our `tests/text.txt` file to read in the lines of
@@ -359,26 +374,36 @@ they are all listed as a single comma separated string.
 
 
 
-## Add another package module
+### Setup: Add another package module
 
 Let's make another module named `count_letters.py` that will take any string
 and return the number of letters in the string without symbols or spaces.
-Ideally it'll work for any arbitrary language as well.
+Ideally the code will work for any arbitrary language.
 
 ```{python}
+# code adapted from a ChatGPT answer
 import unicodedata
 
 
 def count_letters(input_string):
     """
     Counts the number of letters in a string, excluding spaces, numbers, and symbols.
-    Supports letters from various languages and scripts.
 
-    Args:
-        input_string (str): The input string to analyze.
+    Parameters
+    ----------
+    input_string : str
+        The input string to count.
 
-    Returns:
-        int: The count of letters in the string.
+    Returns
+    -------
+    int
+        The number of "letters" in the input string.
+
+    Examples
+    --------
+    # counts the string 'Hello, world! 123'
+    >>> count_letters("Hello, 世界! 123")
+    7
     """
 
     # categories starting with 'L' are letters.
@@ -413,10 +438,83 @@ countchar
 ```
 
 
+### `conftest.py` to share fixtures
 
-## `conftest.py` to share
+Now that we have 2 separate testing modules,
+we may want to share the same file reading fixture across both modules.
+We can use `conftest.py` to share fixtures across different testing modules.
+
+We will move the current text fixture from `count_char.py` and paste it into
+a `conftest.py` file.
 
 
+
+```bash
+countchar
+|
+├── ...
+|
+├── src
+│   └── countchar
+|       └── count_char.py
+|       └── count_letters.py
+
+└── tests
+    └── conftest.py
+    └── test_count_char.py
+    └── test_count_letters.py
+    └── text.txt
+```
+
+The contests of the files in our `tests` directory are as follows:
+
+`conftest.py`:
+
+```{python}
+import pytest
+
+
+@pytest.fixture
+def text_data():
+    file_path = "tests/text.txt"
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+    return lines
+
+```
+
+`test_count_char.py`:
+
+```{python}
+from countchar.count_char import count_char
+
+
+@pytest.mark.parameterize(
+    "test_data_line_number, expected_count",
+    [
+        (0, 34),
+        (1, 10),
+        (2, 8)
+    ]
+)
+def test_line_n(text_data, test_data_line_number, expected_count):
+    string = text_data[test_data_line_number]
+    assert count_char(string) == expected_count
+```
+
+`test_count_char.py`:
+
+```{python}
+from countchar.count_char import count_letters
+
+
+@pytest.mark.parameterize(
+    "test_data_line_number, expected_count", [(0, 27), (1, 9), (2, 6)]
+)
+def test_line_n(text_data, test_data_line_number, expected_count):
+    string = text_data[test_data_line_number]
+    assert count_letters(string) == expected_count
+```
 
 ## More `pytest` features
 
