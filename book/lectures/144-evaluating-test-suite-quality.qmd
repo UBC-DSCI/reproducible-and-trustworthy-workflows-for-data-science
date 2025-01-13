@@ -209,10 +209,16 @@ Currently `covr` does not have the functionality to calculate branch coverage. T
 
 We use the plugin  tool [`pytest-cov`](https://github.com/pytest-dev/pytest-cov) to do this.
 
-Install as a package via conda:
+We can install as a package via conda:
 
 ```bash
 conda install pytest-cov
+```
+
+but if we are using it in our packaging, we will typically use Poetry to add it to our `pyproject.toml` file as a dependency:
+
+```
+poetry add --group dev pytest-cov
 ```
 
 ### Calculating coverage in Python
@@ -231,7 +237,7 @@ pytest --cov-branch --cov=<directory>
 
 ### How does `coverage` in Python actually count line coverage?
 
-- the output from `poetry run pytest --cov=src` gives a table that looks like this:
+- the output from `pytest --cov=src` gives a table that looks like this:
 
 ```sh
 ---------- coverage: platform darwin, python 3.7.6-final-0 -----------
@@ -257,7 +263,7 @@ $$Coverage = \frac{8 - 2}{8} * 100 = 75\%$$
 
 ### How does `coverage` in Python actually branch coverage?
 
-- the output from `poetry run pytest --cov-branch --cov=src` gives a table that looks like this:
+- the output from `pytest --cov-branch --cov=src` gives a table that looks like this:
 
 ```sh
 ---------- coverage: platform darwin, python 3.7.6-final-0 -----------
