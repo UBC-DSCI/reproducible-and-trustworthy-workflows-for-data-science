@@ -316,6 +316,108 @@ def test_line_3(text_data):
 
 ```
 
+## Parameterizations
+
+Parameterizations are useful when you have to run the same test with different arguments.
+In our current example, when we are using our `tests/text.txt` file to read in the lines of
+the file to do our character counts,
+the only real difference is the actual line we are trying to read in.
+
+We can use the `pytest` `@pytest.mark.parametrize(argnames, argvalues)` decorator to create
+parameterizations.
+
+```python
+
+from countchar.count_char import count_char
+
+
+@pytest.fixture
+def text_data():
+    file_path = "tests/text.txt"
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    return lines
+
+
+@pytest.mark.parameterize(
+    "test_data_line_number, expected_count",
+    [
+        (0, 34),
+        (1, 10),
+        (2, 8)
+    ]
+)
+def test_line_n(text_data, test_data_line_number, expected_count):
+    string = text_data[test_data_line_number]
+    assert count_char(string) == expected_count
+```
+
+:::{.callout-note}
+When you are passing in multiple `argnames` into `@pytest.mark.parameterize`,
+they are all listed as a single comma separated string.
+:::
+
+
+
+## Add another package module
+
+Let's make another module named `count_letters.py` that will take any string
+and return the number of letters in the string without symbols or spaces.
+Ideally it'll work for any arbitrary language as well.
+
+```{python}
+import unicodedata
+
+
+def count_letters(input_string):
+    """
+    Counts the number of letters in a string, excluding spaces, numbers, and symbols.
+    Supports letters from various languages and scripts.
+
+    Args:
+        input_string (str): The input string to analyze.
+
+    Returns:
+        int: The count of letters in the string.
+    """
+
+    # categories starting with 'L' are letters.
+    # e.g., 'Lu' for uppercase letter, 'Ll' for lowercase letter
+    is_letter = [
+        True for char in input_string if unicodedata.category(char).startswith("L")
+    ]
+    return sum(is_letter)
+```
+
+```{python}
+print(count_letters("Hello, 世界! 123"))
+```
+
+Our package now has 2 modules, and we'll have 2 separate testing modules.
+
+
+```bash
+countchar
+|
+├── ...
+|
+├── src
+│   └── countchar
+|       └── count_char.py
+|       └── count_letters.py
+
+└── tests
+    └── test_count_char.py
+    └── test_count_letters.py
+    └── text.txt
+```
+
+
+
+## `conftest.py` to share
+
+
+
 ## More `pytest` features
 
 See the
