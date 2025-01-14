@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; Filenames and data science project organization, Integrated development environments – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>21&nbsp; Testing: Images – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/080-virtual-environments.html" rel="next">
-<link href="../parts/projects-envs-containers.html" rel="prev">
+<link href="../lectures/144-evaluating-test-suite-quality.html" rel="next">
+<link href="../lectures/141-python-testing-example.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,28 +103,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -113,6 +125,28 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   content: '🏋️';
   background-image: none;
 }
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
 </style>
 
 
@@ -128,7 +162,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/070-filenames-project-organization.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/147-testing-images.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing: Images</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -231,7 +265,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/070-filenames-project-organization.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/070-filenames-project-organization.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span></a>
   </div>
 </li>
@@ -348,7 +382,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/147-testing-images.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/147-testing-images.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
   </div>
 </li>
@@ -551,30 +585,20 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#filenames---best-practices" id="toc-filenames---best-practices" class="nav-link" data-scroll-target="#filenames---best-practices"><span class="header-section-number">7.1</span> Filenames - best practices</a>
+  <li><a href="#observability-of-unit-outputs-in-data-science" id="toc-observability-of-unit-outputs-in-data-science" class="nav-link active" data-scroll-target="#observability-of-unit-outputs-in-data-science"><span class="header-section-number">21.1</span> Observability of unit outputs in data science</a></li>
+  <li><a href="#visual-regression-testing" id="toc-visual-regression-testing" class="nav-link" data-scroll-target="#visual-regression-testing"><span class="header-section-number">21.2</span> Visual regression testing</a>
   <ul class="collapse">
-  <li><a href="#names-matter" id="toc-names-matter" class="nav-link" data-scroll-target="#names-matter"><span class="header-section-number">7.1.1</span> Names matter</a></li>
-  <li><a href="#what-works-what-doesnt" id="toc-what-works-what-doesnt" class="nav-link" data-scroll-target="#what-works-what-doesnt"><span class="header-section-number">7.1.2</span> What works, what doesn’t?</a></li>
-  <li><a href="#three-principles-for-file-names" id="toc-three-principles-for-file-names" class="nav-link" data-scroll-target="#three-principles-for-file-names"><span class="header-section-number">7.1.3</span> Three principles for (file) names</a></li>
-  <li><a href="#machine-readable" id="toc-machine-readable" class="nav-link" data-scroll-target="#machine-readable"><span class="header-section-number">7.1.4</span> Machine readable</a></li>
-  <li><a href="#human-readable" id="toc-human-readable" class="nav-link" data-scroll-target="#human-readable"><span class="header-section-number">7.1.5</span> Human readable</a></li>
-  <li><a href="#plays-well-with-default-ordering" id="toc-plays-well-with-default-ordering" class="nav-link" data-scroll-target="#plays-well-with-default-ordering"><span class="header-section-number">7.1.6</span> Plays well with default ordering</a></li>
+  <li><a href="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" id="toc-example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="nav-link" data-scroll-target="#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">21.2.1</span> Example tests for altair plots (using object attributes not visual regression testing)</a></li>
   </ul></li>
-  <li><a href="#project-organization" id="toc-project-organization" class="nav-link" data-scroll-target="#project-organization"><span class="header-section-number">7.2</span> Project organization</a>
-  <ul class="collapse">
-  <li><a href="#a-tour-de-data-science-project-organization" id="toc-a-tour-de-data-science-project-organization" class="nav-link" data-scroll-target="#a-tour-de-data-science-project-organization"><span class="header-section-number">7.2.1</span> A tour de data science project organization</a></li>
-  </ul></li>
-  <li><a href="#integrated-development-environments" id="toc-integrated-development-environments" class="nav-link" data-scroll-target="#integrated-development-environments"><span class="header-section-number">7.3</span> Integrated development environments</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/070-filenames-project-organization.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/147-testing-images.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing: Images</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></h1>
+<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing: Images</span></h1>
 </div>
 
 
@@ -591,356 +615,241 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
-<ol type="1">
-<li>Explain how project organization and file naming contribute to reproducible data science</li>
-<li>Organize projects and name files in a sound manner</li>
-<li>Use an integrated development environment (IDE) to create, edit and run a script (e.g., VScode in Python, or RStudio in R)</li>
-<li>Use the IDE to access documentation/help, environment variables and efficiently navigate directories</li>
-<li>Extend and customize an IDE with useful extensions/add-ons/tools such as linters and formatters</li>
-</ol>
+<section id="observability-of-unit-outputs-in-data-science" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="observability-of-unit-outputs-in-data-science"><span class="header-section-number">21.1</span> Observability of unit outputs in data science</h2>
+<p><strong>Observability</strong> is defined as the extent to which the response of the code under test (here our functions) to a test can be verified.</p>
+<p>Questions we should ask when trying to understand how observable our tests are: - What do we have to do to identify pass/fail? - How expensive is it to do this? - Can we extract the result from the code under test? - Do we know enough to identify pass/fail?</p>
+<p><em>Source: <a href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410 class notes from Reid Holmes, UBC</a></em></p>
+<p>These questions are easier to answer and address for code that creates simpler data science objects such as data frames, as in the example above. However, when our code under test does something more complex, such as create a plot object, these questions are harder to answer, or can be answered less fully…</p>
+<p>Let’s talk about how we might test code to create plots!</p>
 </section>
-<section id="filenames---best-practices" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="filenames---best-practices"><span class="header-section-number">7.1</span> Filenames - best practices</h2>
-<p><strong>Attribution:</strong> much of these notes come from <a href="https://en.wikipedia.org/wiki/Jenny_Bryan">Jenny Bryan</a>’s talk “Naming things” (<a href="http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf">original slides</a> and <a href="https://github.com/jennybc/organization-and-naming">source code</a>)</p>
-<section id="names-matter" class="level3" data-number="7.1.1">
-<h3 data-number="7.1.1" class="anchored" data-anchor-id="names-matter"><span class="header-section-number">7.1.1</span> Names matter</h3>
-<p><img src="../img/cheers.png" width="100%"></p>
-</section>
-<section id="what-works-what-doesnt" class="level3" data-number="7.1.2">
-<h3 data-number="7.1.2" class="anchored" data-anchor-id="what-works-what-doesnt"><span class="header-section-number">7.1.2</span> What works, what doesn’t?</h3>
-<p><strong>NO</strong></p>
-<pre><code>myabstract.docx
-Joe’s Filenames Use Spaces and Punctuation.xlsx
-figure 1.png
-fig 2.png
-JW7d^(2sl@deletethisandyourcareerisoverWx2*.txt</code></pre>
-<p><strong>YES</strong></p>
-<pre><code>2014-06-08_abstract-for-sla.docx
-joes-filenames-are-getting-better.xlsx
-fig01_talk-scatterplot-length-vs-interest.png
-fig02_talk-histogram-attendance.png
-1986-01-28_raw-data-from-challenger-o-rings.txt</code></pre>
-</section>
-<section id="three-principles-for-file-names" class="level3" data-number="7.1.3">
-<h3 data-number="7.1.3" class="anchored" data-anchor-id="three-principles-for-file-names"><span class="header-section-number">7.1.3</span> Three principles for (file) names</h3>
-<ol type="1">
-<li><p>Machine readable</p></li>
-<li><p>Human readable</p></li>
-<li><p>Plays well with default ordering</p></li>
-</ol>
-<section id="awesome-file-names" class="level4">
-<h4 class="anchored" data-anchor-id="awesome-file-names">Awesome file names :)</h4>
-<p><img src="../img/awesome_names.png" class="img-fluid"></p>
-</section>
-</section>
-<section id="machine-readable" class="level3" data-number="7.1.4">
-<h3 data-number="7.1.4" class="anchored" data-anchor-id="machine-readable"><span class="header-section-number">7.1.4</span> Machine readable</h3>
-<ul>
-<li>Regular expression and globbing friendly
-<ul>
-<li>Avoid spaces, punctuation, accented characters, case sensitivity</li>
-</ul></li>
-<li>Easy to compute on
-<ul>
-<li>Deliberate use of delimiters</li>
-</ul></li>
-</ul>
-<section id="globbing" class="level4">
-<h4 class="anchored" data-anchor-id="globbing">Globbing</h4>
-<p><strong>Excerpt of complete file listing:</strong></p>
-<p><img src="../img/plasmid_names.png" class="img-fluid"></p>
-<hr>
-<p><strong>Example of globbing to narrow file listing:</strong></p>
-<p><img src="../img/plasmid_glob.png" class="img-fluid"></p>
-</section>
-<section id="same-using-mac-os-finder-search-facilities" class="level4">
-<h4 class="anchored" data-anchor-id="same-using-mac-os-finder-search-facilities">Same using Mac OS Finder search facilities</h4>
-<p><img src="../img/plasmid_mac_os_search.png" class="img-fluid"></p>
-</section>
-<section id="same-using-regex-in-r" class="level4">
-<h4 class="anchored" data-anchor-id="same-using-regex-in-r">Same using regex in R</h4>
-<p><img src="../img/plasmid_regex.png" class="img-fluid"></p>
-</section>
-<section id="punctuation" class="level4 smaller">
-<h4 class="smaller anchored" data-anchor-id="punctuation">Punctuation</h4>
-<p>Deliberate use of <code>"-"</code> and <code>"_"</code> allows recovery of meta-data from the filenames:</p>
-<ul>
-<li><code>"_"</code> underscore used to delimit units of meta-data I want later</li>
-<li><code>"-"</code> hyphen used to delimit words so my eyes don’t bleed</li>
-</ul>
-<p><img src="../img/plasmid_delimiters.png" class="img-fluid"></p>
-<hr>
-<p><img src="../img/plasmid_delimiters_code.png" class="img-fluid"></p>
-<p>This happens to be R but also possible in the shell, Python, etc.</p>
-</section>
-<section id="recap-machine-readable" class="level4">
-<h4 class="anchored" data-anchor-id="recap-machine-readable">Recap: machine readable</h4>
-<ul>
-<li><p>Easy to search for files later</p></li>
-<li><p>Easy to narrow file lists based on names</p></li>
-<li><p>Easy to extract info from file names, e.g.&nbsp;by splitting</p></li>
-<li><p>New to regular expressions and globbing? be kind to yourself and avoid</p>
-<ul>
-<li>Spaces in file names</li>
-<li>Punctuation</li>
-<li>Accented characters</li>
-<li>Different files named <code>foo</code> and <code>Foo</code></li>
-</ul></li>
-</ul>
-</section>
-</section>
-<section id="human-readable" class="level3" data-number="7.1.5">
-<h3 data-number="7.1.5" class="anchored" data-anchor-id="human-readable"><span class="header-section-number">7.1.5</span> Human readable</h3>
-<section id="human-readable-1" class="level4">
-<h4 class="anchored" data-anchor-id="human-readable-1">Human readable</h4>
-<ul>
-<li><p>Name contains info on content</p></li>
-<li><p>Connects to concept of a <em>slug</em> from semantic URLs</p></li>
-</ul>
-</section>
-<section id="example" class="level4">
-<h4 class="anchored" data-anchor-id="example">Example</h4>
-<p><strong>Which set of file(name)s do you want at 3 a.m. before a deadline?</strong></p>
-<p><img src="../img/human_readable_not_options.png" class="img-fluid"></p>
-</section>
-<section id="embrace-the-slug" class="level4">
-<h4 class="anchored" data-anchor-id="embrace-the-slug">Embrace the slug</h4>
-<div class="columns">
-<div class="column">
-<p>slug filenames <img src="../img/slug_filenames.png" class="img-fluid"></p>
-</div><div class="column">
-<p>slug <img src="../img/slug.jpg" class="img-fluid"></p>
+<section id="visual-regression-testing" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="visual-regression-testing"><span class="header-section-number">21.2</span> Visual regression testing</h2>
+<p>When we use certain data visualization libraries, we might think that we can test all code that generates data visualizations similar to code that generates more traditional data objects, such as data frames.</p>
+<p>For example, when we create a scatter plot object with <code>ggplot2</code>, we can easily observe many of it’s values and attributes. We show an example below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width =</span> <span class="dv">4</span>, <span class="at">repr.plot.height =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</section>
-<section id="recap-human-readable" class="level4">
-<h4 class="anchored" data-anchor-id="recap-human-readable">Recap: Human readable</h4>
-<p>Easy to figure out what the heck something is, based on its name</p>
-</section>
-</section>
-<section id="plays-well-with-default-ordering" class="level3" data-number="7.1.6">
-<h3 data-number="7.1.6" class="anchored" data-anchor-id="plays-well-with-default-ordering"><span class="header-section-number">7.1.6</span> Plays well with default ordering</h3>
-<section id="plays-well-with-default-ordering-1" class="level4">
-<h4 class="anchored" data-anchor-id="plays-well-with-default-ordering-1">Plays well with default ordering</h4>
-<ul>
-<li><p>Put something numeric first</p></li>
-<li><p>Use the ISO 8601 standard for dates</p></li>
-<li><p>Left pad other numbers with zeros</p></li>
-</ul>
-</section>
-<section id="examples" class="level4">
-<h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<p><strong>Chronological order:</strong></p>
-<div class="quarto-figure quarto-figure-center">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cars_ggplot_scatter <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(mtcars, ggplot2<span class="sc">::</span><span class="fu">aes</span>(hp, mpg)) <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">geom_point</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>cars_ggplot_scatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
 <figure class="figure">
-<p><img src="../img/chronological_order.png" class="img-fluid figure-img"></p>
-<figcaption>chronological_order)(</figcaption>
+<p><img src="147-testing-images_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-<hr>
-<p><strong>Logical order:</strong> Put something numeric first</p>
-<p><img src="../img/logical_order.png" class="img-fluid"></p>
-</section>
-<section id="dates" class="level4">
-<h4 class="anchored" data-anchor-id="dates">Dates</h4>
-<p>Use the ISO 8601 standard for dates: YYYY-MM-DD</p>
-<p><img src="../img/chronological_order.png" class="img-fluid"></p>
-<p><img src="../img/iso_8601.png" class="img-fluid"></p>
-</section>
-<section id="comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format" class="level4">
-<h4 class="anchored" data-anchor-id="comprehensive-map-of-all-countries-in-the-world-that-use-the-mm-dd-yyyy-format">Comprehensive map of all countries in the world that use the MM-DD-YYYY format</h4>
-<p><img src="../img/map_mmddyyy.png" class="img-fluid"></p>
-<p><br></p>
-<p>From <a href="https://twitter.com/donohoe/status/597876118688026624" class="uri">https://twitter.com/donohoe/status/597876118688026624</a></p>
-</section>
-<section id="left-pad-other-numbers-with-zeros" class="level4">
-<h4 class="anchored" data-anchor-id="left-pad-other-numbers-with-zeros">Left pad other numbers with zeros</h4>
-<p><img src="../img/logical_order.png" class="img-fluid"></p>
-<p><br></p>
-<p>If you don’t left pad, you get this:</p>
-<pre><code>10_final-figs-for-publication.R
-1_data-cleaning.R
-2_fit-model.R</code></pre>
-<p>which is just sad :(</p>
-</section>
-<section id="recap-plays-well-with-default-ordering" class="level4">
-<h4 class="anchored" data-anchor-id="recap-plays-well-with-default-ordering">Recap: Plays well with default ordering</h4>
-<ul>
-<li><p>Put something numeric first</p></li>
-<li><p>Use the ISO 8601 standard for dates</p></li>
-<li><p>Left pad other numbers with zeros</p></li>
-</ul>
-</section>
-<section id="recap" class="level4">
-<h4 class="anchored" data-anchor-id="recap">Recap</h4>
-</section>
-<section id="three-principles-for-file-names-1" class="level4">
-<h4 class="anchored" data-anchor-id="three-principles-for-file-names-1">Three principles for (file) names</h4>
-<ol type="1">
-<li><p>Machine readable</p></li>
-<li><p>Human readable</p></li>
-<li><p>Plays well with default ordering</p></li>
-</ol>
-</section>
-<section id="pros" class="level4">
-<h4 class="anchored" data-anchor-id="pros">Pros</h4>
-<ul>
-<li><p>Easy to implement NOW</p></li>
-<li><p>Payoffs accumulate as your skills evolve and projects get more complex</p></li>
-</ul>
-</section>
-<section id="go-forth-and-use-awesome-file-names" class="level4">
-<h4 class="anchored" data-anchor-id="go-forth-and-use-awesome-file-names">Go forth and use awesome file names :)</h4>
-<p><img src="../img/chronological_order.png" class="img-fluid"></p>
-<p><br></p>
-<p><img src="../img/logical_order.png" class="img-fluid"></p>
-</section>
-</section>
-</section>
-<section id="project-organization" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="project-organization"><span class="header-section-number">7.2</span> Project organization</h2>
-<p>A good project structure looks similar to this:</p>
-<pre><code>project/
-├── data/              *.csv
-│   ├── processed/
-│   └── raw/
-├── reports/           *.ipynb *.Rmd
-├── src/               *.py *.R
-├── doc/               *.md
-├── README.md
-└── environment.yaml (or renv.lock)</code></pre>
-<p>This can differ slightly between projects and for R the <code>src</code> directory is often just called <code>R/</code>, whereas for Python is has the same name as the project (<code>project</code>). You will learn more about project hierarchy when making packages.</p>
-<!--
-A place for everything, everything in its place.
-
-Benjamin Franklin
-
-
-
----
-
-![beer_messy_tidy](../img/beer_messy_tidy.png)
-
----
-
-![files_messy_tidy](../img/files_messy_tidy.png)
-
-## Face it...
-
-- There are going to be files
-
-- LOTS of files
-
-- The files will change over time
-
-- The files will have relationships to each other
-
-- It'll probably get complicated
-
-## Mighty weapon
-
-- File organization and naming is a mighty weapon against chaos
-
-- Make a file's name and location VERY INFORMATIVE about what it is, why it exists, how it relates to other things
-
-- The more things are self-explanatory, the better
-
-- READMEs are great, but don't document something if you could just make that thing self-documenting by definition
-
-
-## Attribution:
-
-- Slides borrowed from the [Data Carpentry](https://datacarpentry.org/) [Reproducible Science Workshop](https://datacarpentry.org/rr-organization1/)
-
--->
-<section id="a-tour-de-data-science-project-organization" class="level3" data-number="7.2.1">
-<h3 data-number="7.2.1" class="anchored" data-anchor-id="a-tour-de-data-science-project-organization"><span class="header-section-number">7.2.1</span> A tour de data science project organization</h3>
-<p>Below we link to three different data science projects shared via GitHub repositories. The first is a data analysis project, while the latter two are data science tools (an R and a Python package, respectively).</p>
-<p>As you explore these projects, note the following similarities: - Files related generally to the project are found in the project root (e.g., <code>README</code>, <code>CODE_OF_CONDUCT.md</code>, computational environment files, etc) - Code files are generally found in the <code>src</code> or <code>R</code> directory - <code>data</code> houses raw and processed data - <code>doc</code> houses documentation files and or documents related to the project (sometimes there is both a <code>doc</code> and <code>reports</code> directory when there are two kinds of writing in a project). - Other directories can be added as needed to group files with like/similar functions. Most important is that they have descriptive and obvious names related to the directory contents.</p>
-<section id="example-projects" class="level5">
-<h5 class="anchored" data-anchor-id="example-projects">Example projects</h5>
-<ul>
-<li><a href="https://github.com/ttimbers/breast_cancer_predictor">a data analysis project</a></li>
-<li><a href="https://github.com/ttimbers/canlang">a R package</a></li>
-<li><a href="https://github.com/ttimbers/pycounts_tat">a Python package</a></li>
-</ul>
-</section>
-</section>
-</section>
-<section id="integrated-development-environments" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="integrated-development-environments"><span class="header-section-number">7.3</span> Integrated development environments</h2>
-<p>Integrated development environments (IDEs) are software that provide comprehensive tools for programming in one place.</p>
-<p>The classic Jupyter notebook interface is typically not considered an IDE, however the newer, JupyterLab interface is.</p>
-<p><img src="../img/jupyternotebook.png" width="800"></p>
-<p><img src="../img/jupyterlab.png" width="800"></p>
-<p>Other very popular IDEs for data science include RStudio and VSCode. We will now explore these and look for similarities to identify key IDE features important for developing code for data science.</p>
-<p><img src="../img/rstudio.png" width="800"></p>
-<div class="callout callout-style-default callout-note callout-titled">
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cars_ggplot_scatter<span class="sc">$</span>layers[[<span class="dv">1</span>]]<span class="sc">$</span>geom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;ggproto object: Class GeomPoint, Geom, gg&gt;
+    aesthetics: function
+    default_aes: uneval
+    draw_group: function
+    draw_key: function
+    draw_layer: function
+    draw_panel: function
+    extra_params: na.rm
+    handle_na: function
+    non_missing_aes: size shape colour
+    optional_aes: 
+    parameters: function
+    rename_size: FALSE
+    required_aes: x y
+    setup_data: function
+    setup_params: function
+    use_defaults: function
+    super:  &lt;ggproto object: Class Geom, gg&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cars_ggplot_scatter<span class="sc">$</span>mapping<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;quosure&gt;
+expr: ^hp
+env:  global</code></pre>
+</div>
+</div>
+<p>And so we could write some tests for a function that created a <code>ggplot2</code> object like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' scatter2d</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' A short-cut function for creating 2 dimensional scatterplots via ggplot2.</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param data data.frame or tibble</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param x unquoted column name to plot on the x-axis from data data.frame or tibble</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param y unquoted column name to plot on the y-axis from data data.frame or tibble</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#' @export</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#' scatter2d(mtcars, hp, mpg)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>scatter2d <span class="ot">&lt;-</span> <span class="cf">function</span>(data, x, y) {</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(data, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> {{x}}, <span class="at">y =</span> {{y}})) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">geom_point</span>()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>helper_data <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">x_vals =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y_vals =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>))</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>helper_plot2d <span class="ot">&lt;-</span> <span class="fu">scatter2d</span>(helper_data, x_vals, y_vals)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">'Plot should use geom_point and map x to x-axis, and y to y-axis.'</span>, {</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_true</span>(<span class="st">"GeomPoint"</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fu">class</span>(helper_plot2d<span class="sc">$</span>layers[[<span class="dv">1</span>]]<span class="sc">$</span>geom)))</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_true</span>(<span class="st">"x_vals"</span>  <span class="sc">==</span> rlang<span class="sc">::</span><span class="fu">get_expr</span>(helper_plot2d<span class="sc">$</span>mapping<span class="sc">$</span>x))</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_true</span>(<span class="st">"y_vals"</span> <span class="sc">==</span> rlang<span class="sc">::</span><span class="fu">get_expr</span>(helper_plot2d<span class="sc">$</span>mapping<span class="sc">$</span>y))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test passed 🌈</code></pre>
+</div>
+</div>
+<p>However, when we create a similar plot object using base R, we do not get an object back at all…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cars_scatter <span class="ot">&lt;-</span> <span class="fu">plot</span>(mtcars<span class="sc">$</span>hp, mtcars<span class="sc">$</span>mpg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="147-testing-images_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(cars_scatter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "NULL"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(cars_scatter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "NULL"</code></pre>
+</div>
+</div>
+<p>So as you can see, testing plot objects can be more challenging. In the cases of several commonly used plotting functions and package in R and Python, the objects created are not rich objects with attributes that can be easily accessed (or accessed at all). Plotting packages like<code>ggplot2</code> (R) and <code>altair</code> (Python) which do create rich objects with observable values and attributes appear to be exceptions, rather than the rule. Thus, regression testing against an image generated by the plotting function is often the “best we can do”, or because of this history, what is commonly done.</p>
+<div class="callout callout-style-default callout-definition callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Regression Testing
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>RStudio was originally developed to work with the R programming language, but now it can work with Python well too! If you would like to use RStudio with Python, please follow the instructions here on how to configure this: <a href="https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html" class="uri">https://ttimbers.github.io/intro-to-reticulate/setup-instructions/setup-after-installing-python.html</a></p>
-<p><img src="../img/vscode.png" width="800"></p>
+<p><strong>Regression testing</strong> is defined as tests that check that recent changes to the code base do not break already implemented features.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
+<p>Thus, once a desired plot is generated from the plotting function, visual regression tests can be used to ensure that further code refactoring does not change the plot function. Tools for this exist for R in the <a href="https://vdiffr.r-lib.org/"><code>vdiffr</code></a> package. Matplotlib uses visual regression testing as well, you can see the docs for examples of this <a href="https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test">here</a>.</p>
+<section id="visual-regression-testing-with-vdiffr" class="level4">
+<h4 class="anchored" data-anchor-id="visual-regression-testing-with-vdiffr">Visual regression testing with <code>vdiffr</code></h4>
+<p>Say you have a function that creates a nicely formatted scatter plot using <code>ggplot2</code>, such as the one shown below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>pretty_scatter <span class="ot">&lt;-</span> <span class="cf">function</span>(.data, x_axis_col, y_axis_col) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="at">data =</span> .data,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                    ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> {{ x_axis_col }}, <span class="at">y =</span> {{ y_axis_col }})) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">text =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>penguins_scatter <span class="ot">&lt;-</span> <span class="fu">pretty_scatter</span>(penguins, bill_length_mm, bill_depth_mm) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bill length (mm)"</span>, <span class="at">y =</span> <span class="st">"Bill depth (mm)"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>penguins_scatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="147-testing-images_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>What is so pretty about this scatter plot? Compared to the default settings of a scatter plot created in <code>ggplot2</code> this scatter plot has a white instead of grey background, has blue points instead of black, has larger points, and they points have a bit of transparency so you can see some overlapping data points.</p>
+</blockquote>
+<p>Now, say that you want to write tests to make sure that as you further develop and refactor your data visualization code, you do not break it or change the plot (because you have decided you are happy with what it looks like). You can use the <a href="https://vdiffr.r-lib.org/"><code>vdiffr</code></a> visual regression testing package to do this. First, you need to abstract the function to an R script that lives in <code>R</code>. For this case, we would create a file called <code>R/pretty_scatter.R</code> that houses the <code>pretty_scatter</code> function shown above.</p>
+<p>Then you need to setup a <code>tests</code> directory and test file in which to house your tests that works with the <a href="https://testthat.r-lib.org/"><code>testthat</code></a> framework (we recommend using <code>usethis::use_testthat()</code> and <code>usethis::use_test("FUNCTION_NAME")</code> to do this).</p>
+<p>Finally, add an expectation with <code>vdiffr::expect_doppelganger</code> to your <code>test_that</code> statement:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vdiffr)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../../R/pretty_scatter.R"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>penguins_scatter <span class="ot">&lt;-</span> <span class="fu">pretty_scatter</span>(penguins, bill_length_mm, bill_depth_mm) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Bill length (mm)"</span>, <span class="at">y =</span> <span class="st">"Bill depth (mm)"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>penguins_scatter</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">test_that</span>(<span class="st">"refactoring our code should not change our plot"</span>, {</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">expect_doppelganger</span>(<span class="st">"pretty scatter"</span>, penguins_scatter)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then when you run <code>testthat::test_dir("tests/testthat")</code> to run your test suite for the first time, it will take a snapshot of the figure created in your test for that visualization and save it to <code>tests/testthat/_snaps/EXPECT_DOPPELGANGER_TITLE.svg</code>. Then as you refactor your code, you and run <code>testthat::test_dir("tests/testthat")</code> it will compare a new snapshot of the figure with the existing one. If they differ, the tests will fail. You can then run <code>testthat::snapshot_review()</code> to get an interactive viewer which will let you compare the two data visualizations and allow you to either choose to accept the new snapshot (if you wish to include the changes to the data visualization as part of your code revision and refactoring) or you can stop the app and revert/fix some of your code changes so that the data visualization is not unintentionally changed.</p>
+<p>Below we show an example of running <code>testthat::snapshot_review()</code> after we made our tests fail by removing <code>alpha = 0.8</code> from our <code>pretty_scatter</code> function source:</p>
+<p><img src="../img/snapshot-reviewer.png" width="600"></p>
+</section>
+<section id="vdiffr-demo" class="level4">
+<h4 class="anchored" data-anchor-id="vdiffr-demo"><code>vdiffr</code> demo</h4>
+<p>In this GitHub repository, we have created a <code>vdiffr</code> demo based on the case above: <a href="https://github.com/ttimbers/vdiffr-demo" class="uri">https://github.com/ttimbers/vdiffr-demo</a></p>
+<p>To get experience and practice using this, we recommend forking this, and then cloning it so that you can try using this, and building off it locally.</p>
+<div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Exercise 1
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you would like to use VS Code with Python, then please follow the instructions below on how to configure this:</p>
 <ol type="1">
-<li><p>Install the VSCode <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python Extension</a> in your VSCode application</p></li>
-<li><p>Code can be sent line-by-line to the Python console via <code>Shift</code> + <code>Enter</code>. The first time you do this, an interactive iPython console will open up. Future <code>Shift</code> + <code>Enter</code> keystrokes during that work session will send code to that console.</p></li>
-<li><p>A bash command line terminal console can be added by clicking the <strong>Terminal</strong> &gt; <strong>New Terminal</strong> menu item, and then the “+” symbol and selecting “bash”.</p></li>
+<li><p>Inside RStudio, run <code>testthat::test_dir("tests/testthat")</code> to ensure you can get the tests to pass as they exist in the demo.</p></li>
+<li><p>Change something about the code in <code>R/pretty_scatter.R</code> that will change what the plot looks like (text size, point colour, type of geom used, etc).</p></li>
+<li><p>Run <code>testthat::test_dir("tests/testthat")</code> and see if the tests fail. If they do, run <code>testthat::snapshot_review()</code> to explore the differences in the two image snapshots. You may be prompted to install a couple R packages to get this working.</p></li>
+<li><p>Add another plot function to the project and create a test for it using <code>testthat</code> and <code>vdiffr</code>.</p></li>
 </ol>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you would like to use VS Code with R, please follow the instructions below on how to configure this:</p>
-<ol type="1">
-<li>Install the VSCode <a href="https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r">R Extension</a> in your VSCode application.</li>
-<li>In the RStudio R console, install <code>languageserver</code> R package via <code>install.packages("languageserver")</code>.</li>
-<li>Install the <code>radian</code> Python package (which gives an improved R console in VS Code) via running <code>conda install radian</code> in the terminal.</li>
-<li>In the VS Code settings (found by clicking the <strong>Code</strong> &gt; <strong>Preferences</strong> &gt; <strong>Settings</strong> menu item) search for “r.path” and paste the path to <code>radian</code> under the textbox for your operating system (you can find the path to <code>radian</code> by typing <code>which radian</code> in the terminal). For example, on my Mac x86 laptop, the path is <code>/Users/tiffany/opt/miniconda3/bin/radian</code>.</li>
-<li>In the VS Code settings (Code &gt; Settings &gt; Settings) search for “R: Bracketed Paste” and select the checkbox for this setting (this allows you to send code to the R console when it is split across lines without it breaking).</li>
-<li>In the VS Code settings (Code &gt; Settings &gt; Settings) search for “Rterm: Mac” and set the path to <code>radian</code> (you can find this by typing <code>which radian</code> in the terminal).</li>
-<li>An interactive R console can be added by clicking the <strong>Terminal</strong> &gt; <strong>New Terminal</strong> menu item, and then the “+” symbol and selecting “R Terminal”. Code can be sent line-by-line to the R console via <code>Cmd</code> + <code>Enter</code> (Mac) or <code>Control</code> + <code>Enter</code> (Windows).</li>
-</ol>
-</div>
-</div>
-<section id="key-features-of-all-of-these-ides-includes" class="level4">
-<h4 class="anchored" data-anchor-id="key-features-of-all-of-these-ides-includes">Key features of all of these IDEs includes:</h4>
-<ul>
-<li>screen split into panes</li>
-<li>file browser</li>
-<li>convenient access to R/Python console and a terminal</li>
-<li>editor for code writing</li>
-<li>code autocompletion</li>
-<li>code/syntax highlighting</li>
-</ul>
+</section>
+<section id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing"><span class="header-section-number">21.2.1</span> Example tests for altair plots (using object attributes not visual regression testing)</h3>
+<p>Here’s a function that creates a scatter plot:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scatter(df, x_axis, y_axis):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    chart <span class="op">=</span> alt.Chart(df).mark_line().encode(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        alt.X(x_axis <span class="op">+</span> <span class="st">':Q'</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            scale<span class="op">=</span>alt.Scale(zero<span class="op">=</span><span class="va">False</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>              axis<span class="op">=</span>alt.Axis(tickMinStep<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>y_axis</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here’s some small data to test it on:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>small_data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">'year'</span>: np.array([<span class="dv">1901</span>, <span class="dv">1902</span>, <span class="dv">1903</span>, <span class="dv">1904</span>, <span class="dv">1905</span>]),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">'measure'</span> : np.array([<span class="dv">25</span>, <span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">100</span>])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>small_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here’s the plot:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>small_scatter <span class="op">=</span> scatter(small_data, <span class="st">'year'</span>, <span class="st">'measure'</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>small_scatter</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="../img/alt_chart.png" class="img-fluid"></p>
+<p>Here’s a unit test for the <code>scatter</code> function:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_scatter():</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.encoding.x.field <span class="op">==</span> <span class="st">'year'</span>, <span class="st">'x_axis should be mapped to the x axis'</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.encoding.y.field <span class="op">==</span> <span class="st">'measure'</span>, <span class="st">'y_axis should be mapped to the y axis'</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.mark <span class="op">==</span> <span class="st">'line'</span>, <span class="st">'mark should be a line'</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.encoding.x.scale.zero <span class="op">==</span> <span class="va">False</span>, <span class="st">"x-axis should not start at 0"</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> small_scatter.encoding.x.axis.tickMinStep <span class="op">==</span> <span class="dv">1</span>, <span class="st">"x-axis small tick step should be 1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -1366,13 +1275,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/projects-envs-containers.html" class="pagination-link" aria-label="Projects, Environments, and Containers">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Projects, Environments, and Containers</span>
+      <a href="../lectures/141-python-testing-example.html" class="pagination-link" aria-label="Testing functions Python with `pytest`">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/080-virtual-environments.html" class="pagination-link" aria-label="Virtual environments">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Virtual environments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/144-evaluating-test-suite-quality.html" class="pagination-link" aria-label="Evaluating test suite quality">
+        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
