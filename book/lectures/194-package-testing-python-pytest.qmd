@@ -150,6 +150,12 @@ will list `pytest` as a development dependency for our package.
 poetry add --group dev pytest
 ```
 
+And don't forget to "install" our package.
+
+```bash
+poetry install
+```
+
 Next, we can go and run `pytest`
 
 ```bash
@@ -158,18 +164,62 @@ pytest tests/
 
 Since we have not implemented our function all these tests will fail.
 
+```bash
+$ pytest
+=================================================== test session starts ====================================================
+platform linux -- Python 3.11.9, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/dan/temp/countchar
+configfile: pyproject.toml
+plugins: anyio-4.4.0
+collected 1 item
+
+tests/test_countchar.py F                                                                                            [100%]
+
+========================================================= FAILURES =========================================================
+_____________________________________________________ test_count_char ______________________________________________________
+
+    def test_count_char():
+
+        string = "hello"
+        expected = 5
+        actual = count_char(string)
+>       assert actual == expected
+E       assert None == 5
+
+tests/test_countchar.py:8: AssertionError
+================================================= short test summary info ==================================================
+FAILED tests/test_countchar.py::test_count_char - assert None == 5
+==================================================== 1 failed in 0.13s =====================================================
+
+```
+
 Let's go and implement the function.
 
 ```{python}
 # our count char function without the docstring to save vertical space
 def count_char(input_string):
-    len(input_string)
+    return len(input_string)
 ```
 
 and then run `pytest` again.
 
 ```bash
 pytest tests/
+```
+
+```bash
+$ pytest tests/
+=================================================== test session starts ====================================================
+platform linux -- Python 3.11.9, pytest-8.3.4, pluggy-1.5.0
+rootdir: /home/dan/temp/countchar
+configfile: pyproject.toml
+plugins: anyio-4.4.0
+collected 1 item
+
+tests/test_countchar.py .                                                                                            [100%]
+
+==================================================== 1 passed in 0.02s =====================================================
+
 ```
 
 ### Change the implementation logic
@@ -273,26 +323,29 @@ def test_line_1():
     file_path = "tests/text.txt"
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    string = lines[0]
+    string = lines[0].strip()
     assert count_char(string) == 34
 
 def test_line_2():
     file_path = "tests/text.txt"
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    string = lines[1]
+    string = lines[1].strip()
     assert count_char(string) == 10
 
 def test_line_3():
     file_path = "tests/text.txt"
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    string = lines[2]
-    assert count_char(string) == 8
-
+    string = lines[2].strip()
+    assert count_char(string) == 7
 ```
 
-You can see here in the testing code above we are repeadily running
+:::{.callout-note}
+We need the `.strip()` to remove the trailing new line break
+:::
+
+You can see here in the testing code above we are repeatedly running
 the same code that reads in the text file.
 
 ```python
@@ -308,7 +361,6 @@ import pytest
 
 from countchar.count_char import count_char
 
-
 @pytest.fixture
 def text_data():
     file_path = "tests/text.txt"
@@ -318,17 +370,16 @@ def text_data():
 
 
 def test_line_1(text_data):
-    string = text_data[0]
+    string = text_data[0].strip()
     assert count_char(string) == 34
 
 def test_line_2(text_data):
-    string = text_data[1]
+    string = text_data[1].strip()
     assert count_char(string) == 10
 
 def test_line_3(text_data):
-    string = text_data[2]
-    assert count_char(string) == 8
-
+    string = text_data[2].strip()
+    assert count_char(string) == 7
 ```
 
 ### Parameterizations
@@ -342,9 +393,9 @@ We can use the `pytest` `@pytest.mark.parametrize(argnames, argvalues)` decorato
 parameterizations.
 
 ```python
+import pytest
 
 from countchar.count_char import count_char
-
 
 @pytest.fixture
 def text_data():
@@ -354,21 +405,22 @@ def text_data():
     return lines
 
 
-@pytest.mark.parameterize(
+@pytest.mark.parametrize(
     "test_data_line_number, expected_count",
     [
         (0, 34),
         (1, 10),
-        (2, 8)
+        (2, 7)
     ]
 )
 def test_line_n(text_data, test_data_line_number, expected_count):
-    string = text_data[test_data_line_number]
+    string = text_data[test_data_line_number].strip()
     assert count_char(string) == expected_count
+
 ```
 
 :::{.callout-note}
-When you are passing in multiple `argnames` into `@pytest.mark.parameterize`,
+When you are passing in multiple `argnames` into `@pytest.mark.parametrize`,
 they are all listed as a single comma separated string.
 :::
 
@@ -486,33 +538,33 @@ def text_data():
 `test_count_char.py`:
 
 ```{python}
+import pytest
+
 from countchar.count_char import count_char
 
 
-@pytest.mark.parameterize(
-    "test_data_line_number, expected_count",
-    [
-        (0, 34),
-        (1, 10),
-        (2, 8)
-    ]
+@pytest.mark.parametrize(
+    "test_data_line_number, expected_count", [(0, 34), (1, 10), (2, 7)]
 )
 def test_line_n(text_data, test_data_line_number, expected_count):
-    string = text_data[test_data_line_number]
+    string = text_data[test_data_line_number].strip()
     assert count_char(string) == expected_count
+
 ```
 
-`test_count_char.py`:
+`test_count_letters.py`:
 
 ```{python}
-from countchar.count_char import count_letters
+import pytest
+
+from countchar.count_letters import count_letters
 
 
-@pytest.mark.parameterize(
-    "test_data_line_number, expected_count", [(0, 27), (1, 9), (2, 6)]
+@pytest.mark.parametrize(
+    "test_data_line_number, expected_count", [(0, 27), (1, 9), (2, 5)]
 )
 def test_line_n(text_data, test_data_line_number, expected_count):
-    string = text_data[test_data_line_number]
+    string = text_data[test_data_line_number].strip()
     assert count_letters(string) == expected_count
 ```
 
