@@ -1,6 +1,7 @@
 ---
-title: Observability of unit outputs in data science
+title: "Testing: Images"
 ---
+## Observability of unit outputs in data science
 
 **Observability** is defined as the extent to which the response of the code under test (here our functions) to a test can be verified.
 
@@ -17,13 +18,16 @@ However, when our code under test does something more complex, such as create a 
 
 Let's talk about how we might test code to create plots!
 
-### Visual regression testing
+## Visual regression testing
 
 When we use certain data visualization libraries, we might think that we can test all code that generates data visualizations similar to code that generates more traditional data objects, such as data frames.
 
 For example, when we create a scatter plot object with `ggplot2`, we can easily observe many of it's values and attributes. We show an example below:
 
 ```{r}
+library(testthat)
+library(ggplot2)
+
 options(repr.plot.width = 4, repr.plot.height = 4)
 ```
 
@@ -45,8 +49,6 @@ cars_ggplot_scatter$mapping$x
 And so we could write some tests for a function that created a `ggplot2` object like so:
 
 ```{r}
-library(testthat)
-
 #' scatter2d
 #'
 #' A short-cut function for creating 2 dimensional scatterplots via ggplot2.
