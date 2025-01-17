@@ -34,9 +34,10 @@ jobs:
         run: poetry run pytest tests/ --cov={{ cookiecutter.__package_slug }} --cov-report=xml
 
       - name: Use Codecov to track coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          files: ./coverage.xml # coverage report
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml   # coverage report
 
       - name: Build documentation
         run: poetry run make html --directory docs/
@@ -56,12 +57,16 @@ Let's answer the following questions to start better understanding the `build.ym
 4. What is the type of runner
 
 5. What events trigger this workflow?
+
+6. What secrets need to be setup?
 :::
 
 :::{.exercise}
 Adding the `ci.yml` workflow to your `pypkgs*` repository
 
 Let's add the `ci.yml` workflow to our `pycounts*` repository from week 1!
+
+0. Setup any needed secrets for the workflow.
 
 1. Go to the actions tab for your GitHub repository
 
