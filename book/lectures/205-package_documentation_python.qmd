@@ -6,32 +6,36 @@ title: "Package Documentation: Python"
 
 - Generate well formatted function and package-level documentation for Python packages using Sphinx & Read the Docs
 
-## Package-level documentation for Python
+## Documentation for Python packages
 
-There are several levels of documentation possible for Python packages:
-- code-level documentation (formatted docstrings)
-- package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
-- package websites (via [Read the Docs](https://readthedocs.org/))
+In Python, we use formatted docstrings to generate our code-level documentation.
+We then use a tool called [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
+to take those formatted docstrings to generate our API reference documentation 
+for our package website, and several of our Markdown files in our packages
+GitHub repository to generate other pages for our package website 
+(Contributing, Code of Conduct, etc).
+We then serve the website up on some platform, such as [Read the Docs](https://readthedocs.org/)
+(others exist as well).
 
-## Code & package-level documentation
+### API reference docs
 
 - We learned the basics of how to write formatted docstrings using numpy-style documentation.
 
 - These docstrings can not only be accessed via `?function_name`, but can also be used to automatically generate package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
 
-- We already did this with our toy `foocat` package by:
-    - adding sphinx as a dev dependency via `poetry add --dev sphinx`
-    - create the `.rst` files for your package functions by running: `poetry run sphinx-apidoc -f -o docs/source <package_name>` from the project root
-    - and then ran `poetry run make html` from the docs directory
+- We already did this with our toy `pycounts` package by:
+    - adding our doc dependencies into our `dev` dependency group via `poetry add --group dev myst-nb sphinx-autoapi sphinx-rtd-theme
+    - and then running `make html` from the `docs` directory
 
-## Code & package-level documentation
+- The `py-pkgs-cookiecutter` template also has some [extensions added to `docs/conf.py`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/00ca3be8cd9964f863481a2ffe1763f0158087f3/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/conf.py#L18)
+that are needed for this to work.
 
 - To have `sphinx` correctly render the docstring as package-level documentation, we need to either write our docstrings in the correct format for restructured text (RST) or we can use the `sphinx` extension `napolean` that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).
 
 ### Example of RST formatted docstrings:
 
 ```
-:type path: str
+""":type path: str
 :param field_storage: The :class:`FileStorage` instance to wrap
 :type field_storage: FileStorage
 :param temporary: Whether or not to delete the file when the File
@@ -39,12 +43,14 @@ There are several levels of documentation possible for Python packages:
 :type temporary: bool
 :returns: A buffered writable file descriptor
 :rtype: BufferedFileStorage
+:example: my_funtion(4)
+"""
 ```
 
 ### Example of Numpy-style docstrings:
 
 ```
-Summary line.
+    """Summary line.
 
     Extended description of function.
 
@@ -59,21 +65,16 @@ Summary line.
     -------
     bool
         Description of return value
+        
+    Examples
+    --------
+    >>> my_funtion(4)
+    """
 ```
 
-## Code & package-level documentation
+### Rendering the docs locally
 
-When using Numpy-style docstrings, we need to do the following:
-
-- add `sphinxcontrib-napoleon` as a dev dependency via `poetry add --dev`
-
-- add `extensions = ['sphinx.ext.napoleon']` to the docs configuration file (`docs/conf.py`) - we have already done this for you in the Cookiecutter template.
-
-## Editing & Rendering package-level documentation
-
-- As we did in the toy `foocat` package, we render the docs via running `poetry run make html` from the docs directory
-
-- *Note: it is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.*
+It is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.
 
 ## Adding new page to your package-level documentation
 
@@ -98,7 +99,6 @@ Here's an example:
 Which will result in this rendering:
 
 <img src="img/rendered-index-headers.png" width=1000>
-
 
 
 ## Vignettes/tutorials
@@ -157,9 +157,17 @@ sphinx:
 
 *note 2 - all your documentation dependencies need to be in `pyproject.toml` for ReadtheDocs to be able to successfully render your docs!*
 
-## Publishing your Python package for this milestone:
+### Sphinx themes
 
-To get your packages README and important links to show-up on the TestPyPI and PyPI pages for your package, add the following information to the [tool.poetry] table in pyproject.toml
+Sometimes you want to have a different theme for your project's docs.
+This is possible by changing `html_theme` in `doc.conf.py`. 
+See the link below to view and read the docs for other Sphinx themes:
+
+- Sphinx themes gallery: <https://sphinx-themes.org/>
+
+### Documentation metadata in `pyproject.toml`
+
+To get your packages `README` and important links to show-up on the TestPyPI and PyPI pages for your package, add the following information to the `[tool.poetry]` table in `pyproject.toml`.
 
 ```
 readme = "README.md"
