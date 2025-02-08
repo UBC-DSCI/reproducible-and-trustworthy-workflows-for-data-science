@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/120-containerization-3.html" rel="next">
+<link href="../lectures/115-docker-compose.html" rel="next">
 <link href="../lectures/100-containerization-1.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -103,17 +103,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-activity.callout {
   border-left-color: blue;
 }
@@ -125,15 +114,15 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
-div.callout-relevance-project.callout {
-  border-left-color: orange;
+div.callout-definition.callout {
+  border-left-color: pink;
 }
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
 }
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 div.callout-exercise.callout {
@@ -145,6 +134,17 @@ div.callout-exercise.callout-style-default > .callout-header {
 div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
   content: '🏋️';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 </style>
@@ -307,8 +307,14 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/115-docker-compose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../lectures/120-containerization-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,7 +331,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
   </div>
 </li>
       </ul>
@@ -342,25 +348,25 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
   </div>
 </li>
       </ul>
@@ -377,31 +383,31 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/142-R-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/141-python-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/147-testing-images.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/144-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -418,43 +424,43 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/190-packaging-intro-python-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/191-packaging-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/193-packaging-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/194-package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/196-coverage-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/197-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -471,31 +477,31 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-case_study_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/202-case_study_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/205-package_documentation_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/206-package_documentation_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -512,25 +518,25 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/211-gha_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
   </div>
 </li>
       </ul>
@@ -547,13 +553,13 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -570,19 +576,19 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
       </ul>
@@ -602,16 +608,13 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   <ul class="collapse">
   <li><a href="#mounting-volumes-to-containers" id="toc-mounting-volumes-to-containers" class="nav-link" data-scroll-target="#mounting-volumes-to-containers"><span class="header-section-number">13.1.1</span> Mounting volumes to containers</a></li>
   <li><a href="#mapping-ports-to-containers-with-web-apps" id="toc-mapping-ports-to-containers-with-web-apps" class="nav-link" data-scroll-target="#mapping-ports-to-containers-with-web-apps"><span class="header-section-number">13.1.2</span> Mapping ports to containers with web apps</a></li>
-  <li><a href="#specifying-the-image-architectureplatform" id="toc-specifying-the-image-architectureplatform" class="nav-link" data-scroll-target="#specifying-the-image-architectureplatform"><span class="header-section-number">13.1.3</span> Specifying the image architecture/platform</a></li>
-  <li><a href="#changing-the-containers-default-command" id="toc-changing-the-containers-default-command" class="nav-link" data-scroll-target="#changing-the-containers-default-command"><span class="header-section-number">13.1.4</span> Changing the containers default command</a></li>
+  <li><a href="#changing-the-containers-default-command" id="toc-changing-the-containers-default-command" class="nav-link" data-scroll-target="#changing-the-containers-default-command"><span class="header-section-number">13.1.3</span> Changing the containers default command</a></li>
   </ul></li>
   <li><a href="#docker-command-line-commands" id="toc-docker-command-line-commands" class="nav-link" data-scroll-target="#docker-command-line-commands"><span class="header-section-number">13.2</span> Docker command line commands</a>
   <ul class="collapse">
   <li><a href="#docker-commands" id="toc-docker-commands" class="nav-link" data-scroll-target="#docker-commands"><span class="header-section-number">13.2.1</span> Docker commands</a></li>
   <li><a href="#docker-run-commands" id="toc-docker-run-commands" class="nav-link" data-scroll-target="#docker-run-commands"><span class="header-section-number">13.2.2</span> Docker <code>run</code> commands</a></li>
   </ul></li>
-  <li><a href="#docker-compose-to-launch-containers" id="toc-docker-compose-to-launch-containers" class="nav-link" data-scroll-target="#docker-compose-to-launch-containers"><span class="header-section-number">13.3</span> Docker compose to launch containers</a></li>
-  <li><a href="#running-a-docker-container-non-interactively-using-the-docker-compose" id="toc-running-a-docker-container-non-interactively-using-the-docker-compose" class="nav-link" data-scroll-target="#running-a-docker-container-non-interactively-using-the-docker-compose"><span class="header-section-number">13.4</span> Running a Docker container non-interactively using the Docker Compose</a></li>
   </ul>
 </nav>
     </div>
@@ -647,7 +650,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </section>
 <section id="launching-containers-using-docker-at-the-command-line" class="level2" data-number="13.1">
 <h2 data-number="13.1" class="anchored" data-anchor-id="launching-containers-using-docker-at-the-command-line"><span class="header-section-number">13.1</span> Launching containers using Docker at the command line</h2>
-<p>Docker has many ways we can run containers (GUI, command line, Docker compose configuration files). Here we will learn how to use the command line interface for running container instances from container images. We will then build on this knowledge to move to using Docker compose configuration files for increased efficiency. We are opting to use command line and configuaration file tools so that we can automate and scale the running of containers. It is also more reproducible.</p>
+<p>Docker has many ways we can run containers (GUI, command line, Docker compose configuration files). Here we will learn how to use the command line interface for running container instances from container images. We will then build on this knowledge to move to using Docker compose configuration files for increased efficiency. We are opting to use command line and configuration file tools so that we can automate and scale the running of containers. It is also more reproducible.</p>
 <p>Below we demonstrate how to launch and run containers using the <a href="https://hub.docker.com/r/continuumio/miniconda3"><code>continuumio/miniconda3</code> image</a> as an example. We will slowly walk through the 4 basic steps need to run a container:</p>
 <section id="step-1---launch-the-docker-app-for-osx-windows-only" class="level4">
 <h4 class="anchored" data-anchor-id="step-1---launch-the-docker-app-for-osx-windows-only">Step 1 - launch the Docker app (for OSX &amp; Windows only)</h4>
@@ -795,31 +798,8 @@ Note
 <p><img src="../img/rocker-rstudio-port-docs.png" width="100%"></p>
 <p><em>Source: <a href="https://hub.docker.com/r/rocker/rstudio" class="uri">https://hub.docker.com/r/rocker/rstudio</a></em></p>
 </section>
-<section id="specifying-the-image-architectureplatform" class="level3" data-number="13.1.3">
-<h3 data-number="13.1.3" class="anchored" data-anchor-id="specifying-the-image-architectureplatform"><span class="header-section-number">13.1.3</span> Specifying the image architecture/platform</h3>
-<p>Newer M1 and M2 Macs use a new processor chip, called ARM, that is a different architecture compared to the previous Macs, and current Windows and Linux machines (which use Intel Processors). Given that containerization software virtualizes at the level of the operating system user space, these different architectures lead to building containers with different architectures.</p>
-<p>Also given that Newer M1 and M2 Macs are still the minority of computers in use, it is a better practice to work with container architectures that work for the majority of in use computers, which are those that have Intel Processors. To tell Docker to do this, we add the <code>--platform=linux/amd64</code> argument to our Docker <code>run</code> and <code>build</code> commands.</p>
-<p>To make this process even smoother and less error prone, we should also set our Docker Desktop to use Rosetta 2 x86/AMD64 emulation on M1/M2 Macs . To use this, you must: - make sure Rosetta 2 is installed on your Mac (instructions to install it <a href="https://support.apple.com/en-ca/HT211861">here</a>) - Select “Use Virtualization framework” and “Use Rosetta for x86/amd64 emulation on Apple Silicon” in the General settings tab of Docker Desktop.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>In computer science, emulation works to let you run run software and execute programs originally designed one computer system on another computer system. Emulation is similar to virtualization in concept, but differs from it in that it focuses on enabling software designed for entirely different architectures to be executed.</li>
-<li>You must also be using macOS Ventura or later to use this feature.</li>
-<li>You will still need to use the <code>--platform linux/amd64</code> command when building or running images even when using Rosetta 2 emulation, because your computer can run and build both <code>linux/arm64</code> and <code>linux/amd64</code> images. So you have to be clear which architecture you want to work with.</li>
-</ul>
-</div>
-</div>
-</section>
-<section id="changing-the-containers-default-command" class="level3" data-number="13.1.4">
-<h3 data-number="13.1.4" class="anchored" data-anchor-id="changing-the-containers-default-command"><span class="header-section-number">13.1.4</span> Changing the containers default command</h3>
+<section id="changing-the-containers-default-command" class="level3" data-number="13.1.3">
+<h3 data-number="13.1.3" class="anchored" data-anchor-id="changing-the-containers-default-command"><span class="header-section-number">13.1.3</span> Changing the containers default command</h3>
 <p>When we launch containers, they execute the command at runtime that was specified in their <code>Dockerfile</code>. For example, in the case of the Rocker and Juypter images, this default behaviour is to run a web app. Sometimes the default container behaviour is not what we want to do. Instead we want to do something different, like run the container as a Bash shell to test out some installation commands (common when we are building and customizing our own containers) or using the container to run a script non-interactively (like executing a data analysis pipeline from beginning to end).</p>
 <p>To do this, we can append a new command to the end of our <code>docker run</code> commands. For example to open the <code>rocker/rstudio:4.3.2</code> image in an interactive bash shell, we would run:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="dt">\</span></span>
@@ -874,7 +854,6 @@ Note
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> .:/home/jovyan <span class="dt">\</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    ttimbers/breast_cancer_predictor_py:d285fc9 <span class="dt">\</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    make all</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note: If you are on a M1/M2 Mac, don’t forget to include <code>--platform=linux/amd64</code> in your run command.</p>
 </section>
 </section>
 <section id="docker-command-line-commands" class="level2" data-number="13.2">
@@ -963,41 +942,11 @@ Note
 <td><code>-e</code></td>
 <td>Sets environment variables in the container (<em>e.g.</em>, PASSWORD=“apassword”)</td>
 </tr>
-<tr class="even">
-<td><code>--platform</code></td>
-<td>Specifies the image architecture, commonly used on M1/M2 Macs to set it to <code>linux/amd64</code></td>
-</tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="docker-compose-to-launch-containers" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="docker-compose-to-launch-containers"><span class="header-section-number">13.3</span> Docker compose to launch containers</h2>
-<p>It can be fiddly and error prone to type long commands into the terminal, or a GUI every time you want to launch a container. A better approach is to use Docker compose to specify how you want to launch the container.</p>
-<p>Docker compose uses a YAML file, specifically named <code>docker-compose.yml</code>, to record how the container should be launched. This file can include details including: - the docker image and version to use - how to mount volumes - what ports to map - what environment variables to set.</p>
-<p>Here is an example of a <code>docker-compose.yml</code> file for use with the <code>rocker/rstudio</code> container image:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">analysis-env</span><span class="kw">:</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> rocker/rstudio:4.4.2</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8787:8787"</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> .:/home/rstudio/project</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">PASSWORD</span><span class="kw">:</span><span class="at"> password</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To launch the container interactively using this file, you would type the <code>docker-compose</code> command shown below.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If you are using a web app, as in the case of the <code>rocker/rstudio</code> or <code>jupyter/minimal-notebook</code> container images, you still need to manually navigate to the web app in your browser and enter the correct URL to access it.</p>
-<p>To stop and clean up the container, you would type <code>Cntrl + C</code> in the terminal where you launched the container, and then type</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s take a look at an example <code>docker-compose.yml</code> being used in a project: - <a href="https://github.com/ttimbers/breast_cancer_predictor_py" class="uri">https://github.com/ttimbers/breast_cancer_predictor_py</a></p>
-</section>
-<section id="running-a-docker-container-non-interactively-using-the-docker-compose" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="running-a-docker-container-non-interactively-using-the-docker-compose"><span class="header-section-number">13.4</span> Running a Docker container non-interactively using the Docker Compose</h2>
-<p>We can also use Docker Compose to run containers non-interactively! We can do this by specifying that we want to <code>run</code> the container (instead of <code>up</code> to launch in interactively). We use the <code>--rm</code> flag with the <code>run</code> command to make the container ephemeral (delete it upon exit). Then we specify the name of the service from the <code>docker-compose.yml</code> file that we want to run (in our <code>docker-compose.yml</code> files so far we only have one service, the environment for running the analysis). And finally we add the command we want to run non-interactively using the container (in the example below we use <code>make</code> to run the data analysis pipeline script).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> run <span class="at">--rm</span> analysis-env make all</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1425,8 +1374,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/120-containerization-3.html" class="pagination-link" aria-label="Customizing and building containers">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/115-docker-compose.html" class="pagination-link" aria-label="docker-compose">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

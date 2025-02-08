@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>43&nbsp; Workflows for reproducibile and trustworthy data science wrap-up – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>14&nbsp; docker-compose – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../parts/appendix.html" rel="next">
-<link href="../lectures/220-licenses-and-copyright.html" rel="prev">
+<link href="../lectures/120-containerization-3.html" rel="next">
+<link href="../lectures/110-containerization-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,15 +103,15 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
+div.callout-exercise.callout {
+  border-left-color: green;
 }
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
 }
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -91,15 +125,15 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   content: '💻';
   background-image: none;
 }
-div.callout-exercise.callout {
-  border-left-color: green;
+div.callout-activity.callout {
+  border-left-color: blue;
 }
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -115,35 +149,6 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 }
 </style>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -157,7 +162,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/230-reproducibility-wrap-up.html"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/115-docker-compose.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -302,7 +307,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/115-docker-compose.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/115-docker-compose.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></span></a>
   </div>
 </li>
@@ -553,7 +558,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
@@ -598,27 +603,17 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#course-learning-objectives" id="toc-course-learning-objectives" class="nav-link active" data-scroll-target="#course-learning-objectives"><span class="header-section-number">43.1</span> Course learning objectives</a></li>
-  <li><a href="#definitions-review" id="toc-definitions-review" class="nav-link" data-scroll-target="#definitions-review"><span class="header-section-number">43.2</span> Definitions review:</a>
-  <ul class="collapse">
-  <li><a href="#data-science" id="toc-data-science" class="nav-link" data-scroll-target="#data-science"><span class="header-section-number">43.2.1</span> Data science</a></li>
-  <li><a href="#reproducible-analysis" id="toc-reproducible-analysis" class="nav-link" data-scroll-target="#reproducible-analysis"><span class="header-section-number">43.2.2</span> Reproducible analysis:</a></li>
-  <li><a href="#auditabletransparent-analysis" id="toc-auditabletransparent-analysis" class="nav-link" data-scroll-target="#auditabletransparent-analysis"><span class="header-section-number">43.2.3</span> Auditable/transparent analysis,</a></li>
-  </ul></li>
-  <li><a href="#what-makes-trustworthy-data-science" id="toc-what-makes-trustworthy-data-science" class="nav-link" data-scroll-target="#what-makes-trustworthy-data-science"><span class="header-section-number">43.3</span> What makes trustworthy data science?</a></li>
-  <li><a href="#critiquing-data-analysis-projects" id="toc-critiquing-data-analysis-projects" class="nav-link" data-scroll-target="#critiquing-data-analysis-projects"><span class="header-section-number">43.4</span> Critiquing data analysis projects</a>
-  <ul class="collapse">
-  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="header-section-number">43.4.1</span> Exercise</a></li>
-  </ul></li>
+  <li><a href="#docker-compose-to-launch-containers" id="toc-docker-compose-to-launch-containers" class="nav-link active" data-scroll-target="#docker-compose-to-launch-containers"><span class="header-section-number">14.1</span> Docker compose to launch containers</a></li>
+  <li><a href="#running-a-docker-container-non-interactively-using-the-docker-compose" id="toc-running-a-docker-container-non-interactively-using-the-docker-compose" class="nav-link" data-scroll-target="#running-a-docker-container-non-interactively-using-the-docker-compose"><span class="header-section-number">14.2</span> Running a Docker container non-interactively using the Docker Compose</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/licenses-copyright-wrapup.html">Wrap Up</a></li><li class="breadcrumb-item"><a href="../lectures/230-reproducibility-wrap-up.html"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/projects-envs-containers.html">Projects, Environments, and Containers</a></li><li class="breadcrumb-item"><a href="../lectures/115-docker-compose.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">docker-compose</span></h1>
 </div>
 
 
@@ -635,90 +630,33 @@ window.Quarto = {
 </header>
 
 
-<p>This topic serves as a wrap-up of the course, summarizing the course learning objectives, redefining what is meant by reproducible and trustworthy data science, as well as contains data analysis project critique exercises to reinforce what has been learned in the course.</p>
-<section id="course-learning-objectives" class="level2" data-number="43.1">
-<h2 data-number="43.1" class="anchored" data-anchor-id="course-learning-objectives"><span class="header-section-number">43.1</span> Course learning objectives</h2>
-<p>By the end of this course, students should be able to:</p>
-<ul>
-<li>Defend and justify the importance of creating data science workflows that are reproducible and trustworthy and the elements that go into such a workflow (e.g., writing clear, robust, accurate and reproducible code, managing and sharing compute environments, defined collaboration strategies, etc).</li>
-<li>Constructively criticize the workflows and data analysis of others in regards to its reproducibility and trustworthiness.</li>
-<li>Develop a data science project (including code and non-code documents such as reports) that uses reproducible and trustworthy workflows</li>
-<li>Demonstrate how to effectively share and collaborate on data science projects and software by creating robust code packages, using reproducible compute environments, and leveraging collaborative development tools.</li>
-<li>Defend and justify the benefit of, and employ automated testing regimes, continuous integration and continuous deployment for managing and maintaining data science projects and packages.</li>
-<li>Demonstrate strong communication, teamwork, and collaborative skills by working on a significant data science project with peers throughout the course.</li>
-</ul>
+<section id="docker-compose-to-launch-containers" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="docker-compose-to-launch-containers"><span class="header-section-number">14.1</span> Docker compose to launch containers</h2>
+<p>It can be fiddly and error prone to type long commands into the terminal, or a GUI every time you want to launch a container. A better approach is to use Docker compose to specify how you want to launch the container.</p>
+<p>Docker compose uses a YAML file, specifically named <code>docker-compose.yml</code>, to record how the container should be launched. This file can include details including: - the docker image and version to use - how to mount volumes - what ports to map - what environment variables to set.</p>
+<p>Here is an example of a <code>docker-compose.yml</code> file for use with the <code>rocker/rstudio</code> container image:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">analysis-env</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> rocker/rstudio:4.4.2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8787:8787"</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> .:/home/rstudio/project</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">PASSWORD</span><span class="kw">:</span><span class="at"> password</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To launch the container interactively using this file, you would type the <code>docker-compose</code> command shown below.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are using a web app, as in the case of the <code>rocker/rstudio</code> or <code>jupyter/minimal-notebook</code> container images, you still need to manually navigate to the web app in your browser and enter the correct URL to access it.</p>
+<p>To stop and clean up the container, you would type <code>Cntrl + C</code> in the terminal where you launched the container, and then type</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> rm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s take a look at an example <code>docker-compose.yml</code> being used in a project: - <a href="https://github.com/ttimbers/breast_cancer_predictor_py" class="uri">https://github.com/ttimbers/breast_cancer_predictor_py</a></p>
 </section>
-<section id="definitions-review" class="level2" data-number="43.2">
-<h2 data-number="43.2" class="anchored" data-anchor-id="definitions-review"><span class="header-section-number">43.2</span> Definitions review:</h2>
-<section id="data-science" class="level3" data-number="43.2.1">
-<h3 data-number="43.2.1" class="anchored" data-anchor-id="data-science"><span class="header-section-number">43.2.1</span> Data science</h3>
-<p><em>the study, development and practice of <strong>reproducible and auditable processes</strong> to obtain <strong>insight from data.</strong></em></p>
-<p>From this definition, we must also define reproducible and auditable analysis:</p>
-</section>
-<section id="reproducible-analysis" class="level3" data-number="43.2.2">
-<h3 data-number="43.2.2" class="anchored" data-anchor-id="reproducible-analysis"><span class="header-section-number">43.2.2</span> Reproducible analysis:</h3>
-<p><em>reaching the same result given the same input, computational methods and conditions <span class="math inline">\(^1\)</span>.</em></p>
-<ul>
-<li>input = data</li>
-<li>computational methods = computer code</li>
-<li>conditions = computational environment (e.g., programming language &amp; it’s dependencies)</li>
-</ul>
-</section>
-<section id="auditabletransparent-analysis" class="level3" data-number="43.2.3">
-<h3 data-number="43.2.3" class="anchored" data-anchor-id="auditabletransparent-analysis"><span class="header-section-number">43.2.3</span> Auditable/transparent analysis,</h3>
-<p><em>a readable record of the steps used to carry out the analysis as well as a record of how the analysis methods evolved <span class="math inline">\(^2\)</span>.</em></p>
-<ol type="1">
-<li><a href="https://www.nap.edu/catalog/25303/reproducibility-and-replicability-in-science">National Academies of Sciences, 2019</a></li>
-<li><a href="https://peerj.com/preprints/3210/">Parker, 2017</a> and <a href="https://scfbm.biomedcentral.com/articles/10.1186/1751-0473-8-7">Ram, 2013</a></li>
-</ol>
-</section>
-</section>
-<section id="what-makes-trustworthy-data-science" class="level2" data-number="43.3">
-<h2 data-number="43.3" class="anchored" data-anchor-id="what-makes-trustworthy-data-science"><span class="header-section-number">43.3</span> What makes trustworthy data science?</h2>
-<p>Some possible criteria:</p>
-<ol type="1">
-<li><p>It should be reproducible and auditable</p></li>
-<li><p>It should be correct</p></li>
-<li><p>It should be fair, equitable and honest</p></li>
-</ol>
-<p>There are many ways a data science can be untrustworthy… In this course we will focus on workflows that can help build trust. I highly recommend taking a course in data science ethics* to help round out your education in how to do this. Further training in statistics and machine learning will also help with making sure your analysis is correct.</p>
-<blockquote class="blockquote">
-<p><em>* UBC’s CPSC 430 (Computers and Society) will have a section reserved for DSCI minor students next year in 2022 T1, which will focus on ethics in data science.</em></p>
-</blockquote>
-<section id="exercise" class="level4">
-<h4 class="anchored" data-anchor-id="exercise">Exercise</h4>
-<p>Answer the questions below to more concretely connect with the criteria suggested above.</p>
-<ol type="1">
-<li><p>Give an example of a data science workflow that affords reproducibility, and one that affords auditable analysis.</p></li>
-<li><p>Can a data analysis be reproducible but not auditable? How about auditable, but not reproducible?</p></li>
-<li><p>Name at least two ways that a data analysis project could be correct (or incorrect).</p></li>
-</ol>
-</section>
-</section>
-<section id="critiquing-data-analysis-projects" class="level2" data-number="43.4">
-<h2 data-number="43.4" class="anchored" data-anchor-id="critiquing-data-analysis-projects"><span class="header-section-number">43.4</span> Critiquing data analysis projects</h2>
-<p>Critiquing is defined as evaluating something in a detailed and analytical way (source: <a href="https://languages.oup.com/dictionaries/">Oxford Languages Dictionary</a>). It is used in many domains as a means to improve something (related to peer review), but also serves as an excellent pedagogical tool to actively practice evaluation.</p>
-<p>We will work together in class to critique the following projects from the lens of reproducible and trustworthy workflows:</p>
-<ul>
-<li><p><a href="https://github.com/ttimbers/Million-Mutation-Project-dye-filling-SKAT">Genomic data and code</a> to accompany the “Accelerating Gene Discovery by Phenotyping Whole-Genome Sequenced Multi-mutation Strains and Using the Sequence Kernel Association Test (SKAT)” manuscript by <a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1006235">Timbers et al., PLoS Genetics, 2015</a></p></li>
-<li><p><a href="https://github.com/jasonpriem/plos_altmetrics_study">Data and code</a> to accompany the “Altmetrics in the wild: Using social media to explore scholarly impact” manuscript by <a href="https://arxiv.org/abs/1203.4745">Priem et al., arXiv, 2021</a></p></li>
-<li><p><a href="https://github.com/sacadena/Cadena2019PlosCB">Code</a> to accompany the “Deep convolutional models improve predictions of macaque V1 responses to natural images” manuscript by <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006897">Cadena et al., PLoS Computational Biology, 2019</a></p></li>
-</ul>
-<section id="exercise-1" class="level3" data-number="43.4.1">
-<h3 data-number="43.4.1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">43.4.1</span> Exercise</h3>
-<p>When prompted for each project listed above:</p>
-<ul>
-<li><p>In groups of ~5, take 10 minutes to review the project from the lens of reproducible and trustworthy workflows. You want to evaluate the project with the questions in mind:</p>
-<ul>
-<li>Would I know where to get started reproducing the project?</li>
-<li>If I could get started, do I think I could reproduce the project?</li>
-</ul></li>
-<li><p>As a group, come up with at least 1-2 things that have been done well, as well as 1-2 things that could be improved from this lens. Justify these with respect to reproducibility and trustworthiness.</p></li>
-<li><p>Choose one person to be the reporter to bring back these critiques to the larger group.</p></li>
-</ul>
+<section id="running-a-docker-container-non-interactively-using-the-docker-compose" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="running-a-docker-container-non-interactively-using-the-docker-compose"><span class="header-section-number">14.2</span> Running a Docker container non-interactively using the Docker Compose</h2>
+<p>We can also use Docker Compose to run containers non-interactively! We can do this by specifying that we want to <code>run</code> the container (instead of <code>up</code> to launch in interactively). We use the <code>--rm</code> flag with the <code>run</code> command to make the container ephemeral (delete it upon exit). Then we specify the name of the service from the <code>docker-compose.yml</code> file that we want to run (in our <code>docker-compose.yml</code> files so far we only have one service, the environment for running the analysis). And finally we add the command we want to run non-interactively using the container (in the example below we use <code>make</code> to run the data analysis pipeline script).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> run <span class="at">--rm</span> analysis-env make all</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1141,13 +1079,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/220-licenses-and-copyright.html" class="pagination-link" aria-label="Copyright and licenses">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span>
+      <a href="../lectures/110-containerization-2.html" class="pagination-link" aria-label="Using and running containers">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Using and running containers</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../parts/appendix.html" class="pagination-link" aria-label="Appendix">
-        <span class="nav-page-text">Appendix</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/120-containerization-3.html" class="pagination-link" aria-label="Customizing and building containers">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
