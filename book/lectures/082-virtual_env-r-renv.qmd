@@ -1,0 +1,36 @@
+---
+title: "R Environments: renv"
+---
+
+In R,
+environments can also be managed by `renv`,
+which works with similar principles as `conda`,
+and other virtual environment managers,
+but the commands are different.
+Detailed documentation for `renv`,
+can found at the [package website](https://rstudio.github.io/renv/index.html).
+
+`renv` differs from `conda` in the way that it adds package dependencies.
+Briefly, when you prompt `renv` to create (or update) a file to record the project dependencies (done via `renv`'s `snapshot()` function),
+it recursively crawls the files in the project
+looking for calls to `library()` or `require()`.
+
+The key file `renv` creates for recording and sharing environments is called `renv.lock`
+in the project's root directory.
+Other files are created in the project's root directory when you use `renv`
+but `renv.lock` is the file that documents which programming languages and packages
+(including versions) are used in the project.
+It is recommended that when sharing an `renv` environment that you version control `renv.lock`, `.Rprofile` and `renv/activate.R` to facilitate collaboration.
+When you setup an `renv` environment with `renv::init()` it creates a `renv/.gitignore` file
+so that files that `renv` creates and uses locally but are not helpful to share, are not shared.
+
+`renv` environments work best in the context of RStudio projects - and so it is recommended that you create an RStudio project that corresponds to the root of your data science project repository. If this is not done - `renv` will crawl files outside of the project, looking for dependencies.
+
+Below we create a table with the general virtual environment commands for `renv` as well as the equivalent `conda` command for comparison:
+
+| Description                  | `renv` command     |`conda` command                    |
+|------------------------------|--------------------|-----------------------------------|
+| Create a new environment without an environment file | `renv::init()`     | `conda create -n <ENV_NAME> ...` |
+| Activate a new environment   | `renv::activate()` | `conda activate <ENV_NAME>`       |
+| Export environment to a file | `renv::snapshot()` |  `conda env export --from-history -f environment.yml` |                |
+| Create a new environment from an environment file | `renv::restore()` | `conda env create --file environment.yml` |
