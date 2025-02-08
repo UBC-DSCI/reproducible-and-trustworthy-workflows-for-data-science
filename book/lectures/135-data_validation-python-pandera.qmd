@@ -1,0 +1,440 @@
+---
+title: "Python Data Validation: Pandera"
+---
+
+## Introduction to Python's Pandera
+
+Python's [Pandera](https://pandera.readthedocs.io/en/stable/) is a package
+designed to make data validation/checking of dataframes and other dataframe-like
+objects easy, readable and robust. Key features of Pandera that we will discuss include:
+
+- The ability to define a data schema and use it to validate dataframes and other dataframe-like
+objects
+- Check the types and properties of columns
+- Perform statistical validation of data
+- Execute all validation in a lazy manner, so that validation rules are executed before raising an error
+- Handle invalid data in a number of ways, including throwing errors, writing data validation logs, and dropping observations that are invalid
+
+### Validating data with Pandera
+
+In the simplest use case,
+Pandera can be use to validate data
+by first defining an instance of the `DataFrameSchema` class.
+This object specifies the properties we expect (and thus would like to check)
+for our dataframe index and columns.
+After the `DataFrameSchema` instance has been created and defined,
+the `DataFrameSchema.validate` method
+can be applied to a `pandas.DataFrame` instance to validate, or check,
+all of the properties we specified that we expect for our dataframe index
+and columns in the `DataFrameSchema` instance.
+
+### Dataframe Schema
+
+When we create an instance of the `DataFrameSchema` class,
+we can specify the the properties we expect (and thus would like to check)
+for our dataframe index and columns.
+
+#### Creating `pa.DataFrameSchema` and setting required columns
+
+To create an instance of the `DataFrameSchema` class
+we first import the Pandera package using the alias `pa`,
+and then the function `pa.DataFrameSchema`.
+Below we demonstrate creating an instance of the `DataFrameSchema` class
+for the first two columns of the
+[Wisconsin Breast Cancer data set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)
+from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/)
+(Dua and Graff 2017).
+
+```{python}
+import pandas as pd
+import pandera as pa
+
+
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(),
+        "mean_radius": pa.Column()
+    }
+)
+```
+
+:::{.callout-note}
+By default all columns listed
+are required to be in the dataframe for it to pass validation.
+If we wanted to make a column optional,
+we would set `required=False` in the column constructor.
+:::
+
+#### Specifying column types
+
+We can specify the type we expect each column to be,
+by writing the type as the first argument to `pa.Column`.
+Possible values include:
+
+- a string alias, as long as it is recognized by pandas.
+- a python type: `int`, `float`, `double`, `bool`, `str`
+- a `numpy` data type
+-  a pandas extension type: it can be an instance (e.g `pd.CategoricalDtype(["a", "b"])`) or a class (e.g `pandas.CategoricalDtype`) if it can be initialized with default values.
+- a pandera `DataType`: it can also be an instance or a class.
+
+See the Pandera
+[Data Type Validation docs](https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation)
+for details beyond what we present here.
+
+If we continue our example from above,
+we can specify that we expect the `class` column to be a string
+and the `mean_radius` column to be a float as shown below:
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str),
+        "mean_radius": pa.Column(float)
+    }
+)
+```
+
+#### Missingness/null values
+
+By default Column objects assume there should be no null/missing values.
+If you want to allow missing values,
+you need to set `nullable=True` in the column constructor.
+We demonstrate that below for the `mean_radius` column of our working example.
+Note that we do not set this to be true for our class column
+as we likely do not want to be working with observations
+where the target/response variable is missing.
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str),
+        "mean_radius": pa.Column(float, nullable=True)
+    }
+)
+```
+
+If you wanted to allow a percentage of the values for a particular column
+to be allowed to be missing,
+then you could do this by writing a lambda function in a call to `pa.Check`
+in the column constructor.
+We show an example of that below
+where allow up to 5% of the `mean_radius` column values to be missing.
+
+:::{.callout-note}
+This is putting the cart a bit before the horse here,
+as we have not yet introduced `pa.Check`.
+We will do that in the next section,
+so please fell free to skip this
+and come back to this example after you have read that.
+:::
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str),
+        "mean_radius": pa.Column(float,
+                                pa.Check(lambda s: s.isna().mean() <= 0.05,
+                                    element_wise=False,
+                                    error="Too many null values in 'mean_radius' column."),
+                                nullable=True)
+    }
+)
+```
+
+:::{.callout-note}
+Above we have created our custom check on-the-fly using a `lambda` function.
+We could do this here because the check was fairly simple.
+If we needed a custom check that was more complex
+(e.g., needs to generate data as part of the check)
+then we would be better to register our custom check.
+For situations like this, we direct the reader to the
+[Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions).
+:::
+
+#### Checking values in columns
+
+Pandera has a function `pa.Check` that is useful for checking values within columns.
+For any type of data,
+there is usually some reasonable range of values that we would expect.
+These usually come from domain knowledge about the data.
+For example,
+a column named `age` for a data set about adult human patients age in years
+should probably be an integer and have a range of values between 18 and 122
+([the oldest person whose age has ever been independently verified](https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people#cite_note-5)).
+To specify a check for a range like this,
+we can use the `pa.Check.between` method.
+We demonstrate how to do this below with our working example
+to check that the `mean_radius` values are between 5 and 45, inclusive.
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True)
+    }
+)
+```
+
+In our working example,
+we might also want to check that the `class` column only contains
+the strings we think are acceptable for our category label,
+which would be `"Benign"` and `"Malignant"`.
+We can do this using the `pa.Check.isin` method, which we demonstrate below:
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"])),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True)
+    }
+)
+```
+
+There are many more built-in `pa.Check` methods. A list can be found in the Pandera `Check` API docs:
+- <https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html#pandera.api.checks.Check>
+
+If there is a check you wish to do that is not part of the Pandera `Check` API
+you have two options:
+
+1) Use a `lambda` function with boolean logic inside of `pa.Check` (good for simple checks, similar to the percentage of missingness in the section above), or
+2) Register our custom check (see how to in [Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions))
+
+#### Duplicates
+
+Pandera does not yet have a method to check for duplicate rows in a dataframe,
+however, you can apply `pa.Check` to the entire data frame
+using a `lambda` function with boolean logic.
+Thus, we can easily apply Pandas `duplicated` function
+in a Lambda Function to check for duplicate rows.
+We show an example of that below:
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"])),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True)
+    },
+    checks=[
+        pa.Check(lambda df: ~df.duplicated().any(), error="Duplicate rows found.")
+    ]
+)
+```
+
+#### Empty observations
+
+Similar to duplicates, there is no Pandera function for this.
+So again we can use `pa.Check` applied to the entire data frame
+using a `lambda` function with boolean logic.
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"])),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True)
+    },
+    checks=[
+        pa.Check(lambda df: ~df.duplicated().any(), error="Duplicate rows found."),
+        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found.")
+    ]
+)
+```
+
+### Data validation
+
+Once we have specified our the properties we expect
+(and thus would like to check)
+for our dataframe index and columns
+by creating an instance of `pa.DataFrameSchema`,
+we can use the `pa.DataFrameSchema.validate` method on a dataframe
+to check if the dataframe is valid considering the schema we specified.
+
+To demonstrate this,
+below we create two very simple versions of the Wisconsin Breast Cancer data set.
+One which we expect to pass our validation checks,
+and one where we introduce three data anomalies
+that should cause some checks to fail.
+
+First we create two data frames:
+
+```{python}
+import numpy as np
+
+valid_data = pd.DataFrame({
+    "class": ["Benign", "Benign", "Malignant"],
+    "mean_radius": [6.0, 31.2, 22.8]
+})
+
+invalid_data = pd.DataFrame({
+    "class": ["Benign", "Benign", "benign", "Malignant"],
+    "mean_radius": [6.0, 6.0, 31.2, -9999]
+})
+```
+
+Let's see what happens when we apply `pa.DataFrameSchema.validate`
+to our valid data:
+
+```{python}
+schema.validate(valid_data)
+```
+
+It returns a dataframe and does not throw an error. Excellent!
+What happens when we pass clearly invalid data?
+
+```{python}
+#| error: true
+schema.validate(invalid_data)
+```
+
+Wow, that's a lot, but what is clear is that an error was thrown.
+If we read through the error message to the end we see the important,
+and useful piece of the error message:
+
+```
+pandera.errors.SchemaError: Column 'class' failed element-wise validator number 0: isin(['Benign', 'Malignant']) failure cases: benign
+```
+
+The error arose because in our `invalid_data`,
+the column `class` contained the string `"benign"`,
+and we specified in our `pa.DataFrameSchema` instance
+that we only accept two string values in the `class` column,
+`"Benign"` and `"Malignant"`.
+
+What about the other errors we expect from our invalid data?
+For example, we there's a value of `-9999` in the `mean_radius` column
+that is well outside of the range we said was valid in the schema (5, 45),
+and we have a duplicate row as well?
+Why are these validation errors not reported?
+Pandera's default is to throw an error
+after the first instance of non-valid data.
+To change this behaviour, we can set `lazy=True`.
+When we do this we see that all errors get reported.
+
+```{python}
+#| error: true
+schema.validate(invalid_data, lazy=True)
+```
+
+### Handling invalid data
+
+By default Pandera will throw an error when a check is not passed.
+Depending on your situation, this can be a desired expected behaviour
+(e.g., a static data analysis published in a report)
+or a very undesired behaviour
+that could potentially be dangerous (e.g., autonomous driving application).
+In the latter case, we would want to do something different than throw an error.
+Possibilities we will cover here include dropping invalid observations
+and writing log files that report the errors.
+
+### Dropping invalid observations
+
+In an in-production system,
+dropping non-valid data could be a reasonable path forward
+instead of throwing an error.
+Another situation where this might be a reasonable thing to do
+is when training a machine learning model with a million observations.
+You don't want to throw an error in the middle of training
+if only one observation is invalid!
+
+To change the behaviour of `pa.DataFrameSchema.validate`
+to instead return a dataframe with the invalid rows dropped
+we need to do two things:
+
+1. add `drop_invalid_rows=True` to our  `pa.DataFrameSchema` instance
+2. add `lazy=True` to our call to the `pa.DataFrameSchema.validate` method
+
+Below we demonstrate this with our working example.
+
+```{python}
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"]), nullable=True),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True)
+    },
+    checks=[
+        pa.Check(lambda df: ~df.duplicated().any(), error="Duplicate rows found."),
+        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found.")
+    ],
+    drop_invalid_rows=True
+)
+
+schema.validate(invalid_data, lazy=True)
+```
+
+Hmmm... Why did the duplicate row sneak through? This is because Pandera's
+dropping rows only works on data, or column, checks,
+not the DataFrame-wide checks like our checks for duplicates or empty rows.
+Thus to make sure we drop these, we need to rely on Pandas to do this.
+We demonstrate how we can do this below:
+
+```{python}
+schema.validate(invalid_data, lazy=True).drop_duplicates().dropna(how="all")
+```
+
+
+### Writing data validation logs
+
+Is removing the rows sufficient? Not at all!
+A human should be told that there was invalid data
+so that upstream data collection, cleaning and transformation processes
+can be reviewed to minimize the chances of future invalid data.
+One way to do this is to again specify `lazy=True`
+so that all errors can be observed and reported.
+Then we can get the `SchemaErrors` and write them to a log file.
+We show below how to do this for our working example
+so that the valid rows are returned as a dataframe named `validated_data`
+and the errors are logged as a file called `validation_errors.log`:
+
+```{python}
+import json
+import logging
+import pandas as pd
+import pandera as pa
+from pandera import Check
+
+# Configure logging
+logging.basicConfig(
+    filename="validation_errors.log",
+    filemode="w",
+    format="%(asctime)s - %(message)s",
+    level=logging.INFO,
+)
+
+# Define the schema
+schema = pa.DataFrameSchema(
+    {
+        "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"]), nullable=True),
+        "mean_radius": pa.Column(float, pa.Check.between(5, 45), nullable=True),
+    },
+    checks=[
+        pa.Check(lambda df: ~df.duplicated().any(), error="Duplicate rows found."),
+        pa.Check(lambda df: ~(df.isna().all(axis=1)).any(), error="Empty rows found."),
+    ],
+    drop_invalid_rows=False,
+)
+
+# Initialize error cases DataFrame
+error_cases = pd.DataFrame()
+data = invalid_data.copy()
+
+# Validate data and handle errors
+try:
+    validated_data = schema.validate(data, lazy=True)
+except pa.errors.SchemaErrors as e:
+    error_cases = e.failure_cases
+
+    # Convert the error message to a JSON string
+    error_message = json.dumps(e.message, indent=2)
+    logging.error("\n" + error_message)
+
+# Filter out invalid rows based on the error cases
+if not error_cases.empty:
+    invalid_indices = error_cases["index"].dropna().unique()
+    validated_data = (
+        data.drop(index=invalid_indices)
+        .reset_index(drop=True)
+        .drop_duplicates()
+        .dropna(how="all")
+    )
+else:
+    validated_data = data
+```
