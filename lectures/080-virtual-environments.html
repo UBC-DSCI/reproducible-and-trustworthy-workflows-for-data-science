@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,7 +30,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/090-conda-lock.html" rel="next">
+<link href="../lectures/082-virtual_env-r-renv.html" rel="next">
 <link href="../lectures/070-filenames-project-organization.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -103,15 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-exercise.callout {
-  border-left-color: green;
+div.callout-activity.callout {
+  border-left-color: blue;
 }
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -125,15 +91,15 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
-div.callout-activity.callout {
-  border-left-color: blue;
+div.callout-exercise.callout {
+  border-left-color: green;
 }
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
 }
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -277,26 +243,38 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/082-virtual_env-r-renv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Environments: renv</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/085-virtual_env-python-conda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Python Environments: conda</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../lectures/090-conda-lock.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/100-containerization-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/110-containerization-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/120-containerization-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
   </div>
 </li>
       </ul>
@@ -313,7 +291,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/130-data-validation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
   </div>
 </li>
       </ul>
@@ -330,25 +308,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
   </div>
 </li>
       </ul>
@@ -365,31 +343,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/142-R-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/141-python-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/147-testing-images.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/144-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -406,43 +384,43 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/190-packaging-intro-python-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/191-packaging-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/193-packaging-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/194-package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/196-coverage-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/197-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -459,31 +437,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-case_study_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/202-case_study_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/205-package_documentation_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/206-package_documentation_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -500,25 +478,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/211-gha_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
   </div>
 </li>
       </ul>
@@ -535,13 +513,13 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -558,19 +536,19 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
       </ul>
@@ -588,22 +566,6 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
   <li><a href="#attribution" id="toc-attribution" class="nav-link" data-scroll-target="#attribution">Attribution</a></li>
   <li><a href="#virtual-environments" id="toc-virtual-environments" class="nav-link" data-scroll-target="#virtual-environments"><span class="header-section-number">8.1</span> Virtual environments</a></li>
-  <li><a href="#conda" id="toc-conda" class="nav-link" data-scroll-target="#conda"><span class="header-section-number">8.2</span> Conda</a>
-  <ul class="collapse">
-  <li><a href="#managing-conda" id="toc-managing-conda" class="nav-link" data-scroll-target="#managing-conda"><span class="header-section-number">8.2.1</span> Managing Conda</a></li>
-  <li><a href="#managing-conda-environments" id="toc-managing-conda-environments" class="nav-link" data-scroll-target="#managing-conda-environments"><span class="header-section-number">8.2.2</span> Managing <code>conda</code> environments</a></li>
-  <li><a href="#creating-environment-by-manually-specifying-packages" id="toc-creating-environment-by-manually-specifying-packages" class="nav-link" data-scroll-target="#creating-environment-by-manually-specifying-packages"><span class="header-section-number">8.2.3</span> Creating environment by manually specifying packages</a></li>
-  <li><a href="#seeing-what-packages-are-available-in-an-environment" id="toc-seeing-what-packages-are-available-in-an-environment" class="nav-link" data-scroll-target="#seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">8.2.4</span> Seeing what packages are available in an environment</a></li>
-  <li><a href="#installing-conda-package" id="toc-installing-conda-package" class="nav-link" data-scroll-target="#installing-conda-package"><span class="header-section-number">8.2.5</span> Installing conda package</a></li>
-  <li><a href="#removing-a-conda-package" id="toc-removing-a-conda-package" class="nav-link" data-scroll-target="#removing-a-conda-package"><span class="header-section-number">8.2.6</span> Removing a conda package</a></li>
-  <li><a href="#sharing-environments-with-others" id="toc-sharing-environments-with-others" class="nav-link" data-scroll-target="#sharing-environments-with-others"><span class="header-section-number">8.2.7</span> Sharing Environments with others</a></li>
-  <li><a href="#creating-environment-from-an-environment-file" id="toc-creating-environment-from-an-environment-file" class="nav-link" data-scroll-target="#creating-environment-from-an-environment-file"><span class="header-section-number">8.2.8</span> Creating environment from an environment file</a></li>
-  <li><a href="#copying-an-environment" id="toc-copying-an-environment" class="nav-link" data-scroll-target="#copying-an-environment"><span class="header-section-number">8.2.9</span> Copying an environment</a></li>
-  <li><a href="#listing-all-environments-on-your-laptop" id="toc-listing-all-environments-on-your-laptop" class="nav-link" data-scroll-target="#listing-all-environments-on-your-laptop"><span class="header-section-number">8.2.10</span> Listing all environments on your laptop</a></li>
-  <li><a href="#deleting-an-environment" id="toc-deleting-an-environment" class="nav-link" data-scroll-target="#deleting-an-environment"><span class="header-section-number">8.2.11</span> Deleting an environment</a></li>
-  <li><a href="#making-environments-work-well-with-jupyterlab" id="toc-making-environments-work-well-with-jupyterlab" class="nav-link" data-scroll-target="#making-environments-work-well-with-jupyterlab"><span class="header-section-number">8.2.12</span> Making environments work well with JupyterLab</a></li>
-  </ul></li>
-  <li><a href="#renv" id="toc-renv" class="nav-link" data-scroll-target="#renv"><span class="header-section-number">8.3</span> <code>renv</code></a></li>
   </ul>
 </nav>
     </div>
@@ -686,252 +648,9 @@ Note
 <p>Note on terminology: Technically what we are discussing here in this topic are referred to as virtual environments. However, in practice we often drop the “virtual” when discussing this and refer to these as simply “environments”. That may happen in these lecture notes, as well as in the classroom.</p>
 </div>
 </div>
-</section>
-</section>
-<section id="conda" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="conda"><span class="header-section-number">8.2</span> Conda</h2>
-<p><a href="http://conda.pydata.org/docs/"><strong>conda</strong></a> is an <strong>open source <code>package</code> and <code>environment</code> management system for any programming language</strong>; though it is most popular in the Python community. <code>conda</code> was originally developed by <a href="https://www.anaconda.com/products/individual">Anaconda Inc.</a> and bundled with their Anaconda distribution of Python. However, <code>conda</code>’s widespread popularity and utility led to its decoupling into its own package.</p>
-<p>It is now available for installation via: - Anaconda Python distribution - Miniconda Python distribution (this is what we recommended most of you install for this course) - Miniforge (this is what we recommended folks with Mac ARM machines install for this course)</p>
-<p>Conda builds of R and Python packages, are in fact R and Python packages and built from R and Python source code, but they are packaged up and built differently, and with a different tool chain. How to create <code>conda</code> packages from R and Python source code is beyond the scope of this course. However, we direct keen learners of this topic to the documentation on how to do this: - <a href="https://docs.conda.io/projects/conda-build/en/latest/">Conda-build documentation</a></p>
-<p>What we will focus on learning is how to use <code>conda</code> to create virtual environments, record the components of the virtual environment and share the virtual environment with collaborators in a way that they can recreate it on their computer.</p>
-<section id="managing-conda" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="managing-conda"><span class="header-section-number">8.2.1</span> Managing Conda</h3>
-<p>Let’s first start by checking if conda is installed (it should be if we followed the recommended course computer setup instructions) by running:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>To see which conda commands are available, type <code>conda --help</code>. To see the full documentation for any command of these commands, type the command followed by <code>--help</code>. For example, to learn about the conda update command:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> update <span class="at">--help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Let’s update our conda to the latest version. Note that you might already have the latest version since we downloaded it recently.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> update conda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You will see some information about what there is to update and be asked if you want to confirm. The default choice is indicated with <code>[]</code>, and you can press <kbd>Enter</kbd> to accept it. It would look similar to this:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> Anaconda Cloud api site https://api.anaconda.org</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Fetching</span> package metadata: ....</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">.Solving</span> package specifications: .........</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Package</span> plan for installation in environment //anaconda:</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following packages will be downloaded:</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">package</span>                    <span class="kw">|</span>            <span class="ex">build</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">---------------------------</span><span class="kw">|</span><span class="ex">-----------------</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">conda-env-2.6.0</span>            <span class="kw">|</span>                <span class="ex">0</span>          601 B</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ruamel_yaml-0.11.14</span>        <span class="kw">|</span>           <span class="ex">py27_0</span>         184 KB</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">conda-4.2.12</span>               <span class="kw">|</span>           <span class="ex">py27_0</span>         376 KB</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">------------------------------------------------------------</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                                           <span class="ex">Total:</span>         560 KB</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following NEW packages will be INSTALLED:</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ruamel_yaml:</span> 0.11.14-py27_0</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following packages will be UPDATED:</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">conda:</span>       4.0.7-py27_0 <span class="at">--</span><span class="op">&gt;</span> 4.2.12-py27_0</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="ex">conda-env:</span>   2.4.5-py27_0 <span class="at">--</span><span class="op">&gt;</span> 2.6.0-0</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">python:</span>      2.7.11-0     <span class="at">--</span><span class="op">&gt;</span> 2.7.12-1</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sqlite:</span>      3.9.2-0      <span class="at">--</span><span class="op">&gt;</span> 3.13.0-0</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="ex">Fetching</span> packages ...</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-env-2.6.</span> 100% <span class="kw">|</span><span class="co">################################| Time: 0:00:00 360.78 kB/s</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="ex">ruamel_yaml-0.</span> 100% <span class="kw">|</span><span class="co">################################| Time: 0:00:00   5.53 MB/s</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-4.2.12-p</span> 100% <span class="kw">|</span><span class="co">################################| Time: 0:00:00   5.84 MB/s</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ex">Extracting</span> packages ...</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">###################################################| 100%</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="ex">Unlinking</span> packages ...</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">###################################################| 100%</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="ex">Linking</span> packages ...</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">###################################################| 100%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In this case, conda itself needed to be updated, and along with this update some dependencies also needed to be updated. There is also a NEW package that was INSTALLED in order to update conda. You don’t need to worry about remembering to update conda, it will let you know if it is out of date when you are installing new packages.</p>
-</section>
-<section id="managing-conda-environments" class="level3" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="managing-conda-environments"><span class="header-section-number">8.2.2</span> Managing <code>conda</code> environments</h3>
-<section id="what-is-a-conda-environment-and-why-is-it-so-useful" class="level4">
-<h4 class="anchored" data-anchor-id="what-is-a-conda-environment-and-why-is-it-so-useful">What is a conda environment and why is it so useful?</h4>
-<p>Using <code>conda</code>, you can create an isolated R or Python virtual environment for your project. The default environment is the <code>base</code> environment, which contains only the essential packages from Miniconda (and anything else you have installed in it since installing Miniconda). You can see that your shell’s prompt string is prefaced with <code>(base)</code> when you are inside this environment:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">base</span><span class="kw">)</span> <span class="ex">Helps-MacBook-Pro:~</span> tiffany$</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>In the computer setup guide, we asked you to follow instructions so that this environment will be activated by default every time you open your terminal.</p>
-<p>To create another environment on your computer, that is isolated from the <code>(base)</code> environment you can either do this through:</p>
-<ol type="1">
-<li>Manual specifications of packages.</li>
-<li>An environment file in YAML format (<code>environment.yml</code>).</li>
-</ol>
-<p>We will now discuss both, as they are both relevant workflows for data science. When do you use one versus the other? I typically use the manual specifications of packages when I am creating a new data science project. From that I generate an environment file in YAML format that I can share with collaborators (or anyone else who wants to reproduce my work). Thus, I use an environment file in YAML format when I join a project as a collaborator and I need to use the same environment that has been previously used for that project, or when I want to reproduce someone else’s work.</p>
-</section>
-</section>
-<section id="creating-environment-by-manually-specifying-packages" class="level3" data-number="8.2.3">
-<h3 data-number="8.2.3" class="anchored" data-anchor-id="creating-environment-by-manually-specifying-packages"><span class="header-section-number">8.2.3</span> Creating environment by manually specifying packages</h3>
-<p>We can create <code>test_env</code> conda environment by typing <code>conda -n &lt;name-of-env&gt;</code>. However, it is often useful to specify more than just the name of the environment, e.g.&nbsp;the channel from which to install packages, the Python version, and a list of packages to install into the new env. In the example below, I am creating the <code>test_env</code> environment that uses python 3.12 and a list of libraries: <code>jupyterlab</code> and <code>pandas</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> test_env <span class="at">-c</span> conda-forge python=3.12 jupyterlab pandas=2.2.3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>conda will solve any dependencies between the packages like before and create a new environment with those packages. Usually, we don’t need to specify the channel, but in this case I want to get the very latest version of these packages, and they are made available in <code>conda-forge</code> before they reach the default conda channel.</p>
-<p>To activate this new environment, you can type <code>conda activate test_env</code> (and <code>conda deactivate</code> for deactivating). Since you will do this often, we created an alias shortcut <code>ca</code> that you can use to activate environments. To know the current environment that you’re in you can look at the prefix of the prompt string in your shell which now changed to (<code>test_env</code>). And to see all your environments, you can type <code>conda env list</code>.</p>
-</section>
-<section id="seeing-what-packages-are-available-in-an-environment" class="level3" data-number="8.2.4">
-<h3 data-number="8.2.4" class="anchored" data-anchor-id="seeing-what-packages-are-available-in-an-environment"><span class="header-section-number">8.2.4</span> Seeing what packages are available in an environment</h3>
-<p>We will now check packages that are available to us. The command below will list all the packages in an environment, in this case <code>test_env</code>. The list will include versions of each package, the specific build, and the channel that the package was downloaded from. <code>conda list</code> is also useful to ensure that you have installed the packages that you desire.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># packages in environment at //miniconda/envs/test_env:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> Anaconda Cloud api site https://api.anaconda.org</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">blas</span>                      1.1                    openblas    conda-forge</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ca-certificates</span>           2016.9.26                     0    conda-forge</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">certifi</span>                   2016.9.26                py27_0    conda-forge</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">cycler</span>                    0.10.0                   py27_0    conda-forge</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="ex">freetype</span>                  2.6.3                         1    conda-forge</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ex">functools32</span>               3.2.3.2                  py27_1    conda-forge</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="ex">libgfortran</span>               3.0.0                         0    conda-forge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="installing-conda-package" class="level3" data-number="8.2.5">
-<h3 data-number="8.2.5" class="anchored" data-anchor-id="installing-conda-package"><span class="header-section-number">8.2.5</span> Installing conda package</h3>
-<p>Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing, shows the necessary information to install the package. e.g.&nbsp;conda-forge/rasterio. The first word list the channel that this package is from and the second part shows the name of the package.</p>
-<p>To install the latest version available within the channel, do not specify in the install command. We will install version 0.35 of <code>rasterio</code> from conda-forge into <code>test_env</code> in this example. Conda will also automatically install the dependencies for this package.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge rasterio=0.35</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If you have a few trusted channels that you prefer to use, you can pre-configure these so that everytime you are creating an environment, you won’t need to explicitly declare the channel.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> config <span class="at">--add</span> channels conda-forge</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="removing-a-conda-package" class="level3" data-number="8.2.6">
-<h3 data-number="8.2.6" class="anchored" data-anchor-id="removing-a-conda-package"><span class="header-section-number">8.2.6</span> Removing a conda package</h3>
-<p>We decided that rasterio is not needed in this tutorial, so we will remove it from <code>test_env</code>. Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> remove <span class="at">-n</span> test_env rasterio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> Anaconda Cloud api site https://api.anaconda.org</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Fetching</span> package metadata .........</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Solving</span> package specifications: ..........</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Package</span> plan for package removal in environment //anaconda/envs/test_env:</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following packages will be REMOVED:</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">rasterio:</span> 0.35.1-np111py27_1 conda-forge</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Proceed</span> <span class="er">(</span><span class="ex">[y]/n</span><span class="kw">)</span><span class="ex">?</span> y</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">Unlinking</span> packages ...</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="bu">[</span>      COMPLETE      <span class="bu">]</span><span class="kw">|</span><span class="co">#######################################################################################################| 100%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="sharing-environments-with-others" class="level3" data-number="8.2.7">
-<h3 data-number="8.2.7" class="anchored" data-anchor-id="sharing-environments-with-others"><span class="header-section-number">8.2.7</span> Sharing Environments with others</h3>
-<p>To share an environment, you can export your conda environment to an environment file, which will list each package and its version in the format <code>package=version=build</code>.</p>
-<p>Exporting your environment to a file called <code>environment.yaml</code> (it could be called anything, but this is the conventional name and using it makes it easy for others to recognize that this is a conda env file, the extension can be either <code>.yaml</code> or <code>.yml</code>):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="at">-f</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Remember that <code>.yaml</code> files are plain text, so you can use a text editor such as VS Code to open them. If you do, you will realize that this environment file has A LOT more packages than <code>jupyterlab</code> and <code>pandas</code>. This is because the default behavior is to also list the dependencies that were installed together with these packages, e.g.&nbsp;<code>numpy</code>. This is good in the sense that it gives an exact copy of <em>everything</em> in your environment.</p>
-<p>We use the <code>--from-history</code> flag/option above as some dependencies might differ between operating systems, so this file <em>might</em> not work with someone from a different OS. The <code>--from-history</code> flag, looks at the history of the packages you explicitly told <code>conda</code> to install and only list those in the export. The required dependencies will then be handled in an OS-specific manner during the installation, which guarantees that they will work across OSes. This <code>environment.yaml</code> file would be much shorter and look something like this:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> test_env</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> defaults</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> python=3.7</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> pandas==1.0.2</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> jupyterlab</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Importantly, this will not include the package version unless you included it when you installed with the <code>package==version</code> syntax. For an environment to be reproducible, you <strong>NEED</strong> to add the version string manually.</p>
-</section>
-<section id="creating-environment-from-an-environment-file" class="level3" data-number="8.2.8">
-<h3 data-number="8.2.8" class="anchored" data-anchor-id="creating-environment-from-an-environment-file"><span class="header-section-number">8.2.8</span> Creating environment from an environment file</h3>
-<p>Now, let’s install <code>environment.yml</code> environment file above so that we can create a conda environment called <code>test_env</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda env create <span class="at">--file</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Create an environment on your laptop with an older version of Python!</p>
-<ol type="1">
-<li><p>Clone <a href="https://github.com/ttimbers/conda_env_practice/blob/main/README.md">this GitHub repository</a>.</p></li>
-<li><p>Try to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as <code>python -c "print 'Back from the Future'"</code>. This should fail.</p></li>
-<li><p>In the terminal, navigate to the root of the repository and run: <code>conda env create --file environment.yml</code> (note: If you have a M1/M2 Mac, please run this command instead: CONDA_SUBDIR=osx-64 conda env create –file environment.yml).</p></li>
-<li><p>Activate the environment by typing <code>conda activate oldie_but_a_goodie</code></p></li>
-<li><p>Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as <code>python -c "print 'Back from the Future'"</code>. If you activated your environment correctly, this should succeed!</p></li>
-</ol>
-</div>
-</div>
-</section>
-<section id="copying-an-environment" class="level3" data-number="8.2.9">
-<h3 data-number="8.2.9" class="anchored" data-anchor-id="copying-an-environment"><span class="header-section-number">8.2.9</span> Copying an environment</h3>
-<p>We can make an exact copy of an environment to an environment with a different name. This maybe useful for any testing versus live environments or different Python 3.7 versions for the same packages. In this example, <code>test_env</code> is cloned to create <code>live_env</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">--name</span> live_env <span class="at">--clone</span> test_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="listing-all-environments-on-your-laptop" class="level3" data-number="8.2.10">
-<h3 data-number="8.2.10" class="anchored" data-anchor-id="listing-all-environments-on-your-laptop"><span class="header-section-number">8.2.10</span> Listing all environments on your laptop</h3>
-<p>You may have created an environment and forgotten what you named it, or you want to do some cleanup and delete old environments (next topic), and so you want to see which exist on your computer and remove the ones you are no longer using. To do this we will use the <code>info</code> command along with the <code>--envs</code> flag/option.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> info <span class="at">--envs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Listing all the <code>conda</code> environments on your laptop with this command also shows you where <code>conda</code> stores these environments. Typically <code>conda</code> environments are stored in <code>/Users/&lt;USERNAME&gt;/opt/miniconda3/envs</code>. This means that <code>conda</code> environments are typically in your terminal’s path, resulting in the environments being accessible from any directory on your computer, regardless of where they were created. However, despite this flexibility, commonly one environment is created per project, and the <code>environment.yml</code> file that is used for sharing the <code>conda</code> environment is stored in the project root.</p>
-</div>
-</div>
-</section>
-<section id="deleting-an-environment" class="level3" data-number="8.2.11">
-<h3 data-number="8.2.11" class="anchored" data-anchor-id="deleting-an-environment"><span class="header-section-number">8.2.11</span> Deleting an environment</h3>
-<p>Since we are only testing out our environment, we will delete <code>live_env</code> to remove some clutter. <em>Make sure that you are not currently using <code>live_env</code>.</em></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env remove <span class="at">-n</span> live_env</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="making-environments-work-well-with-jupyterlab" class="level3" data-number="8.2.12">
-<h3 data-number="8.2.12" class="anchored" data-anchor-id="making-environments-work-well-with-jupyterlab"><span class="header-section-number">8.2.12</span> Making environments work well with JupyterLab</h3>
-<p>In brief, you need to install a kernel in the new conda environment in any new environment your create (<code>ipykernel</code> for Python and the <code>r-irkernel</code> package for R), and the <code>nb_conda_kernels</code> package needs to be installed in the environment where JupyterLab is installed.</p>
-<p>By default, JupyterLab only sees the conda environment where it is installed. Since it is quite annoying to install JupyterLab and its extensions separately in each environment, there is a package called <code>nb_conda_kernels</code> that makes it possible to have a single installation of JupyterLab access kernels in other conda environments. This package needs to be installed in the conda environment where JupyterLab is installed. For the computer setup for this course, we did that in the <code>base</code> environment, so that is where you would need to install <code>nb_conda_kernels</code> to make this work.</p>
-<p><em>More details are available in the <a href="https://github.com/Anaconda-Platform/nb_conda_kernels#installation">nb_conda_kernels README</a>).</em></p>
-<p>Remember that when you forget a specific command you can type in the help command we have created <code>mds-help</code> in you terminal to see a list of all commands we use in MDS.</p>
-</section>
-</section>
-<section id="renv" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="renv"><span class="header-section-number">8.3</span> <code>renv</code></h2>
-<p>In R, environments can also be managed by <code>renv</code>, which works with similar principles as <code>conda</code>, and other virtual environment managers, but the commands are different. Detailed documentation for <code>renv</code>, can found at the <a href="https://rstudio.github.io/renv/index.html">package website</a>.</p>
-<p><code>renv</code> differs from <code>conda</code> in the way that it adds package dependencies. Briefly, when you prompt <code>renv</code> to create (or update) a file to record the project dependencies (done via <code>renv</code>’s <code>snapshot()</code> function), it recursively crawls the files in the project looking for calls to <code>library()</code> or <code>require()</code>.</p>
-<p>The key file <code>renv</code> creates for recording and sharing environments is called <code>renv.lock</code> in the project’s root directory. Other files are created in the project’s root directory when you use <code>renv</code> but <code>renv.lock</code> is the file that documents which programming languages and packages (including versions) are used in the project. It is recommended that when sharing an <code>renv</code> environment that you version control <code>renv.lock</code>, <code>.Rprofile</code> and <code>renv/activate.R</code> to facilitate collaboration. When you setup an <code>renv</code> environment with <code>renv::init()</code> it creates a <code>renv/.gitignore</code> file so that files that <code>renv</code> creates and uses locally but are not helpful to share, are not shared.</p>
-<p><code>renv</code> environments work best in the context of RStudio projects - and so it is recommended that you create an RStudio project that corresponds to the root of your data science project repository. If this is not done - <code>renv</code> will crawl files outside of the project, looking for dependencies.</p>
-<p>Below we create a table with the general virtual environment commands for <code>renv</code> as well as the equivalent <code>conda</code> command for comparison:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 35%">
-<col style="width: 23%">
-<col style="width: 41%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Description</th>
-<th><code>renv</code> command</th>
-<th><code>conda</code> command</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Create a new environment without an environment file</td>
-<td><code>renv::init()</code></td>
-<td><code>conda create -n &lt;ENV_NAME&gt; ...</code></td>
-</tr>
-<tr class="even">
-<td>Activate a new environment</td>
-<td><code>renv::activate()</code></td>
-<td><code>conda activate &lt;ENV_NAME&gt;</code></td>
-</tr>
-<tr class="odd">
-<td>Export environment to a file</td>
-<td><code>renv::snapshot()</code></td>
-<td><code>conda env export --from-history -f environment.yml</code></td>
-</tr>
-<tr class="even">
-<td>Create a new environment from an environment file</td>
-<td><code>renv::restore()</code></td>
-<td><code>conda env create --file environment.yml</code></td>
-</tr>
-</tbody>
-</table>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1359,8 +1078,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/090-conda-lock.html" class="pagination-link" aria-label="Conda lock: reproducible lock files for conda environments">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conda lock: reproducible lock files for conda environments</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/082-virtual_env-r-renv.html" class="pagination-link" aria-label="R Environments: renv">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">R Environments: renv</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
