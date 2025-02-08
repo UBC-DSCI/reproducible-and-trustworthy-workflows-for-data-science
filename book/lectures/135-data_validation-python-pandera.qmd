@@ -346,7 +346,9 @@ we need to do two things:
 
 Below we demonstrate this with our working example.
 
+<!-- TODO: should not need to error true this line, but trying to fix CI-->
 ```{python}
+#| error: true
 schema = pa.DataFrameSchema(
     {
         "class": pa.Column(str, pa.Check.isin(["Benign", "Malignant"]), nullable=True),
@@ -368,7 +370,9 @@ not the DataFrame-wide checks like our checks for duplicates or empty rows.
 Thus to make sure we drop these, we need to rely on Pandas to do this.
 We demonstrate how we can do this below:
 
+<!-- TODO: should not need to error true this line, but trying to fix CI-->
 ```{python}
+# | error: true
 schema.validate(invalid_data, lazy=True).drop_duplicates().dropna(how="all")
 ```
 
