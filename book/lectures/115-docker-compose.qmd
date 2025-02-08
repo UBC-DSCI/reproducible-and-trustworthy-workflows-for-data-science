@@ -1,0 +1,75 @@
+---
+title: docker-compose
+---
+
+
+## Docker compose to launch containers
+
+It can be fiddly and error prone to type long commands into the terminal,
+or a GUI every time you want to launch a container.
+A better approach is to use Docker compose
+to specify how you want to launch the container.
+
+Docker compose uses a YAML file,
+specifically named `docker-compose.yml`,
+to record how the container should be launched.
+This file can include details including:
+- the docker image and version to use
+- how to mount volumes
+- what ports to map
+- what environment variables to set.
+
+Here is an example of a `docker-compose.yml` file
+for use with the `rocker/rstudio` container image:
+
+```yaml
+services:
+  analysis-env:
+    image: rocker/rstudio:4.4.2
+    ports:
+      - "8787:8787"
+    volumes:
+      - .:/home/rstudio/project
+    environment:
+      PASSWORD: password
+```
+
+To launch the container interactively using this file,
+you would type the `docker-compose` command shown below.
+
+```bash
+docker-compose up
+```
+
+If you are using a web app, as in the case of the
+`rocker/rstudio` or `jupyter/minimal-notebook` container images,
+you still need to manually navigate to the web app in your browser
+and enter the correct URL to access it.
+
+To stop and clean up the container, you would type `Cntrl + C` in the terminal where you launched the container, and then type
+
+```bash
+docker-compose rm
+```
+
+Let's take a look at an example `docker-compose.yml` being used in a project:
+- <https://github.com/ttimbers/breast_cancer_predictor_py>
+
+## Running a Docker container non-interactively using the Docker Compose
+
+We can also use Docker Compose to run containers non-interactively!
+We can do this by specifying that we want to `run` the container
+(instead of `up` to launch in interactively).
+We use the `--rm` flag with the `run` command to make the container ephemeral
+(delete it upon exit).
+Then we specify the name of the service from the `docker-compose.yml` file
+that we want to run
+(in our `docker-compose.yml` files so far we only have one service,
+the environment for running the analysis).
+And finally we add the command we want to run non-interactively
+using the container
+(in the example below we use `make` to run the data analysis pipeline script).
+
+```bash
+docker-compose run --rm analysis-env make all
+```
