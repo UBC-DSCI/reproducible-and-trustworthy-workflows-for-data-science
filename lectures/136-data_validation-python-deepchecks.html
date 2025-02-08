@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>24&nbsp; Introduction to testing code for data science – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>19&nbsp; Python Data Validation: deepchecks – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/142-R-testing-example.html" rel="next">
-<link href="../parts/software-testing-for-data-science.html" rel="prev">
+<link href="../parts/automation.html" rel="next">
+<link href="../lectures/135-data_validation-python-pandera.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,17 +103,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -89,6 +112,17 @@ div.callout-relevance-project.callout-style-default > .callout-header {
 div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
   content: '💻';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 div.callout-activity.callout {
@@ -102,15 +136,15 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
-div.callout-exercise.callout {
-  border-left-color: green;
+div.callout-definition.callout {
+  border-left-color: pink;
 }
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -128,7 +162,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/data-validation.html">Data Validation</a></li><li class="breadcrumb-item"><a href="../lectures/136-data_validation-python-deepchecks.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Python Data Validation: deepchecks</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -314,7 +348,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/136-data_validation-python-deepchecks.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/136-data_validation-python-deepchecks.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Python Data Validation: deepchecks</span></span></a>
   </div>
 </li>
@@ -366,7 +400,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
@@ -587,17 +621,16 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#workflow-for-writing-functions-and-tests-for-data-science" id="toc-workflow-for-writing-functions-and-tests-for-data-science" class="nav-link" data-scroll-target="#workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">24.1</span> Workflow for writing functions and tests for data science</a></li>
+  <li><a href="#deep-checks" id="toc-deep-checks" class="nav-link active" data-scroll-target="#deep-checks"><span class="header-section-number">19.0.1</span> Deep Checks</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/software-testing-for-data-science.html">Software Testing for Data Science</a></li><li class="breadcrumb-item"><a href="../lectures/140-intro-to-testing-code.html"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/data-validation.html">Data Validation</a></li><li class="breadcrumb-item"><a href="../lectures/136-data_validation-python-deepchecks.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Python Data Validation: deepchecks</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></h1>
+<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Python Data Validation: deepchecks</span></h1>
 </div>
 
 
@@ -614,48 +647,41 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
-<ol type="1">
-<li>Fully specify a function and write comprehensive tests against the specification.</li>
-<li>Reproducibly generate test data (e.g., data frames, models, plots).</li>
-<li>Discuss the observability of unit outputs in data science (e.g., plot objects), and how this should be taken into account when designing software.</li>
-<li>Explain why test-driven development (TDD) affords testability</li>
-<li>Use exceptions when writing code.</li>
-<li>Test if a function is throwing an exception when it should, and that is does not do so when it shouldn’t.</li>
-<li>Evaluate test suite quality.</li>
-</ol>
-<p>How do we ensure our code works as expected? That the code outputs are what we expect, and our code handles user errors in expected ways. We test it! Tests help to increase the robustness and trustworthiness of your code. In this chapter we will introduce formal software testing concepts and practices that are applicable to data science.</p>
-<p>The first concept we will consider is testability. <strong>Testability</strong> is defined as the degree to which a system or component facilitates the establishment of test objectives and the execution of tests to determine whether those objectives have been achieved. In order to be successful, a test needs to be able to execute the code you wish to test, in a way that can trigger a defect that will propagate an incorrect result to a program point where it can be checked against the expected behaviour. From this, we can derive four high-level properties required for effective test writing and execution. These are controllability, observability, isolateablilty, and automatability.</p>
-<ul>
-<li><strong>controllability</strong>: the code under test needs to be able to be programmatically controlled</li>
-<li><strong>observability</strong>: the outcome of the code under test needs to be able to be verified</li>
-<li><strong>isolateablilty</strong>: the code under test needs to be able to be validated on its own</li>
-<li><strong>automatability</strong>: the tests should be able to be executed automatically</li>
+<section id="deep-checks" class="level3" data-number="19.0.1">
+<h3 data-number="19.0.1" class="anchored" data-anchor-id="deep-checks"><span class="header-section-number">19.0.1</span> Deep Checks</h3>
+<p>In particular, the <a href="https://docs.deepchecks.com">Deep Checks</a> package is quite useful due to it’s high-level abstraction of several machine learning data validation checks that you would have to code manually if you chose to use something like <code>Pandera</code> for these. Examples from the checklist above include:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">No anomalous correlations between target/response variable and features/explanatory variables<sup>1</sup></label></li>
+<li><label><input type="checkbox">No anomalous correlations between features/explanatory variables<sup>1</sup></label></li>
 </ul>
-<p><em>Source: <a href="https://github.com/ubccpsc/310/blob/master/resources/readings/TestabilityAssertions.md">CPSC 310</a> &amp; <a href="https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf">CPSC 410</a> class notes from Reid Holmes, UBC]</em></p>
-<p>Functions are individual units of code that perform a specific task. They are useful for increasing code modularity - this helps with reusability and readability. Functions also are critical in ensuring our code is testable by facilitating that our code has the four high-level properties required for effective test writing and execution introduced above. Functions allow our code to be controlled and automated (we can execute it by calling the function) and if we write our functions using best practices (e.g., functions do just one and they typically return an object) then our code is also isolateable and observable.</p>
-<p>When should you write a function? Is it just when you start re-writing code for the second or third time? No, actually most code you write should be a function, as that helps with testability. You can even write your tests before you write your function, you just have to have planned what function inputs and outputs to expect. Writing your tests before implementing your function can even improve your productivity (Erdogmus, Morisio, and Torchiano 2005)! In software engineering, writting your tests before your functions is called “Test Driven Development” (Becker 2002).</p>
-<p>What kinds of tests do we write for our functions? I like to think about three broad categories of tests, and then write 2-3 tests for each (or more if the function is complex):</p>
-<ol type="1">
-<li>Simple expected use cases</li>
-<li>Edge cases (unexpected, or rare use cases)</li>
-<li>Abnormal, error or adversarial use cases.</li>
-</ol>
-<p>We will walk through some specific examples of each of these later in this chapter.</p>
-<p>How many tests do we write? There is no concrete answer to this question. It is finding the right balance between having enough test cases that you cover a variety of the possible uses cases of your function, ensuring that the correct behaviour occurs in each of these, without spending too much time on writing tests. As with many functions, the possible ways a function could be used, and the many resultant outputs from it means that it is often impossible to test everything.</p>
-</section>
-<section id="workflow-for-writing-functions-and-tests-for-data-science" class="level2" data-number="24.1">
-<h2 data-number="24.1" class="anchored" data-anchor-id="workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">24.1</span> Workflow for writing functions and tests for data science</h2>
-<p>How should we get started writing functions and tests for data science? There are many ways one could proceed, however some paths will be more efficient and less error-prone, and more robust than others. Borrowing from software development best practices, one recommended workflow is shown below:</p>
-<ol type="1">
-<li><p><strong>Write the function specifications and documentation - but do not implement the function.</strong> This means that you will have an empty function, that specifies and documents what the name of the function is, what arguments it takes, and what it returns.</p></li>
-<li><p><strong>Plan the test cases and document them.</strong> Your tests should assess whether the function works as expected when given correct inputs, as well as that it behaves as expected when given incorrect inputs (e.g., throws an error when the wrong type is given for an argument). For the cases of correct inputs, you will want to test the top, middle and bottom range of these, as well as all possible combinations of argument inputs possible. Also, the test data should be as simple and tractable as possible while still being able to assess your function.</p></li>
-<li><p><strong>Create test data that is useful for assessing whether your function works as expected.</strong> In data science, you likely need to create both the data that you would provide as inputs to your function, as well as the data that you would expect your function to return.</p></li>
-<li><p><strong>Write the tests to evaluate your function based on the planned test cases and test data.</strong></p></li>
-<li><p><strong>Implement the function by writing the needed code in the function body to pass the tests.</strong></p></li>
-<li><p><strong>Iterate between steps 2-5 to improve the test coverage and function.</strong></p></li>
-</ol>
+<p>To use this, we first have to create a Deep Checks Dataset object (specifying the data set, the target/response variable, and any categorical features):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular <span class="im">import</span> Dataset</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cancer_train_ds <span class="op">=</span> Dataset(cancer_train, label<span class="op">=</span><span class="st">"class"</span>, cat_features<span class="op">=</span>[])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once we have that, we can use the <code>FeatureLabelCorrelation()</code> check set the maximum threshold we’ll allow (here 0.9), and run the check:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular.checks <span class="im">import</span> FeatureLabelCorrelation</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>check_feat_lab_corr <span class="op">=</span> FeatureLabelCorrelation().add_condition_feature_pps_less_than(<span class="fl">0.9</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>check_feat_lab_corr_result <span class="op">=</span> check_feat_lab_corr.run(dataset<span class="op">=</span>cancer_train_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Finally, we can check if the result of the <code>FeatureLabelCorrelation()</code> validation has failed. If it has (i.e., correlation is above the acceptable threshold), we can do something, like raise a ValueError with an appropriate error message:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> check_feat_lab_corr_result.passed_conditions():</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Feature-Label correlation exceeds the maximum acceptable threshold."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice above the name of the data frame and Deep checks data set? It has the word “train” in it. This is important! Some data validation checks can cause data leakage if we perform them on the entire data set before finalizing feature and model selection. Be conscientious about your data validation checks to ensure they do not data introduce leakage.</p>
+</div>
+</div>
+<p>Deep Checks has a nice gallery of different data validation checks for which it has high-level functions: <a href="https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html" class="uri">https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html</a></p>
 
 
 </section>
@@ -1080,13 +1106,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/software-testing-for-data-science.html" class="pagination-link" aria-label="Software Testing for Data Science">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Software Testing for Data Science</span>
+      <a href="../lectures/135-data_validation-python-pandera.html" class="pagination-link" aria-label="Python Data Validation: Pandera">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Python Data Validation: Pandera</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/142-R-testing-example.html" class="pagination-link" aria-label="Testing functions in R with `testthat`">
-        <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../parts/automation.html" class="pagination-link" aria-label="Automation">
+        <span class="nav-page-text">Automation</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,7 +30,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../parts/automation.html" rel="next">
+<link href="../lectures/131-data_validation-r-pointblank.html" rel="next">
 <link href="../parts/data-validation.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -125,17 +91,6 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   content: '🏋️';
   background-image: none;
 }
-div.callout-definition.callout {
-  border-left-color: pink;
-}
-div.callout-definition.callout-style-default > .callout-header {
-  background-color: rgb(from pink r g b / 13%);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  content: '📝';
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -145,6 +100,17 @@ div.callout-relevance-project.callout-style-default > .callout-header {
 div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
   content: '💻';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
   background-image: none;
 }
 </style>
@@ -334,6 +300,24 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/131-data_validation-r-pointblank.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">R Data Validation: pointblank</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/135-data_validation-python-pandera.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Python Data Validation: Pandera</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/136-data_validation-python-deepchecks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Python Data Validation: deepchecks</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -348,25 +332,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/150-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/160-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/170-pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/180-pipelines-make.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
   </div>
 </li>
       </ul>
@@ -383,31 +367,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/140-intro-to-testing-code.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/142-R-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Testing functions in R with <code>testthat</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/141-python-testing-example.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Testing functions Python with <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/147-testing-images.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Testing: Images</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/144-evaluating-test-suite-quality.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -424,43 +408,43 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/190-packaging-intro-python-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/191-packaging-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/193-packaging-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/194-package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/196-coverage-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/197-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -477,31 +461,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-case_study_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/202-case_study_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/205-package_documentation_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/206-package_documentation_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -518,25 +502,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/211-gha_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
   </div>
 </li>
       </ul>
@@ -553,13 +537,13 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -576,19 +560,19 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
       </ul>
@@ -610,19 +594,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   <ul class="collapse">
   <li><a href="#data-validation-checklist" id="toc-data-validation-checklist" class="nav-link" data-scroll-target="#data-validation-checklist"><span class="header-section-number">16.3.1</span> Data validation checklist</a></li>
   </ul></li>
-  <li><a href="#introduction-to-pythons-pandera" id="toc-introduction-to-pythons-pandera" class="nav-link" data-scroll-target="#introduction-to-pythons-pandera"><span class="header-section-number">16.4</span> Introduction to Python’s Pandera</a>
-  <ul class="collapse">
-  <li><a href="#validating-data-with-pandera" id="toc-validating-data-with-pandera" class="nav-link" data-scroll-target="#validating-data-with-pandera"><span class="header-section-number">16.4.1</span> Validating data with Pandera</a></li>
-  <li><a href="#dataframe-schema" id="toc-dataframe-schema" class="nav-link" data-scroll-target="#dataframe-schema"><span class="header-section-number">16.4.2</span> Dataframe Schema</a></li>
-  <li><a href="#data-validation" id="toc-data-validation" class="nav-link" data-scroll-target="#data-validation"><span class="header-section-number">16.4.3</span> Data validation</a></li>
-  <li><a href="#handling-invalid-data" id="toc-handling-invalid-data" class="nav-link" data-scroll-target="#handling-invalid-data"><span class="header-section-number">16.4.4</span> Handling invalid data</a></li>
-  <li><a href="#dropping-invalid-observations" id="toc-dropping-invalid-observations" class="nav-link" data-scroll-target="#dropping-invalid-observations"><span class="header-section-number">16.4.5</span> Dropping invalid observations</a></li>
-  <li><a href="#writing-data-validation-logs" id="toc-writing-data-validation-logs" class="nav-link" data-scroll-target="#writing-data-validation-logs"><span class="header-section-number">16.4.6</span> Writing data validation logs</a></li>
-  </ul></li>
-  <li><a href="#the-data-validation-ecosystem" id="toc-the-data-validation-ecosystem" class="nav-link" data-scroll-target="#the-data-validation-ecosystem"><span class="header-section-number">16.5</span> The data validation ecosystem</a>
-  <ul class="collapse">
-  <li><a href="#deep-checks" id="toc-deep-checks" class="nav-link" data-scroll-target="#deep-checks"><span class="header-section-number">16.5.1</span> Deep Checks</a></li>
-  </ul></li>
+  <li><a href="#the-data-validation-ecosystem" id="toc-the-data-validation-ecosystem" class="nav-link" data-scroll-target="#the-data-validation-ecosystem"><span class="header-section-number">16.4</span> The data validation ecosystem</a></li>
   </ul>
 </nav>
     </div>
@@ -705,808 +677,9 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </section>
 </section>
 </section>
-<section id="introduction-to-pythons-pandera" class="level2" data-number="16.4">
-<h2 data-number="16.4" class="anchored" data-anchor-id="introduction-to-pythons-pandera"><span class="header-section-number">16.4</span> Introduction to Python’s Pandera</h2>
-<p>Python’s <a href="https://pandera.readthedocs.io/en/stable/">Pandera</a> is a package designed to make data validation/checking of dataframes and other dataframe-like objects easy, readable and robust. Key features of Pandera that we will discuss include:</p>
-<ul>
-<li>The ability to define a data schema and use it to validate dataframes and other dataframe-like objects</li>
-<li>Check the types and properties of columns</li>
-<li>Perform statistical validation of data</li>
-<li>Execute all validation in a lazy manner, so that validation rules are executed before raising an error</li>
-<li>Handle invalid data in a number of ways, including throwing errors, writing data validation logs, and dropping observations that are invalid</li>
-</ul>
-<section id="validating-data-with-pandera" class="level3" data-number="16.4.1">
-<h3 data-number="16.4.1" class="anchored" data-anchor-id="validating-data-with-pandera"><span class="header-section-number">16.4.1</span> Validating data with Pandera</h3>
-<p>In the simplest use case, Pandera can be use to validate data by first defining an instance of the <code>DataFrameSchema</code> class. This object specifies the properties we expect (and thus would like to check) for our dataframe index and columns. After the <code>DataFrameSchema</code> instance has been created and defined, the <code>DataFrameSchema.validate</code> method can be applied to a <code>pandas.DataFrame</code> instance to validate, or check, all of the properties we specified that we expect for our dataframe index and columns in the <code>DataFrameSchema</code> instance.</p>
-</section>
-<section id="dataframe-schema" class="level3" data-number="16.4.2">
-<h3 data-number="16.4.2" class="anchored" data-anchor-id="dataframe-schema"><span class="header-section-number">16.4.2</span> Dataframe Schema</h3>
-<p>When we create an instance of the <code>DataFrameSchema</code> class, we can specify the the properties we expect (and thus would like to check) for our dataframe index and columns.</p>
-<section id="creating-pa.dataframeschema-and-setting-required-columns" class="level4">
-<h4 class="anchored" data-anchor-id="creating-pa.dataframeschema-and-setting-required-columns">Creating <code>pa.DataFrameSchema</code> and setting required columns</h4>
-<p>To create an instance of the <code>DataFrameSchema</code> class we first import the Pandera package using the alias <code>pa</code>, and then the function <code>pa.DataFrameSchema</code>. Below we demonstrate creating an instance of the <code>DataFrameSchema</code> class for the first two columns of the <a href="https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic">Wisconsin Breast Cancer data set</a> from the <a href="https://archive.ics.uci.edu/">UCI Machine Learning Repository</a> (Dua and Graff 2017).</p>
-<div id="0cf8375c" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(),</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column()</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>By default all columns listed are required to be in the dataframe for it to pass validation. If we wanted to make a column optional, we would set <code>required=False</code> in the column constructor.</p>
-</div>
-</div>
-</section>
-<section id="specifying-column-types" class="level4">
-<h4 class="anchored" data-anchor-id="specifying-column-types">Specifying column types</h4>
-<p>We can specify the type we expect each column to be, by writing the type as the first argument to <code>pa.Column</code>. Possible values include:</p>
-<ul>
-<li>a string alias, as long as it is recognized by pandas.</li>
-<li>a python type: <code>int</code>, <code>float</code>, <code>double</code>, <code>bool</code>, <code>str</code></li>
-<li>a <code>numpy</code> data type</li>
-<li>a pandas extension type: it can be an instance (e.g <code>pd.CategoricalDtype(["a", "b"])</code>) or a class (e.g <code>pandas.CategoricalDtype</code>) if it can be initialized with default values.</li>
-<li>a pandera <code>DataType</code>: it can also be an instance or a class.</li>
-</ul>
-<p>See the Pandera <a href="https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation">Data Type Validation docs</a> for details beyond what we present here.</p>
-<p>If we continue our example from above, we can specify that we expect the <code>class</code> column to be a string and the <code>mean_radius</code> column to be a float as shown below:</p>
-<div id="c65e1d13" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="missingnessnull-values" class="level4">
-<h4 class="anchored" data-anchor-id="missingnessnull-values">Missingness/null values</h4>
-<p>By default Column objects assume there should be no null/missing values. If you want to allow missing values, you need to set <code>nullable=True</code> in the column constructor. We demonstrate that below for the <code>mean_radius</code> column of our working example. Note that we do not set this to be true for our class column as we likely do not want to be working with observations where the target/response variable is missing.</p>
-<div id="5ca1b8fd" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>If you wanted to allow a percentage of the values for a particular column to be allowed to be missing, then you could do this by writing a lambda function in a call to <code>pa.Check</code> in the column constructor. We show an example of that below where allow up to 5% of the <code>mean_radius</code> column values to be missing.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This is putting the cart a bit before the horse here, as we have not yet introduced <code>pa.Check</code>. We will do that in the next section, so please fell free to skip this and come back to this example after you have read that.</p>
-</div>
-</div>
-<div id="e6983409" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                                pa.Check(<span class="kw">lambda</span> s: s.isna().mean() <span class="op">&lt;=</span> <span class="fl">0.05</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                                    element_wise<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                    error<span class="op">=</span><span class="st">"Too many null values in 'mean_radius' column."</span>),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                                nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Above we have created our custom check on-the-fly using a <code>lambda</code> function. We could do this here because the check was fairly simple. If we needed a custom check that was more complex (e.g., needs to generate data as part of the check) then we would be better to register our custom check. For situations like this, we direct the reader to the <a href="https://pandera.readthedocs.io/en/stable/extensions.html#extensions">Pandera Extension docs</a>.</p>
-</div>
-</div>
-</section>
-<section id="checking-values-in-columns" class="level4">
-<h4 class="anchored" data-anchor-id="checking-values-in-columns">Checking values in columns</h4>
-<p>Pandera has a function <code>pa.Check</code> that is useful for checking values within columns. For any type of data, there is usually some reasonable range of values that we would expect. These usually come from domain knowledge about the data. For example, a column named <code>age</code> for a data set about adult human patients age in years should probably be an integer and have a range of values between 18 and 122 (<a href="https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people#cite_note-5">the oldest person whose age has ever been independently verified</a>). To specify a check for a range like this, we can use the <code>pa.Check.between</code> method. We demonstrate how to do this below with our working example to check that the <code>mean_radius</code> values are between 5 and 45, inclusive.</p>
-<div id="745f4dbc" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>In our working example, we might also want to check that the <code>class</code> column only contains the strings we think are acceptable for our category label, which would be <code>"Benign"</code> and <code>"Malignant"</code>. We can do this using the <code>pa.Check.isin</code> method, which we demonstrate below:</p>
-<div id="79f49b2c" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>There are many more built-in <code>pa.Check</code> methods. A list can be found in the Pandera <code>Check</code> API docs: - <a href="https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html#pandera.api.checks.Check" class="uri">https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html#pandera.api.checks.Check</a></p>
-<p>If there is a check you wish to do that is not part of the Pandera <code>Check</code> API you have two options:</p>
-<ol type="1">
-<li>Use a <code>lambda</code> function with boolean logic inside of <code>pa.Check</code> (good for simple checks, similar to the percentage of missingness in the section above), or</li>
-<li>Register our custom check (see how to in <a href="https://pandera.readthedocs.io/en/stable/extensions.html#extensions">Pandera Extension docs</a>)</li>
-</ol>
-</section>
-<section id="duplicates" class="level4">
-<h4 class="anchored" data-anchor-id="duplicates">Duplicates</h4>
-<p>Pandera does not yet have a method to check for duplicate rows in a dataframe, however, you can apply <code>pa.Check</code> to the entire data frame using a <code>lambda</code> function with boolean logic. Thus, we can easily apply Pandas <code>duplicated</code> function in a Lambda Function to check for duplicate rows. We show an example of that below:</p>
-<div id="73979dcf" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    checks<span class="op">=</span>[</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>df.duplicated().<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Duplicate rows found."</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="empty-observations" class="level4">
-<h4 class="anchored" data-anchor-id="empty-observations">Empty observations</h4>
-<p>Similar to duplicates, there is no Pandera function for this. So again we can use <code>pa.Check</code> applied to the entire data frame using a <code>lambda</code> function with boolean logic.</p>
-<div id="027a7bdd" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    checks<span class="op">=</span>[</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>df.duplicated().<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Duplicate rows found."</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>(df.isna().<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Empty rows found."</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-</section>
-<section id="data-validation" class="level3" data-number="16.4.3">
-<h3 data-number="16.4.3" class="anchored" data-anchor-id="data-validation"><span class="header-section-number">16.4.3</span> Data validation</h3>
-<p>Once we have specified our the properties we expect (and thus would like to check) for our dataframe index and columns by creating an instance of <code>pa.DataFrameSchema</code>, we can use the <code>pa.DataFrameSchema.validate</code> method on a dataframe to check if the dataframe is valid considering the schema we specified.</p>
-<p>To demonstrate this, below we create two very simple versions of the Wisconsin Breast Cancer data set. One which we expect to pass our validation checks, and one where we introduce three data anomalies that should cause some checks to fail.</p>
-<p>First we create two data frames:</p>
-<div id="67003279" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"class"</span>: [<span class="st">"Benign"</span>, <span class="st">"Benign"</span>, <span class="st">"Malignant"</span>],</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean_radius"</span>: [<span class="fl">6.0</span>, <span class="fl">31.2</span>, <span class="fl">22.8</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>invalid_data <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"class"</span>: [<span class="st">"Benign"</span>, <span class="st">"Benign"</span>, <span class="st">"benign"</span>, <span class="st">"Malignant"</span>],</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean_radius"</span>: [<span class="fl">6.0</span>, <span class="fl">6.0</span>, <span class="fl">31.2</span>, <span class="op">-</span><span class="dv">9999</span>]</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Let’s see what happens when we apply <code>pa.DataFrameSchema.validate</code> to our valid data:</p>
-<div id="51f5d4c9" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>schema.validate(valid_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[10], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">valid_data</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-<p>It returns a dataframe and does not throw an error. Excellent! What happens when we pass clearly invalid data?</p>
-<div id="716c811a" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[11], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">invalid_data</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-<p>Wow, that’s a lot, but what is clear is that an error was thrown. If we read through the error message to the end we see the important, and useful piece of the error message:</p>
-<pre><code>pandera.errors.SchemaError: Column 'class' failed element-wise validator number 0: isin(['Benign', 'Malignant']) failure cases: benign</code></pre>
-<p>The error arose because in our <code>invalid_data</code>, the column <code>class</code> contained the string <code>"benign"</code>, and we specified in our <code>pa.DataFrameSchema</code> instance that we only accept two string values in the <code>class</code> column, <code>"Benign"</code> and <code>"Malignant"</code>.</p>
-<p>What about the other errors we expect from our invalid data? For example, we there’s a value of <code>-9999</code> in the <code>mean_radius</code> column that is well outside of the range we said was valid in the schema (5, 45), and we have a duplicate row as well? Why are these validation errors not reported? Pandera’s default is to throw an error after the first instance of non-valid data. To change this behaviour, we can set <code>lazy=True</code>. When we do this we see that all errors get reported.</p>
-<div id="4d785a69" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[12], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">invalid_data</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-</section>
-<section id="handling-invalid-data" class="level3" data-number="16.4.4">
-<h3 data-number="16.4.4" class="anchored" data-anchor-id="handling-invalid-data"><span class="header-section-number">16.4.4</span> Handling invalid data</h3>
-<p>By default Pandera will throw an error when a check is not passed. Depending on your situation, this can be a desired expected behaviour (e.g., a static data analysis published in a report) or a very undesired behaviour that could potentially be dangerous (e.g., autonomous driving application). In the latter case, we would want to do something different than throw an error. Possibilities we will cover here include dropping invalid observations and writing log files that report the errors.</p>
-</section>
-<section id="dropping-invalid-observations" class="level3" data-number="16.4.5">
-<h3 data-number="16.4.5" class="anchored" data-anchor-id="dropping-invalid-observations"><span class="header-section-number">16.4.5</span> Dropping invalid observations</h3>
-<p>In an in-production system, dropping non-valid data could be a reasonable path forward instead of throwing an error. Another situation where this might be a reasonable thing to do is when training a machine learning model with a million observations. You don’t want to throw an error in the middle of training if only one observation is invalid!</p>
-<p>To change the behaviour of <code>pa.DataFrameSchema.validate</code> to instead return a dataframe with the invalid rows dropped we need to do two things:</p>
-<ol type="1">
-<li>add <code>drop_invalid_rows=True</code> to our <code>pa.DataFrameSchema</code> instance</li>
-<li>add <code>lazy=True</code> to our call to the <code>pa.DataFrameSchema.validate</code> method</li>
-</ol>
-<p>Below we demonstrate this with our working example.</p>
-<div id="2cc93cb4" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>]), nullable<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    checks<span class="op">=</span>[</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>df.duplicated().<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Duplicate rows found."</span>),</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>(df.isna().<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Empty rows found."</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    drop_invalid_rows<span class="op">=</span><span class="va">True</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[13], line 13</span>
-<span class="ansi-green-fg ansi-bold">      1</span> schema <span style="color:rgb(98,98,98)">=</span> pa<span style="color:rgb(98,98,98)">.</span>DataFrameSchema(
-<span class="ansi-green-fg ansi-bold">      2</span>     {
-<span class="ansi-green-fg ansi-bold">      3</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">class</span><span style="color:rgb(175,0,0)">"</span>: pa<span style="color:rgb(98,98,98)">.</span>Column(<span style="color:rgb(0,135,0)">str</span>, pa<span style="color:rgb(98,98,98)">.</span>Check<span style="color:rgb(98,98,98)">.</span>isin([<span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Benign</span><span style="color:rgb(175,0,0)">"</span>, <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Malignant</span><span style="color:rgb(175,0,0)">"</span>]), nullable<span style="color:rgb(98,98,98)">=</span><span style="font-weight:bold;color:rgb(0,135,0)">True</span>),
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">     10</span>     drop_invalid_rows<span style="color:rgb(98,98,98)">=</span><span style="font-weight:bold;color:rgb(0,135,0)">True</span>
-<span class="ansi-green-fg ansi-bold">     11</span> )
-<span class="ansi-green-fg">---&gt; 13</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">invalid_data</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-<p>Hmmm… Why did the duplicate row sneak through? This is because Pandera’s dropping rows only works on data, or column, checks, not the DataFrame-wide checks like our checks for duplicates or empty rows. Thus to make sure we drop these, we need to rely on Pandas to do this. We demonstrate how we can do this below:</p>
-<div id="5474890d" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>).drop_duplicates().dropna(how<span class="op">=</span><span class="st">"all"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[14], line 1</span>
-<span class="ansi-green-fg">----&gt; 1</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">invalid_data</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>drop_duplicates()<span style="color:rgb(98,98,98)">.</span>dropna(how<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">all</span><span style="color:rgb(175,0,0)">"</span>)
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-</section>
-<section id="writing-data-validation-logs" class="level3" data-number="16.4.6">
-<h3 data-number="16.4.6" class="anchored" data-anchor-id="writing-data-validation-logs"><span class="header-section-number">16.4.6</span> Writing data validation logs</h3>
-<p>Is removing the rows sufficient? Not at all! A human should be told that there was invalid data so that upstream data collection, cleaning and transformation processes can be reviewed to minimize the chances of future invalid data. One way to do this is to again specify <code>lazy=True</code> so that all errors can be observed and reported. Then we can get the <code>SchemaErrors</code> and write them to a log file. We show below how to do this for our working example so that the valid rows are returned as a dataframe named <code>validated_data</code> and the errors are logged as a file called <code>validation_errors.log</code>:</p>
-<div id="442fecd2" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera <span class="im">as</span> pa</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandera <span class="im">import</span> Check</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Configure logging</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>logging.basicConfig(</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    filename<span class="op">=</span><span class="st">"validation_errors.log"</span>,</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    filemode<span class="op">=</span><span class="st">"w"</span>,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">format</span><span class="op">=</span><span class="st">"</span><span class="sc">%(asctime)s</span><span class="st"> - </span><span class="sc">%(message)s</span><span class="st">"</span>,</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>logging.INFO,</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the schema</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>]), nullable<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"mean_radius"</span>: pa.Column(<span class="bu">float</span>, pa.Check.between(<span class="dv">5</span>, <span class="dv">45</span>), nullable<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    checks<span class="op">=</span>[</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>df.duplicated().<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Duplicate rows found."</span>),</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        pa.Check(<span class="kw">lambda</span> df: <span class="op">~</span>(df.isna().<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>)).<span class="bu">any</span>(), error<span class="op">=</span><span class="st">"Empty rows found."</span>),</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    drop_invalid_rows<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize error cases DataFrame</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>error_cases <span class="op">=</span> pd.DataFrame()</span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> invalid_data.copy()</span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Validate data and handle errors</span></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    validated_data <span class="op">=</span> schema.validate(data, lazy<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> pa.errors.SchemaErrors <span class="im">as</span> e:</span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    error_cases <span class="op">=</span> e.failure_cases</span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Convert the error message to a JSON string</span></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    error_message <span class="op">=</span> json.dumps(e.message, indent<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    logging.error(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> error_message)</span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter out invalid rows based on the error cases</span></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> error_cases.empty:</span>
-<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    invalid_indices <span class="op">=</span> error_cases[<span class="st">"index"</span>].dropna().unique()</span>
-<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    validated_data <span class="op">=</span> (</span>
-<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>        data.drop(index<span class="op">=</span>invalid_indices)</span>
-<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>        .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>        .drop_duplicates()</span>
-<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>        .dropna(how<span class="op">=</span><span class="st">"all"</span>)</span>
-<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>    validated_data <span class="op">=</span> data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[15], line 34</span>
-<span class="ansi-green-fg ansi-bold">     32</span> <span style="font-style:italic;color:rgb(95,135,135)"># Validate data and handle errors</span>
-<span class="ansi-green-fg ansi-bold">     33</span> <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-<span class="ansi-green-fg">---&gt; 34</span>     validated_data <span style="color:rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">schema</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">validate</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">data</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span style="font-weight:bold;color:rgb(0,135,0)" class="ansi-yellow-bg">True</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">     35</span> <span style="font-weight:bold;color:rgb(0,135,0)">except</span> pa<span style="color:rgb(98,98,98)">.</span>errors<span style="color:rgb(98,98,98)">.</span>SchemaErrors <span style="font-weight:bold;color:rgb(0,135,0)">as</span> e:
-<span class="ansi-green-fg ansi-bold">     36</span>     error_cases <span style="color:rgb(98,98,98)">=</span> e<span style="color:rgb(98,98,98)">.</span>failure_cases
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:126</span>, in <span class="ansi-cyan-fg">DataFrameSchema.validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    114</span>     check_obj <span style="color:rgb(98,98,98)">=</span> check_obj<span style="color:rgb(98,98,98)">.</span>map_partitions(  <span style="font-style:italic;color:rgb(95,135,135)"># type: ignore [operator]</span>
-<span class="ansi-green-fg ansi-bold">    115</span>         <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_validate,
-<span class="ansi-green-fg ansi-bold">    116</span>         head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    122</span>         meta<span style="color:rgb(98,98,98)">=</span>check_obj,
-<span class="ansi-green-fg ansi-bold">    123</span>     )
-<span class="ansi-green-fg ansi-bold">    124</span>     <span style="font-weight:bold;color:rgb(0,135,0)">return</span> check_obj<span style="color:rgb(98,98,98)">.</span>pandera<span style="color:rgb(98,98,98)">.</span>add_schema(<span style="color:rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 126</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">_validate</span><span class="ansi-yellow-bg">(</span>
-<span class="ansi-green-fg ansi-bold">    127</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">check_obj</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    128</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">head</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">head</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    129</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">tail</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">tail</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    130</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">sample</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">sample</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    131</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">random_state</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">random_state</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    132</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">lazy</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">lazy</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    133</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">inplace</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">=</span><span class="ansi-yellow-bg">inplace</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-fg ansi-bold">    134</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:156</span>, in <span class="ansi-cyan-fg">DataFrameSchema._validate</span><span class="ansi-blue-fg">(self, check_obj, head, tail, sample, random_state, lazy, inplace)</span>
-<span class="ansi-green-fg ansi-bold">    147</span> <span style="font-weight:bold;color:rgb(0,135,0)">if</span> <span style="color:rgb(0,135,0)">self</span><span style="color:rgb(98,98,98)">.</span>_is_inferred:
-<span class="ansi-green-fg ansi-bold">    148</span>     warnings<span style="color:rgb(98,98,98)">.</span>warn(
-<span class="ansi-green-fg ansi-bold">    149</span>         <span style="color:rgb(175,0,0)">f</span><span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">This </span><span style="font-weight:bold;color:rgb(175,95,135)">{</span><span style="color:rgb(0,135,0)">type</span>(<span style="color:rgb(0,135,0)">self</span>)<span style="font-weight:bold;color:rgb(175,95,135)">}</span><span style="color:rgb(175,0,0)"> is an inferred schema that hasn</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">t been </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    150</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">modified. It</span><span style="color:rgb(175,0,0)">'</span><span style="color:rgb(175,0,0)">s recommended that you refine the schema </span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-fg ansi-bold">    153</span>         <span style="font-weight:bold;color:rgb(215,95,95)">UserWarning</span>,
-<span class="ansi-green-fg ansi-bold">    154</span>     )
-<span class="ansi-green-fg">--&gt; 156</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">self</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">get_backend</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj</span><span class="ansi-yellow-bg">)</span><span style="color:rgb(98,98,98)">.</span>validate(
-<span class="ansi-green-fg ansi-bold">    157</span>     check_obj,
-<span class="ansi-green-fg ansi-bold">    158</span>     schema<span style="color:rgb(98,98,98)">=</span><span style="color:rgb(0,135,0)">self</span>,
-<span class="ansi-green-fg ansi-bold">    159</span>     head<span style="color:rgb(98,98,98)">=</span>head,
-<span class="ansi-green-fg ansi-bold">    160</span>     tail<span style="color:rgb(98,98,98)">=</span>tail,
-<span class="ansi-green-fg ansi-bold">    161</span>     sample<span style="color:rgb(98,98,98)">=</span>sample,
-<span class="ansi-green-fg ansi-bold">    162</span>     random_state<span style="color:rgb(98,98,98)">=</span>random_state,
-<span class="ansi-green-fg ansi-bold">    163</span>     lazy<span style="color:rgb(98,98,98)">=</span>lazy,
-<span class="ansi-green-fg ansi-bold">    164</span>     inplace<span style="color:rgb(98,98,98)">=</span>inplace,
-<span class="ansi-green-fg ansi-bold">    165</span> )
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/base/schema.py:119</span>, in <span class="ansi-cyan-fg">BaseSchema.get_backend</span><span class="ansi-blue-fg">(cls, check_obj, check_type)</span>
-<span class="ansi-green-fg ansi-bold">    114</span> <span style="font-weight:bold;color:rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg ansi-bold">    115</span>     <span style="font-weight:bold;color:rgb(0,135,0)">raise</span> <span style="font-weight:bold;color:rgb(215,95,95)">ValueError</span>(
-<span class="ansi-green-fg ansi-bold">    116</span>         <span style="color:rgb(175,0,0)">"</span><span style="color:rgb(175,0,0)">Must pass in one of `check_obj` or `check_type`.</span><span style="color:rgb(175,0,0)">"</span>
-<span class="ansi-green-fg ansi-bold">    117</span>     )
-<span class="ansi-green-fg">--&gt; 119</span> <span style="color:rgb(0,135,0)" class="ansi-yellow-bg">cls</span><span style="color:rgb(98,98,98)" class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">register_default_backends</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">check_obj_cls</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg ansi-bold">    120</span> classes <span style="color:rgb(98,98,98)">=</span> inspect<span style="color:rgb(98,98,98)">.</span>getmro(check_obj_cls)
-<span class="ansi-green-fg ansi-bold">    121</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> _class <span style="font-weight:bold;color:rgb(175,0,255)">in</span> classes:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/api/pandas/container.py:169</span>, in <span class="ansi-cyan-fg">DataFrameSchema.register_default_backends</span><span class="ansi-blue-fg">(check_obj_cls)</span>
-<span class="ansi-green-fg ansi-bold">    167</span> <span style="color:rgb(175,0,255)">@staticmethod</span>
-<span class="ansi-green-fg ansi-bold">    168</span> <span style="font-weight:bold;color:rgb(0,135,0)">def</span><span style="color:rgb(188,188,188)"> </span><span style="color:rgb(0,0,255)">register_default_backends</span>(check_obj_cls: Type):
-<span class="ansi-green-fg">--&gt; 169</span>     <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">register</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> register_pandas_backends
-<span class="ansi-green-fg ansi-bold">    171</span>     _cls <span style="color:rgb(98,98,98)">=</span> check_obj_cls
-<span class="ansi-green-fg ansi-bold">    172</span>     <span style="font-weight:bold;color:rgb(0,135,0)">try</span>:
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/register.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Optional
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">array</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> SeriesSchemaBackend
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> PandasCheckBackend
-<span class="ansi-green-fg ansi-bold">      8</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">components</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> (
-<span class="ansi-green-fg ansi-bold">      9</span>     ColumnBackend,
-<span class="ansi-green-fg ansi-bold">     10</span>     IndexBackend,
-<span class="ansi-green-fg ansi-bold">     11</span>     MultiIndexBackend,
-<span class="ansi-green-fg ansi-bold">     12</span> )
-<span class="ansi-green-fg ansi-bold">     13</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">backends</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">container</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DataFrameSchemaBackend
-
-File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/pandera/backends/pandas/checks.py:7</span>
-<span class="ansi-green-fg ansi-bold">      4</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">typing</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Dict, List, Optional, Union, cast
-<span class="ansi-green-fg ansi-bold">      6</span> <span style="font-weight:bold;color:rgb(0,135,0)">import</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandas</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">as</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pd</span>
-<span class="ansi-green-fg">----&gt; 7</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">multimethod</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> DispatchError, overload
-<span class="ansi-green-fg ansi-bold">      9</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">base</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> CheckResult, GroupbyObject
-<span class="ansi-green-fg ansi-bold">     10</span> <span style="font-weight:bold;color:rgb(0,135,0)">from</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,0,255)">pandera</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">api</span><span style="font-weight:bold;color:rgb(0,0,255)">.</span><span style="font-weight:bold;color:rgb(0,0,255)">checks</span><span style="color:rgb(188,188,188)"> </span><span style="font-weight:bold;color:rgb(0,135,0)">import</span> Check
-
-<span class="ansi-red-fg">ImportError</span>: cannot import name 'overload' from 'multimethod' (/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/multimethod/__init__.py)</pre>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="the-data-validation-ecosystem" class="level2" data-number="16.5">
-<h2 data-number="16.5" class="anchored" data-anchor-id="the-data-validation-ecosystem"><span class="header-section-number">16.5</span> The data validation ecosystem</h2>
-<p>We have given a tour of one of the packages in the data validation ecosystem, however there are a few others that are good to know about. We list the others below:</p>
+<section id="the-data-validation-ecosystem" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="the-data-validation-ecosystem"><span class="header-section-number">16.4</span> The data validation ecosystem</h2>
+<p>There are a few data validation packages. We list the others below:</p>
 <p><strong>Python:</strong></p>
 <ul>
 <li>Deep Checks: <a href="https://docs.deepchecks.com" class="uri">https://docs.deepchecks.com</a></li>
@@ -1518,44 +691,8 @@ File <span class="ansi-green-fg">/Library/Frameworks/Python.framework/Versions/3
 <ul>
 <li>pointblank: <a href="https://rstudio.github.io/pointblank" class="uri">https://rstudio.github.io/pointblank</a></li>
 </ul>
-<section id="deep-checks" class="level3" data-number="16.5.1">
-<h3 data-number="16.5.1" class="anchored" data-anchor-id="deep-checks"><span class="header-section-number">16.5.1</span> Deep Checks</h3>
-<p>In particular, the <a href="https://docs.deepchecks.com">Deep Checks</a> package is quite useful due to it’s high-level abstraction of several machine learning data validation checks that you would have to code manually if you chose to use something like <code>Pandera</code> for these. Examples from the checklist above include:</p>
-<ul class="task-list">
-<li><label><input type="checkbox">No anomalous correlations between target/response variable and features/explanatory variables<sup>1</sup></label></li>
-<li><label><input type="checkbox">No anomalous correlations between features/explanatory variables<sup>1</sup></label></li>
-</ul>
-<p>To use this, we first have to create a Deep Checks Dataset object (specifying the data set, the target/response variable, and any categorical features):</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular <span class="im">import</span> Dataset</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>cancer_train_ds <span class="op">=</span> Dataset(cancer_train, label<span class="op">=</span><span class="st">"class"</span>, cat_features<span class="op">=</span>[])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once we have that, we can use the <code>FeatureLabelCorrelation()</code> check set the maximum threshold we’ll allow (here 0.9), and run the check:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepchecks.tabular.checks <span class="im">import</span> FeatureLabelCorrelation</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>check_feat_lab_corr <span class="op">=</span> FeatureLabelCorrelation().add_condition_feature_pps_less_than(<span class="fl">0.9</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>check_feat_lab_corr_result <span class="op">=</span> check_feat_lab_corr.run(dataset<span class="op">=</span>cancer_train_ds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Finally, we can check if the result of the <code>FeatureLabelCorrelation()</code> validation has failed. If it has (i.e., correlation is above the acceptable threshold), we can do something, like raise a ValueError with an appropriate error message:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> check_feat_lab_corr_result.passed_conditions():</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Feature-Label correlation exceeds the maximum acceptable threshold."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Notice above the name of the data frame and Deep checks data set? It has the word “train” in it. This is important! Some data validation checks can cause data leakage if we perform them on the entire data set before finalizing feature and model selection. Be conscientious about your data validation checks to ensure they do not data introduce leakage.</p>
-</div>
-</div>
-<p>Deep Checks has a nice gallery of different data validation checks for which it has high-level functions: <a href="https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html" class="uri">https://docs.deepchecks.com/stable/tabular/auto_checks/data_integrity/index.html</a></p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1983,8 +1120,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../parts/automation.html" class="pagination-link" aria-label="Automation">
-        <span class="nav-page-text">Automation</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/131-data_validation-r-pointblank.html" class="pagination-link" aria-label="R Data Validation: pointblank">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">R Data Validation: pointblank</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
