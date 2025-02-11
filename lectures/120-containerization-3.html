@@ -103,6 +103,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
 div.callout-definition.callout {
   border-left-color: pink;
 }
@@ -123,28 +145,6 @@ div.callout-exercise.callout-style-default > .callout-header {
 div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
   content: '🏋️';
-  background-image: none;
-}
-div.callout-relevance-project.callout {
-  border-left-color: orange;
-}
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
   background-image: none;
 }
 </style>
@@ -904,7 +904,7 @@ Note
 <p>We will do this in this course by using GitHub Actions (a continuous integration tool) because is provides a great deal of nuanced control over when to trigger the automated builds of the Docker image, and how to tag them.</p>
 <p>An example GitHub repository that uses GitHub Actions to build a Docker image from a <code>Dockerfile</code> and publish it on DockerHub is available here: <a href="https://github.com/ttimbers/dsci522-dockerfile-practice" class="uri">https://github.com/ttimbers/dsci522-dockerfile-practice</a></p>
 <p>What is there that we haven’t already seen here? It’s the GitHub Actions workflow file <code>.github/workflows/docker-publish.yml</code> shown below. This workflow can be triggered manually, or automatically when a push to GitHub is made that changes <code>Dockerfile</code> or <code>conda-linux-64.lock</code>. When that happens, a computer on GitHub will copy the contents of the GitHub repository and build and version/tag a Docker image using the <code>Dockerfile</code> contained therein. The image will get two tags: <code>latest</code> and the short GitHub SHA corresponding to the Git commit SHA at the HEAD of <code>main</code>. It will also push the Docker image to DockerHub. For that last step to happen, the code owner’s DockerHub credentials must be stored in the GitHub repository as <a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions">GitHub repository secrets</a>.</p>
-<p>Example .<code>github/workflows/docker-publish.yml</code> file:</p>
+<p>Example <code>.github/workflows/docker-publish.yml</code> file:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Publishes docker image, pinning actions to a commit SHA,</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># and updating most recently built image with the latest tag.</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Can be triggered by either pushing a commit that changes the `Dockerfile`,</span></span>
@@ -951,6 +951,9 @@ Note
 <span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">push</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.tags }}</span></span>
 <span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">labels</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.labels }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you are creating this workflow file locally and try to push the file to your repository, you may run into an error that mentions your current PAT does not have permissions to push workflow files.</p>
+<p>Go to (account) Settings &gt; Developer Settings &gt; Personal Access Token &gt; Find and select your PAT, and then make sure the “Workflow” permission is selected.</p>
+<p><img src="../img/github-pat-workflow-permission.png" class="img-fluid"></p>
 
 
 </section>
