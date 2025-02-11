@@ -1,0 +1,202 @@
+---
+title: "Github Actions"
+---
+
+## GitHub actions
+
+A tool and service for automating software development tasks, located in the same place where you already store your code.
+
+### Key concepts:
+**Actions:** Individual tasks you want to perform.
+
+**Workflow:** A collection of actions (specified together in one file).
+
+**Event:** Something that triggers the running of a workflow.
+
+**Runner**: A machine that can run the Github Action(s).
+
+**Job**: A set of steps executed on the same runner.
+
+**Step**: A set of commands or actions which a job executes.
+
+### Examples of GitHub Actions
+
+You have already interacted with GitHub Actions in this class! We used it to:
+
+1. Generate the issues in the [`dsci-310-homework` repo](https://github.com/UBC-DSCI/dsci-310-homework) upon push to the "create" branch: <https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml>
+
+2. Generate a pull request in the [`review-my-pull-request` repo](https://github.com/ttimbers/review-my-pull-request) upon push to the "pr" branch: : <https://github.com/ttimbers/review-my-pull-request/blob/master/.github/workflows/pr.yml>
+
+:::{.exercise}
+Getting to know GitHub Actions workflows
+
+We are going to each create our own GitHub Actions workflow. This workflow is a very simple toy example where we run some `echo` shell commands to print things to the runner's terminal.
+
+#### Steps:
+
+1. Create a new public **GitHub.com** repository with a `README`.
+
+2. Click on the "Actions" tab
+
+3. Click on the first "Set up this workflow" button
+
+    <img src="../img/gh-actions-setup.png" width=600>
+
+4. Click on the two green commit buttons to add this workflow file
+
+5. Go to the "Actions" tab and look at the build logs by following these instructions:
+
+    Click on the message associated with the event that created the action:
+
+    <img src="../img/check-logs1.png" width=600>
+
+    Click on the build link:
+
+    <img src="../img/check-logs2.png" width=600>
+
+    Click on the arrow inside the build logs to expand a section and see the output of the action:
+
+    <img src="../img/check-logs3.png" width=600>
+:::
+
+### GitHub Actions workflow file:
+
+A `YAML` file that lives in the `.github/workflows` directory or your repository which species your workflow.
+
+```yaml
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+
+```
+
+The file above has:
+
+- 3 possible event triggers (push to main, pull request to main, or manual dispatch through the Actions tab)
+- runs on an Ubuntu OS
+- one job called "build"
+- 3 steps
+- the type of runner is ubuntu
+- the first step uses an action, and the following two steps run commands
+
+### Commands vs actions
+
+Steps can consist commands or actions. Let's spend some time to discuss what each of these are and how they differ.
+
+### Commands
+
+Steps that use commands look like the one shown below. They consist of a `name` and a `run` parameter. The commands listed after `run` are run in the runner's shell:
+
+```yaml
+- name: Run a one-line script
+      run: echo Hello, world!
+```
+
+As shown in the file above, we can run multiple commands in a step using the `|` character:
+
+```yaml
+- name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+```
+
+### Actions
+
+Steps that use actions look like the one shown below (which builds and publishes Docker containers). They always have a `uses` parameter, and often also have `name` and `with` parameters. The `uses` parameter specifies which action to use, and the `with` parameters provide arguments to those actions. The `@master` at the name of the `uses` line, specifies whether to use the version at the head of the actions default branch, or a specific version (*e.g.,* `@v2`).
+
+```yaml
+- name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: myDocker/repository
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+```
+
+Actions commonly perform one task in a workflow. There are two ways to build actions, either using JavaScript or by creating a Docker container that runs a shell script. For the latter such actions are defined by:
+
+- a Dockerfile
+- a shell script to run inside the Docker container
+
+:::{.callout-note}
+In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are interested in learning more, I point you to the documentation below.
+:::
+
+#### Optional:
+
+For example, for the action above see its:
+- [Dockerfile](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/Dockerfile)
+- [endpoint.sh script](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/entrypoint.sh)
+- [GitHub repo](https://github.com/elgohr/Publish-Docker-Github-Action)
+
+Read the docs here to learn how to build your own Docker container GitHub action: <https://help.github.com/en/actions/building-actions/creating-a-docker-container-action>
+
+Read the docs here to learn how to build your own JavaScript GitHub action:
+<https://help.github.com/en/actions/building-actions/creating-a-javascript-action>
+
+
+
+## Storing and use GitHub Actions credentials safely via GitHub Secrets
+
+Some of the tasks we want to do in our workflows require authentication. However, the whole point of this is to automate this process - so how can we do that without sharing our authentication tokens, usernames or passwords in our workflow files?
+
+GitHub Secrets is the solution to this!
+
+GitHub Secrets are encrypted environment variables that are used only with GitHub Actions, and specified on a repository-by-repository basis. They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`
+
+See GitHub's help docs for how to do this: <https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets>
+
+## Authenticating with the `GITHUB_TOKEN`
+
+What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow. You access this token in your workflow file via:
+
+```yaml
+${{ secrets.GITHUB_TOKEN }}
+```
+
+## Creating and accessing environment variables in GitHub Actions
+
+Sometimes our commands or actions need environment variables. In both of these scenarios, we create environment variables and access them within a step via:
+
+```yaml
+steps:
+  - name: Hello env vars
+    run: echo $VARIABLE_NAME1 $VARIABLE_NAME2
+    env:
+      VARIABLE_NAME1: <variable_value1>
+      VARIABLE_NAME2: <variable_value2>
+```

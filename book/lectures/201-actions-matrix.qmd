@@ -1,0 +1,99 @@
+---
+title: "Actions: Matrix Workflows"
+---
+
+
+## Matrix workflows
+
+We don't want our software to just work on one operating system, or just one version of Python or R. Ideally it is compatible with the three major operating systems as well as a couple versions of the programming language it was written it.
+
+How do we ensure this? Well, we could have several GitHub Action workflows, each of which runs the job on a different version of Python, on a different operating system. However, there would be a lot of redundancy in those workflows, with the only differences between them being the operating system of the runner and the version of Python.
+
+A more efficient way to do this with GitHub Actions workflows is to use matrix workflows. In these workflows, we use a matrix variable, which we specify as:
+
+```yaml
+strategy:
+  matrix:
+    <variable_name>: [<value1>, <value2>]
+```
+
+which we can refer to in the workflow steps as:
+
+```yaml
+${{ matrix.<variable_name> }}
+```
+
+When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.
+
+:::{.exercise}
+In English, what does this workflow file do?
+
+Now that we have some understanding of GitHub Actions workflows, let's use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.
+
+```yaml
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: R-CMD-check
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      matrix:
+        config:
+          - {os: windows-latest,  r: 'devel'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'devel'}
+          - {os: ubuntu-latest,   r: 'release'}
+
+    steps:
+      - name: Checkout files from GitHub version control repository
+        uses: actions/checkout@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - name: Checks if R package can be installed
+        uses: r-lib/actions/check-r-package@v2
+```
+
+#### Steps in English:
+
+:::{.answer}
+1. checking out the files of the repository to the runner (last commit)
+
+2. Set up and install Python on the runner
+
+3. Use poetry to install dependencies and the package
+
+4. Install the package and its dependencies
+
+5. Run tests and check coverage, generate a coverage report
+
+6. Send the coverage report to codecov.io
+
+7. Renders the documentation (to check there are no errors in this process)
+:::
+
+#### *How many jobs are run? What does each do?*
+
+FILL IN DURING CLASS
+
+:::
+
+:::{.callout-note}
+Note that we omitted the Windows operating system in the example above. The reason for this is that the [`snok/install-poetry@v1`](https://github.com/snok/install-poetry) GitHub action requires more configuration to setup correctly on Windows, and the purpose of the example above was to focus on demonstrating how to use matrices in general using GitHub actions. If you are interested in setting up a runner using `window-latest` please follow the additional configuration instructions here to make it work: <https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows>
+:::
