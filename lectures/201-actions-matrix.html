@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>29&nbsp; Introduction to R &amp; Python packages – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>38&nbsp; Actions: Matrix Workflows – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/191-packaging-python.html" rel="next">
-<link href="../parts/packaging.html" rel="prev">
+<link href="../lectures/201-actions-testing.html" rel="next">
+<link href="../lectures/201-github_actions.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,17 +103,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -113,6 +136,17 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   content: '💻';
   background-image: none;
 }
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
 </style>
 
 
@@ -128,7 +162,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/190-packaging-intro-python-r.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/ci.html">Continuous Integration</a></li><li class="breadcrumb-item"><a href="../lectures/201-actions-matrix.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -407,7 +441,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/190-packaging-intro-python-r.html" class="sidebar-item-text sidebar-link active">
+  <a href="../lectures/190-packaging-intro-python-r.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
   </div>
 </li>
@@ -472,7 +506,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/201-actions-matrix.html" class="sidebar-item-text sidebar-link">
+  <a href="../lectures/201-actions-matrix.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></span></a>
   </div>
 </li>
@@ -605,31 +639,16 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#what-is-a-minimal-viable-software-package" id="toc-what-is-a-minimal-viable-software-package" class="nav-link" data-scroll-target="#what-is-a-minimal-viable-software-package"><span class="header-section-number">29.1</span> What is a minimal viable software package?</a></li>
-  <li><a href="#when-to-start-writing-an-r-or-python-package" id="toc-when-to-start-writing-an-r-or-python-package" class="nav-link" data-scroll-target="#when-to-start-writing-an-r-or-python-package"><span class="header-section-number">29.2</span> When to start writing an R or Python package</a></li>
-  <li><a href="#tour-de-packages" id="toc-tour-de-packages" class="nav-link" data-scroll-target="#tour-de-packages"><span class="header-section-number">29.3</span> Tour de packages</a></li>
-  <li><a href="#tour-de-r-packages" id="toc-tour-de-r-packages" class="nav-link" data-scroll-target="#tour-de-r-packages"><span class="header-section-number">29.4</span> Tour de R packages</a>
-  <ul class="collapse">
-  <li><a href="#usethis-and-the-evolution-of-r-packaging" id="toc-usethis-and-the-evolution-of-r-packaging" class="nav-link" data-scroll-target="#usethis-and-the-evolution-of-r-packaging"><span class="header-section-number">29.4.1</span> <code>usethis</code> and the evolution of R packaging</a></li>
-  <li><a href="#learn-more-by-building-a-toy-r-package" id="toc-learn-more-by-building-a-toy-r-package" class="nav-link" data-scroll-target="#learn-more-by-building-a-toy-r-package"><span class="header-section-number">29.4.2</span> Learn more by building a toy R package</a></li>
-  </ul></li>
-  <li><a href="#tour-de-python-packages" id="toc-tour-de-python-packages" class="nav-link" data-scroll-target="#tour-de-python-packages"><span class="header-section-number">29.5</span> Tour de Python packages</a>
-  <ul class="collapse">
-  <li><a href="#poetry-and-the-evolution-of-python-packaging" id="toc-poetry-and-the-evolution-of-python-packaging" class="nav-link" data-scroll-target="#poetry-and-the-evolution-of-python-packaging"><span class="header-section-number">29.5.1</span> Poetry and the evolution of Python packaging</a></li>
-  <li><a href="#learn-more-by-building-a-toy-python-package" id="toc-learn-more-by-building-a-toy-python-package" class="nav-link" data-scroll-target="#learn-more-by-building-a-toy-python-package"><span class="header-section-number">29.5.2</span> Learn more by building a toy Python package</a></li>
-  </ul></li>
-  <li><a href="#key-package-things-for-python-and-r-packages" id="toc-key-package-things-for-python-and-r-packages" class="nav-link" data-scroll-target="#key-package-things-for-python-and-r-packages"><span class="header-section-number">29.6</span> Key package things for Python and R packages</a></li>
-  <li><a href="#what-is-a-minimal-viable-software-package-1" id="toc-what-is-a-minimal-viable-software-package-1" class="nav-link" data-scroll-target="#what-is-a-minimal-viable-software-package-1"><span class="header-section-number">29.7</span> What is a minimal viable software package?</a></li>
+  <li><a href="#matrix-workflows" id="toc-matrix-workflows" class="nav-link active" data-scroll-target="#matrix-workflows"><span class="header-section-number">38.1</span> Matrix workflows</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/190-packaging-intro-python-r.html"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/ci.html">Continuous Integration</a></li><li class="breadcrumb-item"><a href="../lectures/201-actions-matrix.html"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></h1>
+<h1 class="title"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></h1>
 </div>
 
 
@@ -646,228 +665,99 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </header>
 
 
-<section id="learning-objectives" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
-<ol type="1">
-<li>Explain the circumstances in which one should consider creating a package for their code</li>
-<li>Name the key files and directories in both R &amp; Python pacakges and describe the function of each</li>
-<li>Given a function and a unit test written in Python, use a Cookiecutter template and <code>poetry</code> to create a small and simple Python package</li>
-<li>Given a function and a unit test written in R, use <code>devtools</code> and <code>usethis</code> to create a small and simple R package</li>
-</ol>
-</section>
-<section id="what-is-a-minimal-viable-software-package" class="level2" data-number="29.1">
-<h2 data-number="29.1" class="anchored" data-anchor-id="what-is-a-minimal-viable-software-package"><span class="header-section-number">29.1</span> What is a minimal viable software package?</h2>
-<p>In this course, we are learning to build software packages in R and Python to a high standard, with regards to:</p>
-<ul>
-<li>code robustness</li>
-<li>documentation</li>
-<li>collaboration strategies</li>
-</ul>
-<p>This is really great, but that means there are a LOT of files to track and learn about. What can be helpful is to know and be able to identify which files are essential to make a locally installable software package.</p>
-</section>
-<section id="when-to-start-writing-an-r-or-python-package" class="level2" data-number="29.2">
-<h2 data-number="29.2" class="anchored" data-anchor-id="when-to-start-writing-an-r-or-python-package"><span class="header-section-number">29.2</span> When to start writing an R or Python package</h2>
-<p>When your DRY radar goes off:</p>
-<blockquote class="blockquote">
-<p>It depends on your level of patience for violating the DRY principle, for me the magic number is about 3. If I repeat writing code within a single script or notebook, on the third try hair starts to stand up on the back of my neck and I am irritated sufficiently to either write a function or a loop. The same goes with copying files containing functions that I would like to re-use. The third time that I do this, I am convinced that I will likely want to use this code again on another project and thus I should package it to make my life easier.</p>
-</blockquote>
-<p>When you think your code has general usefulness others could benefit from:</p>
-<blockquote class="blockquote">
-<p>Another reason to package your code is that you think that it is a general enough solution that other people would find it useful. Doing this can be viewed as an act of altruism that also provides you professional gain by putting your data science skills on display (and padding your CV!).</p>
-</blockquote>
-<p>When you want to share data:</p>
-<blockquote class="blockquote">
-<p>The R package ecosystem has found great use in packaging data in addition to Software. Packaging data is beyond the scope of this course, but you should know that it is widely done in R and that you can do it if you want or need to.</p>
-</blockquote>
-<div class="callout callout-style-default callout-tip callout-titled" title="Optional video">
+<section id="matrix-workflows" class="level2" data-number="38.1">
+<h2 data-number="38.1" class="anchored" data-anchor-id="matrix-workflows"><span class="header-section-number">38.1</span> Matrix workflows</h2>
+<p>We don’t want our software to just work on one operating system, or just one version of Python or R. Ideally it is compatible with the three major operating systems as well as a couple versions of the programming language it was written it.</p>
+<p>How do we ensure this? Well, we could have several GitHub Action workflows, each of which runs the job on a different version of Python, on a different operating system. However, there would be a lot of redundancy in those workflows, with the only differences between them being the operating system of the runner and the version of Python.</p>
+<p>A more efficient way to do this with GitHub Actions workflows is to use matrix workflows. In these workflows, we use a matrix variable, which we specify as:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">&lt;variable_name&gt;</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">&lt;value1&gt;</span><span class="kw">,</span><span class="at"> &lt;value2&gt;</span><span class="kw">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>which we can refer to in the workflow steps as:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">${{ matrix.&lt;variable_name&gt; }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.</p>
+<div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Optional video
+Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>I recommend watching a video from rstudio::conf 2020, called RMarkdown Driven Development by Emily Riederer, because I think it is such a nice narrative on how analysis code can evolve into software packages. Despite this talk being focused on R, it really applies to any data science language, and you could easily re-present this as “Jupyter Driven Development” or “Quarto Driven Development”.</p>
-<p><a href="https://rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/">RMarkdown Driven Development by Emily Riederer (video)</a></p>
+<p>In English, what does this workflow file do?</p>
+<p>Now that we have some understanding of GitHub Actions workflows, let’s use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">,</span><span class="at"> master</span><span class="kw">]</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">main</span><span class="kw">,</span><span class="at"> master</span><span class="kw">]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> R-CMD-check</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">R-CMD-check</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }}</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ${{ matrix.config.os }} (${{ matrix.config.r }})</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">strategy</span><span class="kw">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">matrix</span><span class="kw">:</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">config</span><span class="kw">:</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> windows-latest</span><span class="kw">,</span><span class="at">  </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">'devel'</span><span class="kw">}</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> windows-latest</span><span class="kw">,</span><span class="at"> </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">'release'</span><span class="kw">}</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at">   </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">'devel'</span><span class="kw">}</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-latest</span><span class="kw">,</span><span class="at">   </span><span class="fu">r</span><span class="kw">:</span><span class="at"> </span><span class="st">'release'</span><span class="kw">}</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checkout files from GitHub version control repository</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v2</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Setup R</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r@v2</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Install R packages</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/setup-r-dependencies@v2</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">extra-packages</span><span class="kw">:</span><span class="at"> any::rcmdcheck</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> check</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Checks if R package can be installed</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> r-lib/actions/check-r-package@v2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="steps-in-english" class="level4">
+<h4 class="anchored" data-anchor-id="steps-in-english">Steps in English:</h4>
+<div class="answer">
+<ol type="1">
+<li><p>checking out the files of the repository to the runner (last commit)</p></li>
+<li><p>Set up and install Python on the runner</p></li>
+<li><p>Use poetry to install dependencies and the package</p></li>
+<li><p>Install the package and its dependencies</p></li>
+<li><p>Run tests and check coverage, generate a coverage report</p></li>
+<li><p>Send the coverage report to codecov.io</p></li>
+<li><p>Renders the documentation (to check there are no errors in this process)</p></li>
+</ol>
+</div>
+</section>
+<section id="how-many-jobs-are-run-what-does-each-do" class="level4">
+<h4 class="anchored" data-anchor-id="how-many-jobs-are-run-what-does-each-do"><em>How many jobs are run? What does each do?</em></h4>
+<p>FILL IN DURING CLASS</p>
+</section>
 </div>
 </div>
-</section>
-<section id="tour-de-packages" class="level2" data-number="29.3">
-<h2 data-number="29.3" class="anchored" data-anchor-id="tour-de-packages"><span class="header-section-number">29.3</span> Tour de packages</h2>
-<p>We will spend some time now exploring GitHub repositories of some Python and R packages to get more familiar with their internals. As we do this, fill out the missing data in the table below (which tries to match up the corresponding R and Python package key files and directories):</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 65%">
-<col style="width: 17%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Description</th>
-<th>Python</th>
-<th>R</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Online package repository or index</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Directory for user-facing package functions</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Directory for tests for user-facing package functions</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Directory for documentation</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Package metadata</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>File(s) that define the Namespace</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Tool(s) for easy package creation</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<blockquote class="blockquote">
-<p>Note: at the end of lecture I will review the answers to this table.</p>
-</blockquote>
-</section>
-<section id="tour-de-r-packages" class="level2" data-number="29.4">
-<h2 data-number="29.4" class="anchored" data-anchor-id="tour-de-r-packages"><span class="header-section-number">29.4</span> Tour de R packages</h2>
-<p>Some R packages you may want to explore:</p>
-<ol type="1">
-<li><p><a href="https://github.com/jennybc/foofactors"><code>foofactors</code></a> - the end product of <a href="https://r-pkgs.org/whole-game.html">the Whole Game Chapter</a> from the R Packages book.</p></li>
-<li><p><a href="https://github.com/ttimbers/convertempr"><code>convertempr</code></a> - a simple example package I built as a demo for this course</p></li>
-<li><p><a href="https://github.com/tidymodels/broom"><code>broom</code></a> - a tidyverse R package</p></li>
-<li><p><a href="https://github.com/ropensci/tidyhydat"><code>tidyhydat</code></a> - a reviewed ROpenSci R package</p></li>
-</ol>
-<section id="usethis-and-the-evolution-of-r-packaging" class="level3" data-number="29.4.1">
-<h3 data-number="29.4.1" class="anchored" data-anchor-id="usethis-and-the-evolution-of-r-packaging"><span class="header-section-number">29.4.1</span> <code>usethis</code> and the evolution of R packaging</h3>
-<p>What constitutes an R package or its configuration files, has not changed in a long time. However the tools commonly used to build them have. Currently, the most straight forward, and easy way to build R packages now involves the use of two developer packages called <code>usethis</code> and <code>devtools</code>.</p>
-<p><img src="../img/usethis-devtools.png" width="400"></p>
-<p>These packages automate repetitive tasks that arise during project setup and development. It prevents you from having to do things like manually create boiler plate file and directory structures needed for building your R package structure, as well as simplifies the checking, installation and building of your package from source code.</p>
-<p>Packages created via <code>usethis</code> and <code>devtools</code> can be shared so that they can be installed via source from GitHub, or as package binaries on CRAN. For a package to be shared on CRAN, there is a check and gatekeeping system (in contrast to PyPI). We will learn more about this in later parts of the course.</p>
-<blockquote class="blockquote">
-<p>Fun fact! Jenny Bryan, a past UBC Statistics Professor UBC MDS founder, is the maintainer for the <code>usethis</code> R package!</p>
-</blockquote>
-</section>
-<section id="learn-more-by-building-a-toy-r-package" class="level3" data-number="29.4.2">
-<h3 data-number="29.4.2" class="anchored" data-anchor-id="learn-more-by-building-a-toy-r-package"><span class="header-section-number">29.4.2</span> Learn more by building a toy R package</h3>
-<p>For individual assignment 5, you will build a toy R package using a tutorial Jenny Bryan put together: <a href="https://r-pkgs.org/whole-game.html">The Whole Game</a></p>
-<p>After building the toy package, read <a href="https://r-pkgs.org/package-structure-state.html">Package structure and state</a> to deepen your understanding of what packaging means in R and what packages actually are.</p>
-</section>
-</section>
-<section id="tour-de-python-packages" class="level2" data-number="29.5">
-<h2 data-number="29.5" class="anchored" data-anchor-id="tour-de-python-packages"><span class="header-section-number">29.5</span> Tour de Python packages</h2>
-<p>Some Python packages you may want to explore:</p>
-<ol type="1">
-<li><p><a href="https://github.com/ttimbers/pycounts_tt25"><code>pycounts_tt25</code></a> - the end product of <a href="https://py-pkgs.org/03-how-to-package-a-python">How to Package a Python</a> from the Python Packages book</p></li>
-<li><p><a href="https://github.com/UNCG-DAISY/PyWebCAT"><code>PyWebCAT</code></a> - a Pythonic way to interface with the NOAA National Ocean Service Web Camera Applications Testbed (WebCAT)</p></li>
-<li><p><a href="https://github.com/yannvgn/laserembeddings"><code>laserembeddings</code></a> - a Python package (uses the Poetry approach to creating Python packages)</p></li>
-<li><p><a href="https://github.com/pandera-dev/pandera"><code>pandera</code></a> - a reviewed PyOpenSci Python package (uses more traditional approach to creating Python packages)</p></li>
-</ol>
-<section id="poetry-and-the-evolution-of-python-packaging" class="level3" data-number="29.5.1">
-<h3 data-number="29.5.1" class="anchored" data-anchor-id="poetry-and-the-evolution-of-python-packaging"><span class="header-section-number">29.5.1</span> Poetry and the evolution of Python packaging</h3>
-<p>If you want to package your Python code and distribute for ease of use by others on the Python Packaging Index (PyPI) you need to convert it to a standard format called Wheel.</p>
-<p>Previously, to do this it was standard to have 4 configuration files in your package repository:</p>
-<ul>
-<li><code>setup.py</code></li>
-<li><code>requirements.txt</code></li>
-<li><code>setup.cfg</code></li>
-<li><code>MANIFEST.in</code></li>
-</ul>
-<p>In 2016, a new PEP (<a href="https://www.python.org/dev/peps/pep-0518/">518</a>) was made. This PEP defined a new configuration format, <code>pyproject.toml</code>, so that now a single file can be used in place of those previous four. This file must have at least two sections, <code>[build-system]</code> and <code>[tool]</code>.</p>
-<p>This new single configuration file has inspired some new tools to be created in the package building and management ecosystem in Python. One of the most recent and simplest to use is Poetry (created in 2018). When used to build packages, Poetry roughly does two things:</p>
-<ol type="1">
-<li><p>Uses the <code>pyproject.toml</code> to manage and solve package configurations via the Poetry commands <code>init</code>, <code>add</code>, <code>config</code>, etc</p></li>
-<li><p>Creates a lock file (<code>poetry.lock</code>) which automatically creates and activates a virtual environment (if none are activated) where the Poetry commands such as <code>install</code>, <code>build</code>, <code>run</code>, etc are executed.</p></li>
-</ol>
-<p>Cookiecutter templates are also useful to help setup the biolerplate project and directory structure needed for packages. And conda environments are useful to isolate your package development environment. We will use these in this course as well.</p>
-</section>
-<section id="learn-more-by-building-a-toy-python-package" class="level3" data-number="29.5.2">
-<h3 data-number="29.5.2" class="anchored" data-anchor-id="learn-more-by-building-a-toy-python-package"><span class="header-section-number">29.5.2</span> Learn more by building a toy Python package</h3>
-<p>You can learn more about building Python packages, by first building a toy package using a tutorial we have put together for you: <a href="https://py-pkgs.org/03-how-to-package-a-python">How to package a Python</a>.</p>
-<p>After building the toy package, read <a href="https://py-pkgs.org/04-package-structure">Package structure and state</a> to deepen your understanding of what packaging means in Python and what packages actually are.</p>
-</section>
-</section>
-<section id="key-package-things-for-python-and-r-packages" class="level2" data-number="29.6">
-<h2 data-number="29.6" class="anchored" data-anchor-id="key-package-things-for-python-and-r-packages"><span class="header-section-number">29.6</span> Key package things for Python and R packages</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 65%">
-<col style="width: 17%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Description</th>
-<th>Python</th>
-<th>R</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Online package repository or index</td>
-<td>PyPI</td>
-<td>CRAN</td>
-</tr>
-<tr class="even">
-<td>Directory for user-facing package functions</td>
-<td><code>src</code> directory</td>
-<td><code>R</code> directory</td>
-</tr>
-<tr class="odd">
-<td>Directory for tests for user-facing package functions</td>
-<td><code>tests</code></td>
-<td><code>tests/testthat</code></td>
-</tr>
-<tr class="even">
-<td>Directory for documentation</td>
-<td><code>docs</code></td>
-<td><code>man</code> and <code>vignettes</code></td>
-</tr>
-<tr class="odd">
-<td>Package metadata</td>
-<td><code>pyproject.toml</code></td>
-<td><code>DESCRIPTION</code></td>
-</tr>
-<tr class="even">
-<td>File(s) that define the Namespace</td>
-<td><code>__init__.py</code></td>
-<td><code>NAMESPACE</code></td>
-</tr>
-<tr class="odd">
-<td>Tool(s) for easy package creation</td>
-<td>Cookiecutter &amp; Poetry</td>
-<td><code>usethis</code> &amp; <code>devtools</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="what-is-a-minimal-viable-software-package-1" class="level2" data-number="29.7">
-<h2 data-number="29.7" class="anchored" data-anchor-id="what-is-a-minimal-viable-software-package-1"><span class="header-section-number">29.7</span> What is a minimal viable software package?</h2>
-<p>In this course, we are learning to build software packages in R and Python to a high standard, with regards to: - code robustness - documentation - collaboration strategies</p>
-<p>This is really great, but that means there are a LOT of files to track and learn about. What can be helpful is to know and be able to identify which files are essential to make a locally installable software package.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we omitted the Windows operating system in the example above. The reason for this is that the <a href="https://github.com/snok/install-poetry"><code>snok/install-poetry@v1</code></a> GitHub action requires more configuration to setup correctly on Windows, and the purpose of the example above was to focus on demonstrating how to use matrices in general using GitHub actions. If you are interested in setting up a runner using <code>window-latest</code> please follow the additional configuration instructions here to make it work: <a href="https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows" class="uri">https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows</a></p>
+</div>
+</div>
 
 
 </section>
@@ -1292,13 +1182,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../parts/packaging.html" class="pagination-link" aria-label="Packaging">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Packaging</span>
+      <a href="../lectures/201-github_actions.html" class="pagination-link" aria-label="Github Actions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Github Actions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/191-packaging-python.html" class="pagination-link" aria-label="Packaging: Python">
-        <span class="nav-page-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/201-actions-testing.html" class="pagination-link" aria-label="Actions: Testing Workflows">
+        <span class="nav-page-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Actions: Testing Workflows</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
