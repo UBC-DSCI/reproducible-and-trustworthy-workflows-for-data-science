@@ -2,6 +2,163 @@
 title: "R Data Validation: pointblank"
 ---
 
-TBD
+- See this workshop repo for reference: <https://github.com/posit-conf-2024/ds-workflows-r>
+- Specifically this slide deck: <https://posit-conf-2024.github.io/ds-workflows-r/slides/03_data_validation_and_alerting.html#/>
 
-See this workshop repo for reference: <https://github.com/posit-conf-2024/ds-workflows-r>
+
+```{r}
+library(pointblank)
+data(small_table)
+small_table
+```
+
+## Validation Rules
+
+All the validation rule functions begin with `col_*()`:
+<https://rstudio.github.io/pointblank/reference/index.html#validation-expectation-and-test-functions>
+
+Here we want to check that all values in the `a` column are less than `10`.
+We can use the `col_vals_lt()`
+
+
+```{r}
+small_table |>
+  col_vals_lt(a, value = 10)
+```
+
+If the table passes the rule, you get a table back.
+Otherwise you will get an error:
+
+```{r}
+#| error: true
+
+
+small_table |>
+  col_vals_lt(a, value = 5)
+```
+
+This allows you to chain validation rules.
+
+```{r}
+#| error: true
+
+
+small_table |>
+  col_vals_lt(a, value = 10) |>
+  col_vals_between(d, left = 0, right = 5000) |>
+  col_vals_in_set(f, set = c("low", "mid", "high")) |>
+  col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
+```
+
+We can fix this by either fixing the data,
+or the actual test.
+
+```{r}
+small_table |>
+  col_vals_lt(a, value = 10) |>
+  col_vals_between(d, left = 0, right = 10000) |>
+  col_vals_in_set(f, set = c("low", "mid", "high")) |>
+  col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
+```
+
+## Validation Table
+
+From the docs:
+
+> There are three things that should be noted here:
+>
+> - Validation steps: each step is a separate test on the table, focused on a certain aspect of the table.
+> - Validation rules: the validation type is provided here along with key constraints.
+> - Validation results: interrogation results are provided here, with a breakdown of test units (total, passing, and failing), threshold flags, and more.
+
+Create the `agent`, apply validation rules, then `interrogate()` it.
+
+```{r}
+agent <- small_table |>
+  create_agent() |>
+  col_vals_lt(a, value = 10) |>
+  col_vals_between(d, left = 0, right = 5000) |>
+  col_vals_in_set(f, set = c("low", "mid", "high")) |>
+  col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
+```
+
+Running the `interrogate()` on the `agent`, will print out the validation table,
+but also
+
+```{r}
+agent |>
+  interrogate()
+```
+
+## Post-interrogation
+
+There are a few
+[post-interrogation](https://rstudio.github.io/pointblank/reference/index.html#post-interrogation)
+steps you can do with your agents.
+One of the more useful ones may be separately looking at the passing and failing data.
+
+The `get_sundered_data()` and `get_data_extracts()` are a few useful functions to accomplish this goal.
+
+Here is our agent that has failing validation checks.
+
+:::{.callout-important}
+Don't forget to `interrogate()` your `agent` before running post-interrogation functions.
+:::
+
+```{r}
+agent <- small_table |>
+  create_agent() |>
+  col_vals_lt(a, value = 10) |>
+  col_vals_between(d, left = 0, right = 5000) |>
+  col_vals_in_set(f, set = c("low", "mid", "high")) |>
+  col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$") |>
+  interrogate()
+```
+
+We can get a separate or combined version of our passing and failing observations.
+
+
+```{r}
+get_sundered_data(agent, type = "pass")
+```
+
+```{r}
+get_sundered_data(agent, type = "fail")
+```
+
+The `combined` option creates a `.ph_combined` column that you can use in a downstream process.
+
+```{r}
+get_sundered_data(agent, type = "combined")
+```
+
+You can also use the `get_data_extracts()` function to get the values in a list.
+
+
+```{r}
+get_data_extracts(agent)
+```
+
+## Pipeline Data Validation
+
+When you want to run your validation checks non-interactively,
+you may want to use `{pointblank}` in the
+[Pipeline Data Validation Workflow](https://rstudio.github.io/pointblank/articles/VALID-II.html).
+
+In this workflow we do not need to create an `agent` object,
+and rely on the actual warning or failures from the validation checks.
+
+```{r}
+#| error: true
+
+
+small_table %>%
+  col_is_posix(date_time) %>%
+  col_vals_in_set(f, set = c("low", "mid", "high")) %>%
+  col_vals_lt(a, value = 10) %>%
+  col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$") %>%
+  col_vals_between(d, left = 0, right = 5000)
+```
+
+You can also set thresholds for when validation checks throw errors or warnings:
+<https://rstudio.github.io/pointblank/articles/VALID-II.html#using-warn_on_fail-and-stop_on_fail-functions-to-generate-simple-action_levels>
