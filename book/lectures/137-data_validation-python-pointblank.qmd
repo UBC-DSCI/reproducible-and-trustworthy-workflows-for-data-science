@@ -1,0 +1,61 @@
+---
+title: "Python Data Validation: pointblank"
+---
+
+This chapter goes through the `{pointblank}` R package that has been ported into Python:
+<https://posit-dev.github.io/pointblank/>
+
+
+```{python}
+import pointblank as pb
+
+small_table = pb.load_dataset(dataset="small_table")
+small_table
+```
+
+## Validation rules
+
+
+```{python}
+pb.Validate(small_table).col_vals_lt(columns="a", value=10)
+```
+
+
+```{python}
+pb.Validate(small_table).col_vals_lt(columns="a", value=5)
+```
+
+
+```{python}
+validation = (
+    pb.Validate(small_table)
+    .col_vals_between(columns="d", left=0, right=5000)
+    .col_vals_le(columns="c", value=5)
+    .col_exists(columns=["date", "date_time"])
+    .interrogate()
+)
+
+validation
+```
+
+## Post-interrogation
+
+
+```{python}
+validation = (
+    pb.Validate(small_table)
+    .col_vals_between(columns="d", left=0, right=5000)
+    .col_vals_le(columns="c", value=5)
+    .col_exists(columns=["date", "date_time"])
+    .interrogate()
+)
+```
+
+
+```{python}
+validation.get_sundered_data(type="pass")
+```
+
+```{python}
+validation.get_sundered_data(type="fail")
+```
