@@ -1,0 +1,667 @@
+---
+title: Quarto and Github Pages
+---
+
+::: {.callout-note}
+This chapter is taken from the UBC MDS DSCI 521: Computing Platforms for Data Science materials:
+<https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/>
+:::
+
+:::{.activity}
+## Lecture 4 Activity 1
+Have you ever considered creating a website to showcase your projects, research, or personal brand?
+:::
+
+## What is Quarto
+
+Quarto is a tool that can be used to create scientific or technical content.
+It comes with a collection of tools and templates to create many differnt types of data products,
+e.g., websites, articles, blogs, presentations, books, etc.
+Quarto works out of the box with the main data science languages:
+Python, R, Julia, and Observable (Javascript).
+
+The official Quarto website has installation instructions and various guides on getting started with
+creating the various data products: https://quarto.org/
+
+## Installing Quarto
+
+Quarto should already be installed on your machine as a part of the MDS software installation stack:
+https://ubc-mds.github.io/resources_pages/installation_instructions/
+
+### Checking your installation
+
+There are a few ways you can always check if a terminal program exists and can be found on your computer.
+
+- The `which` command in the shell will give you the path to where the program is found.
+  If you have multiple versions of an application installed on your machine,
+  `which` will tell you which one is _acually_ going to be used.
+  If the path returned is not what you expect,
+  then it typically means you need to adjust your `$PATH` variable.
+  If the program cannot be found, you will get an `which: no quarto in ....` message.
+  The `....` will list all the locations (paths) that your `$PATH` variable defines.
+  This is the order where your computer is looking for programs.
+
+```bash
+$ which quarto
+/usr/bin/quarto
+```
+
+- Many terminal programs provide a `--version` flag that will return the version of the program installed.
+  If the binary (i.e., program) exists, then it will return the version number back.
+  If the program does not exist you will see a `command not found` message.
+
+```bash
+$ quarto --version
+1.5.55
+```
+
+- You can also access the help pages for `quarto` with the `--help` flag.
+  This is similar to many terminal programs where you can either use the `--help` flag or call `man` (for manual) of a program.
+  Not every program implments a `--help` and `man`.
+  This will also differ from system to system.
+  For quarto we can use the `--help` flag to also confirm that things are working
+
+```bash
+$ quarto --help
+
+Usage:   quarto
+Version: 1.5.55
+
+Description:
+
+  Quarto CLI
+
+Options:
+
+  -h, --help     - Show this help.
+  -V, --version  - Show the version number for this program.
+
+Commands:
+
+  render     [input] [args...]     - Render files or projects to various document types.
+  preview    [file] [args...]      - Render and preview a document or website project.
+  serve      [input]               - Serve a Shiny interactive document.
+  create     [type] [commands...]  - Create a Quarto project or extension
+  use        <type> [target]       - Automate document or project setup tasks.
+  add        <extension>           - Add an extension to this folder or project
+  update     [target...]           - Updates an extension or global dependency.
+  remove     [target...]           - Removes an extension.
+  convert    <input>               - Convert documents to alternate representations.
+  pandoc     [args...]             - Run the version of Pandoc embedded within Quarto.
+  typst      [args...]             - Run the version of Typst embedded within Quarto.
+  run        [script] [args...]    - Run a TypeScript, R, Python, or Lua script.
+  install    [target...]           - Installs a global dependency (TinyTex or Chromium).
+  uninstall  [tool]                - Removes an extension.
+  tools                            - Display the status of Quarto installed dependencies
+  publish    [provider] [path]     - Publish a document or project to a provider.
+  check      [target]              - Verify correct functioning of Quarto installation.
+  help       [command]             - Show this help or the help of a sub-command.
+```
+
+
+
+## Your first Quarto website
+
+We can use `quarto create` to aid in creating the template files for a website.
+These template files and code is also known as "boilerplate".
+
+```bash
+$ quarto create --help
+
+Usage:   quarto create [type] [commands...]
+Version: 1.5.55
+
+Description:
+
+  Create a Quarto project or extension
+
+Options:
+
+  -h, --help              - Show this help.
+  --open        [editor]  - Open new artifact in this editor (vscode,rstudio)
+  --no-open               - Do not open in an editor
+  --no-prompt             - Do not prompt to confirm actions
+  --log         <file>    - Path to log file
+  --log-level   <level>   - Log level (info, warning, error, critical)
+  --log-format  <format>  - Log format (plain, json-stream)
+  --quiet                 - Suppress console output.
+  --profile               - Active project profile(s)
+
+Commands:
+
+  help  [command]  - Show this help or the help of a sub-command.
+```
+
+We are going to create a quarto project, but we may still need to know the type of project we will create.
+When we run `quarto create project` we get a terminal option to pick what kind of type.
+
+```bash
+$ quarto create project
+ ? Type
+ ❯ default
+   website
+   blog
+   manuscript
+   book
+   confluence
+```
+
+We can use our arrow keys to select the project type we want, and hit enter to create the skeleton for that project.
+We'll use `website` in this lecture.
+
+It will then ask you for a directory:
+
+```bash
+$ quarto create project
+ ? Type › website
+ ? Directory ›
+
+```
+
+Here we can provide the __relative__ path from your current working directory (i.e., `pwd`) where `quarto` will
+dump all its files.
+
+You will see how it created a few files, and prompt you to open the directory in a text editor:
+
+```bash
+  - Created _quarto.yml
+  - Created index.qmd
+  - Created about.qmd
+  - Created styles.css
+ ? Open With
+ ❯ vscode
+   (don't open)
+```
+
+::: {.note}
+Note
+If you already created a new folder and `cd` into it.
+You can use `.` to have the files created in the current location.
+Otherwise, you can specify a new folder name, and it will create a new folder with
+the new files in it for you.
+
+If you do create a new folder, remember you will need to `cd` into it.
+:::
+
+Your folder structure should look like the one below.
+If it does not, you need to move your files to the correct path,
+or start over
+
+```
+USERNAME.github.io/
+├── about.qmd
+├── index.qmd
+├── _quarto.yml
+└── styles.css
+
+```
+
+The most important file is the `_quarto.yml` file,
+this is how quarto knows you are using a quarto project.
+Some quarto commands and options may need to run in a quarto project.
+The contents of the `_qquarto.yml` (in this example) file tells quarto that we are going to be
+creating a website.
+
+```yml
+project:
+  type: website
+```
+
+:::{.activity}
+## Lecture 4 Activity 2
+
+Which file is crucial for Quarto to recognize that you are working on a Quarto project, such as a website?
+
+A. index.qmd
+
+B. about.qmd
+
+C. _quarto.yml
+
+D. styles.css
+
+:::
+
+### Tweaking your website
+
+The `_quarto.yml` file defines many (if not all) of the options you can use to tweak how
+your website (or project) renders or behaves.
+This file is a YAML file.
+This is a common format many tools use to provide configuration settings.
+Just note the indentation, white space, and dashes `-` are all really important and implies different things.
+YAML is a "recursive acronym", it stands for "YAML Ain't Markup Language".
+
+You can go through the official quarto website documentation guide for more information:
+https://quarto.org/docs/websites/
+
+### Rendering your website
+
+At the end of the day,
+we need a series of `.html` files that our web browser can open and render.
+So far we don't have any of that.
+Luckily `quarto` can take the source documents and create the `.html` files needed for a website.
+
+There are 2 commands that will be helpful for us here:
+
+- `quarto preview`: will "preview" the website, any changes to the files will automatically regenerate and refresh the website files
+- `quarto render`: will generate all the html files
+
+Think of `preview` as a way to quickly see how the website changes as you are working, and `render` as creating the "final" website from scratch.
+When using `quarto preview` your current terminal will be used to look for changes and re-render your site.
+
+:::{.callout-tip}
+## Tip
+
+If you are using VSCode, you may need to set the `render-on-save` option as a default,
+in either the IDE, the `_quarto.yml` file or the individual `.qmd` document:
+
+<https://quarto.org/docs/tools/vscode.html#render-on-save>
+:::
+
+::: {.tip}
+## Tip
+If you are using VSCode, and use the `Quarto: Preview` command from the command pallete (you will need the VSCode Quarto extension),
+this will run `quarto preview ` with the `--no-watch-inputs` by defualt.
+This will prevent saving the file to auto complile the project.
+
+If you sill want to have `preview` auto render on save you can do it in one of 3 ways:
+
+1. Not use the quarto extension to use `Quarto: Preview`
+2. Change your VSCode quarto extension option to have Render on Save as a default
+3. Add the option to the `_quarto.yml` file or individual document YAML header with:
+
+```yaml
+editor:
+  render-on-save: true
+```
+
+See this page in the quarto help documentaion on
+[Render on Save](https://quarto.org/docs/tools/vscode.html#render-on-save).
+:::
+
+```bash
+$ quarto preview
+Preparing to preview
+
+Watching files for changes
+Browse at http://localhost:4463/
+Opening in existing browser session.
+GET: /
+```
+
+Here you can see we can navigate to `http://localhost:4463/` in our browser and see our website locally.
+The URL essentially says to look at port `4463` on our local machine (i.e., `localhost`).
+Your port number may differ and change, so always pay attention to what port your current site is running on.
+If something is not updating after you make a change,
+try exiting out of `preview` with <kbd>CTRL</kbd> + <kbd>c</kbd> (Windows/Linux) or <kbd>⌘</kbd> + <kbd>c</kbd> (Mac) and re-`preview`-ing.
+
+
+
+When we use `quarto render` it will create the website `html` files and give our terminal back.
+We will have to manually navigate to the `index.html` file to see the website changes as we go.
+
+```bash
+$ quarto render
+[1/2] about.qmd
+[2/2] index.qmd
+
+Output created: _site/index.html
+```
+
+Always `render` your site before your final deployment,
+not all changes to your quarto files will trigger an automatic regeneration + rendering.
+
+:::{.activity}
+## Lecture 4 Activity 3
+
+Which command would you use to look at a Quarto file when changes are made?
+
+A. `quarto render --preview`
+
+B. `quarto render --watch`
+
+C. `quarto preview`
+
+D. `quarto serve`
+
+:::
+
+## GitHub Pages
+
+GitHub (public and enterprise) have mechanims that can turn static website content and render them into an actual website.
+If you're reading these words from a web URL and not directly in the raw source (i.e., the jupyter notebook)
+then you are experiencing github pages.
+
+Github uses [Jekyll](https://jekyllrb.com/) by default to render its github pages.
+However you can manually render your own `html` files and disable Github's `jekyll` rendering
+and tell Github pages to render your website content exactly as you have it.
+
+### Github Pages and repositories
+
+Any one of your github repositories can be set up to use github pages.
+If a repository is github pages enabled to render a website,
+it is typically published to: `USERNAME.github.io/REPO_NAME`.
+where `USERNAME` is your github username,
+and `REPO_NAME` is the actual name of the repository on github.
+
+#### Special github repository names
+
+There are 2 other special repository names that github provides that you can use to create a landing page for yourself
+(i.e., creating your professional presence and profile):
+
+- `USERNAME.github.io`
+- `USERNAME`
+
+##### `USERNAME.github.io`
+
+Creating a repository with this name (replacing the text `USERNAME` with your github username)
+and having static website files on it will allow you to direct people to your own github website:
+`https://USERNAME.github.io/`.
+
+If you know your way around HTML + CSS and related tools,
+you can publish any static content on your own and render it on the site.
+In this lesson we're leveraging `quarto` to help us create the `html` files.
+
+Here's an example of a repository that contains only a `index.html` file
+that redirects to a different URL:
+
+https://github.com/chendaniely/chendaniely.github.io
+
+When someone goes to `chendaniely.github.io` they will be automatically redirected to a different web address.
+
+##### `USERNAME`
+
+If you create a repository that is _just_ your github username,
+with only a `README.md` file in it.
+Github will render the `README.md` file into your github landing page.
+
+Here is an example of a former MDS student's Github landing page and their accompanying repository.
+
+- Landing: <https://github.com/mrnabiz/>
+- Repository: <https://github.com/mrnabiz/mrnabiz>
+
+### Github Pages and Quarto
+
+Now that we've seen how to use `quarto` to create a website locally,
+we can leverage it in publishing the website.
+
+We've talked in the past how we should ignore generated files in a git repository,
+but this is an exception where we actually need to keep the rendered `html` files from `quarto`.
+Otherwise github pages will not have anything to render.
+
+We can use any of the git methods we've learned to get our quarto files into a github repository.
+
+- `git init` + create the remote repo + connect the remote URLs
+- create the remote repo + `git clone`
+
+Once all our files are on github, we can tell github to render the website files.
+
+1. Go to the __repository__ settings (not your account settions)
+2. Goto the "Pages" options
+
+We have a few options to tell github how to render a webssite.
+Currently, our files are in the `main` branch, but the only options for deploying from `main` is under `/` root or `/docs`.
+This is a problem because our quarto website defaults to putting all the website files into `_site/`
+
+We can change the directory `quarto` renders the files into by editing our `_quarto.yml` file.
+Let's have it render the website files into a folder github understands.
+
+```yml
+project:
+  type: website
+  output-dir: docs
+```
+
+When you re-render your site now, the output should reflect your new output directory:
+
+```bash
+$ quarto render
+[1/2] about.qmd
+[2/2] index.qmd
+
+Output created: docs/index.html
+```
+
+:::{.callout-important}
+Don't forget to save your `yaml` file, re-`render`, remove the old `_site` folder, `add`, `commit`, and `push` your changes.
+:::
+
+On your main github repo, you'll notice a burnt orange dot next to the latest commit hash.
+This is github's continuous integration / deployment system creating and publishing your site.
+When the icon is green, you can navibate to your site and behold publishing somethign on the internet!
+
+## Quarto for rendering your MDS assignments
+
+You can use `quarto render` to render your MDS documents into different output formats,
+e.g., `pdf` or `html`.
+For more information you can explore how `quarto render` works by calling the help page for `render`.
+This can be particularly useful when trying to export out `pdf` documents from a jupyter notebook
+if other methods are not working.
+
+```bash
+$ quarto help render
+
+Usage:   quarto render [input] [args...]
+Version: 1.5.55
+
+Description:
+
+  Render files or projects to various document types.
+
+Options:
+
+  -h, --help                          - Show this help.
+  -t, --to                            - Specify output format(s).
+  -o, --output                        - Write output to FILE (use '--output -' for stdout).
+  --output-dir                        - Write output to DIR (path is input/project relative)
+  -M, --metadata                      - Metadata value (KEY:VALUE).
+  --site-url                          - Override site-url for website or book output
+  --execute                           - Execute code (--no-execute to skip execution).
+  -P, --execute-param                 - Execution parameter (KEY:VALUE).
+  --execute-params                    - YAML file with execution parameters.
+  --execute-dir                       - Working directory for code execution.
+  --execute-daemon                    - Keep Jupyter kernel alive (defaults to 300 seconds).
+  --execute-daemon-restart            - Restart keepalive Jupyter kernel before render.
+  --execute-debug                     - Show debug output when executing computations.
+  --use-freezer                       - Force use of frozen computations for an incremental file render.
+  --cache                             - Cache execution output (--no-cache to prevent cache).
+  --cache-refresh                     - Force refresh of execution cache.
+  --no-clean                          - Do not clean project output-dir prior to render
+  --debug                             - Leave intermediate files in place after render.
+  pandoc-args...                      - Additional pandoc command line arguments.
+  --log                     <file>    - Path to log file
+  --log-level               <level>   - Log level (info, warning, error, critical)
+  --log-format              <format>  - Log format (plain, json-stream)
+  --quiet                             - Suppress console output.
+  --profile                           - Active project profile(s)
+
+Commands:
+
+  help  [command]  - Show this help or the help of a sub-command.
+
+Examples:
+
+  Render Markdown:    quarto render document.qmd
+                      quarto render document.qmd --to html
+                      quarto render document.qmd --to pdf --toc
+  Render Notebook:    quarto render notebook.ipynb
+                      quarto render notebook.ipynb --to docx
+                      quarto render notebook.ipynb --to pdf --toc
+  Render Project:     quarto render
+                      quarto render projdir
+  Render w/ Metadata: quarto render document.qmd -M echo:false
+                      quarto render document.qmd -M code-fold:true
+  Render to Stdout:   quarto render document.qmd --output -
+```
+
+You can also use `quarto render --help` to get the same help output.
+
+:::{.activity}
+## Lecture 4 Activity 4
+
+Which GitHub repository name allows you to create a personal website with the URL https://USERNAME.github.io/?
+
+A. README.md
+
+B. USERNAME.github.io
+
+C. index.html
+
+D. docs
+
+:::
+
+:::{.exercise}
+## Lecture 4 Exercise 1
+
+**Creating and Deploying a Quarto Website**
+
+**Objective:** By completing this exercise, students will gain hands-on experience in creating a Quarto website and deploying it using GitHub Pages.
+
+**Instructions:**
+
+1. **Create a New Quarto Website Project:**
+   - Open your command line interface (Terminal on Mac/Linux, Command Prompt/PowerShell on Windows).
+   - Use the `quarto create project` command to create a new Quarto website project.
+
+   ```bash
+   quarto create project
+   ```
+
+   - Select "website" as the project type and provide a directory name for your project.
+
+2. **Navigate to Your Project Directory:**
+   - Change into the newly created project directory.
+
+   ```bash
+   cd your_project_directory
+   ```
+
+3. **Customize Your Quarto Website:**
+   - Open the `_quarto.yml` file in a text editor and customize the settings as needed.
+
+   ```yml
+   project:
+     type: website
+     output-dir: docs
+   ```
+
+   - Modify the content of the `index.qmd` and `about.qmd` files to personalize your website.
+
+4. **Render Your Quarto Website:**
+   - Use the `quarto render` command to generate the HTML files for your website.
+
+   ```bash
+   quarto render
+   ```
+
+   - Verify that the output is created in the `docs` directory.
+
+5. **Initialize a Git Repository:**
+   - If you haven't already, initialize a Git repository in your project directory.
+
+   ```bash
+   git init
+   ```
+
+   - Add all files to the Git repository and commit them.
+
+   ```bash
+   git add .
+   git commit -m "Initial commit of Quarto website"
+   ```
+
+6. **Push Your Project to GitHub:**
+   - Create a new repository on GitHub and follow the instructions to push your local repository to GitHub.
+
+   ```bash
+   git remote add origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+7. **Enable GitHub Pages:**
+   - Go to the settings of your GitHub repository.
+   - Under the "Pages" section, set the source to the `docs` folder on the `main` branch.
+   - Save the settings and wait for GitHub to publish your website.
+
+8. **Verify Your Website:**
+   - Navigate to `https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY_NAME` to see your published Quarto website.
+
+**Questions:**
+
+1. What command do you use to create a new Quarto website project?
+2. How do you customize the settings for your Quarto website?
+3. What steps do you take to render your Quarto website and generate the HTML files?
+4. How do you initialize a Git repository and push it to GitHub?
+5. What settings do you need to change in GitHub to enable GitHub Pages for your website?
+
+:::
+
+
+## Improving your quarto experience
+
+Quarto works with a few IDEs and text editors.
+
+- VSCode extension: <https://marketplace.visualstudio.com/items?itemName=quarto.quarto>
+- RStudio: Comes with RStudio (you can also manually install it as a terminal application)
+- Jupyter Lab: there is no official jupyter quarto extension, but quarto can work with jupyter notebooks in the command line tool
+
+## Publishing to the gh-pages branch
+
+See this section in the quarto documentation on how to publish to the `gh-pages` branch.
+
+In short, you will first need to create a gh-pages branch for your website:
+
+```bash
+git checkout --orphan gh-pages
+git reset --hard # make sure all changes are committed before running this!
+git commit --allow-empty -m "Initialising gh-pages branch"
+git push origin gh-pages
+```
+
+You can then use the `quarto publish` command to publish to the gh-pages branch
+<https://quarto.org/docs/publishing/github-pages.html#publishing>
+
+```bash
+quarto publish gh-pages
+```
+
+If you want to automate the process using github actions you can use the following
+workflow file.
+
+<https://quarto.org/docs/publishing/github-pages.html#publish-action>
+
+:::{.callout-important}
+Before using the github actions publishing workflow,
+make sure you manually publish to the `gh-pages` branch first.
+:::
+
+
+```yaml
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
