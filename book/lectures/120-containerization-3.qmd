@@ -15,7 +15,7 @@ title: Customizing and building containers
 
 - Docker images are built in layers, and as such, `Dockerfile`s always start by specifying a base Docker image that the new image is to be built on top off.
 
-- Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use `apt-get` as our installation program). However, most of what we'll be doing for installation is R, Python and their packages. For that we can really use tools we're already familiar with (`conda` and `conda-lock`, for example).
+- Docker containers are all Linux containers and thus use Linux commands to install software, however there are different flavours of Linux (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands to match your flavour of container. For this course we will focus on Ubuntu- or Debian-based images (and that means if we need to install software outside of R and Python packages, we will use `apt` as our installation program). However, most of what we'll be doing for installation is R, Python and their packages. For that we can really use tools we're already familiar with (`conda` and `conda-lock`, for example).
 
 
 ### Workflow for building a Dockerfile
@@ -25,7 +25,7 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
 
 1. Choose a base image to build off (from <https://hub.docker.com/>).
 
-2. Create a `Dockerfile` named `Dockerfile` and save it in an appropriate project repository. Open that file and type `FROM <BASE_IMAGE> on the first line`. Add any files that need to be accessed at build time via the `COPY` command.
+2. Create a `Dockerfile` named `Dockerfile` and save it in an appropriate project repository. Open that file and type `FROM <BASE_IMAGE>` on the first line. Add any files that need to be accessed at build time via the `COPY` command.
 
 3. In a terminal, type `docker run --rm -it <IMAGE_NAME>` and interactively try the install commands you think will work. Edit and try again until the install command works.
 
@@ -37,6 +37,9 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
 
 ### Demo workflow for creating a `Dockerfile` locally
 
+The example in this section is based on this repository:
+<https://github.com/chendaniely/docker-condalock-jupyterlab>
+
 We will demo this workflow together to build a Docker image locally
 on our machines that has Jupyter, Python and the python packages `pandas`,
 `pandera` and `deepcheck` installed.
@@ -45,42 +48,68 @@ we will leverage a `conda` environment that we have for these packages already:
 
 ```yaml
 # environment.yml
-name: my-env
+name: dockerlock
 channels:
   - conda-forge
-  - defaults
-  dependencies:
-    - pandas=2.2.2
-    - pandera=0.20.4
-    - python=3.11
-    - pip
-    - pip:
-      - deepchecks==0.18.1
+dependencies:
+  - altair-all
+  - conda-lock=>3.0.4
+  - jupyterlab
+  - pandas
+  - pandera
+  - pip
+  - pointblank
+  - python
+  - pip:
+    - deepchecks
+    - vegafusion
+
 ```
 
-To use this environment efficiently to build a Docker image,
-we need a `conda-lock` file, more specifically an explicit
-`conda-lock` file for the linux operating system
-(as our container will be a linux container).
-We can generate that from the `environment.yml` file via:
+:::{.callout-note}
+The `environment.yml` file should only have the `conda-forge` channel.
+**Do not** mix `conda-forge` with `defaults` channels;
+sometimes this will cause the package dependency solver to fail.
+
+Also, when you have a set of packages that do solve and install, you should go back and make sure
+all the packages are locked to a particular version, using `=`.
+:::
+
+To efficiently use this environment to build a Docker image,
+we need a `conda-lock` file.
+We can generate this lock file from the `environment.yml` file via:
 
 ```bash
-conda-lock -k explicit --file environment.yml -p linux-64
+
+conda-lock lock \
+  --file environment.yml \
+  -p linux-64 \      # x86-64 Linux
+  -p osx-64 \        # x86-64 macOS
+  -p osx-arm64 \     # ARM64 macOS
+  -p win-64 \        # x86-64 Windows
+  -p linux-aarch64   # ARM64 Linux and ARM macOS running docker
 ```
 
-From that, we get a file named `conda-linux-64.lock`,
-which we can copy into a
+:::{.callout-important}
+If you only use the `conda-lock lock --file environment.yml` command,
+it **does not** solve for the `linux-aarch64` architecture by default.
+You need this architectue to run a linux container on an ARM M-Chip Mac.
+:::
+
+From that, we get a file named `conda-lock.yml`.
+The `conda-lock.yml` file will contain all the solved package dependencies for all
+the platforms specified.
+We can copy this file into a
 [Jupyter container](https://jupyter-docker-stacks.readthedocs.io/en/latest/)
-and update the `conda` environment
-already installed there using `mamba update`.
+to either update an existing environment,
+or to create a new environment.
 
 OK, now we are ready to start writing our `Dockerfile`!
-Let's start with the `quay.io/jupyter/minimal-notebook:afe30f0c9ad8` image,
-which already has Jupyter lab installed.
+Let's start with the `condaforge/miniforge3:25.9.1-0` image.
 so the first line of our `Dockerfile` should be as such:
 
-```bash
-FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
 ```
 
 Next, since we will be wanting the container to have access to a file at
@@ -88,10 +117,12 @@ build time, we need to `COPY` it in so we can have access to it in the container
 Our Dockerfile should now look like this:
 
 ```dockerfile
-FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
-
-COPY conda-linux-64.lock /tmp/conda-linux-64.lock
+FROM condaforge/miniforge3:25.9.1-0
+COPY conda-lock.yml /tmp/conda-lock.yml
 ```
+
+This copies the `conda-lock.yml` from our current local computer's working directory,
+into the Docker container's `/tmp` directory.
 
 Now let's build an image from our `Dockerfile`
 so we can test out and find install commands that work for what we need to do!
@@ -106,58 +137,43 @@ docker build --tag testing_cmds .
 ```
 
 Now we will run our image (named `testing_cmds`).
-Note that we run this not using the Jupyter web app
-because all we are doing right now is testing out installation commands.
+This "turns' on" our docker container and gives us a terminal prompt inside the container we just built and ran.
+We can now run commands in there to test commands to see if they work.
+If commands work, we can incrementally add them to our `Dockerfile`.
+If we mess something up, all we need to do is exit the container and start it again,
+nothing we do inside the container will persist.
+This gives us a great way to explore and test commands without worrying about messing up our main computer.
 
 ```bash
-$ docker run --rm -it testing_cmds bin/bash
+docker run --rm -it testing_cmds bin/bash
 ```
 
-The first command we will test out is `mamba update`
-to add the packages specified in `conda-linux-64.lock`
-to the base `conda` environment in the container.
+At the time of writing this section, miniforge3 and `conda 25.11.0` does not have `conda-lock`
+installed by default,
+so in order to create/update an environment,
+we will have first install `conda-lock`.
+
+Inside your currently running docker container terminal,
+you can install `conda-lock`:
+
+```bash
+(base) root@45c7f31e47a8:/# conda install -n base -c conda-forge conda-lock -y
+```
 
 :::{.callout-note}
-Note the use of `--quiet` in the command below.
-These commands will be run non-interactively when building the container,
-and so we will not be able to see the output.
-If this command fails here though,
-we may want to remove `--quiet` while troubleshooting,
-and then add it back in once we get things working.
+We are passing in the `-y` yes flag because we want the `Dockerfile` to run these
+commands non-interactively, meaning we do not want to (or have the ability) for the user to confirm
+and answer isntallation prompts.
+In this `conda install` command, this will automatically answer "yes" to confirm the installation.
 :::
 
-```bash
-jovyan@91320098e7cb:~$ mamba update --quiet --file /tmp/conda-linux-64.lock
-```
-
-Great! That seemed to work.
-Next, we'll try cleaning up
-(a good, but not necessary practice after updating conda environments).
-
-:::{.callout-note}
-Note the use of `-y` and `-f` in the command below.
-These commands will be run non-interactively when building the container,
-and so we cannot use the keyboard to say "yes" to `conda`/`mamba` questions.
-So instead we just give full permission
-for all the things when we run the command.
-:::
+Next we can use `conda-lock` to install the environment specified
+in the `conda-lock.yml` file.
+Here we are creating a new environment named `dockerlock` in the container.
+Currently, `conda-lock` and the `libmamba` solver will not overrite the root environment.
 
 ```bash
-jovyan@91320098e7cb:~$ mamba clean --all -y -f
-```
-
-OK, great! That seemed to have worked too!
-Last thing we'll test out is fixing permissions
-of the directories where we installed things
-(sometimes these got modified during installation
-and can cause user issues):
-
-```bash
-jovyan@91320098e7cb:~$ fix-permissions "${CONDA_DIR}"
-```
-
-```bash
-jovyan@91320098e7cb:~$ fix-permissions "/home/${NB_USER}"
+(base) root@45c7f31e47a8:/# conda-lock install -n dockerlock conda-lock.yml
 ```
 
 Awesome! This seemed to have worked!
@@ -168,14 +184,12 @@ proceeding them with `RUN` and try to build our image to ensure this works.
 Our `Dockerfile` so far:
 
 ```dockerfile
-FROM quay.io/jupyter/minimal-notebook:afe30f0c9ad8
+FROM condaforge/miniforge3:25.9.1-0
 
-COPY conda-linux-64.lock /tmp/conda-linux-64.lock
+COPY conda-lock.yml /tmp/conda-lock.yml
 
-RUN mamba update --quiet --file /tmp/conda-linux-64.lock
-RUN mamba clean --all -y -f
-RUN fix-permissions "${CONDA_DIR}"
-RUN fix-permissions "/home/${NB_USER}"
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
 ```
 
 Let's try building an image named `testimage` locally:
@@ -184,15 +198,108 @@ Let's try building an image named `testimage` locally:
 $ docker build --tag testimage .
 ```
 
-Looks like a success, let's be sure we can use the `pandera` package as a test:
+Looks like a success, let's be sure we can use the `pandera` package as a test.
+Remember to activate the invironment first.
 
 ```bash
-jovyan@cc85f7afef69:~$ python
-Python 3.11.6 | packaged by conda-forge | (main, Oct  3 2023, 11:57:02) [GCC 12.3.0] on linux
+$ docker run --rm -it testimage bash
+
+(base) root@45c7f31e47a8:/# conda activate dockerlock # activate the environment
+
+(dockerlock) root@45c7f31e47a8:/tmp# python
+Python 3.13.9 | packaged by conda-forge | (main, Oct 22 2025, 23:33:35) [GCC 14.3.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> import pandera as pa
->>>
+>>> import pandera
 ```
+
+The main parts of the image are now done!
+A few more clean up steps and we're all ready to go.
+
+Since `conda-lock` doesn't let us overrite the base environment,
+we needed to install all our packages into a new environment,
+we used `dockerlock` in this example so far.
+Now we want to make sure the `dockerlock` environment gets activated automatically
+whenever we run and start the container.
+This saves us an exatra set of steps so we do no need to constanly activate the environment.
+
+We'll update our `Dockerfile` with these 2 lines:
+
+```dockerfile
+# make dockerlock the default environment
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+```
+
+This makes absulutely sure the we have conda working, and then activates the `dockerlock` environment.
+We then take this set of commands and put it in the `~/.bashrc` file.
+This is a special that runs from top to bottom anytime a new terminal is opened.
+This way we can guarentee that we have conda loaded, and it activates the envrionment.
+
+
+```dockerfile
+# set the default shell to use bash with login to pick up bashrc
+# this ensures that we are starting from an activated dockerlock environment
+SHELL ["/bin/bash", "-l", "-c"]
+```
+
+This stop makes sure that we are using bash as the default shell and terminal,
+so the `~/.bashrc` file that activates the conda envionment will run.
+
+Our dockerfile should now llook like this:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+```
+
+Finally, let's make a small quality improvement so we do not see the root systm files when we run the image.
+
+We'll use the docker `WORKDIR` instruction to set the default working directory when the container starts,
+so we are automatilly put into a specific folder, away from all the root system files.
+You can still access those, we are only setting a new folder to make things cleaner.
+
+We will add this to our docker file
+
+```dockerfile
+# sets the default working directory
+WORKDIR /workplace
+```
+
+So now we have a fully-functioning docker file.
+Dont' forget to build it so you can use your new container.
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+WORKDIR /workplace
+```
+
+
+### Run jupyter lab in a conainer
+
+If only needed the container we just created to run code,
+and did not need any web application to run,
+we can stop there.
+However, the `environment.yml` file we created installed `jupyterlab`,
+and it would also be nice for the container to run jupyter lab just like our fist example
+in an earlier docker chapter when we used the `quay.io/jupyter/datascience-notebook:2025-03-14` container.
+
+Since we are not planning to
 
 Hurray! We did it! Now we can automate this build on GitHub,
 push it to Docker Hub and share this Docker image with the world!
@@ -201,7 +308,8 @@ push it to Docker Hub and share this Docker image with the world!
 
 Source: <https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl>
 
-### Guidelines for `RUN` Commands:
+
+### Guidelines for `RUN` Commands
 
 Each `RUN` command creates a new layer in the Docker image.
 Each layer in a Docker image takes more disc space.
@@ -209,19 +317,19 @@ As a consequence, we want to minimize the number of layers where reasonably poss
 How can we do this?
 
 Install everything that can be installed by a tool
-(e.g., `conda`, `mamba`, `pip`, `apt-get`, etc) at once (i.e., when installing 5 programs via `apt-get`, do not call `apt-get` five times, instead do: `apt-get tool1 tool2 tool3 tool4 tool5`).
+(e.g., `conda`, `mamba`, `pip`, `apt`, etc) at once (i.e., when installing 5 programs via `apt`, do not call `apt` five times, instead do: `apt tool1 tool2 tool3 tool4 tool5`).
 However, doing this can lead to long lines.
 In response, we can break a single command across lines in the shell by using the `\` character.
-For example, to reduce the long line below which uses `apt-get` to install the programs Git, Tiny Nano, Less, and wget:
+For example, to reduce the long line below which uses `apt` to install the programs Git, Tiny Nano, Less, and wget:
 
 ```bash
-apt-get install --yes git nano-tiny less wget
+apt install --yes git nano-tiny less wget
 ```
 
 We can use `\` after each program, to break the long command across lines and make the command more readable (especially if there were even more programs to install). Similarly, we indent the lines after `\` to increase readability:
 
 ```bash
-apt-get install --yes \
+apt install --yes \
     git \
     nano-tidy \
     less \
@@ -232,11 +340,11 @@ We can also group together related commands that depend upon each other.
 Whe doing this we need to be careful though,
 as sometimes we don't want to run a command if the command that was run immediately before it failed.
 We can specify this in the shell using `&&`.
-For example, if we want to not run `apt-get` installation commands if `apt-get update` failed, we can write:
+For example, if we want to not run `apt` installation commands if `apt update` failed, we can write:
 
 ```bash
-apt-get update && \
-    apt-get install --yes git
+apt update && \
+    apt install --yes git
 ```
 
 ## `Dockerfile` command summary
