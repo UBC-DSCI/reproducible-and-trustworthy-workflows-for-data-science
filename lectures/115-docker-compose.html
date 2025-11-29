@@ -106,28 +106,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: green;
-}
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: orange;
 }
@@ -148,6 +126,28 @@ div.callout-definition.callout-style-default > .callout-header {
 div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
   content: '📝';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 </style>
@@ -683,29 +683,47 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 
 <section id="docker-compose-to-launch-containers" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="docker-compose-to-launch-containers"><span class="header-section-number">14.1</span> Docker compose to launch containers</h2>
-<p>It can be fiddly and error prone to type long commands into the terminal, or a GUI every time you want to launch a container. A better approach is to use Docker compose to specify how you want to launch the container.</p>
-<p>Docker compose uses a YAML file, specifically named <code>docker-compose.yml</code>, to record how the container should be launched. This file can include details including: - the docker image and version to use - how to mount volumes - what ports to map - what environment variables to set.</p>
-<p>Here is an example of a <code>docker-compose.yml</code> file for use with the <code>rocker/rstudio</code> container image:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">analysis-env</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> rocker/rstudio:4.4.2</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8787:8787"</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> .:/home/rstudio/project</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">PASSWORD</span><span class="kw">:</span><span class="at"> password</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>To launch the container interactively using this file, you would type the <code>docker-compose</code> command shown below.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It can be fiddly and error prone to type long commands into the terminal, or a GUI every time you want to launch a container. Even if you are copy and pasting commands, it can be difficult to make changes to long commands because you cannot click to a location to make edits.</p>
+<p>A better approach is to use Docker compose to specify how you want to launch the container. This way all the parts of your command are saved in a file. This helps document how to run the docker image, and can be version controled part of a project.</p>
+<p>Docker compose uses a YAML file, specifically named <code>docker-compose.yml</code>, to record how the container should be launched. This file can include details including:</p>
+<ul>
+<li>the docker image and version to use</li>
+<li>how to mount volumes</li>
+<li>what ports to map</li>
+<li>what environment variables to set.</li>
+</ul>
+<p><code>docker run</code> commands are interchangeable the parameters specified in <code>docker-compose.yml</code>; the compose file makes it easier to manage all the <code>docker run</code> parameters. See this resource that can convert a run command to a compose file: <a href="https://www.composerize.com/" class="uri">https://www.composerize.com/</a></p>
+<p>Here is an example comparing <code>docker run</code> with a <code>docker-compose.yml</code> file for use with the <code>rocker/rstudio:4.4.2</code> container image.</p>
+<p>The <code>docker run</code> command as a single line: <code>docker run --rm -it -p 8787:8787  -v /$(pwd):/home/rstudio/project -e PASSWORD="apassword" rocker/rstudio:4.4.2</code></p>
+<p>as a multi line command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--rm</span> <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">-it</span> <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">-v</span> /<span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/home/rstudio/project <span class="dt">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">-e</span> PASSWORD=<span class="st">"apassword"</span> <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    rocker/rstudio:4.4.2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>and within a <code>docker-compose.yml</code> file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">analysis-env</span><span class="kw">:</span><span class="co"> # name of the service we are creating</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> rocker/rstudio:4.4.2</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8787:8787"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> .:/home/rstudio/project</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">PASSWORD</span><span class="kw">:</span><span class="at"> apassword</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To launch the container interactively using this file, you use the <code>docker-compose</code> command to run the container(s) and parameters specified in the yaml file.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> up</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>If you are using a web app, as in the case of the <code>rocker/rstudio</code> or <code>jupyter/minimal-notebook</code> container images, you still need to manually navigate to the web app in your browser and enter the correct URL to access it.</p>
-<p>To stop and clean up the container, you would type <code>Cntrl + C</code> in the terminal where you launched the container, and then type</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> rm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To stop and clean up the container, you would use <kbd>Ctrl</kbd> + <kbd>c</kbd> in the terminal where you launched the container, and then type</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> down</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Let’s take a look at an example <code>docker-compose.yml</code> being used in a project: - <a href="https://github.com/ttimbers/breast_cancer_predictor_py" class="uri">https://github.com/ttimbers/breast_cancer_predictor_py</a></p>
 </section>
 <section id="running-a-docker-container-non-interactively-using-the-docker-compose" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="running-a-docker-container-non-interactively-using-the-docker-compose"><span class="header-section-number">14.2</span> Running a Docker container non-interactively using the Docker Compose</h2>
 <p>We can also use Docker Compose to run containers non-interactively! We can do this by specifying that we want to <code>run</code> the container (instead of <code>up</code> to launch in interactively). We use the <code>--rm</code> flag with the <code>run</code> command to make the container ephemeral (delete it upon exit). Then we specify the name of the service from the <code>docker-compose.yml</code> file that we want to run (in our <code>docker-compose.yml</code> files so far we only have one service, the environment for running the analysis). And finally we add the command we want to run non-interactively using the container (in the example below we use <code>make</code> to run the data analysis pipeline script).</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> run <span class="at">--rm</span> analysis-env make all</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> run <span class="at">--rm</span> analysis-env make all</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
