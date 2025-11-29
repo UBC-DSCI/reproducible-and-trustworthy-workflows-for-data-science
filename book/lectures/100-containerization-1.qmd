@@ -56,6 +56,8 @@ Does this look like your computer's filesystem or something else?
 Type `q()` to quit R and exit the container.
 :::
 
+Compare this version of R that is running in the container to the version of R you have on your computer.
+
 :::{.exercise title="Exercise 2"}
 **Running a container with RStudio as a web app**
 
@@ -83,6 +85,18 @@ Type `Cntrl` + `C` in the terminal where you launched the container
 to quit R and RStudio and exit the container.
 :::
 
+We can pass in multiple envivironment variables by using multile `-e` flags.
+For example, we can set the password for the rstudio user with the `PASSWORD` environment variable,
+but we can also disable the login screen with the `DISABLE_AUTH=true` variable.
+
+```bash
+docker run --rm -p 8787:8787 -e PASSWORD="apassword" -e DISABLE_AUTH=true rocker/rstudio:4.4.2
+```
+
+Each container will have its own set of environment variables to contol its behaviour.
+For the `rocker/rsutdio` project,
+you can find the environment variable documentation here: <https://rocker-project.org/images/versioned/rstudio.html#environment-variables>.
+
 :::{.exercise title="Exercise 3"}
 
 **Running a container with Jupyter as a web app**
@@ -90,13 +104,19 @@ to quit R and RStudio and exit the container.
 Next, try to use Docker to run a container that contains the Jupyter web-application installed:
 
 ```bash
-docker run --rm -p 8888:8888  jupyter/minimal-notebook:notebook-7.0.6
+docker run --rm -p 8888:8888 quay.io/jupyter/datascience-notebook:2025-03-14
 ```
 
 In the terminal, look for a URL that starts with
 `http://127.0.0.1:8888/lab?token=`
 (for an example, see the highlighted text in the terminal below).
 Copy and paste that URL into your browser.
+
+:::{.callout-important}
+Do not forget to copy the `token=` portion of the URL,
+if you only go to `localhost:8888` or `http://127.0.0.1:8888` it will ask you
+for the password/token.
+:::
 
 <img src="../img/jupyter-container-web-app-launch-url.png" width=100%>
 
@@ -191,12 +211,14 @@ You can list the container **images** on your computer that you pulled using Doc
 
 ```
 $ docker images
-REPOSITORY                 TAG                    IMAGE ID       CREATED        SIZE
-rocker/rstudio             4.3.2                  bc76e0dbd6db   9 days ago     1.87GB
-rocker/r-ver               4.3.2                  c9569cbc2eb0   9 days ago     744MB
-continuumio/miniconda3     23.9.0-0               55e8b7e3206b   3 weeks ago    457MB
-jupyter/minimal-notebook   notebook-7.0.6         e04c3bedc133   3 weeks ago    1.45GB
-hello-world                latest                 b038788ddb22   6 months ago   9.14kB
+IMAGE                                             ID             DISK USAGE   CONTENT SIZE   EXTRA
+continuumio/miniconda3:23.9.0-0                   6fbaadd54391        536MB             0B    U
+hello-world:latest                                1b44b5a3e06a       10.1kB             0B
+postgres:15-alpine                                546a2cf48182        274MB             0B
+quay.io/jupyter/datascience-notebook:2025-03-14   1a211fc8a877       6.42GB             0B
+rocker/r-ver:4.3.2                                f0b4e058dcfa        849MB             0B
+rocker/rstudio:4.3.1                              c8bd7a718854          2GB             0B
+rocker/rstudio:4.4.2                              4503182694c4       2.36GB             0B
 ```
 
 You can list the states of containers that have been started by Docker on your computer (and not yet removed) via: `docker ps -a`:
@@ -223,6 +245,9 @@ However, there are many container registries that can be used, including:
 - <https://quay.io/>
 - <https://aws.amazon.com/ecr/> (yes! Amazon now also hosts container images too!)
 
+In the examples above we have used the `rocker/rstudio` container that is coming from DockerHub,
+and the jupyter server comes from `quay.io`.
+
 :::{.exercise title="Exercise 4"}
 
 **Exploring container registries**
@@ -230,7 +255,7 @@ However, there are many container registries that can be used, including:
 Let's visit the repositories for the two container images that we used in the exercise earlier in class:
 
 - [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)
-- [jupyter/minimal-notebook](https://hub.docker.com/r/jupyter/minimal-notebook)
+- [quay.io/jupyter/datascience-notebook](https://quay.io/repository/jupyter/datascience-notebook?tab=tags)
 
 Question: how did we get the images for the exercise earlier in class?
 We were just prompted to type `docker run...`
@@ -246,15 +271,10 @@ Container images are specified from plain text files! In the case of the Docker 
 
 Example `Dockerfile`:
 
-```dockerfile
-FROM continuumio/miniconda3
 
-# Install Git, the nano-tiny text editor and less (needed for R help)
-RUN apt-get update && \
-    apt-get install --yes \
-    git \
-    nano-tiny \
-    less
+```dockerfile
+# use the miniforge base, make sure you specify a verion
+FROM condaforge/miniforge3:latest
 
 # Install Jupyter, JupterLab, R & the IRkernel
 RUN conda install -y --quiet \
@@ -263,24 +283,15 @@ RUN conda install -y --quiet \
     r-base=4.1.* \
     r-irkernel
 
-# Install JupyterLab Git Extension
-RUN pip install jupyterlab-git
+# sets the default working directory
+WORKDIR /workplace
 
-# Create working directory for mounting volumes
-RUN mkdir -p /opt/notebooks
-
-# Make port 8888 available for JupyterLab
+# expose JupyterLab port
 EXPOSE 8888
 
-# Copy JupyterLab start-up script into container
-COPY start-notebook.sh /usr/local/bin/
-
-# Change permission of startup script and execute it
-RUN chmod +x /usr/local/bin/start-notebook.sh
-ENTRYPOINT ["/usr/local/bin/start-notebook.sh"]
-
-# Switch to staring in directory where volumes will be mounted
-WORKDIR "/opt/notebooks"
+# run JupyterLab on container start
+# uses the jupyterlab from the base environment
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
 ```
 
 The commands in all capitals are Docker commands. `Dockerfile`s typically start with a `FROM` command that specifies which base image the new image should be built off. Docker images are built in layers - this helps make them more light-weight. The `FROM` command is usually followed by `RUN` commands that usually install new software, or execute configuration commands. Other commands in this example copy in needed configuration files, expose ports, specify the working directory, and specify programs to execute at start-up.

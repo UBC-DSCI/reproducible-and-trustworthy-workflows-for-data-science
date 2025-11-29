@@ -7,35 +7,66 @@ title: docker-compose
 
 It can be fiddly and error prone to type long commands into the terminal,
 or a GUI every time you want to launch a container.
+Even if you are copy and pasting commands,
+it can be difficult to make changes to long commands because you cannot click to a location to make edits.
+
 A better approach is to use Docker compose
 to specify how you want to launch the container.
+This way all the parts of your command are saved in a file.
+This helps document how to run the docker image,
+and can be version controled part of a project.
 
 Docker compose uses a YAML file,
 specifically named `docker-compose.yml`,
 to record how the container should be launched.
 This file can include details including:
+
 - the docker image and version to use
 - how to mount volumes
 - what ports to map
 - what environment variables to set.
 
-Here is an example of a `docker-compose.yml` file
-for use with the `rocker/rstudio` container image:
+`docker run` commands are interchangeable the parameters specified in `docker-compose.yml`;
+the compose file makes it easier to manage all the `docker run` parameters.
+See this resource that can convert a run command to a compose file:
+<https://www.composerize.com/>
+
+
+Here is an example comparing `docker run` with a `docker-compose.yml` file
+for use with the `rocker/rstudio:4.4.2` container image.
+
+The `docker run` command as a single line:
+`docker run --rm -it -p 8787:8787  -v /$(pwd):/home/rstudio/project -e PASSWORD="apassword" rocker/rstudio:4.4.2`
+
+as a multi line command:
+
+```bash
+docker run \
+    --rm \
+    -it \
+    -p 8787:8787 \
+    -v /$(pwd):/home/rstudio/project \
+    -e PASSWORD="apassword" \
+    rocker/rstudio:4.4.2
+```
+
+and within a `docker-compose.yml` file:
 
 ```yaml
 services:
-  analysis-env:
+  analysis-env: # name of the service we are creating
     image: rocker/rstudio:4.4.2
     ports:
       - "8787:8787"
     volumes:
       - .:/home/rstudio/project
     environment:
-      PASSWORD: password
+      PASSWORD: apassword
 ```
 
 To launch the container interactively using this file,
-you would type the `docker-compose` command shown below.
+you use the `docker-compose` command to run the container(s)
+and parameters specified in the yaml file.
 
 ```bash
 docker-compose up
@@ -46,10 +77,10 @@ If you are using a web app, as in the case of the
 you still need to manually navigate to the web app in your browser
 and enter the correct URL to access it.
 
-To stop and clean up the container, you would type `Cntrl + C` in the terminal where you launched the container, and then type
+To stop and clean up the container, you would use <kbd>Ctrl</kbd> + <kbd>c</kbd> in the terminal where you launched the container, and then type
 
 ```bash
-docker-compose rm
+docker-compose down
 ```
 
 Let's take a look at an example `docker-compose.yml` being used in a project:

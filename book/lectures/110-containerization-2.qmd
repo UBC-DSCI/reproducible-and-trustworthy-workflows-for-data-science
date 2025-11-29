@@ -11,7 +11,9 @@ title: Using and running containers
 
 Docker has many ways we can run containers (GUI, command line, Docker compose configuration files). Here we will learn how to use the command line interface for running container instances from container images. We will then build on this knowledge to move to using Docker compose configuration files for increased efficiency. We are opting to use command line and configuration file tools so that we can automate and scale the running of containers. It is also more reproducible.
 
-Below we demonstrate how to launch and run containers using the [`continuumio/miniconda3` image](https://hub.docker.com/r/continuumio/miniconda3) as an example. We will slowly walk through the 4 basic steps need to run a container:
+### Launch and run containers
+
+Below we demonstrate how to launch and run containers using the [`condaforge/miniforge3` image](https://hub.docker.com/r/condaforge/miniforge3) as an example. We will slowly walk through the 4 basic steps need to run a container:
 
 #### Step 1 - launch the Docker app (for OSX & Windows only)
 
@@ -23,7 +25,11 @@ On Mac and Windows, Docker runs in a virtual machine (called Docker Desktop). To
 
 To run a container instance, you need to have a container image locally. One way to get a container image locally is to pull (i.e., download) one from a container registry like Docker Hub. To do this we use the `docker pull <CONTAINER>` command. You will commonly see the container to pull written as: `container_registry/container_user/container_image:container_image_version_tag`.
 
-If you only see `container_user/container_image:container_image_version_tag` Docker will assume you are using Docker Hub as the container registry (this is the default). Sometimes the `container_image_version_tag` is ommitted, when this happens the most recent container is pulled, and has the version tag `latest`. In data analysis projects we try to avoid using this strategy because Docker is lazy and if you already have the `latest` version on your local host machine, it will not update it when you re-run `docker pull container_user/container_image` even if there is a newer version of the container image on the remote container registry.
+If you only see `container_user/container_image:container_image_version_tag` Docker will assume you are using Docker Hub as the container registry (this is the default).
+In the previous chapter we ran the `quay.io/jupyter/datascience-notebook:2025-03-14` container from the `quay.io` registry,
+and `rocker/rstudio:4.4.2` from Docker Hub.
+
+Sometimes the `container_image_version_tag` is ommitted, when this happens the most recent container is pulled, and has the version tag `latest`. In data analysis projects we try to avoid using this strategy because Docker is lazy and if you already have the `latest` version on your local host machine, it will not update it when you re-run `docker pull container_user/container_image` even if there is a newer version of the container image on the remote container registry.
 
 We will now pull the `miniconda3` docker image, container image verion `23.9.0-0`, made and shared by `continuumio`, and hosted on Docker Hub by runnig the following in the terminal:
 
@@ -34,8 +40,8 @@ docker pull continuumio/miniconda3:23.9.0-0
 We can verify that it successfully pulled by typing: `docker images`. When you do that, you should see something like:
 
 ```
-REPOSITORY                 TAG       IMAGE ID       CREATED         SIZE
-continuumio/miniconda3     23.9.0-0  55e8b7e3206b   3 weeks ago    457MB
+IMAGE                            ID             DISK USAGE   CONTENT SIZE   EXTRA
+condaforge/miniforge3:25.3.1-0   322e23c921ba        447MB             0B
 ```
 
 :::{.callout-note}
@@ -49,13 +55,13 @@ continuumio/miniconda3     23.9.0-0  55e8b7e3206b   3 weeks ago    457MB
 We use `docker run` to launch a container instance from a container image. By default the container instance will execute it's programmed launch behaviour and immediately stop. Thus, if we want to use the container in a more interactive way, we need to tell Docker that by adding the `-it` flag to our `docker run` command.
 
 ```bash
-docker run -it continuumio/miniconda3:23.9.0-0`
+docker run -it condaforge/miniforge3:25.3.1-0
 ```
 
 If it worked, then your command line prompt should now look something like this:
 
 ```bash
-root@5d8e6fff1b12:/#
+(base) root@f0af2c1fb3af:/#
 ```
 
 You can standard bash shell commands like `ls`, `cd`, `pwd` to explore the container. You can type `exit` to leave when you are done (your prompt will look normal again)!
@@ -76,7 +82,7 @@ The command below runs a new container instance from the same image. This one co
 docker run \
     --rm \
     --it \
-    continuumio/miniconda3:23.9.0-0
+    condaforge/miniforge3:25.3.1-0
 ```
 
 :::{.callout-note}
@@ -87,18 +93,19 @@ we are using `\` above to split a bash command across lines to make it more read
 
 Often times we want to use the software made available to us in containers on files on our computers.
 To do this, we need to explicitly tell Docker to mount a volume to the container.
-We can do this via: `-v <path_to_computer_directory>:<absolute_path_to_container_directory>`
+We can do this via: `-v <path_to_local_computer_directory>:<absolute_path_to_container_directory>`
 
 Often, we want to mount the volume from our current directory (where we are working) and we can do that with a short-form of `/$(pwd)` in place of the path to our computer's directory.
+This is a useful shorthand command when you work with mutliple people, so the same command will work on different computers since you are not hard specifying the local computer path.
 
-To mount our current directory to a container from the `continuumio/miniconda3` image we type the following on your laptop:
+To mount our current directory to a container from the `condaforge/miniforge3:25.3.1-0` image we type the following on your laptop:
 
 ```bash
 docker run \
     --rm \
     -it \
     -v /$(pwd):/home/my_mounted_volume \
-    continuumio/miniconda3
+    condaforge/miniforge3:25.3.1-0
 ```
 
 Navigate to the directory where you mounted your files via: `cd /home/my_mounted_volume` and type `ls` to ensure you can see them.
@@ -107,6 +114,7 @@ Navigate to the directory where you mounted your files via: `cd /home/my_mounted
 if you are mounting volumes to a container from a Docker image that runs a web app, be sure to read the documentation to see where you should mount that volume. Usually the web apps are only exposed to certain directories and you will only be able to access the files in the mounted volume if you mount them to the correct place. For example, in the `rocker/rstudio` image that we loaded earlier, volumes need to be mounted within `/home/rstudio/` to be able to access them via the RStudio server web app.
 :::
 
+<!-- TODO: dan: 202526w1 i don't know if we still need this section -->
 #### Windows notes for mounting volumes:
 - Windows machines need to explicitly share drives with Docker - this should be part of your computer setup!
 - On Windows, the laptop path depends what shell you are using, here are some details:
@@ -206,6 +214,8 @@ docker run \
     -v PATH_ON_YOUR_COMPUTER:VOLUME_ON_CONTAINER DOCKER_IMAGE PROGRAM_TO_RUN \
     PROGRAM_ARGUMENTS
 ```
+
+### Use a container to execute a script
 
 What of instead running the container interactively, we wanted to run a script?
 Let's take this R script, named `snowman.R`, shown below,
