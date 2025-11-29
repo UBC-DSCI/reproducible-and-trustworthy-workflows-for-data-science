@@ -90,7 +90,7 @@ people using different platforms and also creating environment files (i.e., lock
 for docker containers.
 
 :::{.definition title="Conda Lock"}
-A `conda-lock` file is a file that specifies all the packages, its versions,
+A `conda-lock.yml` file is a file that specifies all the packages, its versions,
 and the full dependency tree to recreate a conda environment.
 It's main benefit is that when using the conda-lock file,
 the solver no longer needs to be run,
@@ -169,6 +169,18 @@ dependencies:
 prefix: /home/dan/.pyenv/versions/miniforge3-latest/envs/condalock
 ```
 
+:::{.callout-important}
+When creating an `environment.yml` file,
+make sure you **only** have the `conda-forge` channel.
+**DO NOT** mix the conda-forge channel with defaults.
+It will sometimes cause the solver to look for packages in the wrong location
+and the solver will either fail or take an even longer time to solve.
+
+Also, if you are using `conda env` to create the `environment.yml` file,
+remember to remove the `prefix` line on the bottome of the file.
+This helps with environment file portability.
+:::
+
 You'll notice that `python` is not listed in the `environment.yml` file.
 That's because we only explicitly installed `pandas`,
 `python` is installed as part of the dependency resolution.
@@ -238,6 +250,20 @@ Depending on the size of your environment,
 this may take a long time, especially if you only need to target
 a single platform (or a subset of platforms).
 we can use the `-p` or `--platform` for the `lock` command.
+
+If you are on a ARM-based M-Chip Mac, you will need to generate the `linux-aarch64` platform,
+if you want to use `conda-lock` with Docker.
+Typically you will end up running this command to generate a lock file for all platforms:
+
+```shell
+conda-lock lock \
+  --file environment.yml \
+  -p linux-64 \
+  -p osx-64 \
+  -p osx-arm64 \
+  -p win-64 \
+  -p linux-aarch64
+```
 
 :::{.exercise title="Exercise 3"}
 
