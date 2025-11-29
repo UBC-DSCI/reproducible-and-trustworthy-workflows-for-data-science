@@ -286,6 +286,7 @@ RUN conda-lock install -n dockerlock conda-lock.yml
 RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
 
 SHELL ["/bin/bash", "-l", "-c"]
+
 WORKDIR /workplace
 ```
 
@@ -294,12 +295,61 @@ WORKDIR /workplace
 
 If only needed the container we just created to run code,
 and did not need any web application to run,
-we can stop there.
+we can stop here.
 However, the `environment.yml` file we created installed `jupyterlab`,
 and it would also be nice for the container to run jupyter lab just like our fist example
 in an earlier docker chapter when we used the `quay.io/jupyter/datascience-notebook:2025-03-14` container.
 
-Since we are not planning to
+In order for us to run `jupyter lab` inside the container, we essentially need to have the container run `jupyter lab`.
+The default port that jupyter lab runs on is port 8888,
+so we must first tell the container to `EXPOSE` or open this port so we can connect to it later when we
+run the container.
+We use the `EXPOSE 8888` docker instruction to accomplish this.
+
+```dockerfile
+EXPOSE 8888
+```
+
+Finally,
+we will use the `CMD` instruction to tell the container the default command to run when the docker container runs.
+In this example we will have the docker container run jupyter lab on startup.
+When we run jupyter lab,
+we will have it run on the container local host, on port 8888, and disable the token/password generation
+that jupyter lab typically creates to run.
+We specify the `CMD` command as terminal command, with each term sepearted as a list of strings.
+
+```dockerfile
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
+```
+
+Yes it is a bit strange where we `EXPOSE` the port before we know from the `CMD` instruction.
+In general, the best practice for ordering `Dockerfile` structure is:
+
+1. `FROM` - base image
+2. `RUN`, `COPY`, `ADD` - build steps
+3. `EXPOSE`, `ENV`, `WORKDIR` - configuration
+4. `CMD` or `ENTRYPOINT` - startup command (end)
+
+Our full `Dockerfile` now looks like this:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+
+WORKDIR /workplace
+
+EXPOSE 8888
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
+```
 
 Hurray! We did it! Now we can automate this build on GitHub,
 push it to Docker Hub and share this Docker image with the world!
