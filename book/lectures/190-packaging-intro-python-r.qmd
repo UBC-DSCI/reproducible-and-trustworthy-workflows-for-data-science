@@ -43,15 +43,18 @@ I recommend watching a video from rstudio::conf 2020, called RMarkdown Driven De
 
 We will spend some time now exploring GitHub repositories of some Python and R packages to get more familiar with their internals. As we do this, fill out the missing data in the table below (which tries to match up the corresponding R and Python package key files and directories):
 
-| Description                                            | Python        | R            |
-|--------------------------------------------------------|---------------|--------------|
-| Online package repository or index                     |               |              |
-| Directory for user-facing package functions            |               |              |
-| Directory for tests for user-facing package functions  |               |              |
-| Directory for documentation                            |               |              |
-| Package metadata                                       |               |              |
-| File(s) that define the Namespace                      |               |              |
-| Tool(s) for easy package creation                      |               |              |
+| Description                                           | Python | R |
+|-------------------------------------------------------|--------|---|
+| Online package repository or index                    |        |   |
+| Directory for user-facing package functions           |        |   |
+| Directory for tests for user-facing package functions |        |   |
+| Directory for documentation                           |        |   |
+| Package metadata                                      |        |   |
+| File(s) that define the Namespace                     |        |   |
+| Templating tools                                      |        |   |
+| Documentation building tools                          |        |   |
+| Package build tools                                   |        |   |
+
 
 > Note: at the end of lecture I will review the answers to this table.
 
@@ -97,7 +100,8 @@ Some Python packages you may want to explore:
 
 3. [`pandera`](https://github.com/pandera-dev/pandera) - a reviewed PyOpenSci Python package (uses more traditional approach to creating Python packages)
 
-### Poetry and the evolution of Python packaging
+
+### Poetry, Hatch, and the evolution of Python packaging
 
 If you want to package your Python code and distribute for ease of use by others on the Python Packaging Index (PyPI) you need to convert it to a standard format called Wheel.
 
@@ -110,13 +114,45 @@ Previously, to do this it was standard to have 4 configuration files in your pac
 
 In 2016, a new PEP ([518](https://www.python.org/dev/peps/pep-0518/)) was made. This PEP defined a new configuration format, `pyproject.toml`, so that now a single file can be used in place of those previous four. This file must have at least two sections, `[build-system]` and `[tool]`.
 
-This new single configuration file has inspired some new tools to be created in the package building and management ecosystem in Python. One of the most recent and simplest to use is Poetry (created in 2018). When used to build packages, Poetry roughly does two things:
+This new single configuration file has inspired some new tools to be created in the package building and management ecosystem in Python.
+
+#### Poetry
+
+One of the most recent and simplest to use is Poetry (created in 2018). When used to build packages, Poetry roughly does two things:
 
 1. Uses the `pyproject.toml` to manage and solve package configurations via the Poetry commands `init`, `add`, `config`, etc
 
 2. Creates a lock file (`poetry.lock`) which automatically creates and activates a virtual environment (if none are activated) where the Poetry commands such as `install`, `build`, `run`, etc are executed.
 
 Cookiecutter templates are also useful to help setup the biolerplate project and directory structure needed for packages. And conda environments are useful to isolate your package development environment. We will use these in this course as well.
+
+#### PyOpenSci + Hatch
+
+[Hatch](https://hatch.pypa.io/latest/) is a newer python package manger (first 1.0 release in 2022).
+It is [PEP-517](https://peps.python.org/pep-0517/) and [PEP-518](https://peps.python.org/pep-0518/) compliant and can do all the environment management that poetry does.
+To avoid convusion, this textbook will not use the environment features of `hatch`, only the package build backend, `hatchling`.
+It assumes you are using `conda` for the main python verison and environment management,
+all package dependencies will not be placed in the `environment.yml` file, these will all go into the `pyproject.toml` file.
+
+Your python `environment.yml` file will be very minimal, all other packages will be specified in the `pyproject.toml`.
+
+```yaml
+name: my-package-env
+channels:
+  - conda-forge
+dependencies:
+  - python>3.12
+  - copier # optional if you want to use the base pyopensci template and follow along their tutorial
+
+```
+
+:::{.callout-note}
+This book and resources is slowly migrating towards the PyOpenSci + Hatch + Hatchling way of building packages.
+We will migrate to the official PyOpenSci packaging guide: <https://www.pyopensci.org/python-package-guide/index.html>
+
+All references to `cookiecutter` and `poetry` should look for the corresponding reference in the PyOpenSci tutorial on `copier` and `hatch`.
+For documentation references to `sphinx` would go do the `quartodoc` site: <https://machow.github.io/quartodoc>
+:::
 
 ### Learn more by building a toy Python package
 
@@ -126,15 +162,17 @@ After building the toy package, read [Package structure and state](https://py-pk
 
 ## Key package things for Python and R packages
 
-| Description                                            | Python        | R            |
-|--------------------------------------------------------|---------------|--------------|
-| Online package repository or index                     | PyPI          | CRAN         |
-| Directory for user-facing package functions            | `src` directory | `R` directory
-| Directory for tests for user-facing package functions   | `tests`      | `tests/testthat` |
-| Directory for documentation                             | `docs`       | `man` and `vignettes` |
-| Package metadata                                        | `pyproject.toml` | `DESCRIPTION` |
-| File(s) that define the Namespace                      | `__init__.py`     | `NAMESPACE`         |
-| Tool(s) for easy package creation                      |  Cookiecutter & Poetry | `usethis` & `devtools` |
+| Description                                           | Python                | R                     |
+|-------------------------------------------------------|-----------------------|-----------------------|
+| Online package repository or index                    | PyPI                  | CRAN                  |
+| Directory for user-facing package functions           | `src` directory       | `R` directory         |
+| Directory for tests for user-facing package functions | `tests`               | `tests/testthat`      |
+| Directory for documentation                           | `docs`                | `man` and `vignettes` |
+| Package metadata                                      | `pyproject.toml`      | `DESCRIPTION`         |
+| File(s) that define the Namespace                     | `__init__.py`         | `NAMESPACE`           |
+| Templating tools                                      | Cookiecutter / Copier | `usethis`             |
+| Documentation building tools                          | sphinx / quartodoc    | pkgdown               |
+| Package build tools                                   | Poetry / Hatch        | `devtools`            |
 
 ## What is a minimal viable software package?
 
