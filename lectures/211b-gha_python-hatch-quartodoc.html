@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>43&nbsp; Package Documentation: Python – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>50&nbsp; Continuous Deployment: Python (hatch + quartodoc) – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -65,8 +30,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/206-package_documentation_r.html" rel="next">
-<link href="../lectures/202-case_study_r.html" rel="prev">
+<link href="../lectures/212-gha_r.html" rel="next">
+<link href="../lectures/211a-gha_python-poetry.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -74,7 +39,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-27c261d06b905028a18691de25d09dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -106,15 +71,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
+div.callout-relevance-project.callout {
+  border-left-color: orange;
 }
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
 }
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -128,17 +93,6 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
-div.callout-relevance-project.callout {
-  border-left-color: orange;
-}
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: green;
 }
@@ -148,6 +102,17 @@ div.callout-exercise.callout-style-default > .callout-header {
 div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
   content: '🏋️';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
   background-image: none;
 }
 </style>
@@ -165,7 +130,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/ci.html">Continuous Integration</a></li><li class="breadcrumb-item"><a href="../lectures/205-package_documentation_python.html"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/211b-gha_python-hatch-quartodoc.html"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -462,32 +427,44 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/191a-packaging-python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/191b-packaging-python-hatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/193-packaging-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/194-package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/196-coverage-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/197-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -504,49 +481,55 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-github_actions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Github Actions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Github Actions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-actions-matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-actions-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Actions: Testing Workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Actions: Testing Workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/201-case_study_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
+  <a href="../lectures/201a-case_study_python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/202-case_study_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/205-package_documentation_python.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
+  <a href="../lectures/205a-package_documentation_python-sphinx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Package Documentation: Python - sphinx</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/205b-package_documentation_python-quartodoc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Package Documentation: Python - quartodoc</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/206-package_documentation_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -563,25 +546,31 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/211-gha_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
+  <a href="../lectures/211a-gha_python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/211b-gha_python-hatch-quartodoc.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
   </div>
 </li>
       </ul>
@@ -598,13 +587,13 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -621,25 +610,25 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">55</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">56</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">57</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/930-quarto-ghpages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Quarto and Github Pages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">58</span>&nbsp; <span class="chapter-title">Quarto and Github Pages</span></span></a>
   </div>
 </li>
       </ul>
@@ -649,35 +638,15 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives"><span class="header-section-number">43.1</span> Learning objectives</a></li>
-  <li><a href="#documentation-for-python-packages" id="toc-documentation-for-python-packages" class="nav-link" data-scroll-target="#documentation-for-python-packages"><span class="header-section-number">43.2</span> Documentation for Python packages</a>
-  <ul class="collapse">
-  <li><a href="#api-reference-docs" id="toc-api-reference-docs" class="nav-link" data-scroll-target="#api-reference-docs"><span class="header-section-number">43.2.1</span> API reference docs</a></li>
-  <li><a href="#example-of-rst-formatted-docstrings" id="toc-example-of-rst-formatted-docstrings" class="nav-link" data-scroll-target="#example-of-rst-formatted-docstrings"><span class="header-section-number">43.2.2</span> Example of RST formatted docstrings:</a></li>
-  <li><a href="#example-of-numpy-style-docstrings" id="toc-example-of-numpy-style-docstrings" class="nav-link" data-scroll-target="#example-of-numpy-style-docstrings"><span class="header-section-number">43.2.3</span> Example of Numpy-style docstrings:</a></li>
-  <li><a href="#rendering-the-docs-locally" id="toc-rendering-the-docs-locally" class="nav-link" data-scroll-target="#rendering-the-docs-locally"><span class="header-section-number">43.2.4</span> Rendering the docs locally</a></li>
-  </ul></li>
-  <li><a href="#adding-new-page-to-your-package-level-documentation" id="toc-adding-new-page-to-your-package-level-documentation" class="nav-link" data-scroll-target="#adding-new-page-to-your-package-level-documentation"><span class="header-section-number">43.3</span> Adding new page to your package-level documentation</a></li>
-  <li><a href="#vignettestutorials" id="toc-vignettestutorials" class="nav-link" data-scroll-target="#vignettestutorials"><span class="header-section-number">43.4</span> Vignettes/tutorials</a>
-  <ul class="collapse">
-  <li><a href="#package-websites-via-read-the-docs" id="toc-package-websites-via-read-the-docs" class="nav-link" data-scroll-target="#package-websites-via-read-the-docs"><span class="header-section-number">43.4.1</span> Package websites (via Read the Docs)</a></li>
-  <li><a href="#sphinx-themes" id="toc-sphinx-themes" class="nav-link" data-scroll-target="#sphinx-themes"><span class="header-section-number">43.4.2</span> Sphinx themes</a></li>
-  <li><a href="#documentation-metadata-in-pyproject.toml" id="toc-documentation-metadata-in-pyproject.toml" class="nav-link" data-scroll-target="#documentation-metadata-in-pyproject.toml"><span class="header-section-number">43.4.3</span> Documentation metadata in <code>pyproject.toml</code></a></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/ci.html">Continuous Integration</a></li><li class="breadcrumb-item"><a href="../lectures/205-package_documentation_python.html"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/211b-gha_python-hatch-quartodoc.html"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></h1>
+<h1 class="title"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></h1>
 </div>
 
 
@@ -694,148 +663,13 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </header>
 
 
-<section id="learning-objectives" class="level2" data-number="43.1">
-<h2 data-number="43.1" class="anchored" data-anchor-id="learning-objectives"><span class="header-section-number">43.1</span> Learning objectives</h2>
+<p>Placeholder for using GitHub actions to run the full example of, testing, building docs, build package, publish package, publish doc site.</p>
 <ul>
-<li>Generate well formatted function and package-level documentation for Python packages using Sphinx &amp; Read the Docs</li>
+<li>hatch build: <a href="https://www.pyopensci.org/python-package-guide/package-structure-code/publish-python-package-pypi-conda.html#" class="uri">https://www.pyopensci.org/python-package-guide/package-structure-code/publish-python-package-pypi-conda.html#</a></li>
+<li>quartodoc:<a href="https://machow.github.io/quartodoc" class="uri">https://machow.github.io/quartodoc</a></li>
 </ul>
-</section>
-<section id="documentation-for-python-packages" class="level2" data-number="43.2">
-<h2 data-number="43.2" class="anchored" data-anchor-id="documentation-for-python-packages"><span class="header-section-number">43.2</span> Documentation for Python packages</h2>
-<p>In Python, we use formatted docstrings to generate our code-level documentation. We then use a tool called <a href="https://www.sphinx-doc.org/en/master/index.html"><code>sphinx</code></a> to take those formatted docstrings to generate our API reference documentation for our package website, and several of our Markdown files in our packages GitHub repository to generate other pages for our package website (Contributing, Code of Conduct, etc). We then serve the website up on some platform, such as <a href="https://readthedocs.org/">Read the Docs</a> (others exist as well).</p>
-<section id="api-reference-docs" class="level3" data-number="43.2.1">
-<h3 data-number="43.2.1" class="anchored" data-anchor-id="api-reference-docs"><span class="header-section-number">43.2.1</span> API reference docs</h3>
-<ul>
-<li><p>We learned the basics of how to write formatted docstrings using numpy-style documentation.</p></li>
-<li><p>These docstrings can not only be accessed via <code>?function_name</code>, but can also be used to automatically generate package-level documentation via <a href="https://www.sphinx-doc.org/en/master/index.html"><code>sphinx</code></a></p></li>
-<li><p>We already did this with our toy <code>pycounts</code> package by:</p>
-<ul>
-<li>adding our doc dependencies into our <code>dev</code> dependency group via `poetry add –group dev myst-nb sphinx-autoapi sphinx-rtd-theme</li>
-<li>and then running <code>make html</code> from the <code>docs</code> directory</li>
-</ul></li>
-<li><p>The <code>py-pkgs-cookiecutter</code> template also has some <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/00ca3be8cd9964f863481a2ffe1763f0158087f3/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/conf.py#L18">extensions added to <code>docs/conf.py</code></a> that are needed for this to work.</p></li>
-<li><p>To have <code>sphinx</code> correctly render the docstring as package-level documentation, we need to either write our docstrings in the correct format for restructured text (RST) or we can use the <code>sphinx</code> extension <code>napolean</code> that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).</p></li>
-</ul>
-</section>
-<section id="example-of-rst-formatted-docstrings" class="level3" data-number="43.2.2">
-<h3 data-number="43.2.2" class="anchored" data-anchor-id="example-of-rst-formatted-docstrings"><span class="header-section-number">43.2.2</span> Example of RST formatted docstrings:</h3>
-<pre><code>""":type path: str
-:param field_storage: The :class:`FileStorage` instance to wrap
-:type field_storage: FileStorage
-:param temporary: Whether or not to delete the file when the File
-   instance is destructed
-:type temporary: bool
-:returns: A buffered writable file descriptor
-:rtype: BufferedFileStorage
-:example: my_funtion(4)
-"""</code></pre>
-</section>
-<section id="example-of-numpy-style-docstrings" class="level3" data-number="43.2.3">
-<h3 data-number="43.2.3" class="anchored" data-anchor-id="example-of-numpy-style-docstrings"><span class="header-section-number">43.2.3</span> Example of Numpy-style docstrings:</h3>
-<pre><code>    """Summary line.
-
-    Extended description of function.
-
-    Parameters
-    ----------
-    arg1 : int
-        Description of arg1
-    arg2 : str
-        Description of arg2
-
-    Returns
-    -------
-    bool
-        Description of return value
-
-    Examples
-    --------
-    &gt;&gt;&gt; my_funtion(4)
-    """</code></pre>
-</section>
-<section id="rendering-the-docs-locally" class="level3" data-number="43.2.4">
-<h3 data-number="43.2.4" class="anchored" data-anchor-id="rendering-the-docs-locally"><span class="header-section-number">43.2.4</span> Rendering the docs locally</h3>
-<p>It is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.</p>
-</section>
-</section>
-<section id="adding-new-page-to-your-package-level-documentation" class="level2" data-number="43.3">
-<h2 data-number="43.3" class="anchored" data-anchor-id="adding-new-page-to-your-package-level-documentation"><span class="header-section-number">43.3</span> Adding new page to your package-level documentation</h2>
-<p>How do we add new pages to our Python package-level documentation? The pages that show up in the rendered document on ReadtheDocs are controlled by <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md"><code>docs/index.yml</code></a>.</p>
-<p>Let’s take a look at the <a href="https://raw.githubusercontent.com/py-pkgs/py-pkgs-cookiecutter/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md">raw version of that file from our <code>pypkgs-cookiecutter</code></a>:</p>
-<p><img src="../img/index-raw.png" width="300"></p>
-<p>This results in a side bar on our webpage that looks like this:</p>
-<p><img src="../img/original-index.png" width="700"></p>
-<p>Thus, to add new pages, we add them to the <code>toctree</code> list. They will then show up in that position in the rendered side bar.</p>
-<p>What if we want headers in our side bar? To do this, we need to add multiple <code>toctree</code>’s and add a caption. Here’s an example:</p>
-<p><img src="../img/index-raw-headers.png" width="300"></p>
-<p>Which will result in this rendering:</p>
-<p><img src="../img/rendered-index-headers.png" width="1000"></p>
-</section>
-<section id="vignettestutorials" class="level2" data-number="43.4">
-<h2 data-number="43.4" class="anchored" data-anchor-id="vignettestutorials"><span class="header-section-number">43.4</span> Vignettes/tutorials</h2>
-<p>It is common for packages to have vignettes/tutorials (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. In your Python package, this ideally might go in an “Examples” section of the docs. The <code>pypkgs-cookiecutter</code> gives a template file for you to use as a starting place (<code>docs/example.ipynb</code>). As indicated in the section above you can rename this file and add others, just make sure you update the <code>toctree</code> in <code>docs/index.md</code>.</p>
-<p>Here are some good examples of vignettes/tutorials from packages you know and love:</p>
-<ul>
-<li><p><a href="https://altair-viz.github.io/case_studies/exploring-weather.html" class="uri">https://altair-viz.github.io/case_studies/exploring-weather.html</a></p></li>
-<li><p><a href="https://matplotlib.org/stable/tutorials/images.html" class="uri">https://matplotlib.org/stable/tutorials/images.html</a></p></li>
-<li><p><a href="https://pandas.pydata.org/docs/user_guide/groupby.html" class="uri">https://pandas.pydata.org/docs/user_guide/groupby.html</a></p></li>
-</ul>
-<section id="package-websites-via-read-the-docs" class="level3" data-number="43.4.1">
-<h3 data-number="43.4.1" class="anchored" data-anchor-id="package-websites-via-read-the-docs"><span class="header-section-number">43.4.1</span> Package websites (via <a href="https://readthedocs.org/">Read the Docs</a>)</h3>
-<p>The standard practice for hosting and sharing docs in the Python community is to use <a href="https://readthedocs.org/">Read the Docs</a></p>
-<ul>
-<li><p>Similar to codecov.io, to use Read the Docs with our package, we need to link it to our GitHub repository</p></li>
-<li><p>Read the Docs then checks out the files from the GitHub repo and uses their remote machines to render and serve your documentation</p></li>
-<li><p>To do this, Read the Docs needs access to the packages <code>pyproject.toml</code> file. This is done via the creation of a <code>.readthedocs.yml</code> file in the root of your project that looks like this:</p></li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .readthedocs.yaml</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the Docs configuration file</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://docs.readthedocs.io/en/stable/config-file/v2.html for details</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Required</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the OS, Python version and other tools you might need</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">build</span><span class="kw">:</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">os</span><span class="kw">:</span><span class="at"> ubuntu-22.04</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tools</span><span class="kw">:</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">python</span><span class="kw">:</span><span class="at"> </span><span class="st">"3.9"</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">jobs</span><span class="kw">:</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">post_create_environment</span><span class="kw">:</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">      # Install poetry</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">      # https://python-poetry.org/docs/#installing-manually</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> pip install poetry</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">      # Tell poetry to not use a virtual environment</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> poetry config virtualenvs.create false</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">post_install</span><span class="kw">:</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">      # Install dependencies with 'docs' dependency group</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">      # https://python-poetry.org/docs/managing-dependencies/#dependency-groups</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> poetry install</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Build documentation in the "docs/" directory with Sphinx</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">sphinx</span><span class="kw">:</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">configuration</span><span class="kw">:</span><span class="at"> docs/conf.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><em>note 1 - the version of Python specified here has to be a version that your package can be installed with!</em></p>
-<p><em>note 2 - all your documentation dependencies need to be in <code>pyproject.toml</code> for ReadtheDocs to be able to successfully render your docs!</em></p>
-</section>
-<section id="sphinx-themes" class="level3" data-number="43.4.2">
-<h3 data-number="43.4.2" class="anchored" data-anchor-id="sphinx-themes"><span class="header-section-number">43.4.2</span> Sphinx themes</h3>
-<p>Sometimes you want to have a different theme for your project’s docs. This is possible by changing <code>html_theme</code> in <code>doc.conf.py</code>. See the link below to view and read the docs for other Sphinx themes:</p>
-<ul>
-<li>Sphinx themes gallery: <a href="https://sphinx-themes.org/" class="uri">https://sphinx-themes.org/</a></li>
-</ul>
-</section>
-<section id="documentation-metadata-in-pyproject.toml" class="level3" data-number="43.4.3">
-<h3 data-number="43.4.3" class="anchored" data-anchor-id="documentation-metadata-in-pyproject.toml"><span class="header-section-number">43.4.3</span> Documentation metadata in <code>pyproject.toml</code></h3>
-<p>To get your packages <code>README</code> and important links to show-up on the TestPyPI and PyPI pages for your package, add the following information to the <code>[tool.poetry]</code> table in <code>pyproject.toml</code>.</p>
-<pre><code>readme = "README.md"
-homepage = "https://github.com/&lt;github_username&gt;/&lt;github_repo&gt;"
-repository = "https://github.com/&lt;github_username&gt;/&lt;github_repo&gt;"
-documentation = 'https://&lt;package_name&gt;.readthedocs.io'</code></pre>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1240,13 +1074,13 @@ documentation = 'https://&lt;package_name&gt;.readthedocs.io'</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/202-case_study_r.html" class="pagination-link" aria-label="Case study: a simplified version of the R `check-release.yaml` workflow">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span>
+      <a href="../lectures/211a-gha_python-poetry.html" class="pagination-link" aria-label="Continuous Deployment: Python (Poetry)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/206-package_documentation_r.html" class="pagination-link" aria-label="Package Documentation: R">
-        <span class="nav-page-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/212-gha_r.html" class="pagination-link" aria-label="What about CD with R packages">
+        <span class="nav-page-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

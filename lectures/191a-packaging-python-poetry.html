@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>46&nbsp; Continuous Deployment: Python – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>32&nbsp; Packaging: Python (Poetry) – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,15 +58,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/212-gha_r.html" rel="next">
-<link href="../lectures/210-deploy-and-publish.html" rel="prev">
+<link href="../lectures/191b-packaging-python-hatch.html" rel="next">
+<link href="../lectures/191-packaging-python.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-27c261d06b905028a18691de25d09dde.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -105,9 +105,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 <style>
 div.callout-activity.callout {
   border-left-color: blue;
@@ -120,15 +117,15 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '🧩';
   background-image: none;
 }
-div.callout-exercise.callout {
-  border-left-color: green;
+div.callout-relevance-project.callout {
+  border-left-color: orange;
 }
-div.callout-exercise.callout-style-default > .callout-header {
-  background-color: rgb(from green r g b / 13%);
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  content: '🏋️';
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
   background-image: none;
 }
 div.callout-definition.callout {
@@ -142,15 +139,15 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '📝';
   background-image: none;
 }
-div.callout-relevance-project.callout {
-  border-left-color: orange;
+div.callout-exercise.callout {
+  border-left-color: green;
 }
-div.callout-relevance-project.callout-style-default > .callout-header {
-  background-color: rgb(from orange r g b / 13%);
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
 }
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  content: '💻';
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
   background-image: none;
 }
 </style>
@@ -168,7 +165,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/211-gha_python.html"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/191a-packaging-python-poetry.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -465,32 +462,44 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../lectures/191a-packaging-python-poetry.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/191b-packaging-python-hatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../lectures/192-packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/193-packaging-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Packaging: Conclusion</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/194-package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Package Testing with Python <code>pytest</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/196-coverage-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Code Coverage: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/197-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Code Coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -507,49 +516,55 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/200-continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-github_actions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Github Actions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Github Actions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-actions-matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Actions: Matrix Workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/201-actions-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Actions: Testing Workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Actions: Testing Workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/201-case_study_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
+  <a href="../lectures/201a-case_study_python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Case Study: <code>pypkgs-cookiecutter</code>’s <code>ci.yml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/202-case_study_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Case study: a simplified version of the R <code>check-release.yaml</code> workflow</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/205-package_documentation_python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Package Documentation: Python</span></span></a>
+  <a href="../lectures/205a-package_documentation_python-sphinx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Package Documentation: Python - sphinx</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/205b-package_documentation_python-quartodoc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Package Documentation: Python - quartodoc</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/206-package_documentation_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Package Documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -566,25 +581,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/210-deploy-and-publish.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/211-gha_python.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></span></a>
+  <a href="../lectures/211a-gha_python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/211b-gha_python-hatch-quartodoc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
   </div>
 </li>
       </ul>
@@ -601,13 +622,13 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/220-licenses-and-copyright.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/230-reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Workflows for reproducibile and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -624,25 +645,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/900-functions-in-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">55</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/910-functions-in-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">56</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/920-reproducible-reports.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
+ <span class="menu-text"><span class="chapter-number">57</span>&nbsp; <span class="chapter-title">Reproducible reports</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/930-quarto-ghpages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Quarto and Github Pages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">58</span>&nbsp; <span class="chapter-title">Quarto and Github Pages</span></span></a>
   </div>
 </li>
       </ul>
@@ -657,48 +678,25 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#using-github-actions-to-perform-cd-for-your-python-package" id="toc-using-github-actions-to-perform-cd-for-your-python-package" class="nav-link active" data-scroll-target="#using-github-actions-to-perform-cd-for-your-python-package"><span class="header-section-number">46.1</span> Using GitHub Actions to perform CD for your Python package</a></li>
-  <li><a href="#storing-and-use-github-actions-credentials-safely-via-github-secrets" id="toc-storing-and-use-github-actions-credentials-safely-via-github-secrets" class="nav-link" data-scroll-target="#storing-and-use-github-actions-credentials-safely-via-github-secrets"><span class="header-section-number">46.2</span> Storing and use GitHub Actions credentials safely via GitHub Secrets</a></li>
-  <li><a href="#authenticating-with-the-github_token" id="toc-authenticating-with-the-github_token" class="nav-link" data-scroll-target="#authenticating-with-the-github_token"><span class="header-section-number">46.3</span> Authenticating with the <code>GITHUB_TOKEN</code></a></li>
-  <li><a href="#setting-permissions-in-the-workflow-file" id="toc-setting-permissions-in-the-workflow-file" class="nav-link" data-scroll-target="#setting-permissions-in-the-workflow-file"><span class="header-section-number">46.4</span> Setting permissions in the workflow file</a></li>
-  <li><a href="#conditionals-for-when-to-run-the-job" id="toc-conditionals-for-when-to-run-the-job" class="nav-link" data-scroll-target="#conditionals-for-when-to-run-the-job"><span class="header-section-number">46.5</span> Conditionals for when to run the job</a>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#python-packages-book" id="toc-python-packages-book" class="nav-link" data-scroll-target="#python-packages-book"><span class="header-section-number">32.1</span> Python Packages Book</a></li>
+  <li><a href="#getting-to-know-a-pyproject.toml-files-contents" id="toc-getting-to-know-a-pyproject.toml-files-contents" class="nav-link" data-scroll-target="#getting-to-know-a-pyproject.toml-files-contents"><span class="header-section-number">32.2</span> Getting to know a <code>pyproject.toml</code> file’s contents</a></li>
+  <li><a href="#getting-to-know-a-__init__.py-files-contents" id="toc-getting-to-know-a-__init__.py-files-contents" class="nav-link" data-scroll-target="#getting-to-know-a-__init__.py-files-contents"><span class="header-section-number">32.3</span> Getting to know a <code>__init__.py</code> file’s contents</a></li>
+  <li><a href="#docs-and-.githubworkflowsci-cd.yml" id="toc-docs-and-.githubworkflowsci-cd.yml" class="nav-link" data-scroll-target="#docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">32.4</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></a>
   <ul class="collapse">
-  <li><a href="#how-can-we-automate-version-bumping" id="toc-how-can-we-automate-version-bumping" class="nav-link" data-scroll-target="#how-can-we-automate-version-bumping"><span class="header-section-number">46.5.1</span> How can we automate version bumping?</a></li>
+  <li><a href="#docs" id="toc-docs" class="nav-link" data-scroll-target="#docs"><span class="header-section-number">32.4.1</span> <code>docs/*</code></a></li>
+  <li><a href="#githubworkflowsci-cd.yml" id="toc-githubworkflowsci-cd.yml" class="nav-link" data-scroll-target="#githubworkflowsci-cd.yml"><span class="header-section-number">32.4.2</span> <code>.github/workflows/ci-cd.yml</code></a></li>
   </ul></li>
-  <li><a href="#semantic-versioning" id="toc-semantic-versioning" class="nav-link" data-scroll-target="#semantic-versioning"><span class="header-section-number">46.6</span> Semantic versioning</a></li>
-  <li><a href="#semantic-versioning-1" id="toc-semantic-versioning-1" class="nav-link" data-scroll-target="#semantic-versioning-1"><span class="header-section-number">46.7</span> Semantic versioning</a>
-  <ul class="collapse">
-  <li><a href="#semantic-versioning-case-study" id="toc-semantic-versioning-case-study" class="nav-link" data-scroll-target="#semantic-versioning-case-study"><span class="header-section-number">46.7.1</span> Semantic versioning case study</a></li>
-  </ul></li>
-  <li><a href="#conventional-commit-messages" id="toc-conventional-commit-messages" class="nav-link" data-scroll-target="#conventional-commit-messages"><span class="header-section-number">46.8</span> Conventional commit messages</a>
-  <ul class="collapse">
-  <li><a href="#an-example-of-a-conventional-commit-message" id="toc-an-example-of-a-conventional-commit-message" class="nav-link" data-scroll-target="#an-example-of-a-conventional-commit-message"><span class="header-section-number">46.8.1</span> An example of a conventional commit message</a></li>
-  <li><a href="#another-example-of-a-conventional-commit-message" id="toc-another-example-of-a-conventional-commit-message" class="nav-link" data-scroll-target="#another-example-of-a-conventional-commit-message"><span class="header-section-number">46.8.2</span> Another example of a conventional commit message</a></li>
-  <li><a href="#some-practical-notes-for-usage-in-your-packages" id="toc-some-practical-notes-for-usage-in-your-packages" class="nav-link" data-scroll-target="#some-practical-notes-for-usage-in-your-packages"><span class="header-section-number">46.8.3</span> Some practical notes for usage in your packages:</a></li>
-  <li><a href="#some-practical-notes-for-usage-in-your-packages-1" id="toc-some-practical-notes-for-usage-in-your-packages-1" class="nav-link" data-scroll-target="#some-practical-notes-for-usage-in-your-packages-1"><span class="header-section-number">46.8.4</span> Some practical notes for usage in your packages:</a></li>
-  <li><a href="#demo-of-continuous-deployment" id="toc-demo-of-continuous-deployment" class="nav-link" data-scroll-target="#demo-of-continuous-deployment"><span class="header-section-number">46.8.5</span> Demo of Continuous Deployment!</a></li>
-  </ul></li>
-  <li><a href="#publishing-your-python-package" id="toc-publishing-your-python-package" class="nav-link" data-scroll-target="#publishing-your-python-package"><span class="header-section-number">46.9</span> Publishing your Python package</a>
-  <ul class="collapse">
-  <li><a href="#level-1-github" id="toc-level-1-github" class="nav-link" data-scroll-target="#level-1-github"><span class="header-section-number">46.9.1</span> Level 1: GitHub</a></li>
-  <li><a href="#level-2-pypi" id="toc-level-2-pypi" class="nav-link" data-scroll-target="#level-2-pypi"><span class="header-section-number">46.9.2</span> Level 2: PyPI</a></li>
-  <li><a href="#the-cheese-shop-er-pypi" id="toc-the-cheese-shop-er-pypi" class="nav-link" data-scroll-target="#the-cheese-shop-er-pypi"><span class="header-section-number">46.9.3</span> the Cheese Shop (er, PyPI)</a></li>
-  <li><a href="#number-of-packages-hosted-by-pypi-over-history" id="toc-number-of-packages-hosted-by-pypi-over-history" class="nav-link" data-scroll-target="#number-of-packages-hosted-by-pypi-over-history"><span class="header-section-number">46.9.4</span> Number of packages hosted by PyPI over history</a></li>
-  <li><a href="#what-does-it-mean-to-be-a-pypi-package" id="toc-what-does-it-mean-to-be-a-pypi-package" class="nav-link" data-scroll-target="#what-does-it-mean-to-be-a-pypi-package"><span class="header-section-number">46.9.5</span> What does it mean to be a PyPI package:</a></li>
-  <li><a href="#how-to-submit-a-package-to-pypi" id="toc-how-to-submit-a-package-to-pypi" class="nav-link" data-scroll-target="#how-to-submit-a-package-to-pypi"><span class="header-section-number">46.9.6</span> How to submit a package to PyPI</a></li>
-  <li><a href="#how-to-submit-a-package-to-conda" id="toc-how-to-submit-a-package-to-conda" class="nav-link" data-scroll-target="#how-to-submit-a-package-to-conda"><span class="header-section-number">46.9.7</span> How to submit a package to Conda</a></li>
-  <li><a href="#points-for-discussion" id="toc-points-for-discussion" class="nav-link" data-scroll-target="#points-for-discussion"><span class="header-section-number">46.9.8</span> Points for discussion</a></li>
-  <li><a href="#semantic-versioning-case-study---answers" id="toc-semantic-versioning-case-study---answers" class="nav-link" data-scroll-target="#semantic-versioning-case-study---answers"><span class="header-section-number">46.9.9</span> Semantic versioning case study - answers</a></li>
-  </ul></li>
+  <li><a href="#cookiecutter-project-templates" id="toc-cookiecutter-project-templates" class="nav-link" data-scroll-target="#cookiecutter-project-templates"><span class="header-section-number">32.5</span> Cookiecutter project templates</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/211-gha_python.html"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/packaging.html">Packaging</a></li><li class="breadcrumb-item"><a href="../lectures/191a-packaging-python-poetry.html"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python</span></h1>
+<h1 class="title"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></h1>
 </div>
 
 
@@ -715,346 +713,168 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </header>
 
 
-<section id="using-github-actions-to-perform-cd-for-your-python-package" class="level2" data-number="46.1">
-<h2 data-number="46.1" class="anchored" data-anchor-id="using-github-actions-to-perform-cd-for-your-python-package"><span class="header-section-number">46.1</span> Using GitHub Actions to perform CD for your Python package</h2>
-<p>We will be building off what we learned last class about continuous integration with GitHub actions for Python. What we need to change to make a continuous deployment work for our package?</p>
-<ul>
-<li><p>setup correct permissions for <code>cd</code> job steps</p></li>
-<li><p>add a conditional for when to run the job (only if <code>ci</code> passes, and only if this is a commit to the <code>main</code> branch)</p></li>
-<li><p>ensure the runner uses only one machine - ubuntu</p></li>
-<li><p>bump the version</p></li>
-<li><p>build our package</p></li>
-<li><p>publish to TestPyPI and PyPI</p></li>
-<li><p>create a release on GitHub that corresponds to that version</p></li>
-</ul>
-</section>
-<section id="storing-and-use-github-actions-credentials-safely-via-github-secrets" class="level2" data-number="46.2">
-<h2 data-number="46.2" class="anchored" data-anchor-id="storing-and-use-github-actions-credentials-safely-via-github-secrets"><span class="header-section-number">46.2</span> Storing and use GitHub Actions credentials safely via GitHub Secrets</h2>
-<p>Some of the tasks we want to do in our workflows require authentication. However, the whole point of this is to automate this process - so how can we do that without sharing our authentication tokens, usernames or passwords in our workflow files?</p>
-<p>GitHub Secrets is the solution to this!</p>
-<p>GitHub Secrets are encrypted environment variables that are used only with GitHub Actions, and specified on a repository-by-repository basis. They can be accessed in a workflow file via: <code>${{ secrets.SECRET_NAME }}</code></p>
-<p>See GitHub’s help docs for how to do this: <a href="https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets" class="uri">https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets</a></p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Exercise</span>Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Add a secret to your <code>pycounts*</code> GitHub repository</p>
-<p>Let’s learn how to add secrets to a GitHub repository. We’ll do this by adding our <code>TEST_PYPI_API_TOKEN</code> and <code>PYPI_API_TOKEN</code> as a secret to our <code>pypkgs</code> GitHub repository so that we can automate the publishing of our package repositories.</p>
-<section id="steps" class="level4">
-<h4 class="anchored" data-anchor-id="steps">Steps:</h4>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <ol type="1">
-<li><p>Under <strong>“Secrets”</strong>, click on <strong>“Settings and variables”</strong> &gt; <strong>“Actions”</strong></p></li>
-<li><p>Under <strong>“Repository secrets”</strong> click <strong>“New repository secret”</strong></p></li>
-<li><p>Add <code>TEST_PYPI_API_TOKEN</code> as the secret name, and paste your token (which you previously saved from TestPyPI to a password manager) as the value.</p></li>
-<li><p>Repeat the steps above to add <code>PYPI_API_TOKEN</code> as a secret</p></li>
+<li>Be able to distinguish between essential software package elements (required to make a minimal software package) and those that are not essential but act to improve the user and developer experiences.</li>
+<li>Define what a namespace is.</li>
+<li>Explain the role of the code within the following software package files:</li>
 </ol>
-</section>
-</div>
-</div>
-</section>
-<section id="authenticating-with-the-github_token" class="level2" data-number="46.3">
-<h2 data-number="46.3" class="anchored" data-anchor-id="authenticating-with-the-github_token"><span class="header-section-number">46.3</span> Authenticating with the <code>GITHUB_TOKEN</code></h2>
-<p>What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named <code>GITHUB_TOKEN</code> that you can access and use in your workflow. You access this token in your workflow file via:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="setting-permissions-in-the-workflow-file" class="level2" data-number="46.4">
-<h2 data-number="46.4" class="anchored" data-anchor-id="setting-permissions-in-the-workflow-file"><span class="header-section-number">46.4</span> Setting permissions in the workflow file</h2>
-<p>In addition to the tokens above, the <code>cd</code> job needs to have write permissions to do three things:</p>
-<ol type="1">
-<li>Token authentication</li>
-<li>Edit the version number in <code>pyproject.toml</code></li>
-<li>Create a new software release on GitHub</li>
-</ol>
-<p>To do this we will use the <code>permissions</code> keyword in <code>ci-cd.yml</code> at the beginning of the <code>cd</code> job, setting both <code>id-token</code> and contents<code>to</code>write`:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a> <span class="dt">cd</span><span class="er">:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">permissions</span><span class="er">:</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      <span class="dt">id-token</span><span class="er">:</span> <span class="dt">write</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">contents</span><span class="er">:</span> <span class="dt">write</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="conditionals-for-when-to-run-the-job" class="level2" data-number="46.5">
-<h2 data-number="46.5" class="anchored" data-anchor-id="conditionals-for-when-to-run-the-job"><span class="header-section-number">46.5</span> Conditionals for when to run the job</h2>
-<p>We only want our <code>cd</code> job to run if certain conditions are true, these are:</p>
-<ol type="1">
-<li><p>if the <code>ci</code> job passes</p></li>
-<li><p>if this is a commit to the <code>main</code> branch</p></li>
-</ol>
-<p>We can accomplish this in our <code>cd</code> job be writing a conditional using the <code>needs</code> and <code>if</code> keywords at the top of the job, right after we set the permissions:</p>
-<pre><code>cd:
-    permissions:
-      id-token: write
-      contents: write
-
-    # Only run this job if the "ci" job passes
-    needs: ci
-
-    # Only run this job if new work is pushed to "main"
-    if: github.event_name == 'push' &amp;&amp; github.ref == 'refs/heads/main'</code></pre>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Exercise</span>Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>read the <code>cd</code> job of <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci-cd.yml"><code>ci-cd.yml</code></a></p>
-<p>To make sure we understand what is happening in our workflow that performs CD, let’s convert each <strong>step</strong> to a human-readable explanation:</p>
-<ol type="1">
-<li><p>Sets up Python on the runner</p></li>
-<li><p>Checkout our repository files from GitHub and put them on the runner</p></li>
-<li><p>…</p></li>
-<li><p>…</p></li>
-<li><p>…</p></li>
-<li><p>…</p></li>
-<li><p>…</p></li>
-</ol>
-<blockquote class="blockquote">
-<p>Note: I filled in the steps we went over last class, so you can just fill in the new stuff</p>
-</blockquote>
-</div>
-</div>
-<section id="how-can-we-automate-version-bumping" class="level3" data-number="46.5.1">
-<h3 data-number="46.5.1" class="anchored" data-anchor-id="how-can-we-automate-version-bumping"><span class="header-section-number">46.5.1</span> How can we automate version bumping?</h3>
-<p>Let’s look at the first step that works towards accomplishing this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Use Python Semantic Release to prepare release</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">id</span><span class="kw">:</span><span class="at"> release</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> python-semantic-release/python-semantic-release@v8.3.0</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">github_token</span><span class="kw">:</span><span class="at"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><a href="https://python-semantic-release.readthedocs.io/en/latest/">Python semantic-release</a> is a Python tool which parses commit messages looking for keywords to indicate how to bump the version. It bumps the version in the <code>pyproject.toml</code> file.</p>
-<p>To understand how it works so that we can use it, we need to understand <strong>semantic versioning</strong> and how to write <strong>conventional commit</strong> messages.</p>
-<p>Let’s unpack each of these on its own.</p>
-</section>
-</section>
-<section id="semantic-versioning" class="level2" data-number="46.6">
-<h2 data-number="46.6" class="anchored" data-anchor-id="semantic-versioning"><span class="header-section-number">46.6</span> Semantic versioning</h2>
 <ul>
-<li><p>When we make changes and publish new versions of our packages, we should tag these with a version number so that we and others can view and use older versions of the package if needed.</p></li>
-<li><p>These version numbers should also communicate something about how the underlying code has changed from one version to the next.</p></li>
-<li><p>Semantic versioning is an agreed upon “code” by developers that gives meaning to version number changes, so developers and users can make meaningful predictions about how code changes between versions from looking solely at the version numbers.</p></li>
-<li><p>Semantic versioning assumes version 1.0.0 defines the API, and the changes going forward use that as a starting reference.</p></li>
-</ul>
-</section>
-<section id="semantic-versioning-1" class="level2" data-number="46.7">
-<h2 data-number="46.7" class="anchored" data-anchor-id="semantic-versioning-1"><span class="header-section-number">46.7</span> Semantic versioning</h2>
-<p>Given a version number <code>MAJOR.MINOR.PATCH</code> (e.g., <code>2.3.1</code>), increment the:</p>
+<li>Python
 <ul>
-<li>MAJOR version when you make incompatible API changes (often called breaking changes 💥)</li>
-<li>MINOR version when you add functionality in a backwards compatible manner ✨↩︎️</li>
-<li>PATCH version when you make backwards compatible bug fixes 🐞</li>
-</ul>
-<p><em>Source: https://semver.org/</em></p>
-<section id="semantic-versioning-case-study" class="level3" data-number="46.7.1">
-<h3 data-number="46.7.1" class="anchored" data-anchor-id="semantic-versioning-case-study"><span class="header-section-number">46.7.1</span> Semantic versioning case study</h3>
-<p><strong>Case 1:</strong> In June 2009, Python bumped versions from 3.0.1, some changes in the new release included: - Addition of an ordered dictionary type - A pure Python reference implementation of the import statement - New syntax for nested with statements</p>
-<p><strong>Case 2:</strong> In Dec 2017, Python bumped versions from 3.6.3, some changes in the new release included:</p>
-<ul>
-<li>Fixed several issues in printing tracebacks (<code>PyTraceBack_Print()</code>).</li>
-<li>Fix the interactive interpreter looping endlessly when no memory.</li>
-<li>Fixed an assertion failure in Python parser in case of a bad <code>unicodedata.normalize()</code></li>
-</ul>
-<p><strong>Case 3:</strong> In Feb 2008, Python bumped versions from 2.7.17, some changes in the new release included: - <code>print</code> became a function - integer division resulted in creation of a float, instead of an integer - Some well-known APIs no longer returned lists (e.g., <code>dict.keys</code>, <code>dict.values</code>, <code>map</code>)</p>
-<div class="callout callout-style-default callout-exercise callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Exercise</span>Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Name that semantic version release</p>
-<p>Reading the three cases posted above, think about whether each should be a major, minor or patch version bump. Answer the chat when prompted.</p>
-</div>
-</div>
-</section>
-</section>
-<section id="conventional-commit-messages" class="level2" data-number="46.8">
-<h2 data-number="46.8" class="anchored" data-anchor-id="conventional-commit-messages"><span class="header-section-number">46.8</span> Conventional commit messages</h2>
-<p><a href="https://python-semantic-release.readthedocs.io/en/latest/">Python Semantic Release</a> by default uses a parser that works on the conventional (or Angular) commit message style, which is:</p>
-<pre><code>&lt;type&gt;(optional scope): succinct description of the change
-
-(optional body: the motivation for the change and contrast this with previous behavior)
-
-(optional footer: note BREAKING CHANGES here, as well as any issues to be closed)</code></pre>
-<p>How to affect semantic versioning with conventional commit messages: - a commit with the type <code>fix</code> leads to a patch version bump - a commit with the type <code>feat</code> leads to a minor version bump - a commit with a body or footer that starts with <code>BREAKING CHANGE:</code> - these can be of any type (Note: currently Python Semantic release is broken for detecting these on commits with Windows line endings, wich the GitHub pen tool commits also use. The workaround fix is to use <code>!</code> after <code>feat</code>, for example: <code>feat!: This describes the new feature and breaking changes</code> in addition to <code>BREAKING CHANGES: ...</code> in the footer.)</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>commit types other than <code>fix</code> and <code>feat</code> are allowed. Recommeneded ones include <code>docs</code>, <code>style</code>, <code>refactor</code>, <code>test</code>, <code>ci</code> and <a href="https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type">others</a>. However, only <code>fix</code> and <code>feat</code> result in version bumps using Python Semantic Release.</p>
-</div>
-</div>
-<section id="an-example-of-a-conventional-commit-message" class="level3" data-number="46.8.1">
-<h3 data-number="46.8.1" class="anchored" data-anchor-id="an-example-of-a-conventional-commit-message"><span class="header-section-number">46.8.1</span> An example of a conventional commit message</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"feat(function_x): added the ability to initialize a project even if a pyproject.toml file exists"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>What kind of version bump would this result in?</p>
-</section>
-<section id="another-example-of-a-conventional-commit-message" class="level3" data-number="46.8.2">
-<h3 data-number="46.8.2" class="anchored" data-anchor-id="another-example-of-a-conventional-commit-message"><span class="header-section-number">46.8.2</span> Another example of a conventional commit message</h3>
-<pre><code>git commit -m "feat!: change to use of `%&gt;%` to add new layers to ggplot objects
-
-BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release"</code></pre>
-<p>What kind of version bump would this result in?</p>
-</section>
-<section id="some-practical-notes-for-usage-in-your-packages" class="level3" data-number="46.8.3">
-<h3 data-number="46.8.3" class="anchored" data-anchor-id="some-practical-notes-for-usage-in-your-packages"><span class="header-section-number">46.8.3</span> Some practical notes for usage in your packages:</h3>
-<ol type="1">
-<li><p>You must add the following to the tool section of your <code>pyproject.toml</code> file for this to work (note: the <code>pypkgs-cookiecutter</code> adds this table if you choose to add <code>ci-cd</code> when you set it up):</p>
-<pre><code>[tool.semantic_release]
-version_toml = [
-    "pyproject.toml:tool.poetry.version",
-]                                                    # version location
-branch = "main"                                      # branch to make releases of
-changelog_file = "CHANGELOG.md"                      # changelog file
-build_command = "pip install poetry &amp;&amp; poetry build" # build dists</code></pre></li>
-<li><p>Versions will <strong>not</strong> be bumped if conventional commits are not used.</p></li>
-</ol>
-</section>
-<section id="some-practical-notes-for-usage-in-your-packages-1" class="level3" data-number="46.8.4">
-<h3 data-number="46.8.4" class="anchored" data-anchor-id="some-practical-notes-for-usage-in-your-packages-1"><span class="header-section-number">46.8.4</span> Some practical notes for usage in your packages:</h3>
-<ol type="1">
-<li><p>Automated version bumping can only work (as currently implemented in our cookiecutter) with versions in the <code>pyproject.toml</code> metadata (line 3). If you add a version elsewhere, it will not get bumped unless you specify the location the the <code>[tool.semantic_release]</code> table in <code>pyproject.toml</code>.</p></li>
-<li><p>If you have been working with main branch protection, you will need to change something to use <code>ci.yml</code> work for continuous deployment. The reason for this, is that this workflow (which bumps versions and deploy the package) is triggered to run <strong>after</strong> the pull request is merged to main. Therefore, when we bump the versions in the <code>pyproject.toml</code> file we need to push these changes to the main branch - however this is problematic given that we have set-up main branch protection!</p></li>
-</ol>
-<p>What are we to do about #2?</p>
-<section id="solution-1" class="level4">
-<h4 class="anchored" data-anchor-id="solution-1">Solution 1:</h4>
-<p>Remove main branch protection. This is not the most idealistic solution, however it is a simple and practical one.</p>
-</section>
-<section id="possible-solution-2" class="level4">
-<h4 class="anchored" data-anchor-id="possible-solution-2">Possible solution 2:</h4>
-<p>(I say possible because this has yet to be formally documented by PSR, and is still just reported in an issue: <a href="https://github.com/python-semantic-release/python-semantic-release/issues/311" class="uri">https://github.com/python-semantic-release/python-semantic-release/issues/311</a>. I have tested it and it works for me, see example here: <a href="https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml" class="uri">https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml</a>)</p>
-<ol type="1">
-<li><p>Create a new GitHub PAT (see <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">these docs</a>) with the <a href="https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes">repo</a> scope.</p></li>
-<li><p>Under <strong>“Secrets”</strong>, click on <strong>“Settings and variables”</strong> &gt; <strong>“Actions”</strong>, and then under <strong>“Repository secrets”</strong> click <strong>“New repository secret”</strong> to create a new repository secret named <code>RELEASE_TOKEN</code> and the new GitHub PAT with repo scope as its value.</p></li>
-<li><p>Edit the to <code>cd</code> job steps shown below (from <code>ci-cd.yml</code>) use this token:</p></li>
-</ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">    - uses: actions/checkout@v3</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">      with:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">        fetch-depth: 0</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">        token: ${{ secrets.RELEASE_TOKEN }}</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - name: Use Python Semantic Release to prepare release</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">      id: release</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">      uses: python-semantic-release/python-semantic-release@v8.3.0</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">      with:</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">        github_token: ${{ secrets.RELEASE_TOKEN }}</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-</section>
-<section id="demo-of-continuous-deployment" class="level3" data-number="46.8.5">
-<h3 data-number="46.8.5" class="anchored" data-anchor-id="demo-of-continuous-deployment"><span class="header-section-number">46.8.5</span> Demo of Continuous Deployment!</h3>
-<ul>
-<li><a href="https://github.com/ttimbers/pycounts_tt_2024" class="uri">https://github.com/ttimbers/pycounts_tt_2024</a></li>
-</ul>
-</section>
-</section>
-<section id="publishing-your-python-package" class="level2" data-number="46.9">
-<h2 data-number="46.9" class="anchored" data-anchor-id="publishing-your-python-package"><span class="header-section-number">46.9</span> Publishing your Python package</h2>
-<section id="level-1-github" class="level3" data-number="46.9.1">
-<h3 data-number="46.9.1" class="anchored" data-anchor-id="level-1-github"><span class="header-section-number">46.9.1</span> Level 1: GitHub</h3>
-<p>Packages can be installed from GitHub via <code>pip</code>:</p>
-<pre><code>pip install git+https://github.com/USERNAME/REPOSITORY.git</code></pre>
-</section>
-<section id="level-2-pypi" class="level3" data-number="46.9.2">
-<h3 data-number="46.9.2" class="anchored" data-anchor-id="level-2-pypi"><span class="header-section-number">46.9.2</span> Level 2: PyPI</h3>
-<p>Packages can be installed from <code>PyPI</code> via:</p>
-<pre><code>pip install PACKAGE_NAME</code></pre>
-<ul>
-<li>should be pronounced like “pie pea eye”</li>
-<li>also known as the Cheese Shop (a reference to the Monty Python’s Flying Circus sketch “Cheese Shop”)</li>
-</ul>
-<blockquote class="blockquote">
-<p>Because level 2 is so easy, it is the most commonly used method.</p>
-</blockquote>
-<div id="f98a2647" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> YouTubeVideo</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>YouTubeVideo(<span class="st">'zB8pbUW5n1g'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-
-        <iframe width="400" height="300" src="https://www.youtube.com/embed/zB8pbUW5n1g" frameborder="0" allowfullscreen=""></iframe>
-        
-</div>
-</div>
-<p>Don’t get the joke? I didn’t either without historical context. When PyPI was first launched it didn’t have many Python packages on it - similar to a cheese shop with no cheese 😆</p>
-</section>
-<section id="the-cheese-shop-er-pypi" class="level3" data-number="46.9.3">
-<h3 data-number="46.9.3" class="anchored" data-anchor-id="the-cheese-shop-er-pypi"><span class="header-section-number">46.9.3</span> the Cheese Shop (er, PyPI)</h3>
-<ul>
-<li><p>PyPI (founded in 2002) stands for the “Python Package Index”</p></li>
-<li><p>hosts Python packages of two different forms:</p>
-<ul>
-<li>sdists (source distributions)</li>
-<li>precompiled “wheels (binaries)</li>
+<li><code>pyproject.toml</code></li>
+<li><code>__init__.py</code></li>
+<li><code>docs/*</code></li>
+<li><code>.github/workflows/ci-cd.yml</code></li>
 </ul></li>
-<li><p>heavily cached and distributed</p></li>
-<li><p>currently contains &gt; 9000 projects</p></li>
 </ul>
+<ol start="4" type="1">
+<li>Explain at a high level how the Cookiecutter project template tool works.</li>
+<li>Generate well formatted function and package-level documentation for software packages using available tools (e.g., numpy-style dosctrings and Sphinx in Python)</li>
+</ol>
 </section>
-<section id="number-of-packages-hosted-by-pypi-over-history" class="level3" data-number="46.9.4">
-<h3 data-number="46.9.4" class="anchored" data-anchor-id="number-of-packages-hosted-by-pypi-over-history"><span class="header-section-number">46.9.4</span> Number of packages hosted by PyPI over history</h3>
-<p><img src="https://www.researchgate.net/profile/Marat_Valiev2/publication/328595587/figure/fig1/AS:687258193633280@1540866530197/Number-of-new-PyPI-packages-per-month.png" width="800"></p>
-<p><em>Source: <a href="https://dl.acm.org/doi/10.1145/3236024.3236062">“Ecosystem-level determinants of sustained activity in open-source projects: a case study of the PyPI ecosystem”</a> by Marat Valiev, Bogdan Vasilescu &amp; James Herbsleb</em></p>
+<section id="python-packages-book" class="level2" data-number="32.1">
+<h2 data-number="32.1" class="anchored" data-anchor-id="python-packages-book"><span class="header-section-number">32.1</span> Python Packages Book</h2>
+<p>This chapter goes in tamdem with the <a href="https://py-pkgs.org/welcome">Python Packages book</a></p>
+<p>The main build tool used is: <code>poetry</code>:<a href="https://python-poetry.org/" class="uri">https://python-poetry.org/</a></p>
 </section>
-<section id="what-does-it-mean-to-be-a-pypi-package" class="level3" data-number="46.9.5">
-<h3 data-number="46.9.5" class="anchored" data-anchor-id="what-does-it-mean-to-be-a-pypi-package"><span class="header-section-number">46.9.5</span> What does it mean to be a PyPI package:</h3>
-<p><strong>Ease of installation:</strong> - can be installed by users via <code>pip install</code> (it’s actually the default!) - universal binaries available for packages that are written solely in Python</p>
-<p><strong>Discoverability:</strong> - listed as a package on PyPI</p>
-<p>HOWEVER, there is no required check for your package is required to pass… As long as you can bundle it as something that PyPI recognizes as an sdist or wheels then it can go on PyPI… This allows the process to be fully automated, but QC is lower than it is for CRAN.</p>
+<section id="getting-to-know-a-pyproject.toml-files-contents" class="level2" data-number="32.2">
+<h2 data-number="32.2" class="anchored" data-anchor-id="getting-to-know-a-pyproject.toml-files-contents"><span class="header-section-number">32.2</span> Getting to know a <code>pyproject.toml</code> file’s contents</h2>
+<p>Here is an example <code>pyproject.toml</code> file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry]</span>                                         <span class="er">┐</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"pycounts_tt_2024"</span>                             <span class="er">│</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span>                                     <span class="er">│</span> <span class="dt">Package</span> <span class="dt">metadata</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">"Calculate word counts in a text file!"</span> <span class="er">│</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">authors</span> <span class="op">=</span> <span class="op">[</span><span class="st">"Tiffany Timbers"</span><span class="op">]</span>                         <span class="er">│</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">license</span> <span class="op">=</span> <span class="st">"MIT"</span>                                       <span class="er">│</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dt">readme</span> <span class="op">=</span> <span class="st">"README.md"</span>                                  <span class="er">┘</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.dependencies]</span>                            <span class="er">┐</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">python</span> <span class="op">=</span> <span class="st">"&gt;=3.9"</span>                                      <span class="er">│</span> <span class="dt">User</span> <span class="dt">function</span> <span class="dt">dependencies</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dt">matplotlib</span> <span class="op">=</span> <span class="st">"&gt;=3.8.2"</span>                                <span class="er">┘</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.dev-dependencies]</span>                        <span class="er">┐</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                                                      <span class="er">│</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.poetry.group.dev.dependencies]</span>                  <span class="er">│</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="dt">pytest</span> <span class="op">=</span> <span class="st">"&gt;=7.4.4"</span>                                    <span class="er">│</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="dt">pytest-cov</span> <span class="op">=</span> <span class="st">"&gt;=4.1.0"</span>                                <span class="er">│</span> <span class="dt">Developer</span> <span class="dt">dependencies</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="dt">jupyter</span> <span class="op">=</span> <span class="st">"&gt;=1.0.0"</span>                                   <span class="er">│</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="dt">myst-nb</span> <span class="op">=</span> <span class="op">{</span><span class="dt">version</span><span class="op"> =</span> <span class="st">"^1.0.0"</span><span class="op">, </span><span class="dt">python</span><span class="op"> =</span> <span class="st">"^3.9"</span><span class="op">}</span>       <span class="er">│</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="dt">sphinx-autoapi</span> <span class="op">=</span> <span class="st">"^3.0.0"</span>                             <span class="er">│</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="dt">sphinx-rtd-theme</span> <span class="op">=</span> <span class="st">"^2.0.0"</span>                           <span class="er">┘</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="kw">[build-system]</span>                                        <span class="er">┐</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"poetry-core&gt;=1.0.0"</span><span class="op">]</span>                     <span class="er">│</span> <span class="dt">Package</span> <span class="dt">build</span> <span class="dt">dependencies</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="dt">build-backend</span> <span class="op">=</span> <span class="st">"poetry.core.masonry.api"</span>             <span class="er">┘</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Almost everything inside this file is customizable based on your package. Even the build system! <code>pyproject.toml</code> can also be used with other build tools such as setuptools and flit! If you are interested in learning more, checkout the <a href="https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html">Python Packaging Tools guide</a> from PyOpenSci.</p>
 </section>
-<section id="how-to-submit-a-package-to-pypi" class="level3" data-number="46.9.6">
-<h3 data-number="46.9.6" class="anchored" data-anchor-id="how-to-submit-a-package-to-pypi"><span class="header-section-number">46.9.6</span> How to submit a package to PyPI</h3>
+<section id="getting-to-know-a-__init__.py-files-contents" class="level2" data-number="32.3">
+<h2 data-number="32.3" class="anchored" data-anchor-id="getting-to-know-a-__init__.py-files-contents"><span class="header-section-number">32.3</span> Getting to know a <code>__init__.py</code> file’s contents</h2>
+<p>As mentioned earlier, this file can serve it’s essential package function of telling Python that this directory is a package by just existing and being empty. It can however serve other purposes. Let’s discuss the code that exists in the <code>py-pkgs-cookiecutter</code> template:</p>
+<p>The <code>py-pkgs-cookiecutter</code> we used to create our <code>pycounts</code> package (<a href="https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure">Section 3.2.2</a>) already populated our <code>__init__.py</code> file with this code for us:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read version from installed package</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> version(<span class="st">"pycounts"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Because this code is in <code>__init__.py</code> is executed when the package is imported (this is the case for all <code>__init__.py</code> files, we can ask for the package version with Python code like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pycounts</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pycounts.__version__</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fl">0.1.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In the code in <code>__init__.py</code> we get the version from the package metadata, that is derived from <code>pyproject.toml</code>. This allows us to only have to update the version of our package in one place when we bump to a new version.</p>
+<p>What other kinds of interesting things can we do with <code>__init__.py</code>? Well we can use it to control the import behavior of a package. For example, there are currently only two main functions that users will commonly use from our <code>pycounts</code> package: <code>pycounts.count_words()</code> and <code>plotting.plot_words()</code>. Users have to type the full path to these functions to import them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.pycounts <span class="im">import</span> count_words</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.plotting <span class="im">import</span> plot_words</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If we import those core functions in <code>pycounts</code>’s <code>__init__.py</code> file, which would bind them to the package namespace, we can make our user’s experience of loading them easier!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read version from installed package</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>__version__ <span class="op">=</span> version(<span class="va">__name__</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># populate package namespace</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.pycounts <span class="im">import</span> count_words</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pycounts.plotting <span class="im">import</span> plot_words</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The functions are now bound to the pycounts namespace, so users can access them like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pycounts</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pycounts.count_words</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>function count_words<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What is a namespace again? A “namespace” is a set of names that are used to identify and refer to objects of various kinds (source: <a href="https://en.wikipedia.org/wiki/Namespace">Wikipedia</a>).</p>
+</section>
+<section id="docs-and-.githubworkflowsci-cd.yml" class="level2" data-number="32.4">
+<h2 data-number="32.4" class="anchored" data-anchor-id="docs-and-.githubworkflowsci-cd.yml"><span class="header-section-number">32.4</span> <code>docs/*</code> and <code>.github/workflows/ci-cd.yml</code></h2>
+<p>We will cover both these topics in greater detail later (<code>docs/*</code> in the documentation chapter/lecture and <code>.github/workflows/ci-cd.yml</code> in the continuous integration and deployment chapter/lecture), but for now it’s helpful to get a bit better of an idea of these files and what they are doing.</p>
+<section id="docs" class="level3" data-number="32.4.1">
+<h3 data-number="32.4.1" class="anchored" data-anchor-id="docs"><span class="header-section-number">32.4.1</span> <code>docs/*</code></h3>
+<p>To keep things organized, to and to make the package documentation easier to automate, we keep the documentation files in the <code>docs</code> directory and use a <code>Makefile</code> (or <code>make.bat</code> on Windows) therein to automate their rendering.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docs</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> changelog.md</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> conduct.md</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> conf.py</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> contributing.md</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> example.ipynb</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> index.md</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">├──</span> make.bat</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>   <span class="ex">└──</span> requirements.txt <span class="er">(</span><span class="ex">deprecated</span><span class="kw">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Note that many of these files also commonly exist in the root of projects and people expect to find them there!!! These include:</p>
 <ul>
-<li>See above, or the <a href="https://py-pkgs.org/03-how-to-package-a-python#">“How to package a Python”</a> chapter of the <em>Python Packages</em> book.</li>
+<li>changelog.md</li>
+<li>conduct.md</li>
+<li>contributing.md</li>
 </ul>
+<p>So what we have done is pointed the <code>doc/*.md</code>’s of these files to the contents these files in the project root. And at rendering, their content will be used instead! If you look at the raw source of one of these files (e.g., conduct.md) you will see:</p>
+<p><img src="../img/python-docs-md-content.png" width="500"></p>
+<p>This helps keep our docs up to date by not having two places to update them!</p>
+<p><code>conf.py</code> is a configuration file that specifies style and formatting for the documentation. In this course we will not be modifying it, but if you wanted you can! To do this, please first read the docs for <a href="https://www.sphinx-doc.org/en/master/usage/configuration.html">Sphinx configuration here</a>.</p>
+<p>The <code>requirements.txt</code> file in the <code>pypkgs-cookiecutter</code> template is now deprecated and will be removed in a future version. All dependencies are now managed by <code>pyproject.toml</code>.</p>
 </section>
-<section id="how-to-submit-a-package-to-conda" class="level3" data-number="46.9.7">
-<h3 data-number="46.9.7" class="anchored" data-anchor-id="how-to-submit-a-package-to-conda"><span class="header-section-number">46.9.7</span> How to submit a package to Conda</h3>
+<section id="githubworkflowsci-cd.yml" class="level3" data-number="32.4.2">
+<h3 data-number="32.4.2" class="anchored" data-anchor-id="githubworkflowsci-cd.yml"><span class="header-section-number">32.4.2</span> <code>.github/workflows/ci-cd.yml</code></h3>
+<p>This file contains automation code for continuous integration and delivery of our Python software package, reading the steps in this file you will see that it does the following:</p>
+<ol type="1">
+<li>Continuous integration tasks:</li>
+</ol>
 <ul>
-<li>See the <a href="https://www.pyopensci.org/python-package-guide/tutorials/publish-conda-forge.html">“Publish your Python package that is on PyPI to conda-forge”</a> chapter of the Python packaging 101 documentation from PyOpenSci.</li>
+<li>installs your package</li>
+<li>runs the test suite</li>
+<li>calculates test coverage</li>
 </ul>
+<ol start="2" type="1">
+<li>Continuous deployment tasks:</li>
+</ol>
+<ul>
+<li>bumps the package software version, as well as prepares and creates a GitHub release of the package</li>
+<li>builds the package</li>
+<li>publishes it to the package repository (i.e., TestPyPI or PyPI, or both)</li>
+</ul>
+<p>When we first start building our packages, the GitHub Actions workflows for most of these things will fail. That is to be expected! As you complete the tasks for setting each of these up (e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets, etc) then the GitHub Actions workflows should start passing. This is a consequence of the philosophy of the <code>pypkgs-cookiecutter</code> template tool.</p>
 </section>
-<section id="points-for-discussion" class="level3" data-number="46.9.8">
-<h3 data-number="46.9.8" class="anchored" data-anchor-id="points-for-discussion"><span class="header-section-number">46.9.8</span> Points for discussion</h3>
-<ul>
-<li><p>Is one model better or worse?</p></li>
-<li><p>Importance &amp; complementarity of organizations like rOpenSci &amp; pyOpenSci with CRAN and PyPI, respectively</p></li>
-</ul>
 </section>
-<section id="semantic-versioning-case-study---answers" class="level3" data-number="46.9.9">
-<h3 data-number="46.9.9" class="anchored" data-anchor-id="semantic-versioning-case-study---answers"><span class="header-section-number">46.9.9</span> Semantic versioning case study - answers</h3>
-<p>In 2008, Python bumped versions from 2.7.17 to 3.0.0. Some changes in the 3.0.0 release included: - <code>print</code> became a function - integer division resulted in creation of a float, instead of an integer - Some well-known APIs no longer returned lists (e.g., <code>dict.keys</code>, <code>dict.values</code>, <code>map</code>) - and many more (see <a href="https://docs.python.org/3.0/whatsnew/3.0.html">here</a> if interested)</p>
-<p><a href="https://docs.python.org/3.0/whatsnew/3.0.html"><em>Source</em></a></p>
-<p>In 2009, Python bumped versions from 3.0.1 to 3.1.0. Some changes in the 3.1.0 release included: - Addition of an ordered dictionary type - A pure Python reference implementation of the import statement - New syntax for nested with statements</p>
-<p><a href="https://www.python.org/download/releases/3.1/"><em>Source</em></a></p>
-<p>In 2017, Python bumped versions from 3.6.3 to 3.6.4. Some changes in the 3.6.4 release included:</p>
+<section id="cookiecutter-project-templates" class="level2" data-number="32.5">
+<h2 data-number="32.5" class="anchored" data-anchor-id="cookiecutter-project-templates"><span class="header-section-number">32.5</span> Cookiecutter project templates</h2>
+<p><a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> is a general Python tool for repeatedly generating a desired file and directory structure.</p>
+<p>Many many many Python <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> templates already exist, this search on GitHub (linked to from the <a href="https://cookiecutter.readthedocs.io/en/stable/#"><code>Cookiecutter</code></a> documentation) identifies 9000 repositories!!!</p>
 <ul>
-<li>Fixed several issues in printing tracebacks (<code>PyTraceBack_Print()</code>).</li>
-<li>Fix the interactive interpreter looping endlessly when no memory.</li>
-<li>Fixed an assertion failure in Python parser in case of a bad <code>unicodedata.normalize()</code></li>
+<li><a href="https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories" class="uri">https://github.com/search?q=cookiecutter&amp;amp%3Btype=Repositories&amp;type=repositories</a></li>
 </ul>
-<p><a href="https://docs.python.org/3.6/whatsnew/changelog.html#python-3-6-4-final"><em>Source</em></a></p>
+<p>How does it work? It uses the concept of code templating and uses the <a href="https://jinja.palletsprojects.com/en/3.1.x/"><code>Jinja</code></a> templating engine. Special syntax (involving <code>{{</code>) is used to specify parts of the code that should be “filled in” with user input (from a function call if interacting directly with the <code>Jinja</code> API, or the keyboard if using <code>Cookiecutter</code>). The input is then used to replace the placeholder text in the code (denoted by the special syntax involving <code>{{</code>). This allows template code to be automatically filled in and reused again and again!</p>
+<div class="callout callout-style-default callout-exercise callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Exercise</span>Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let’s explore the <code>pypkgs-cookiecutter</code> to get to know how the Cookiecutter project template tool works in the case of <code>pypkgs-cookiecutter</code>, and in general!</p>
+<ul>
+<li>Go to: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter</a></li>
+<li>Looks at: <a href="https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json" class="uri">https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json</a></li>
+<li>Look for all the places you see <code>{ cookiecutter.__SOMETHING }</code></li>
+</ul>
+</div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1460,13 +1280,13 @@ build_command = "pip install poetry &amp;&amp; poetry build" # build dists</code
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/210-deploy-and-publish.html" class="pagination-link" aria-label="Deploying and publishing packages">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span>
+      <a href="../lectures/191-packaging-python.html" class="pagination-link" aria-label="Packaging: Python">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/212-gha_r.html" class="pagination-link" aria-label="What about CD with R packages">
-        <span class="nav-page-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/191b-packaging-python-hatch.html" class="pagination-link" aria-label="Packaging: Python (Hatch)">
+        <span class="nav-page-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
