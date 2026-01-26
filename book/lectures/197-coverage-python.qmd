@@ -149,3 +149,29 @@ and generate the document for a coverage report
 ```bash
 pytest --cov=countchar --cov-report html
 ```
+
+## Reporting coverage badges
+
+<https://codecov.io/> is a service that can take our `pytest` information and
+give us a visualization of our test coverage and also give us a badge we can display in our repository.
+
+More detail about creating and linking codecov to our repositor is in this section of the textbook: <https://py-pkgs.org/08-ci-cd#recording-code-coverage>
+
+General steps:
+
+- log into <https://codecov.io/> with your GitHub account
+- install code coverage github app (if you're using personal account, your organization may have it already installed)
+    - Make sure the application can see your repository in the app settings
+- find repo on codecov
+- click configure
+- setup code cov action
+    - use github actions
+    - select pytest
+    - change `--cov-report=xml`
+        - `pytest --cov --cov-branch --cov-report=xml`
+    - get token info for `CODECOV_TOKEN` (from configure page)
+    - when CI runs you will see a link in that particular step results of the coverage with a URL (else you probably didn't have a token)
+    - refresh the codecoverage repo page
+- badge
+    - configuration page there's a badge + graphs section
+    - copy the markdown badge (we are using quarto + quartodoc, rst is for sphinx)

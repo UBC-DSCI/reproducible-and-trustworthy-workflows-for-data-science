@@ -9,3 +9,132 @@ title: "Package Documentation: Python - quartodoc"
 ## Quartodoc
 
 <https://machow.github.io/quartodoc>
+
+## Documentation Preview
+
+We use `quartodoc build` and `quarto render` to create our documentation site,
+however reviewing documentation is easier if it's already presented in the rendered web format.
+You can set up CI such that it will render the documentation page on every pull request,
+so each PR will have an updated docs website and any formatting and rendering issues can be
+seen without having to pull the branch and manually rendering the page locally.
+
+We will use netlify to host all these different PR websites since github pages can only host a single webpage.
+We can set up the CI workflow such that each PR will have a website with the PR number in the URL.
+
+Genearl steps:
+
+- https://www.netlify.com/
+- you may be asked to install app after you connect with github
+- deploy new project from github (may trigger app install here)
+  - leave the project name empty so it uses a random project name for now (it's a deployment preview, don't clutter the namespace if you don't need to)
+  - leave everything else blank, we will push from github actions
+- Github Secrets
+  - `NETLIFY_AUTH_TOKEN`: this is the Netlify PAT
+  - `NETLIFY_SITE_ID`: you can find tihs in the Netlify website configuration page
+- use the example yaml file, note that it's PR only (why does this make sense?)
+- workflow needs read+right permissions
+  - set in the YAML file and also in the repo actions setting
+
+```yaml
+on:
+  workflow_dispatch:
+  pull_request:
+
+name: Preview Documentation
+
+jobs:
+  render-docs-preview-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      deployments: write
+      pull-requests: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[docs]
+
+      # manually call quartodoc build
+      - name: quartodoc build
+        run: |
+          quartodoc build
+
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # =====================================================
+      # Deploy to Netlify
+      # =====================================================
+
+      - name: Configure pull release name
+        if: ${{github.event_name == 'pull_request'}}
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: |
+          echo "RELEASE_NAME=pr-${PR_NUMBER}" >> $GITHUB_ENV
+
+      - name: Configure branch release name
+        if: ${{github.event_name != 'pull_request'}}
+        run: |
+          # use branch name, but replace slashes. E.g. feat/a -> feat-a
+          echo "RELEASE_NAME=${GITHUB_REF_NAME/\//-}" >> $GITHUB_ENV
+
+      - name: Create Github "view deployment" button in PR
+        if: ${{github.event_name == 'pull_request'}}
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: ${{ env.RELEASE_NAME }}
+          ref: ${{ github.head_ref }}
+          logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
+      - name: Deploy to Netlify
+        id: netlify
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          REF_NAME: ${{ github.ref_name }}
+          ALIAS: ${{ steps.deployment.outputs.env }}
+        run: |
+          npm install -g netlify-cli
+          if [ "${REF_NAME}" = "master" ] || [ "${REF_NAME}" = "main" ]; then
+            netlify deploy --dir=_site/ --prod 2>&1 | tee deploy.log
+          else
+            netlify deploy --dir=_site/ --alias="${ALIAS}" 2>&1 | tee deploy.log
+          fi
+          DEPLOY_URL=$(grep -oP 'https://[^\s]+' deploy.log | grep -E '(netlify\.app|--.*\.netlify\.app)' | head -n 1)
+          echo "url=${DEPLOY_URL}" >> $GITHUB_OUTPUT
+          cat deploy.log
+
+      - name: Update Github "view deployment" button in PR
+        uses: bobheadxi/deployments@v1
+        if: ${{ always() && github.event_name == 'pull_request'}}
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env: ${{ steps.deployment.outputs.env }}
+          env_url: ${{ steps.netlify.outputs.url }}
+          logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+```
