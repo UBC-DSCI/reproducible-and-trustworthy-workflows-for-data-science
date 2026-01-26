@@ -84,30 +84,14 @@ jobs:
       # Deploy to Netlify
       # =====================================================
 
-      # Step 1: Set the deployment alias name for PRs
-      # For PRs, create an alias like "pr-123" where 123 is the PR number
-      # This ensures each PR gets its own unique preview URL
-      - name: Configure pull release name
-        if: ${{github.event_name == 'pull_request'}}
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-        run: |
-          echo "RELEASE_NAME=pr-${PR_NUMBER}" >> $GITHUB_ENV
+      # Create a unique name for this deployment using the PR number
+      # This helps track which PR preview is which
+      - name: Configure release name
+        run: echo "RELEASE_NAME=pr-${{ github.event.number }}" >> $GITHUB_ENV
 
-      # Step 2: Set the deployment alias name for direct branch pushes
-      # For non-PR events (e.g., direct pushes), use the branch name as the alias
-      # Replace slashes with dashes (e.g., "feat/new-docs" becomes "feat-new-docs")
-      - name: Configure branch release name
-        if: ${{github.event_name != 'pull_request'}}
-        run: |
-          # use branch name, but replace slashes. E.g. feat/a -> feat-a
-          echo "RELEASE_NAME=${GITHUB_REF_NAME/\//-}" >> $GITHUB_ENV
-
-      # Step 3: Create a deployment status in GitHub (PR only)
-      # This adds a "View deployment" button to the PR that links to the preview
-      # The deployment is initially in "pending" state while Netlify deploys
-      - name: Create Github "view deployment" button in PR
-        if: ${{github.event_name == 'pull_request'}}
+      # Create a deployment status on GitHub to track the deployment progress
+      # This shows up in the PR's "Deployments" section
+      - name: Create deployment status
         uses: bobheadxi/deployments@v1
         id: deployment
         with:
@@ -117,36 +101,24 @@ jobs:
           ref: ${{ github.head_ref }}
           logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
-      # Step 4: Deploy the site to Netlify
-      # - Installs Netlify CLI
-      # - If branch is main/master: deploy to production URL
-      # - Otherwise: deploy to a unique preview URL using the ALIAS (e.g., pr-123)
-      # - Captures deployment logs and extracts the deployed URL
+      # Deploy the rendered site to Netlify with a PR-specific preview URL
+      # The alias ensures each PR gets its own stable URL during review
       - name: Deploy to Netlify
         id: netlify
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          REF_NAME: ${{ github.ref_name }}
-          ALIAS: ${{ steps.deployment.outputs.env }}
         run: |
           npm install -g netlify-cli
-          if [ "${REF_NAME}" = "master" ] || [ "${REF_NAME}" = "main" ]; then
-            netlify deploy --dir=_site/ --prod 2>&1 | tee deploy.log
-          else
-            netlify deploy --dir=_site/ --alias="${ALIAS}" 2>&1 | tee deploy.log
-          fi
+          netlify deploy --dir=_site/ --alias="pr-${{ github.event.number }}" 2>&1 | tee deploy.log
           DEPLOY_URL=$(grep -oP 'https://[^\s]+' deploy.log | grep -E '(netlify\.app|--.*\.netlify\.app)' | head -n 1)
           echo "url=${DEPLOY_URL}" >> $GITHUB_OUTPUT
-          cat deploy.log
 
-      # Step 5: Update the GitHub deployment status (PR only)
-      # Updates the "View deployment" button with the actual Netlify URL
-      # Runs even if previous steps failed (always()) to show failure status
-      # Marks deployment as success/failure based on job status
-      - name: Update Github "view deployment" button in PR
+      # Update the GitHub deployment status with success/failure and the preview URL
+      # This creates a clickable link in the PR to view the deployed preview
+      - name: Update deployment status
         uses: bobheadxi/deployments@v1
-        if: ${{ always() && github.event_name == 'pull_request'}}
+        if: always()
         with:
           step: finish
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -155,4 +127,5 @@ jobs:
           env: ${{ steps.deployment.outputs.env }}
           env_url: ${{ steps.netlify.outputs.url }}
           logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+
 ```
