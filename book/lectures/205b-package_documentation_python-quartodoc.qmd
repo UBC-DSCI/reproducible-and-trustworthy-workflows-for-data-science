@@ -84,6 +84,9 @@ jobs:
       # Deploy to Netlify
       # =====================================================
 
+      # Step 1: Set the deployment alias name for PRs
+      # For PRs, create an alias like "pr-123" where 123 is the PR number
+      # This ensures each PR gets its own unique preview URL
       - name: Configure pull release name
         if: ${{github.event_name == 'pull_request'}}
         env:
@@ -91,12 +94,18 @@ jobs:
         run: |
           echo "RELEASE_NAME=pr-${PR_NUMBER}" >> $GITHUB_ENV
 
+      # Step 2: Set the deployment alias name for direct branch pushes
+      # For non-PR events (e.g., direct pushes), use the branch name as the alias
+      # Replace slashes with dashes (e.g., "feat/new-docs" becomes "feat-new-docs")
       - name: Configure branch release name
         if: ${{github.event_name != 'pull_request'}}
         run: |
           # use branch name, but replace slashes. E.g. feat/a -> feat-a
           echo "RELEASE_NAME=${GITHUB_REF_NAME/\//-}" >> $GITHUB_ENV
 
+      # Step 3: Create a deployment status in GitHub (PR only)
+      # This adds a "View deployment" button to the PR that links to the preview
+      # The deployment is initially in "pending" state while Netlify deploys
       - name: Create Github "view deployment" button in PR
         if: ${{github.event_name == 'pull_request'}}
         uses: bobheadxi/deployments@v1
@@ -108,6 +117,11 @@ jobs:
           ref: ${{ github.head_ref }}
           logs: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
+      # Step 4: Deploy the site to Netlify
+      # - Installs Netlify CLI
+      # - If branch is main/master: deploy to production URL
+      # - Otherwise: deploy to a unique preview URL using the ALIAS (e.g., pr-123)
+      # - Captures deployment logs and extracts the deployed URL
       - name: Deploy to Netlify
         id: netlify
         env:
@@ -126,6 +140,10 @@ jobs:
           echo "url=${DEPLOY_URL}" >> $GITHUB_OUTPUT
           cat deploy.log
 
+      # Step 5: Update the GitHub deployment status (PR only)
+      # Updates the "View deployment" button with the actual Netlify URL
+      # Runs even if previous steps failed (always()) to show failure status
+      # Marks deployment as success/failure based on job status
       - name: Update Github "view deployment" button in PR
         uses: bobheadxi/deployments@v1
         if: ${{ always() && github.event_name == 'pull_request'}}
