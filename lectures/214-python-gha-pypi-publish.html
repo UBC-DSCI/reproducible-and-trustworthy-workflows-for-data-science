@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>49&nbsp; Deploying and publishing packages – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>53&nbsp; Auto version bumping (Python) – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +65,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/211a-gha_python-poetry.html" rel="next">
-<link href="../lectures/210-deploy-and-publish.html" rel="prev">
+<link href="../parts/licenses-copyright-wrapup.html" rel="next">
+<link href="../lectures/213-package_review.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -106,17 +106,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
-  background-image: none;
-}
 div.callout-definition.callout {
   border-left-color: pink;
 }
@@ -126,6 +115,17 @@ div.callout-definition.callout-style-default > .callout-header {
 div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
   content: '📝';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
   background-image: none;
 }
 div.callout-exercise.callout {
@@ -165,7 +165,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/210a-python-gha-pypi-publish.html"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/214-python-gha-pypi-publish.html"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Auto version bumping (Python)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -586,32 +586,32 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/210a-python-gha-pypi-publish.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../lectures/211a-gha_python-poetry.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/211b-gha_python-hatch-quartodoc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (hatch + quartodoc)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/212-gha_r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">What about CD with R packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/213-package_review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/214-python-gha-pypi-publish.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Auto version bumping (Python)</span></span></a>
   </div>
 </li>
       </ul>
@@ -684,18 +684,18 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#package-versioning" id="toc-package-versioning" class="nav-link active" data-scroll-target="#package-versioning"><span class="header-section-number">49.1</span> Package versioning</a></li>
-  <li><a href="#auto-version-bumping" id="toc-auto-version-bumping" class="nav-link" data-scroll-target="#auto-version-bumping"><span class="header-section-number">49.2</span> Auto version bumping</a></li>
-  <li><a href="#python-semantic-release" id="toc-python-semantic-release" class="nav-link" data-scroll-target="#python-semantic-release"><span class="header-section-number">49.3</span> python semantic-release</a></li>
-  <li><a href="#hatch-vcs-git-tags" id="toc-hatch-vcs-git-tags" class="nav-link" data-scroll-target="#hatch-vcs-git-tags"><span class="header-section-number">49.4</span> hatch-vcs + git tags</a>
+  <li><a href="#package-versioning" id="toc-package-versioning" class="nav-link active" data-scroll-target="#package-versioning"><span class="header-section-number">53.1</span> Package versioning</a></li>
+  <li><a href="#auto-version-bumping" id="toc-auto-version-bumping" class="nav-link" data-scroll-target="#auto-version-bumping"><span class="header-section-number">53.2</span> Auto version bumping</a></li>
+  <li><a href="#python-semantic-release" id="toc-python-semantic-release" class="nav-link" data-scroll-target="#python-semantic-release"><span class="header-section-number">53.3</span> python semantic-release</a></li>
+  <li><a href="#hatch-vcs-git-tags" id="toc-hatch-vcs-git-tags" class="nav-link" data-scroll-target="#hatch-vcs-git-tags"><span class="header-section-number">53.4</span> hatch-vcs + git tags</a>
   <ul class="collapse">
-  <li><a href="#prepare-the-pyproject.toml-file" id="toc-prepare-the-pyproject.toml-file" class="nav-link" data-scroll-target="#prepare-the-pyproject.toml-file"><span class="header-section-number">49.4.1</span> Prepare the <code>pyproject.toml</code> file</a></li>
-  <li><a href="#create-the-github-action" id="toc-create-the-github-action" class="nav-link" data-scroll-target="#create-the-github-action"><span class="header-section-number">49.4.2</span> Create the GitHub Action</a></li>
-  <li><a href="#prepare-repository" id="toc-prepare-repository" class="nav-link" data-scroll-target="#prepare-repository"><span class="header-section-number">49.4.3</span> Prepare repository</a></li>
+  <li><a href="#prepare-the-pyproject.toml-file" id="toc-prepare-the-pyproject.toml-file" class="nav-link" data-scroll-target="#prepare-the-pyproject.toml-file"><span class="header-section-number">53.4.1</span> Prepare the <code>pyproject.toml</code> file</a></li>
+  <li><a href="#create-the-github-action" id="toc-create-the-github-action" class="nav-link" data-scroll-target="#create-the-github-action"><span class="header-section-number">53.4.2</span> Create the GitHub Action</a></li>
+  <li><a href="#prepare-repository" id="toc-prepare-repository" class="nav-link" data-scroll-target="#prepare-repository"><span class="header-section-number">53.4.3</span> Prepare repository</a></li>
   </ul></li>
-  <li><a href="#github-actions-and-pypitest" id="toc-github-actions-and-pypitest" class="nav-link" data-scroll-target="#github-actions-and-pypitest"><span class="header-section-number">49.5</span> Github Actions and PyPI/Test</a>
+  <li><a href="#github-actions-and-pypitest" id="toc-github-actions-and-pypitest" class="nav-link" data-scroll-target="#github-actions-and-pypitest"><span class="header-section-number">53.5</span> Github Actions and PyPI/Test</a>
   <ul class="collapse">
-  <li><a href="#git-tags" id="toc-git-tags" class="nav-link" data-scroll-target="#git-tags"><span class="header-section-number">49.5.1</span> Git Tags</a></li>
+  <li><a href="#git-tags" id="toc-git-tags" class="nav-link" data-scroll-target="#git-tags"><span class="header-section-number">53.5.1</span> Git Tags</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -703,9 +703,9 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/210a-python-gha-pypi-publish.html"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/cd.html">Continuous Deployment</a></li><li class="breadcrumb-item"><a href="../lectures/214-python-gha-pypi-publish.html"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Auto version bumping (Python)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></h1>
+<h1 class="title"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Auto version bumping (Python)</span></h1>
 </div>
 
 
@@ -723,8 +723,8 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 
 
 <p>When we want to finally publish our package, we still need to manage the metadata in the <code>pyproject.toml</code> file to make sure the <code>version</code> value is up to date.</p>
-<section id="package-versioning" class="level2" data-number="49.1">
-<h2 data-number="49.1" class="anchored" data-anchor-id="package-versioning"><span class="header-section-number">49.1</span> Package versioning</h2>
+<section id="package-versioning" class="level2" data-number="53.1">
+<h2 data-number="53.1" class="anchored" data-anchor-id="package-versioning"><span class="header-section-number">53.1</span> Package versioning</h2>
 <p>Semantic versioning uses the <code>major.minor.patch</code> numbering scheme for package versions</p>
 <ul>
 <li>See these resources about semantic versioning -<a href="https://py-pkgs.org/07-releasing-versioning#version-numbering" class="uri">https://py-pkgs.org/07-releasing-versioning#version-numbering</a></li>
@@ -736,12 +736,12 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li><a href="https://calver.org/index.html" class="uri">https://calver.org/index.html</a></li>
 </ul>
 </section>
-<section id="auto-version-bumping" class="level2" data-number="49.2">
-<h2 data-number="49.2" class="anchored" data-anchor-id="auto-version-bumping"><span class="header-section-number">49.2</span> Auto version bumping</h2>
+<section id="auto-version-bumping" class="level2" data-number="53.2">
+<h2 data-number="53.2" class="anchored" data-anchor-id="auto-version-bumping"><span class="header-section-number">53.2</span> Auto version bumping</h2>
 <p>PyOpenSci discusses the pros and cons of different version bumping tools: <a href="https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-versions.html#tools-for-bumping-python-package-versions" class="uri">https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-versions.html#tools-for-bumping-python-package-versions</a></p>
 </section>
-<section id="python-semantic-release" class="level2" data-number="49.3">
-<h2 data-number="49.3" class="anchored" data-anchor-id="python-semantic-release"><span class="header-section-number">49.3</span> python semantic-release</h2>
+<section id="python-semantic-release" class="level2" data-number="53.3">
+<h2 data-number="53.3" class="anchored" data-anchor-id="python-semantic-release"><span class="header-section-number">53.3</span> python semantic-release</h2>
 <p>The Python Semantic Release (PSR) package can be used to help automatically bump your package versions: <a href="https://python-semantic-release.readthedocs.io/en/latest/" class="uri">https://python-semantic-release.readthedocs.io/en/latest/</a></p>
 <p>It will auto bump the respective major/minor/patch value based on specific keywords in your commit messages. These commit messages follow the conventional commits pattern <a href="https://www.conventionalcommits.org/en/v1.0.0/" class="uri">https://www.conventionalcommits.org/en/v1.0.0/</a></p>
 <p>Resources:</p>
@@ -749,11 +749,11 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li><a href="https://py-pkgs.org/07-releasing-versioning#automatic-version-bumping" class="uri">https://py-pkgs.org/07-releasing-versioning#automatic-version-bumping</a></li>
 </ul>
 </section>
-<section id="hatch-vcs-git-tags" class="level2" data-number="49.4">
-<h2 data-number="49.4" class="anchored" data-anchor-id="hatch-vcs-git-tags"><span class="header-section-number">49.4</span> hatch-vcs + git tags</h2>
+<section id="hatch-vcs-git-tags" class="level2" data-number="53.4">
+<h2 data-number="53.4" class="anchored" data-anchor-id="hatch-vcs-git-tags"><span class="header-section-number">53.4</span> hatch-vcs + git tags</h2>
 <p>We will make our auto version bumping a bit more flexiable by allowing us to create the version bump on a git tag trigger. We will be using hatch-vcs for this:<a href="https://github.com/ofek/hatch-vcs" class="uri">https://github.com/ofek/hatch-vcs</a></p>
-<section id="prepare-the-pyproject.toml-file" class="level3" data-number="49.4.1">
-<h3 data-number="49.4.1" class="anchored" data-anchor-id="prepare-the-pyproject.toml-file"><span class="header-section-number">49.4.1</span> Prepare the <code>pyproject.toml</code> file</h3>
+<section id="prepare-the-pyproject.toml-file" class="level3" data-number="53.4.1">
+<h3 data-number="53.4.1" class="anchored" data-anchor-id="prepare-the-pyproject.toml-file"><span class="header-section-number">53.4.1</span> Prepare the <code>pyproject.toml</code> file</h3>
 <p>We will need to add <code>hatch-vcs</code> to the <code>[build-system]</code> table:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[build-system]</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"hatchling"</span><span class="op">,</span> <span class="st">"hatch-vcs"</span><span class="op">]</span></span>
@@ -800,8 +800,8 @@ Important
 </div>
 </div>
 </section>
-<section id="create-the-github-action" class="level3" data-number="49.4.2">
-<h3 data-number="49.4.2" class="anchored" data-anchor-id="create-the-github-action"><span class="header-section-number">49.4.2</span> Create the GitHub Action</h3>
+<section id="create-the-github-action" class="level3" data-number="53.4.2">
+<h3 data-number="53.4.2" class="anchored" data-anchor-id="create-the-github-action"><span class="header-section-number">53.4.2</span> Create the GitHub Action</h3>
 <p>We will use git tags to trigger the version value and publishing, so we can create a workflow that will only run when a new git tag is pushed.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -856,13 +856,13 @@ Caution
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">repository-url</span><span class="kw">:</span><span class="at"> https://test.pypi.org/legacy/</span></span>
 <span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">password</span><span class="kw">:</span><span class="at"> ${{ secrets.TEST_PYPI_API_TOKEN }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="prepare-repository" class="level3" data-number="49.4.3">
-<h3 data-number="49.4.3" class="anchored" data-anchor-id="prepare-repository"><span class="header-section-number">49.4.3</span> Prepare repository</h3>
+<section id="prepare-repository" class="level3" data-number="53.4.3">
+<h3 data-number="53.4.3" class="anchored" data-anchor-id="prepare-repository"><span class="header-section-number">53.4.3</span> Prepare repository</h3>
 <p>It’ll be a good time to run <code>hatch build</code> on your local computer and see if the <code>dist/</code> directory is properly creating the package and version in the bundle. If so, you can push and merge your changes into <code>main</code>/<code>master</code>.</p>
 </section>
 </section>
-<section id="github-actions-and-pypitest" class="level2" data-number="49.5">
-<h2 data-number="49.5" class="anchored" data-anchor-id="github-actions-and-pypitest"><span class="header-section-number">49.5</span> Github Actions and PyPI/Test</h2>
+<section id="github-actions-and-pypitest" class="level2" data-number="53.5">
+<h2 data-number="53.5" class="anchored" data-anchor-id="github-actions-and-pypitest"><span class="header-section-number">53.5</span> Github Actions and PyPI/Test</h2>
 <ol type="1">
 <li>Make sure you have a PyPI token in your github actions secrets</li>
 <li>Make sure your package on PyPI / PyPI test is set to accept github as a publisher</li>
@@ -877,8 +877,8 @@ Caution
 <p>If your PyPi package is building and fails on the last step with a Bad Request, this may be the reason why</p>
 <pre><code>ERROR    HTTPError: 400 Bad Request from https://test.pypi.org/legacy/
          Bad Request</code></pre>
-<section id="git-tags" class="level3" data-number="49.5.1">
-<h3 data-number="49.5.1" class="anchored" data-anchor-id="git-tags"><span class="header-section-number">49.5.1</span> Git Tags</h3>
+<section id="git-tags" class="level3" data-number="53.5.1">
+<h3 data-number="53.5.1" class="anchored" data-anchor-id="git-tags"><span class="header-section-number">53.5.1</span> Git Tags</h3>
 <p>Once you are on the commit that will represent your new release (usually this is the lastest commit on <code>main</code>), you’ll be ready to trigger your release with a git tag.</p>
 <p>To create a tag we will use the <code>git tag</code> command:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag v0.0.1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1300,13 +1300,13 @@ Caution
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/210-deploy-and-publish.html" class="pagination-link" aria-label="Deploying and publishing packages">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span>
+      <a href="../lectures/213-package_review.html" class="pagination-link" aria-label="Peer review facilitates package publishing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Peer review facilitates package publishing</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/211a-gha_python-poetry.html" class="pagination-link" aria-label="Continuous Deployment: Python (Poetry)">
-        <span class="nav-page-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Continuous Deployment: Python (Poetry)</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../parts/licenses-copyright-wrapup.html" class="pagination-link" aria-label="Wrap Up">
+        <span class="nav-page-text">Wrap Up</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
