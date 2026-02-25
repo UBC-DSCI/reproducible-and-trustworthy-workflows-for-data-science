@@ -566,3 +566,140 @@ import pickle
 with open("knn_fit.pickle", 'rb') as f:
         knn_fit = pickle.load(f)
 ```
+
+## Configuration files
+
+As your analysis grows in complexity, you may find that the number of command line arguments you need to pass to your scripts increases. If you are passing 5, 10, or even more arguments (e.g., hyperparameters for a machine learning model, multiple file paths, specific variable names), your command line calls can become extremely long, messy, and prone to typing errors.
+
+Furthermore, from a reproducibility standpoint, it is difficult to track exactly which parameters were used for a specific analysis run if they were just typed into a terminal session that has since been closed.
+
+This is where **configuration files** come in. Instead of passing many individual arguments, we pass a single configuration file containing all the necessary parameters.
+
+### When to use configuration files?
+
+| Property | Command Line Arguments | Configuration Files |
+| :--- | :--- | :--- |
+| **Complexity** | Best for simple scripts with few inputs (1-3) | Best for complex pipelines with many parameters |
+| **Frequency of Change** | Good for values that change every time you run the script | Good for values that remain static across many runs |
+| **Reproducibility** | Harder to document exactly what was run later | The file serves as a record of settings |
+| **Data Types** | mostly limited to strings and numbers | Can handle lists, nested structures, and key-value pairs |
+
+### The YAML format
+
+A common format for configuration files in data science is **YAML** (`.yaml` or `.yml`). It is human-readable and works well with both R and Python.
+
+Here is an example of what a `config.yaml` file might look like for a script that cleans data and fits a model:
+
+```yaml
+input_data: "data/raw/titanic.csv"
+output_data: "data/processed/titanic_clean.csv"
+model_settings:
+  type: "random_forest"
+  n_estimators: 100
+  max_depth: 5
+keep_cols:
+  - "fare"
+  - "age"
+  - "pclass"
+
+```
+
+### Reading configuration files in R
+
+To read YAML files in R, we use the `yaml` package. The `read_yaml` function reads the file and parses it into a named list, which we can then access using the `$` operator, similar to how we accessed `docopt` arguments.
+
+Here is how you would modify a script to accept a configuration file using `docopt` and `yaml`:
+
+```r
+"This script cleans data based on parameters in a config file.
+
+Usage: clean_data.R --config=<config>
+
+Options:
+--config=<config>  Path to the YAML configuration file
+" -> doc
+
+library(tidyverse)
+library(docopt)
+library(yaml)
+
+opt <- docopt(doc)
+
+main <- function(config_path) {
+  
+  # read in the config file
+  config <- read_yaml(config_path)
+  
+  # Access values from the config list
+  raw_data <- read_csv(config$input_data)
+  
+  # Example: selecting columns defined in the YAML file
+  clean_data <- raw_data |>
+    select(all_of(config$keep_cols))
+    
+  print(paste("Data cleaned. Keeping columns:", paste(config$keep_cols, collapse = ", ")))
+  
+  # Save the cleaned data to the path specified in the config file
+  write_csv(clean_data, config$output_data)
+}
+
+main(opt$config)
+```
+
+You would run this from the command line like this:
+
+```bash
+Rscript clean_data.R --config=config.yaml
+```
+
+### Reading configuration files in Python
+
+In Python, we use the `PyYAML` package (imported as `yaml`). We typically use `yaml.safe_load()` to read the file into a Python dictionary.
+
+Here is how you would structure the Python equivalent using `click`:
+
+```python
+import click
+import yaml
+import pandas as pd
+
+@click.command()
+@click.option('--config', type=click.Path(exists=True))
+def main(config):
+    """
+    Main function that loads config and runs analysis.
+    """
+    # Load the config file
+    with open(config, "r") as f:
+        config_dict = yaml.safe_load(f)
+
+    # Access values from the dictionary
+    input_path = config_dict['input_data']
+    cols_to_keep = config_dict['keep_cols']
+
+    # Read data
+    raw_data = pd.read_csv(input_path)
+    
+    # Example usage of config variables
+    clean_data = raw_data[cols_to_keep]
+    
+    print(f"Data loaded from {input_path}")
+    print(f"Model type: {config_dict['model_settings']['type']}")
+
+    # Save the cleaned data to the path specified in the config file
+    clean_data.to_csv(config_dict['output_data'], index=False)
+
+if __name__ == "__main__":
+    main()
+```
+
+You would run this from the command line like this:
+
+```bash
+python clean_data.py --config=config.yaml
+```
+
+:::{.callout-tip}
+### Tip for reproducibility
+When using configuration files, it is a great practice to associate a `config.yaml` file with the result it generated, such as by copying it into your results directory alongside your output figures and tables. This way, you have a permanent snapshot of exactly which parameters generated those specific results!
+:::
