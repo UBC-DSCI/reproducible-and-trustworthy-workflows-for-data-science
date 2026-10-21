@@ -17,7 +17,7 @@ Concepts are learned and applied using real data and case studies.
 
 Chapter files in `book/lectures/` are named `PPCC-<url>.qmd`
 so they sort in the order the course runs:
-`PP` is the part (`02` is Version Control with Git, `90` the appendix)
+`PP` is the part (`02` is Version Control with Git, `90` the appendix, `99` the archive)
 and `CC` the chapter within it, in steps of 10.
 `0240-git-ignore.qmd` is the fourth chapter of part 2.
 
@@ -47,6 +47,10 @@ aliases:
   Every other piece lists the old URL with the anchor of each section it took
   (`040-version-control-1.html#git-ignore`),
   so links to those sections land on the right chapter.
+- **Retiring a chapter:** when the course replaces a chapter's tool or approach,
+  move the chapter to the Archive part at the end of the book:
+  rename it to `99CC-<url>.qmd` and list it under `parts/archive.qmd` in `book/_quarto.yml`.
+  Its URL stays the same.
 - **Changing a published URL:** avoid it. If you must, add the old URL to `aliases`
   so existing links redirect.
 
