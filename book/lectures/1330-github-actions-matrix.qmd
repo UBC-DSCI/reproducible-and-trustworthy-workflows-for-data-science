@@ -1,0 +1,160 @@
+---
+title: "GitHub Actions: matrix workflows"
+output-file: github-actions-matrix.html
+aliases:
+  - 201-actions-matrix.html
+---
+
+
+## Matrix workflows
+
+We don't want our software to just work on one operating system, or just one version of Python or R. Ideally it is compatible with the three major operating systems as well as a couple versions of the programming language it was written it.
+
+How do we ensure this? Well, we could have several GitHub Action workflows, each of which runs the job on a different version of Python, on a different operating system. However, there would be a lot of redundancy in those workflows, with the only differences between them being the operating system of the runner and the version of Python.
+
+A more efficient way to do this with GitHub Actions workflows is to use matrix workflows. In these workflows, we use a matrix variable, which we specify as:
+
+```yaml
+strategy:
+  matrix:
+    <variable_name>: [<value1>, <value2>]
+```
+
+which we can refer to in the workflow steps as:
+
+```yaml
+${{ matrix.<variable_name> }}
+```
+
+When we do this, GitHub Actions runs multiple jobs, one for each of the values in the matrix variable.
+
+Here is an example for python:
+
+```yaml
+# This is a basic workflow to help you get started with Actions
+
+# Name of the workflow
+name: pytest-matrix
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for
+  # the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run
+# sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+
+    # Steps represent a sequence of tasks that will be executed as
+    # part of the job
+    steps:
+      # Checks-out your repository so your job can access it
+      - name: Check-out repository
+        uses: actions/checkout@v2
+
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .[tests]
+
+      # Run pytest with coverage
+      - name: Run tests with coverage
+        run: |
+          pytest --cov --cov-report=term --cov-branch
+```
+
+:::{.exercise}
+In English, what does this workflow file do?
+
+Now that we have some understanding of GitHub Actions workflows, let's use that knowledge to write in English what each of the steps do in this more complicated version of the workflow shown above.
+
+```yaml
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: R-CMD-check
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      matrix:
+        config:
+          - {os: windows-latest,  r: 'devel'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'devel'}
+          - {os: ubuntu-latest,   r: 'release'}
+
+    steps:
+      - name: Checkout files from GitHub version control repository
+        uses: actions/checkout@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R packages
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - name: Checks if R package can be installed
+        uses: r-lib/actions/check-r-package@v2
+```
+
+#### Steps in English:
+
+:::{.answer}
+1. checking out the files of the repository to the runner (last commit)
+
+2. Set up and install Python on the runner
+
+3. Use poetry to install dependencies and the package
+
+4. Install the package and its dependencies
+
+5. Run tests and check coverage, generate a coverage report
+
+6. Send the coverage report to codecov.io
+
+7. Renders the documentation (to check there are no errors in this process)
+:::
+
+#### *How many jobs are run? What does each do?*
+
+FILL IN DURING CLASS
+
+:::
+
+:::{.callout-note}
+Note that we omitted the Windows operating system in the example above. The reason for this is that the [`snok/install-poetry@v1`](https://github.com/snok/install-poetry) GitHub action requires more configuration to setup correctly on Windows, and the purpose of the example above was to focus on demonstrating how to use matrices in general using GitHub actions. If you are interested in setting up a runner using `window-latest` please follow the additional configuration instructions here to make it work: <https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows>
+:::
