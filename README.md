@@ -30,11 +30,18 @@ aliases:
 ---
 ```
 
-- **Adding a chapter:** give the file a number that places it in the order,
-  add it to `book/_quarto.yml`, and give it an `output-file`:
+- **Adding a chapter:** give it an `output-file`:
   lowercase, hyphens only, and `<topic>-<language>-<tool>` for a variant of a topic
   (`data-validation-python-pandera`).
+  Name the file after it, with a number that places it in the order
+  (`044-git-ignore.qmd` for `git-ignore.html`),
+  and add it to `book/_quarto.yml`.
+  Its learning objectives go in `book/learning_objectives/` under the same filename.
 - **Moving or renumbering a chapter:** rename the file freely and leave `output-file` alone.
+- **Splitting a chapter:** the piece that keeps the opening keeps the old URL in `aliases`.
+  Every other piece lists the old URL with the anchor of each section it took
+  (`040-version-control-1.html#git-ignore`),
+  so links to those sections land on the right chapter.
 - **Changing a published URL:** avoid it. If you must, add the old URL to `aliases`
   so existing links redirect.
 
