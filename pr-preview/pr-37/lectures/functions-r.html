@@ -1,0 +1,2280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.20">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>65&nbsp; Defining functions in R – Reproducible and Trustworthy Workflows for Data Science</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../lectures/non-standard-evaluation-r.html" rel="next">
+<link href="../lectures/functions-python.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-17888a1159294d3eb470f19f6f52f5a5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>
+div.callout-relevance-project.callout {
+  border-left-color: orange;
+}
+div.callout-relevance-project.callout-style-default > .callout-header {
+  background-color: rgb(from orange r g b / 13%);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  content: '💻';
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: pink;
+}
+div.callout-definition.callout-style-default > .callout-header {
+  background-color: rgb(from pink r g b / 13%);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  content: '📝';
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: green;
+}
+div.callout-exercise.callout-style-default > .callout-header {
+  background-color: rgb(from green r g b / 13%);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  content: '🏋️';
+  background-image: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/appendix.html">Appendix</a></li><li class="breadcrumb-item"><a href="../lectures/functions-r.html"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Defining functions in R</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Reproducible and Trustworthy Workflows for Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-science-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">How do reproducible and trustworthy workflows impact data science?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/bash-shell.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to the Bash Shell</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version Control with Git</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/ssh-authentication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">SSH for authentication</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/git-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Git basics: a review</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/git-merge-conflicts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Merge conflicts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/git-ignore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Ignoring files with <code>.gitignore</code></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/git-history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Going back in time with Git</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/git-branches.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Git branches</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/collaborating-on-github.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Collaborating on GitHub</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-pull-requests.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Pull requests</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-code-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Code review on GitHub</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/branching-workflows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Branching workflows: GitHub flow and Git flow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-project-management.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project management on GitHub</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-branch-protection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Main branch protection</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/project-organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project Organization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/filenames-project-organization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Filenames and data science project organization, Integrated development environments</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Virtual Environments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Virtual environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-r-renv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: R (renv)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-conda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-conda-lock.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda-lock)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Containers</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/containers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/containers-running.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/containers-docker-compose.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Containers: Docker Compose</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/containers-building.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/data-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Validation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-validation-r-pointblank.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data validation: R (pointblank)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-validation-python-pandera.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Data validation: Python (Pandera)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-validation-python-deepchecks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Data validation: Python (Deepchecks)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/data-validation-python-pointblank.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Data validation: Python (pointblank)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/scripts-and-reports.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Scripts and Reports</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/reproducible-reports-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reproducible reports: Quarto</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/pipelines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pipelines</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/pipelines-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/pipelines-make.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/software-testing-for-data-science.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Software Testing for Data Science</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/testing-r-testthat.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Testing: R (testthat)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/testing-python-pytest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Testing: Python (pytest)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/testing-images.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Testing: images</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/testing-quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Testing: evaluating test suite quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/packaging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Packaging</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-python-uv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Packaging: Python (uv)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-python-hatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/packaging-tool-philosophies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Packaging: R and Python tool philosophies</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/testing-packages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing Packages</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Package testing: Python (pytest)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-coverage-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Package coverage: Python</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/ci.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Continuous Integration</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/continuous-integration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-actions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">GitHub Actions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-actions-matrix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">GitHub Actions: matrix workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-actions-testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">GitHub Actions: testing workflows</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-actions-case-study-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Case study: Python CI workflow (<code>pypkgs-cookiecutter</code>’s <code>ci.yml</code>)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/github-actions-case-study-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Case study: R CI workflow (a simplified <code>check-release.yaml</code>)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/package-documentation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Package Documentation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-documentation-python-sphinx.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Package documentation: Python (Sphinx)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-documentation-python-quartodoc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Package documentation: Python (quartodoc)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-documentation-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">55</span>&nbsp; <span class="chapter-title">Package documentation: R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/cd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Continuous Deployment and Publishing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/continuous-deployment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">56</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/continuous-deployment-python-poetry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">57</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Poetry)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/continuous-deployment-python-hatch-quartodoc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">58</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Hatch and quartodoc)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/continuous-deployment-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">59</span>&nbsp; <span class="chapter-title">Continuous deployment: R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-peer-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">60</span>&nbsp; <span class="chapter-title">Package peer review</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/package-versioning-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">61</span>&nbsp; <span class="chapter-title">Package versioning: Python</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/licenses-copyright.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Licenses and Copyright</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/copyright-licenses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">62</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/wrap-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Wrap Up</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">63</span>&nbsp; <span class="chapter-title">Workflows for reproducible and trustworthy data science wrap-up</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../parts/appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/functions-python.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">64</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/functions-r.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/non-standard-evaluation-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">66</span>&nbsp; <span class="chapter-title">Non-standard evaluation in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/reproducible-reports-rmarkdown-jupyter.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">67</span>&nbsp; <span class="chapter-title">Reproducible reports: R Markdown and Jupyter</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/quarto-github-pages.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">68</span>&nbsp; <span class="chapter-title">Quarto and GitHub Pages</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Archive</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#defining-functions-in-r" id="toc-defining-functions-in-r" class="nav-link active" data-scroll-target="#defining-functions-in-r"><span class="header-section-number">65.1</span> Defining functions in R:</a>
+  <ul class="collapse">
+  <li><a href="#default-function-arguments" id="toc-default-function-arguments" class="nav-link" data-scroll-target="#default-function-arguments"><span class="header-section-number">65.1.1</span> Default function arguments</a></li>
+  <li><a href="#lexical-scoping-in-r" id="toc-lexical-scoping-in-r" class="nav-link" data-scroll-target="#lexical-scoping-in-r"><span class="header-section-number">65.1.2</span> Lexical scoping in R</a></li>
+  <li><a href="#lazy-evaluation" id="toc-lazy-evaluation" class="nav-link" data-scroll-target="#lazy-evaluation"><span class="header-section-number">65.1.3</span> Lazy evaluation</a></li>
+  </ul></li>
+  <li><a href="#exception-handling" id="toc-exception-handling" class="nav-link" data-scroll-target="#exception-handling"><span class="header-section-number">65.2</span> Exception handling</a></li>
+  <li><a href="#programming-with-the-tidyverse-functions" id="toc-programming-with-the-tidyverse-functions" class="nav-link" data-scroll-target="#programming-with-the-tidyverse-functions"><span class="header-section-number">65.3</span> Programming with the <code>tidyverse</code> functions</a>
+  <ul class="collapse">
+  <li><a href="#sec-tidyverse-argument-kinds" id="toc-sec-tidyverse-argument-kinds" class="nav-link" data-scroll-target="#sec-tidyverse-argument-kinds"><span class="header-section-number">65.3.1</span> Two kinds of <code>tidyverse</code> arguments</a></li>
+  <li><a href="#sec-tidyverse-patterns" id="toc-sec-tidyverse-patterns" class="nav-link" data-scroll-target="#sec-tidyverse-patterns"><span class="header-section-number">65.3.2</span> Where does the column name come from?</a></li>
+  <li><a href="#defining-tidyverse-functions-by-embracing-column-names" id="toc-defining-tidyverse-functions-by-embracing-column-names" class="nav-link" data-scroll-target="#defining-tidyverse-functions-by-embracing-column-names"><span class="header-section-number">65.3.3</span> Defining <code>tidyverse</code> functions by embracing column names: <code>{ }</code></a></li>
+  <li><a href="#sec-tidyverse-strings" id="toc-sec-tidyverse-strings" class="nav-link" data-scroll-target="#sec-tidyverse-strings"><span class="header-section-number">65.3.4</span> Column names stored in strings</a></li>
+  <li><a href="#the-walrus-operator-is-needed-when-assigning-values" id="toc-the-walrus-operator-is-needed-when-assigning-values" class="nav-link" data-scroll-target="#the-walrus-operator-is-needed-when-assigning-values"><span class="header-section-number">65.3.5</span> The walrus operator <code>:=</code> is needed when assigning values</a></li>
+  <li><a href="#older-patterns-enquo-and-sym" id="toc-older-patterns-enquo-and-sym" class="nav-link" data-scroll-target="#older-patterns-enquo-and-sym"><span class="header-section-number">65.3.6</span> Older patterns: <code>!!</code>, <code>enquo()</code> and <code>sym()</code></a></li>
+  <li><a href="#sec-tidyverse-learn-more" id="toc-sec-tidyverse-learn-more" class="nav-link" data-scroll-target="#sec-tidyverse-learn-more"><span class="header-section-number">65.3.7</span> Learn more</a></li>
+  </ul></li>
+  <li><a href="#function-documentation" id="toc-function-documentation" class="nav-link" data-scroll-target="#function-documentation"><span class="header-section-number">65.4</span> Function documentation</a>
+  <ul class="collapse">
+  <li><a href="#function-documentation-in-r" id="toc-function-documentation-in-r" class="nav-link" data-scroll-target="#function-documentation-in-r"><span class="header-section-number">65.4.1</span> Function documentation in R</a></li>
+  </ul></li>
+  <li><a href="#practice-writing-functions-in-r" id="toc-practice-writing-functions-in-r" class="nav-link" data-scroll-target="#practice-writing-functions-in-r"><span class="header-section-number">65.5</span> Practice writing functions in R</a></li>
+  <li><a href="#defining-functions-in-python" id="toc-defining-functions-in-python" class="nav-link" data-scroll-target="#defining-functions-in-python"><span class="header-section-number">65.6</span> Defining functions in Python</a>
+  <ul class="collapse">
+  <li><a href="#default-function-arguments-1" id="toc-default-function-arguments-1" class="nav-link" data-scroll-target="#default-function-arguments-1"><span class="header-section-number">65.6.1</span> Default function arguments</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/appendix.html">Appendix</a></li><li class="breadcrumb-item"><a href="../lectures/functions-r.html"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Defining functions in R</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Defining functions in R</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="defining-functions-in-r" class="level2" data-number="65.1">
+<h2 data-number="65.1" class="anchored" data-anchor-id="defining-functions-in-r"><span class="header-section-number">65.1</span> Defining functions in R:</h2>
+<p>In this course, we will get to practice writing functions (and then testing them) in the R programming language. Given this has not been covered in the course pre-requisites, we will cover it here briefly. To learn more about functions in R, we refer you to the <a href="https://adv-r.hadley.nz/functions.html">functions chapter in the Advanced R book</a>.</p>
+<ul>
+<li>Use <code>variable &lt;- function(…arguments…) { …body… }</code> to create a function and give it a name</li>
+</ul>
+<p>Example:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>add_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">+</span> y</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">add_two_numbers</span>(<span class="dv">1</span>, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<ul>
+<li>Functions in R are objects. This is referred to as “first-class functions”.</li>
+<li>The last line of the function returns the object created, or listed there. To return a value early use the special word <code>return</code> (as shown below).</li>
+</ul>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>math_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, operation) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (operation <span class="sc">==</span> <span class="st">"add"</span>) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(x <span class="sc">+</span> y)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">-</span> y</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"add"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"subtract"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3</code></pre>
+</div>
+</div>
+<section id="default-function-arguments" class="level3" data-number="65.1.1">
+<h3 data-number="65.1.1" class="anchored" data-anchor-id="default-function-arguments"><span class="header-section-number">65.1.1</span> Default function arguments</h3>
+<p>Default values can be specified in the function definition:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>math_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">operation =</span> <span class="st">"add"</span>) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (operation <span class="sc">==</span> <span class="st">"add"</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(x <span class="sc">+</span> y)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">-</span> y</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"subtract"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3</code></pre>
+</div>
+</div>
+<section id="optional---advanced" class="level4">
+<h4 class="anchored" data-anchor-id="optional---advanced">Optional - Advanced</h4>
+<section id="extra-arguments-via-..." class="level5">
+<h5 class="anchored" data-anchor-id="extra-arguments-via-...">Extra arguments via <code>...</code></h5>
+<p>If we want our function to be able to take extra arguments that we don’t specify, we must explicitly convert <code>...</code> to a list (otherwise <code>...</code> will just return the first object passed to <code>...</code>):</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;skip&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>add <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, ...) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">list</span>(...))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">add</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 5
+
+[[2]]
+[1] 6</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="lexical-scoping-in-r" class="level3" data-number="65.1.2">
+<h3 data-number="65.1.2" class="anchored" data-anchor-id="lexical-scoping-in-r"><span class="header-section-number">65.1.2</span> Lexical scoping in R</h3>
+<p>R’s lexical scoping follows several rules, we will cover the following 3:</p>
+<ul>
+<li>Name masking</li>
+<li>Dynamic lookup</li>
+<li>A fresh start</li>
+</ul>
+<section id="name-masking" class="level4">
+<h4 class="anchored" data-anchor-id="name-masking">Name masking</h4>
+<p>Object names which are defined inside a function mask object names defined outside of that function. For example, below <code>x</code> is first defined in the global environment, and then also defined in the function environment. <code>x</code> in the function environment masks <code>x</code> in the global environment, so the value of 5 is used in <code>to_add + x</code> instead of 10:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>add_to_x <span class="ot">&lt;-</span> <span class="cf">function</span>(to_add) {</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    to_add <span class="sc">+</span> x</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+</div>
+<p>If a function refers to an object name that is not defined inside the function, then R looks at the environment one level above. And if it is not found there, it again, looks another level above. This will happen all the way up the environment tree until it searches all possible environments for that session (including the global environment and loaded packages).</p>
+<p><img src="../img/env-lookup.png" width="600"></p>
+<p><em><strong>Attribution</strong>: Derived from <a href="https://adv-r.hadley.nz/">Advanced R</a> by Hadley Wickham</em></p>
+<p>Here <code>x</code> is not defined in the function environment, and so R then looks one-level up to the global environment to try to find <code>x</code>. In this case it does and it is then used to calculate <code>to_add + x</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>add_to_x <span class="ot">&lt;-</span> <span class="cf">function</span>(to_add) {</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    to_add <span class="sc">+</span> x</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+</div>
+</section>
+<section id="dynamic-lookup" class="level4">
+<h4 class="anchored" data-anchor-id="dynamic-lookup">Dynamic lookup</h4>
+<p>R does not look up the values for objects it references when it is defined/created, instead it does this when the function is called. This can lead to the function returning different things depending on the values of the objects it references outside of the function’s environment.</p>
+<p>For example, each time the function <code>add_to_x</code> is run, R looks up the current value of <code>x</code> and uses that to compute <code>to_add + x</code>:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>add_to_x <span class="ot">&lt;-</span> <span class="cf">function</span>(to_add) {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    to_add <span class="sc">+</span> x</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 22</code></pre>
+</div>
+</div>
+</section>
+<section id="a-fresh-start" class="level4">
+<h4 class="anchored" data-anchor-id="a-fresh-start">A fresh start</h4>
+<p>Functions in R have no memory of what happened the last time they were called. This happens because a new function environment is created, R created a new environment in which to execute it.</p>
+<p>For example, even though we update the value of <code>x</code> inside the function by adding two to it every time we execute it, it returns the same value each time, because R creates a new function environment each time we run it and that environment has no recollection of what happened the last time the function was run:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>add_to_x <span class="ot">&lt;-</span> <span class="cf">function</span>(to_add) {</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> to_add <span class="sc">+</span> x</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    x</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add_to_x</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 12</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="lazy-evaluation" class="level3" data-number="65.1.3">
+<h3 data-number="65.1.3" class="anchored" data-anchor-id="lazy-evaluation"><span class="header-section-number">65.1.3</span> Lazy evaluation</h3>
+<p>In R, function arguments are lazily evaluated: they’re only evaluated if accessed.</p>
+<p>Knowing that, now consider the <code>add_one</code> function written in both R and Python below:</p>
+<pre><code># R code (this would work)
+add_one &lt;- function(x, y) {
+    x &lt;- x + 1
+    return(x)
+}</code></pre>
+<pre><code># Python code (this would not work)
+def add_one(x, y):
+    x = x + 1
+    return x</code></pre>
+<p>Why will the above <code>add_one</code> function will work in R, but the equivalent version of the function in python would break?</p>
+<ul>
+<li>Python evaluates the function arguments before it evaluates the function and because it doesn’t know what <code>y</code> is, it will break even though it is not used in the function.</li>
+<li>R performs lazy evaluation, meaning it delays the evaluation of the function arguments until its value is needed within/inside the function. Since <code>y</code> is never referenced inside the function, R doesn’t complain, or even notice it.</li>
+</ul>
+<section id="add_one-in-r" class="level4">
+<h4 class="anchored" data-anchor-id="add_one-in-r"><code>add_one</code> in R</h4>
+<pre><code>add_one &lt;- function(x, y) {
+    x &lt;- x + 1
+    return(x)
+}</code></pre>
+<p>This works:</p>
+<pre><code>add_one(2, 1)</code></pre>
+<pre><code>3</code></pre>
+<p>and so does this:</p>
+<pre><code>add_one(2)</code></pre>
+<pre><code>3</code></pre>
+</section>
+<section id="add_one-in-python" class="level4">
+<h4 class="anchored" data-anchor-id="add_one-in-python"><code>add_one</code> in Python</h4>
+<pre><code>def add_one(x, y):
+    x = x + 1
+    return x`</code></pre>
+<p>This works:</p>
+<pre><code>add_one(2, 1)</code></pre>
+<pre><code>3</code></pre>
+<p>This does not:</p>
+<pre><code>add_one(2)</code></pre>
+<pre><code>---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+&lt;ipython-input-5-f2e542671748&gt; in &lt;module&gt;
+----&gt; 1 add_one(2)
+
+TypeError: add_one() missing 1 required positional argument: 'y'</code></pre>
+</section>
+<section id="the-power-of-lazy-evaluation" class="level4">
+<h4 class="anchored" data-anchor-id="the-power-of-lazy-evaluation">The power of lazy evaluation</h4>
+<p>Let’s you have easy to use interactive code like this:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(mtcars, mpg, cyl, hp, qsec)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     mpg cyl  hp  qsec
+Mazda RX4           21.0   6 110 16.46
+Mazda RX4 Wag       21.0   6 110 17.02
+Datsun 710          22.8   4  93 18.61
+Hornet 4 Drive      21.4   6 110 19.44
+Hornet Sportabout   18.7   8 175 17.02
+Valiant             18.1   6 105 20.22
+Duster 360          14.3   8 245 15.84
+Merc 240D           24.4   4  62 20.00
+Merc 230            22.8   4  95 22.90
+Merc 280            19.2   6 123 18.30
+Merc 280C           17.8   6 123 18.90
+Merc 450SE          16.4   8 180 17.40
+Merc 450SL          17.3   8 180 17.60
+Merc 450SLC         15.2   8 180 18.00
+Cadillac Fleetwood  10.4   8 205 17.98
+Lincoln Continental 10.4   8 215 17.82
+Chrysler Imperial   14.7   8 230 17.42
+Fiat 128            32.4   4  66 19.47
+Honda Civic         30.4   4  52 18.52
+Toyota Corolla      33.9   4  65 19.90
+Toyota Corona       21.5   4  97 20.01
+Dodge Challenger    15.5   8 150 16.87
+AMC Javelin         15.2   8 150 17.30
+Camaro Z28          13.3   8 245 15.41
+Pontiac Firebird    19.2   8 175 17.05
+Fiat X1-9           27.3   4  66 18.90
+Porsche 914-2       26.0   4  91 16.70
+Lotus Europa        30.4   4 113 16.90
+Ford Pantera L      15.8   8 264 14.50
+Ferrari Dino        19.7   6 175 15.50
+Maserati Bora       15.0   8 335 14.60
+Volvo 142E          21.4   4 109 18.60</code></pre>
+</div>
+</div>
+<p>Notes: - There’s more than just lazy evaluation happening in the code above, but lazy evaluation is part of it. - <code>package::function()</code> is a way to use a function from an R package without loading the entire library.</p>
+</section>
+</section>
+</section>
+<section id="exception-handling" class="level2" data-number="65.2">
+<h2 data-number="65.2" class="anchored" data-anchor-id="exception-handling"><span class="header-section-number">65.2</span> Exception handling</h2>
+<p>Sometimes our code is correct but we still encounter errors. This commonly occurs with functions when users attempt to use them in weird and creative ways that the developer did not intend. Developers are well advised to try to anticipate some of this user behaviour and guard against this in a way that can be of help to the user. One way to do this is to have a function fail intentionally when incorrect user input is given.</p>
+<p>Imagine we have a simple function to convert temperatures from Fahrenheit to Celsius:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fahr_to_celsius <span class="ot">&lt;-</span> <span class="cf">function</span>(temp) {</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  (temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>What if our user anticipates that our function can handle numbers written as strings? When this happens our users gets a somewhat cryptic error message (which is inversely correlated with their knowledge of the R programming language):</p>
+<pre><code>fahr_to_celsius("thirty")</code></pre>
+<pre><code>Error in temp - 32: non-numeric argument to binary operator
+Traceback:
+
+1. fahr_to_celsius("thirty")</code></pre>
+<p>This error message is not as helpful as it could be! Also, if this calculation happened to take a long time, it might be nicer to check the data type before we attempt the calculation and then if the wrong data type was given, throw an purposeful error with a more helpful error message. One way we can do this simply in R is using a conditional (i.e., <code>if</code> statement) to test the type and then calling <code>stop</code> with a useful error message if the type is incorrect.</p>
+<p>For example with the <code>fahr_to_celsius</code> function, we can use <code>if(!is.numeric(temp))</code> to check whether <code>temp</code> is not numeric. And then if it is not, <code>stop</code> causes a break and the printing out of the more helpful error message “<code>fahr_to_celsius</code> expects a vector of numeric values</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>fahr_to_celsius <span class="ot">&lt;-</span> <span class="cf">function</span>(temp) {</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(temp)) {</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"`fahr_to_celsius` expects a vector of numeric values"</span>)</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  (temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<pre><code>fahr_to_celsius("thirty")</code></pre>
+<pre><code>Error in fahr_to_celsius("thirty"): `fahr_to_celsius` expects a vector of numeric values
+Traceback:
+
+1. fahr_to_celsius("thirty")
+2. stop("`fahr_to_celsius` expects a vector of numeric values")   # at line 3 of file &lt;text&gt;</code></pre>
+<p>If you wanted to issue a warning instead of an error, you could use <code>warning</code> in place of <code>stop</code> in the example above. However, in most cases it is better practice to throw an error than to print a warning…</p>
+<p>More advanced exception handling exists in R, and I invite interested learner to read more about it here in the <a href="http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling">Condition Handling</a> and <a href="http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming">Defensive Programming</a> sections of Advanced R.</p>
+</section>
+<section id="programming-with-the-tidyverse-functions" class="level2" data-number="65.3">
+<h2 data-number="65.3" class="anchored" data-anchor-id="programming-with-the-tidyverse-functions"><span class="header-section-number">65.3</span> Programming with the <code>tidyverse</code> functions</h2>
+<p>When using <code>tidyverse</code> functions, we can “pretend” that the data frame column names are objects in the global environment and refer to them without quotations (e.g., <code>""</code>). In this section we use <code>dplyr</code> and the <code>penguins</code> data set from the <code>palmerpenguins</code> package:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'palmerpenguins'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:datasets':
+
+    penguins, penguins_raw</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Gentoo"</span>, year <span class="sc">==</span> <span class="dv">2007</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 34 × 8
+   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2               211        4500
+ 2 Gentoo  Biscoe           50            16.3               230        5700
+ 3 Gentoo  Biscoe           48.7          14.1               210        4450
+ 4 Gentoo  Biscoe           50            15.2               218        5700
+ 5 Gentoo  Biscoe           47.6          14.5               215        5400
+ 6 Gentoo  Biscoe           46.5          13.5               210        4550
+ 7 Gentoo  Biscoe           45.4          14.6               211        4800
+ 8 Gentoo  Biscoe           46.7          15.3               219        5200
+ 9 Gentoo  Biscoe           43.3          13.4               209        4400
+10 Gentoo  Biscoe           46.8          15.4               215        5150
+# ℹ 24 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>Compare this with the same filter in base R, where every column name is written out as <code>penguins$</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>penguins[penguins<span class="sc">$</span>species <span class="sc">==</span> <span class="st">"Gentoo"</span> <span class="sc">&amp;</span> penguins<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">2007</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 34 × 8
+   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2               211        4500
+ 2 Gentoo  Biscoe           50            16.3               230        5700
+ 3 Gentoo  Biscoe           48.7          14.1               210        4450
+ 4 Gentoo  Biscoe           50            15.2               218        5700
+ 5 Gentoo  Biscoe           47.6          14.5               215        5400
+ 6 Gentoo  Biscoe           46.5          13.5               210        4550
+ 7 Gentoo  Biscoe           45.4          14.6               211        4800
+ 8 Gentoo  Biscoe           46.7          15.3               219        5200
+ 9 Gentoo  Biscoe           43.3          13.4               209        4400
+10 Gentoo  Biscoe           46.8          15.4               215        5150
+# ℹ 24 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>However, referring to column names without quotations leads to problems when we try to use them in a function. For example,</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>filter_penguins <span class="ot">&lt;-</span> <span class="cf">function</span>(col, val) {</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(penguins, col <span class="sc">==</span> val)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_penguins</span>(species, <span class="st">"Gentoo"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `filter()`:
+ℹ In argument: `col == val`.
+Caused by error:
+! object 'species' not found</code></pre>
+</div>
+</div>
+<p>Why does <code>filter</code> work with non-quoted variable names, but our function <code>filter_penguins</code> fail? <code>filter</code> does more behind the scenes than we see: it captures the code we give it (<code>col == val</code>) and runs that code <em>inside</em> the data frame, so that names which match a column are found as columns first. This is called <strong>data masking</strong>: the columns of the data frame “mask” (take priority over) objects with the same name in our environment. Here, <code>penguins</code> has no column called <code>col</code>, so <code>filter</code> uses our function’s <code>col</code> argument instead, and R then goes looking for an object called <code>species</code> in our environment, which does not exist. So to make this work for our function, we need to do a little more work too.</p>
+<p>Given that this is not a course in R programming, we will not go into the details of how data masking works here, but we will show the patterns you need to handle it. For learners interested to learn more about why this happens, the <a href="../lectures/non-standard-evaluation-r.html">Non-standard evaluation in R</a> appendix rebuilds a simple version of <code>select()</code> step by step to show how it works, and <a href="#sec-tidyverse-learn-more" class="quarto-xref"><span>Section 65.3.7</span></a> at the end of this section lists the <code>tidyverse</code> documentation these patterns come from.</p>
+<section id="sec-tidyverse-argument-kinds" class="level3" data-number="65.3.1">
+<h3 data-number="65.3.1" class="anchored" data-anchor-id="sec-tidyverse-argument-kinds"><span class="header-section-number">65.3.1</span> Two kinds of <code>tidyverse</code> arguments</h3>
+<p>Not every <code>tidyverse</code> argument handles column names in the same way. There are two kinds, and which kind you are using decides which pattern you need:</p>
+<ul>
+<li><strong>Data masking</strong> arguments let you <em>compute with</em> columns, as if each column were a variable: <code>filter()</code>, <code>mutate()</code>, <code>summarise()</code>, <code>arrange()</code>, <code>group_by()</code>, <code>count()</code>, and <code>aes()</code> in <code>ggplot2</code>.</li>
+<li><strong>Tidy selection</strong> arguments let you <em>choose</em> columns, by name, by position or with a helper such as <code>starts_with()</code>: <code>select()</code>, <code>rename()</code>, <code>relocate()</code>, and the <code>.cols</code> argument of <code>across()</code>. <code>pull()</code> chooses a single column in a similar way, but it has a quirk with column names stored in strings (see <a href="#sec-tidyverse-pull" class="quarto-xref"><span>Section 65.3.4.3</span></a>).</li>
+</ul>
+<p>The help page of each function says which kind each argument is: look for <code>&lt;data-masking&gt;</code> or <code>&lt;tidy-select&gt;</code> in the description of the argument (for example, in <code>?dplyr::filter</code> and <code>?dplyr::select</code>).</p>
+</section>
+<section id="sec-tidyverse-patterns" class="level3" data-number="65.3.2">
+<h3 data-number="65.3.2" class="anchored" data-anchor-id="sec-tidyverse-patterns"><span class="header-section-number">65.3.2</span> Where does the column name come from?</h3>
+<p>The other half of the question is how the column name reaches your code. There are two common cases:</p>
+<ol type="1">
+<li><strong>As a bare name passed into a function you wrote,</strong> like <code>filter_penguins(species, "Gentoo")</code>.</li>
+<li><strong>As a string stored in a variable,</strong> like <code>col &lt;- "species"</code>. This is what you get from command line arguments (see the <a href="../lectures/scripts.html">Non-interactive scripts chapter</a>), from configuration files, and from a vector of column names you loop over.</li>
+</ol>
+<p>Together, the two kinds of arguments and the two cases give four patterns:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 25%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Bare name passed into your function</th>
+<th>Column name stored in a string</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Data masking</strong> (<code>filter()</code>, <code>mutate()</code>, <code>summarise()</code>, <code>group_by()</code>, <code>aes()</code>)</td>
+<td><code>{ col }</code></td>
+<td><code>.data[[col]]</code></td>
+</tr>
+<tr class="even">
+<td><strong>Tidy selection</strong> (<code>select()</code>, <code>rename()</code>, <code>relocate()</code>, <code>across()</code>)</td>
+<td><code>{ cols }</code></td>
+<td><code>all_of(cols)</code> or <code>any_of(cols)</code></td>
+</tr>
+<tr class="odd">
+<td><strong><code>pull()</code></strong></td>
+<td><code>{ col }</code></td>
+<td><code>.data[[col]]</code></td>
+</tr>
+</tbody>
+</table>
+<p>The rest of this section works through each of them.</p>
+</section>
+<section id="defining-tidyverse-functions-by-embracing-column-names" class="level3" data-number="65.3.3">
+<h3 data-number="65.3.3" class="anchored" data-anchor-id="defining-tidyverse-functions-by-embracing-column-names"><span class="header-section-number">65.3.3</span> Defining <code>tidyverse</code> functions by embracing column names: <code>{ }</code></h3>
+<p>The <code>{ }</code> operator (pronounced “curly curly”), from the <code>rlang</code> package, passes the code your user typed through your function, so that the <code>tidyverse</code> function receives it just as if the user had called it directly. To use the <code>{ }</code> operator, we “embrace” the argument when we refer to it inside our function body.</p>
+<p>Here’s the function we show above working when we use the <code>{ }</code> operator to “embrace” the unquoted column name:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>filter_penguins <span class="ot">&lt;-</span> <span class="cf">function</span>(col, val) {</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(penguins, {{ col }} <span class="sc">==</span> val)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_penguins</span>(species, <span class="st">"Gentoo"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 124 × 8
+   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Gentoo  Biscoe           46.1          13.2               211        4500
+ 2 Gentoo  Biscoe           50            16.3               230        5700
+ 3 Gentoo  Biscoe           48.7          14.1               210        4450
+ 4 Gentoo  Biscoe           50            15.2               218        5700
+ 5 Gentoo  Biscoe           47.6          14.5               215        5400
+ 6 Gentoo  Biscoe           46.5          13.5               210        4550
+ 7 Gentoo  Biscoe           45.4          14.6               211        4800
+ 8 Gentoo  Biscoe           46.7          15.3               219        5200
+ 9 Gentoo  Biscoe           43.3          13.4               209        4400
+10 Gentoo  Biscoe           46.8          15.4               215        5150
+# ℹ 114 more rows
+# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+</div>
+</div>
+<p><code>{ }</code> works the same way for tidy selection arguments, so the users of your function can pass anything that <code>select()</code> accepts, including several columns at once and selection helpers:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>select_penguins <span class="ot">&lt;-</span> <span class="cf">function</span>(cols) {</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(penguins, {{ cols }})</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="fu">select_penguins</span>(<span class="fu">c</span>(species, island))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 2
+   species island   
+   &lt;fct&gt;   &lt;fct&gt;    
+ 1 Adelie  Torgersen
+ 2 Adelie  Torgersen
+ 3 Adelie  Torgersen
+ 4 Adelie  Torgersen
+ 5 Adelie  Torgersen
+ 6 Adelie  Torgersen
+ 7 Adelie  Torgersen
+ 8 Adelie  Torgersen
+ 9 Adelie  Torgersen
+10 Adelie  Torgersen
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_penguins</span>(<span class="fu">starts_with</span>(<span class="st">"bill"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 2
+   bill_length_mm bill_depth_mm
+            &lt;dbl&gt;         &lt;dbl&gt;
+ 1           39.1          18.7
+ 2           39.5          17.4
+ 3           40.3          18  
+ 4           NA            NA  
+ 5           36.7          19.3
+ 6           39.3          20.6
+ 7           38.9          17.8
+ 8           39.2          19.6
+ 9           34.1          18.1
+10           42            20.2
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are several ways to implement the usage of unquoted column names in R, and the <code>{ }</code> operator only works with functions that use data masking or tidy selection, such as the functions from the <code>tidyverse</code>. Please refer to the <a href="https://adv-r.hadley.nz/metaprogramming.html">Metaprogramming</a> chapters of Advanced R if you need to do this with other functions.</p>
+</div>
+</div>
+</section>
+<section id="sec-tidyverse-strings" class="level3" data-number="65.3.4">
+<h3 data-number="65.3.4" class="anchored" data-anchor-id="sec-tidyverse-strings"><span class="header-section-number">65.3.4</span> Column names stored in strings</h3>
+<p>When the column name arrives as a string, <code>{ }</code> is not the tool to use. <code>{ }</code> passes along <em>code</em>, and a variable holding the string <code>"species"</code> is not the code <code>species</code>. Worse, the mistake does not cause an error:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter_penguins</span>(<span class="at">col =</span> <span class="st">"species"</span>, <span class="at">val =</span> <span class="st">"Gentoo"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 0 × 8
+# ℹ 8 variables: species &lt;fct&gt;, island &lt;fct&gt;, bill_length_mm &lt;dbl&gt;,
+#   bill_depth_mm &lt;dbl&gt;, flipper_length_mm &lt;int&gt;, body_mass_g &lt;int&gt;, sex &lt;fct&gt;,
+#   year &lt;int&gt;</code></pre>
+</div>
+</div>
+<p>We get no rows back, because <code>filter</code> compared the <em>string</em> <code>"species"</code> to the string <code>"Gentoo"</code>, which is never true. Instead, we need to tell the <code>tidyverse</code> function “this is a string: use the column with this name”. How we do that depends on the kind of argument.</p>
+<section id="in-data-masking-arguments-the-.data-pronoun" class="level4">
+<h4 class="anchored" data-anchor-id="in-data-masking-arguments-the-.data-pronoun">In data masking arguments: the <code>.data</code> pronoun</h4>
+<p>In data masking arguments, we look the column up in <code>.data</code> with double square brackets, <code>.data[[col]]</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>group_col <span class="ot">&lt;-</span> <span class="st">"species"</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>value_col <span class="ot">&lt;-</span> <span class="st">"body_mass_g"</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.data[[group_col]]) <span class="sc">|&gt;</span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_mass =</span> <span class="fu">mean</span>(.data[[value_col]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species   mean_mass
+  &lt;fct&gt;         &lt;dbl&gt;
+1 Adelie        3701.
+2 Chinstrap     3733.
+3 Gentoo        5076.</code></pre>
+</div>
+</div>
+<p>This works in any data masking argument, including <code>aes()</code> in <code>ggplot2</code>, which is handy when a script takes the columns to plot as command line arguments:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>x_col <span class="ot">&lt;-</span> <span class="st">"flipper_length_mm"</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>y_col <span class="ot">&lt;-</span> <span class="st">"body_mass_g"</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(<span class="at">x =</span> .data[[x_col]], <span class="at">y =</span> .data[[y_col]])) <span class="sc">+</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="9020-functions-r_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" alt="Scatter plot of penguin body mass in grams against flipper length in millimetres." width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>If the string does not match a column name, <code>.data[[col]]</code> stops with an error that names the missing column, rather than quietly giving you the wrong answer:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_mass =</span> <span class="fu">mean</span>(.data[[<span class="st">"body_mass"</span>]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `summarise()`:
+ℹ In argument: `mean_mass = mean(.data[["body_mass"]], na.rm = TRUE)`.
+Caused by error in `.data[["body_mass"]]`:
+! Column `body_mass` not found in `.data`.</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>.data</code> is not a data frame. It is a special object, called a <em>pronoun</em>, that stands for “the columns of the data this function is working on”, and it only works inside data masking arguments. You can also write <code>.data$species</code>, which makes it explicit that <code>species</code> is a column and not an object in your environment, but only <code>.data[[col]]</code> lets you use a column name stored in a variable.</p>
+</div>
+</div>
+</section>
+<section id="in-tidy-selection-arguments-all_of-and-any_of" class="level4">
+<h4 class="anchored" data-anchor-id="in-tidy-selection-arguments-all_of-and-any_of">In tidy selection arguments: <code>all_of()</code> and <code>any_of()</code></h4>
+<p>In tidy selection arguments, we wrap the strings in <code>all_of()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>, <span class="st">"body_mass_g"</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(cols))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 3
+   species island    body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;           &lt;int&gt;
+ 1 Adelie  Torgersen        3750
+ 2 Adelie  Torgersen        3800
+ 3 Adelie  Torgersen        3250
+ 4 Adelie  Torgersen          NA
+ 5 Adelie  Torgersen        3450
+ 6 Adelie  Torgersen        3650
+ 7 Adelie  Torgersen        3625
+ 8 Adelie  Torgersen        4675
+ 9 Adelie  Torgersen        3475
+10 Adelie  Torgersen        4250
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p><code>all_of()</code> stops with an error if any of the names is not a column, which catches typos early:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"flipper_lenght_mm"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `select()`:
+ℹ In argument: `all_of(c("species", "flipper_lenght_mm"))`.
+Caused by error in `all_of()`:
+! Can't subset elements that don't exist.
+✖ Element `flipper_lenght_mm` doesn't exist.</code></pre>
+</div>
+</div>
+<p><code>any_of()</code> is the forgiving version: it skips names that are not columns. That is useful when, for example, you want to drop columns that may or may not be in the data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">!</span><span class="fu">any_of</span>(<span class="fu">c</span>(<span class="st">"year"</span>, <span class="st">"sex"</span>, <span class="st">"comments"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 6
+   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+ 1 Adelie  Torgersen           39.1          18.7               181        3750
+ 2 Adelie  Torgersen           39.5          17.4               186        3800
+ 3 Adelie  Torgersen           40.3          18                 195        3250
+ 4 Adelie  Torgersen           NA            NA                  NA          NA
+ 5 Adelie  Torgersen           36.7          19.3               193        3450
+ 6 Adelie  Torgersen           39.3          20.6               190        3650
+ 7 Adelie  Torgersen           38.9          17.8               181        3625
+ 8 Adelie  Torgersen           39.2          19.6               195        4675
+ 9 Adelie  Torgersen           34.1          18.1               193        3475
+10 Adelie  Torgersen           42            20.2               190        4250
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Why not just <code>select(cols)</code>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You will see older code that passes a variable holding strings straight to a tidy selection function, like <code>select(cols)</code>. This usage is deprecated (since <code>tidyselect</code> 1.1.0) because it is ambiguous: if the data happens to have a column with the same name as your variable, the column wins, and you get the wrong columns without any warning. Here we add a column called <code>cols</code> to the data, and <code>select(cols)</code> returns it instead of the <code>species</code> and <code>island</code> columns we wanted:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>penguins_extra <span class="ot">&lt;-</span> <span class="fu">mutate</span>(penguins, <span class="at">cols =</span> <span class="dv">0</span>)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>penguins_extra <span class="sc">|&gt;</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(cols)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 1
+    cols
+   &lt;dbl&gt;
+ 1     0
+ 2     0
+ 3     0
+ 4     0
+ 5     0
+ 6     0
+ 7     0
+ 8     0
+ 9     0
+10     0
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p><code>all_of()</code> removes the ambiguity: it always treats <code>cols</code> as a variable holding column names.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>penguins_extra <span class="sc">|&gt;</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(cols))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 344 × 2
+   species island   
+   &lt;fct&gt;   &lt;fct&gt;    
+ 1 Adelie  Torgersen
+ 2 Adelie  Torgersen
+ 3 Adelie  Torgersen
+ 4 Adelie  Torgersen
+ 5 Adelie  Torgersen
+ 6 Adelie  Torgersen
+ 7 Adelie  Torgersen
+ 8 Adelie  Torgersen
+ 9 Adelie  Torgersen
+10 Adelie  Torgersen
+# ℹ 334 more rows</code></pre>
+</div>
+</div>
+<p>In tidy selection arguments, do not use <code>.data[[col]]</code>: using <code>.data</code> there is deprecated (since <code>tidyselect</code> 1.2.0), and <code>all_of()</code> is its replacement.</p>
+</div>
+</div>
+</section>
+<section id="sec-tidyverse-pull" class="level4">
+<h4 class="anchored" data-anchor-id="sec-tidyverse-pull">In <code>pull()</code>: the <code>.data</code> pronoun</h4>
+<p><code>pull()</code> chooses a single column, and the <code>tidyverse</code> documentation suggests <code>all_of()</code> for it, as for the other tidy selection functions. However, <code>pull(all_of(col))</code> has a quirk: if the data has a column with the same name as your variable, <code>pull()</code> returns that column, even inside <code>all_of()</code>, without an error or a warning (<a href="https://github.com/r-lib/tidyselect/issues/376">tidyselect issue #376</a>). Here our variable is called <code>col</code>, and we add a column called <code>col</code> to the data:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="st">"body_mass_g"</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>penguins_col <span class="ot">&lt;-</span> <span class="fu">mutate</span>(penguins, <span class="at">col =</span> <span class="dv">0</span>)</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>penguins_col <span class="sc">|&gt;</span></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(<span class="fu">all_of</span>(col)) <span class="sc">|&gt;</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>We get the mean of the column called <code>col</code> (0), not of <code>body_mass_g</code>. <code>.data[[col]]</code> does not have this problem, so we use it with <code>pull()</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>penguins_col <span class="sc">|&gt;</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(.data[[col]]) <span class="sc">|&gt;</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4201.754</code></pre>
+</div>
+</div>
+<p>Most of the time your data will not have a column with the same name as your variable, and both give the same answer. But in a script or a function, you do not know in advance which columns the data will have, so it is safer to use the version that cannot go wrong. The <a href="../lectures/non-standard-evaluation-r.html">Non-standard evaluation in R</a> appendix explains why these collisions happen.</p>
+</section>
+<section id="several-columns-from-strings-in-data-masking-arguments-pick-and-across" class="level4">
+<h4 class="anchored" data-anchor-id="several-columns-from-strings-in-data-masking-arguments-pick-and-across">Several columns from strings in data masking arguments: <code>pick()</code> and <code>across()</code></h4>
+<p>Data masking functions such as <code>group_by()</code> and <code>summarise()</code> often need several columns at once. To use a tidy selection inside a data masking argument, wrap it in <code>pick()</code>, to use the selected columns as they are, or in <code>across()</code>, to apply a function to each of the selected columns:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>group_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"species"</span>, <span class="st">"island"</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>value_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bill_length_mm"</span>, <span class="st">"body_mass_g"</span>)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="fu">pick</span>(<span class="fu">all_of</span>(group_cols))) <span class="sc">|&gt;</span></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">all_of</span>(value_cols), \(x) <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 4
+  species   island    bill_length_mm body_mass_g
+  &lt;fct&gt;     &lt;fct&gt;              &lt;dbl&gt;       &lt;dbl&gt;
+1 Adelie    Biscoe              39.0       3710.
+2 Adelie    Dream               38.5       3688.
+3 Adelie    Torgersen           39.0       3706.
+4 Chinstrap Dream               48.8       3733.
+5 Gentoo    Biscoe              47.5       5076.</code></pre>
+</div>
+</div>
+<p><code>pick()</code> and <code>across()</code> take <code>{ }</code> as well, so the same function can also accept bare names from its users: <code>group_by(pick({{ group_cols }}))</code>.</p>
+</section>
+</section>
+<section id="the-walrus-operator-is-needed-when-assigning-values" class="level3" data-number="65.3.5">
+<h3 data-number="65.3.5" class="anchored" data-anchor-id="the-walrus-operator-is-needed-when-assigning-values"><span class="header-section-number">65.3.5</span> The walrus operator <code>:=</code> is needed when assigning values</h3>
+<p>For similar reasons, the walrus operator (<code>:=</code>) is needed when writing functions that create new columns using unquoted column names with the <code>tidyverse</code> functions. R does not allow code on the left-hand side of <code>=</code> when naming an argument, so <code>tidyverse</code> functions accept <code>:=</code> in its place:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>group_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group, col, fun) {</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group }}) <span class="sc">|&gt;</span></span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>({{ col }} <span class="sc">:</span><span class="er">=</span> <span class="fu">fun</span>({{ col }}, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a><span class="fu">group_summary</span>(penguins, species, body_mass_g, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species   body_mass_g
+  &lt;fct&gt;           &lt;dbl&gt;
+1 Adelie          3701.
+2 Chinstrap       3733.
+3 Gentoo          5076.</code></pre>
+</div>
+</div>
+<p>The left-hand side of <code>:=</code> can also be a template for the new column’s name, using the syntax of the <a href="https://glue.tidyverse.org/"><code>glue</code> package</a>: <code>{ }</code> inserts the name of an embraced argument, and <code>{ }</code> inserts the value of a variable holding a string.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>mean_by <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group, col) {</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group }}) <span class="sc">|&gt;</span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="st">"mean_{{ col }}"</span> <span class="sc">:</span><span class="er">=</span> <span class="fu">mean</span>({{ col }}, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb93-6"><a href="#cb93-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-7"><a href="#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mean_by</span>(penguins, species, body_mass_g)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species   mean_body_mass_g
+  &lt;fct&gt;                &lt;dbl&gt;
+1 Adelie               3701.
+2 Chinstrap            3733.
+3 Gentoo               5076.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>col <span class="ot">&lt;-</span> <span class="st">"body_mass_g"</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="st">"mean_{col}"</span> <span class="sc">:</span><span class="er">=</span> <span class="fu">mean</span>(.data[[col]], <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  mean_body_mass_g
+             &lt;dbl&gt;
+1            4202.</code></pre>
+</div>
+</div>
+</section>
+<section id="older-patterns-enquo-and-sym" class="level3" data-number="65.3.6">
+<h3 data-number="65.3.6" class="anchored" data-anchor-id="older-patterns-enquo-and-sym"><span class="header-section-number">65.3.6</span> Older patterns: <code>!!</code>, <code>enquo()</code> and <code>sym()</code></h3>
+<p>In older code, blog posts and Stack Overflow answers, you will see other ways of doing the same things. They come from earlier versions of the <code>tidyverse</code>, before <code>{ }</code>, <code>.data</code> and <code>all_of()</code> were the recommended tools:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 43%">
+<col style="width: 56%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Older pattern</th>
+<th>Use instead</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>col &lt;- enquo(col)</code>, then <code>!!col</code></td>
+<td><code>{ col }</code></td>
+</tr>
+<tr class="even">
+<td><code>!!sym(col)</code> or <code>!!as.name(col)</code> for a string</td>
+<td><code>.data[[col]]</code> in data masking and <code>pull()</code>, <code>all_of(col)</code> in tidy selection</td>
+</tr>
+<tr class="odd">
+<td><code>!!!syms(cols)</code>, for several strings</td>
+<td><code>pick(all_of(cols))</code> or <code>across(all_of(cols))</code> in data masking, <code>all_of(cols)</code> in tidy selection</td>
+</tr>
+<tr class="even">
+<td><code>select(cols)</code>, with <code>cols</code> holding strings</td>
+<td><code>select(all_of(cols))</code></td>
+</tr>
+<tr class="odd">
+<td><code>aes_string(x = col)</code> in <code>ggplot2</code></td>
+<td><code>aes(x = .data[[col]])</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>!!</code> is not deprecated, and most of the older patterns still work. What is deprecated is <code>aes_string()</code> (since <code>ggplot2</code> 3.0.0), passing a variable holding strings straight to a tidy selection function (since <code>tidyselect</code> 1.1.0), and using <code>.data</code> inside tidy selection functions (since <code>tidyselect</code> 1.2.0). <code>{ }</code> is shorthand for <code>!!enquo()</code>, and <code>!!</code> (the “injection” operator) and <code>!!!</code> (the “splice” operator) are still the right tools for more advanced metaprogramming; the <a href="../lectures/non-standard-evaluation-r.html">Non-standard evaluation in R</a> appendix shows how they work.</p>
+</section>
+<section id="sec-tidyverse-learn-more" class="level3" data-number="65.3.7">
+<h3 data-number="65.3.7" class="anchored" data-anchor-id="sec-tidyverse-learn-more"><span class="header-section-number">65.3.7</span> Learn more</h3>
+<p>The patterns in this section come from the <code>tidyverse</code> documentation:</p>
+<ul>
+<li><a href="https://dplyr.tidyverse.org/articles/programming.html">Programming with <code>dplyr</code></a>: <code>{ }</code> for function arguments, <code>.data[[var]]</code> in data masking, and <code>all_of()</code> in tidy selection.</li>
+<li>The <code>dplyr</code> reference pages for <a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html">data masking</a> and <a href="https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html">tidy selection</a> arguments.</li>
+<li><a href="https://rlang.r-lib.org/reference/topic-data-mask-programming.html">Data mask programming patterns</a>, from the <code>rlang</code> documentation, including <code>across(all_of(vars))</code> to use a vector of column names in a data masking function.</li>
+<li><a href="https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>, on collisions between column names and objects in your environment, and how the <code>.data</code> and <code>.env</code> pronouns prevent them.</li>
+<li><a href="https://rlang.r-lib.org/reference/injection-operator.html">The injection operator <code>!!</code></a> and <a href="https://rlang.r-lib.org/reference/embrace-operator.html">embracing with <code>{{</code></a>, in the <code>rlang</code> documentation.</li>
+</ul>
+<p>The deprecations mentioned in this section are documented in:</p>
+<ul>
+<li><a href="https://tidyselect.r-lib.org/reference/faq-external-vector.html">Using an external vector in selections</a>, the <code>tidyselect</code> FAQ on <code>select(cols)</code> versus <code>select(all_of(cols))</code>.</li>
+<li><a href="https://www.tidyverse.org/blog/2022/10/tidyselect-1-2-0/">tidyselect 1.2.0</a>, the release post that deprecated <code>.data</code> in tidy selection.</li>
+<li><a href="https://ggplot2.tidyverse.org/reference/aes_.html"><code>aes_()</code> and <code>aes_string()</code></a> and <a href="https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html">Using ggplot2 in packages</a>, in the <code>ggplot2</code> documentation.</li>
+<li><a href="https://github.com/r-lib/tidyselect/issues/376">tidyselect issue #376</a>, the <code>pull(all_of())</code> quirk.</li>
+</ul>
+<p>To learn how it all works underneath:</p>
+<ul>
+<li>The <a href="../lectures/non-standard-evaluation-r.html">Non-standard evaluation in R</a> appendix.</li>
+<li><a href="https://adv-r.hadley.nz/metaprogramming.html">Metaprogramming</a>, in Advanced R.</li>
+<li><a href="https://www.youtube.com/watch?v=WoBbQ5gsbgU">Learning Tidy Evaluation by Reimplementing <code>dplyr</code></a> (<a href="https://github.com/chendaniely/rstatsdc-2020-tidyeval">slides and code</a>), a talk by Daniel Chen that rebuilds <code>select()</code> step by step to explain quoting, quosures and the data mask. It was recorded in 2020, so a few of its patterns have since been superseded: use <code>aes(x = .data[[col]])</code> instead of <code>aes_string()</code>, <code>all_of(col)</code> instead of passing a variable holding a string straight to <code>select()</code>, and <code>.data[[col]]</code> instead of <code>rlang::parse_expr()</code> with <code>!!</code>.</li>
+</ul>
+</section>
+</section>
+<section id="function-documentation" class="level2" data-number="65.4">
+<h2 data-number="65.4" class="anchored" data-anchor-id="function-documentation"><span class="header-section-number">65.4</span> Function documentation</h2>
+<p>Function documentation is extremely useful at both the time of function creation/development, as well as at the time of function usage by the user. At the time of creation/development, it is useful for clearly delineating and communication the planned function’s specifications. At the time of usage, it is often the primary documentation a user will refer to in order to understand how to use the function. If a function is not well documented, it will not be well understood or widely used.</p>
+<section id="function-documentation-in-r" class="level3" data-number="65.4.1">
+<h3 data-number="65.4.1" class="anchored" data-anchor-id="function-documentation-in-r"><span class="header-section-number">65.4.1</span> Function documentation in R</h3>
+<p>In R, we write function documentation in a style that the <a href="https://roxygen2.r-lib.org/"><code>roxygen2</code> R package</a> can use to automatically generate nicely formatted documentation, accessible via R’s help function, when we create R packages. This is not available to us until we package our functions in software packages, however it is a good practice to get into because it helps ensure you document the key aspects of a function for your user, and it means that when you go to create an R package to share your function, you will have already correctly formatted the function documentation, saving future you some work!</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Converts temperatures from Fahrenheit to Celsius.</span></span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param temp a vector of temperatures in Fahrenheit</span></span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @return a vector of temperatures in Celsius</span></span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a><span class="co">#' @examples</span></span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="co">#' fahr_to_celcius(-20)</span></span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>fahr_to_celsius <span class="ot">&lt;-</span> <span class="cf">function</span>(temp) {</span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>    (temp <span class="sc">-</span> <span class="dv">32</span>) <span class="sc">*</span> <span class="dv">5</span><span class="sc">/</span><span class="dv">9</span></span>
+<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>RStudio has a nice feature to provide a <code>roxygen2</code> formatted skeleton for function documentation. To use it, you put the cursor in the function definition, and then select the menu items “Code” &gt; “Insert Roxygen Skeleton”:</p>
+<p><img src="../img/insert_roxygen.png" width="600"></p>
+</section>
+</section>
+<section id="practice-writing-functions-in-r" class="level2" data-number="65.5">
+<h2 data-number="65.5" class="anchored" data-anchor-id="practice-writing-functions-in-r"><span class="header-section-number">65.5</span> Practice writing functions in R</h2>
+<p>To practice writing functions in R, you can attempt this worksheet: https://github.com/UBC-DSCI/dsci-310-student/blob/main/practice/worksheet_functions_in_r.ipynb</p>
+<p><em>Note: to access the automated software tests for feedback on your answers, you will want to clone or download <a href="https://github.com/UBC-DSCI/dsci-310-student">this GitHub repo</a> and navigate to the <code>practice</code> directory.</em></p>
+</section>
+<section id="defining-functions-in-python" class="level2" data-number="65.6">
+<h2 data-number="65.6" class="anchored" data-anchor-id="defining-functions-in-python"><span class="header-section-number">65.6</span> Defining functions in Python</h2>
+<p>In this course, we will get to practice writing functions (and then testing them) in the Python programming language. We will only cover it here briefly. To learn more about functions in Python, we refer you to the <a href="https://prog-learn.mds.ubc.ca/en/module6">Module 6: Functions Fundamentals and Best Practices</a> from the Programming in Python for Data Science course.</p>
+<p>Functions in Python are defined using the reserved word <code>def</code>. A colon follows the function arguments to indicate where the function body should starte. White space, in particular indentation, is used to indicate which code belongs in the function body and which does not. A general form for fucntion definition is shown below:</p>
+<pre><code>def function_name(…function arguments…):
+    …function body…</code></pre>
+<p>Here’s a working example:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>add_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">+</span> y</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="fu">add_two_numbers</span>(<span class="dv">1</span>, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<ul>
+<li>Functions in R are objects. This is referred to as “first-class functions”.</li>
+<li>The last line of the function returns the object created, or listed there. To return a value early use the special word <code>return</code> (as shown below).</li>
+</ul>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;slide&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>math_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, operation) {</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (operation <span class="sc">==</span> <span class="st">"add"</span>) {</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(x <span class="sc">+</span> y)</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">-</span> y</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"add"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"subtract"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3</code></pre>
+</div>
+</div>
+<section id="default-function-arguments-1" class="level3" data-number="65.6.1">
+<h3 data-number="65.6.1" class="anchored" data-anchor-id="default-function-arguments-1"><span class="header-section-number">65.6.1</span> Default function arguments</h3>
+<p>Default values can be specified in the function definition:</p>
+<div class="cell" data-slideshow="{&quot;slide_type&quot;:&quot;fragment&quot;}">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>math_two_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y, <span class="at">operation =</span> <span class="st">"add"</span>) {</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (operation <span class="sc">==</span> <span class="st">"add"</span>) {</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(x <span class="sc">+</span> y)</span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">-</span> y</span>
+<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">math_two_numbers</span> (<span class="dv">1</span>, <span class="dv">4</span>, <span class="st">"subtract"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3</code></pre>
+</div>
+</div>
+<section id="optional---advanced-1" class="level4">
+<h4 class="anchored" data-anchor-id="optional---advanced-1">Optional - Advanced</h4>
+<section id="extra-arguments-via-...-1" class="level5">
+<h5 class="anchored" data-anchor-id="extra-arguments-via-...-1">Extra arguments via <code>...</code></h5>
+<p>If we want our function to be able to take extra arguments that we don’t specify, we must explicitly convert <code>...</code> to a list (otherwise <code>...</code> will just return the first object passed to <code>...</code>):</p>
+
+
+</section>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../lectures/functions-python.html" class="pagination-link" aria-label="Defining functions in Python">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">64</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../lectures/non-standard-evaluation-r.html" class="pagination-link" aria-label="Non-standard evaluation in R">
+        <span class="nav-page-text"><span class="chapter-number">66</span>&nbsp; <span class="chapter-title">Non-standard evaluation in R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
