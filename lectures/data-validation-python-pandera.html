@@ -125,6 +125,17 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   content: '🏋️';
   background-image: none;
 }
+div.callout-activity.callout {
+  border-left-color: blue;
+}
+div.callout-activity.callout-style-default > .callout-header {
+  background-color: rgb(from blue r g b / 13%);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  content: '🧩';
+  background-image: none;
+}
 div.callout-definition.callout {
   border-left-color: pink;
 }
@@ -145,17 +156,6 @@ div.callout-relevance-project.callout-style-default > .callout-header {
 div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
 div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
   content: '💻';
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: blue;
-}
-div.callout-activity.callout-style-default > .callout-header {
-  background-color: rgb(from blue r g b / 13%);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  content: '🧩';
   background-image: none;
 }
 </style>
@@ -882,7 +882,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 <section id="creating-pa.dataframeschema-and-setting-required-columns" class="level4">
 <h4 class="anchored" data-anchor-id="creating-pa.dataframeschema-and-setting-required-columns">Creating <code>pa.DataFrameSchema</code> and setting required columns</h4>
 <p>To create an instance of the <code>DataFrameSchema</code> class we first import the Pandera package using the alias <code>pa</code>, and then the function <code>pa.DataFrameSchema</code>. Below we demonstrate creating an instance of the <code>DataFrameSchema</code> class for the first two columns of the <a href="https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic">Wisconsin Breast Cancer data set</a> from the <a href="https://archive.ics.uci.edu/">UCI Machine Learning Repository</a> (Dua and Graff 2017).</p>
-<div id="8f372a2c" class="cell" data-execution_count="1">
+<div id="877cdcb7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandera.pandas <span class="im">as</span> pa</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -921,7 +921,7 @@ Note
 <p>The Pandera documentation recommends the built-in Python types for common data types, which is what we use in this chapter.</p>
 <p>See the Pandera <a href="https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation">Data Type Validation docs</a> for details beyond what we present here.</p>
 <p>If we continue our example from above, we can specify that we expect the <code>class</code> column to be a string and the <code>mean_radius</code> column to be a float as shown below:</p>
-<div id="922214d1" class="cell" data-execution_count="2">
+<div id="c27515ac" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
@@ -933,7 +933,7 @@ Note
 <section id="missingnessnull-values" class="level4">
 <h4 class="anchored" data-anchor-id="missingnessnull-values">Missingness/null values</h4>
 <p>By default Column objects assume there should be no null/missing values. If you want to allow missing values, you need to set <code>nullable=True</code> in the column constructor. We demonstrate that below for the <code>mean_radius</code> column of our working example. Note that we do not set this to be true for our class column as we likely do not want to be working with observations where the target/response variable is missing.</p>
-<div id="950a5942" class="cell" data-execution_count="3">
+<div id="1dc3e96c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
@@ -956,7 +956,7 @@ Note
 </div>
 </div>
 <p>By default, Pandera removes missing values before it runs a check, so a check that counts missing values would never see any. Setting <code>ignore_na=False</code> makes Pandera give the check every value, missing or not (see <a href="https://pandera.readthedocs.io/en/stable/checks.html#handling-null-values">Handling null values</a> in the Pandera documentation).</p>
-<div id="a1b2c3e9" class="cell" data-execution_count="4">
+<div id="fcfe6862" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
@@ -986,7 +986,7 @@ Note
 <section id="checking-values-in-columns" class="level4">
 <h4 class="anchored" data-anchor-id="checking-values-in-columns">Checking values in columns</h4>
 <p>Pandera’s <code>pa.Check</code> class is useful for checking values within columns. For any type of data, there is usually some reasonable range of values that we would expect. These usually come from domain knowledge about the data. For example, a column named <code>age</code> for a data set about adult human patients age in years should probably be an integer and have a range of values between 18 and 122 (<a href="https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people#cite_note-5">the oldest person whose age has ever been independently verified</a>). To specify a check for a range like this, we can use the <code>pa.Check.between</code> method. We demonstrate how to do this below with our working example to check that the <code>mean_radius</code> values are between 5 and 45, inclusive.</p>
-<div id="353138ea" class="cell" data-execution_count="5">
+<div id="249d5571" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>),</span>
@@ -995,7 +995,7 @@ Note
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In our working example, we might also want to check that the <code>class</code> column only contains the strings we think are acceptable for our category label, which would be <code>"Benign"</code> and <code>"Malignant"</code>. We can do this using the <code>pa.Check.isin</code> method, which we demonstrate below:</p>
-<div id="147cfb99" class="cell" data-execution_count="6">
+<div id="ad853d75" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
@@ -1013,7 +1013,7 @@ Note
 <section id="duplicates" class="level4">
 <h4 class="anchored" data-anchor-id="duplicates">Duplicates</h4>
 <p>To check for duplicate rows, we list the columns that should be unique together in the <code>unique</code> argument of <code>pa.DataFrameSchema</code> (see <a href="https://pandera.readthedocs.io/en/stable/dataframe_schemas.html#validating-the-joint-uniqueness-of-columns">Validating the joint uniqueness of columns</a> in the Pandera documentation). Listing every column means that no two rows can be identical. We also set <code>report_duplicates="exclude_first"</code>, so that Pandera treats the first copy of a row as valid and only reports the rows that repeat it:</p>
-<div id="e750312e" class="cell" data-execution_count="7">
+<div id="7d20d498" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
@@ -1028,7 +1028,7 @@ Note
 <h4 class="anchored" data-anchor-id="empty-observations">Empty observations</h4>
 <p>Pandera has no built-in check for rows where every value is missing, so we write our own check with <code>pa.Check</code>. A check given to the <code>checks</code> argument of <code>pa.DataFrameSchema</code> receives the whole data frame, and should return one <code>True</code> or <code>False</code> for each row, so that Pandera can report which rows failed (see <a href="https://pandera.readthedocs.io/en/stable/checks.html#wide-checks">Wide checks</a> in the Pandera documentation). <code>df.isna().all(axis="columns")</code> is <code>True</code> for each row where the value in every column is missing, so <code>~df.isna().all(axis="columns")</code> is <code>True</code> for every row that is not empty.</p>
 <p>By default, Pandera removes every row that contains a missing value before it runs a check on the whole data frame, which would hide exactly the rows we are looking for. Setting <code>ignore_na=False</code> makes Pandera run the check on every row (see <a href="https://pandera.readthedocs.io/en/stable/checks.html#handling-null-values">Handling null values</a>):</p>
-<div id="0f54944d" class="cell" data-execution_count="8">
+<div id="00b9f225" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>])),</span>
@@ -1052,7 +1052,7 @@ Note
 <p>Once we have specified our the properties we expect (and thus would like to check) for our dataframe index and columns by creating an instance of <code>pa.DataFrameSchema</code>, we can use the <code>pa.DataFrameSchema.validate</code> method on a dataframe to check if the dataframe is valid considering the schema we specified.</p>
 <p>To demonstrate this, below we create two very simple versions of the Wisconsin Breast Cancer data set. One which we expect to pass our validation checks, and one where we introduce four data anomalies that should cause some checks to fail.</p>
 <p>First we create two data frames:</p>
-<div id="a8778050" class="cell" data-execution_count="9">
+<div id="768e08f8" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>valid_data <span class="op">=</span> pd.DataFrame({</span>
@@ -1066,7 +1066,7 @@ Note
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Let’s see what happens when we apply <code>pa.DataFrameSchema.validate</code> to our valid data:</p>
-<div id="3f3cbcfb" class="cell" data-execution_count="10">
+<div id="58dc147d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>schema.validate(valid_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
@@ -1103,7 +1103,7 @@ Note
 </div>
 </div>
 <p>It returns a dataframe and does not throw an error. Excellent! What happens when we pass clearly invalid data?</p>
-<div id="6d483449" class="cell" data-execution_count="11">
+<div id="50bc63e6" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
@@ -1209,7 +1209,7 @@ Note
 1  Benign          6.0</code></pre>
 <p>The error arose because row <code>1</code> of our <code>invalid_data</code> is a copy of row <code>0</code>, and we specified in our <code>pa.DataFrameSchema</code> instance that the <code>class</code> and <code>mean_radius</code> columns must be unique together.</p>
 <p>What about the other errors we expect from our invalid data? For example, the <code>class</code> column contains the string <code>"benign"</code>, but we only accept <code>"Benign"</code> and <code>"Malignant"</code>, there’s a value of <code>-9999</code> in the <code>mean_radius</code> column that is well outside of the range we said was valid in the schema (5, 45), and we have an empty row as well. Why are these validation errors not reported? Pandera’s default is to throw an error after the first instance of non-valid data. To change this behaviour, we can set <code>lazy=True</code>. When we do this we see that all errors get reported.</p>
-<div id="941f7161" class="cell" data-execution_count="12">
+<div id="b9006842" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>schema.validate(invalid_data, lazy<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <div class="ansi-escaped-output">
@@ -1323,7 +1323,7 @@ Note
 <li>add <code>lazy=True</code> to our call to the <code>pa.DataFrameSchema.validate</code> method</li>
 </ol>
 <p>Below we demonstrate this with our working example.</p>
-<div id="ed5419cb" class="cell" data-execution_count="13">
+<div id="bd0df578" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> pa.DataFrameSchema(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    {</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"class"</span>: pa.Column(<span class="bu">str</span>, pa.Check.isin([<span class="st">"Benign"</span>, <span class="st">"Malignant"</span>]), nullable<span class="op">=</span><span class="va">True</span>),</span>
@@ -1371,7 +1371,7 @@ Note
 <section id="writing-data-validation-logs" class="level3" data-number="26.1.6">
 <h3 data-number="26.1.6" class="anchored" data-anchor-id="writing-data-validation-logs"><span class="header-section-number">26.1.6</span> Writing data validation logs</h3>
 <p>Is removing the rows sufficient? Not at all! A human should be told that there was invalid data so that upstream data collection, cleaning and transformation processes can be reviewed to minimize the chances of future invalid data. One way to do this is to again specify <code>lazy=True</code> so that all errors can be observed and reported. Then we can get the <code>SchemaErrors</code> and write them to a log file. We show below how to do this for our working example so that the valid rows are returned as a dataframe named <code>validated_data</code> and the errors are logged as a file called <code>validation_errors.log</code>:</p>
-<div id="b43fa3ec" class="cell" data-execution_count="14">
+<div id="93a47149" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
