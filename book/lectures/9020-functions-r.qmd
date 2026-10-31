@@ -326,95 +326,435 @@ More advanced exception handling exists in R, and I invite interested learner to
 
 ## Programming with the `tidyverse` functions
 
-The functions from the `tidyverse` are beautiful to use interactively - with these functions, we can "pretend" that the data frame column names are objects in the global environment and refer to them without quotations (e.g., `""`)
+When using `tidyverse` functions,
+we can "pretend" that the data frame column names are objects in the global environment
+and refer to them without quotations (e.g., `""`).
+In this section we use `dplyr` and the `penguins` data set from the `palmerpenguins` package:
 
 ```{r}
-library(tidyverse)
-library(gapminder)
+library(dplyr)
+library(palmerpenguins)
 
-gapminder |>
-  filter(country == "Canada", year == 1952)
+penguins |>
+  filter(species == "Gentoo", year == 2007)
 ```
 
-expecially when compared with base R:
+Compare this with the same filter in base R,
+where every column name is written out as `penguins$`:
 
 ```{r}
-gapminder[gapminder$country == "Canada" & gapminder$year == 1952, ]
+penguins[penguins$species == "Gentoo" & penguins$year == 2007, ]
 ```
 
-However, the beauty of being able to refer to data frame column names in R without quotations, leads to problems when we try to use them in a function.
+However, referring to column names without quotations
+leads to problems when we try to use them in a function.
 For example,
 
-```
-filter_gap <- function(col, val) {
-    filter(gapminder, col == val)
+```{r}
+filter_penguins <- function(col, val) {
+  filter(penguins, col == val)
 }
 
-filter_gap(country, "Canada")
+filter_penguins(species, "Gentoo")
 ```
 
-```
-Error: object 'country' not found
-Traceback:
-
-1. filter_gap(country, "Canada")
-2. filter(gapminder, col == val)   # at line 4 of file <text>
-3. filter.tbl_df(gapminder, col == val)
-4. filter_impl(.data, quo)
-
-```
-
-Why does `filter` work with non-quoted variable names, but our function `filter_gap` fail?
-At a very high-level, this is because `filter` is doing more behind the scenes to handle these
-unquoted column names than we see without looking at the source code.
+Why does `filter` work with non-quoted variable names, but our function `filter_penguins` fail?
+`filter` does more behind the scenes than we see:
+it captures the code we give it (`col == val`)
+and runs that code *inside* the data frame,
+so that names which match a column are found as columns first.
+This is called **data masking**:
+the columns of the data frame "mask" (take priority over) objects with the same name in our environment.
+Here, `penguins` has no column called `col`,
+so `filter` uses our function's `col` argument instead,
+and R then goes looking for an object called `species` in our environment,
+which does not exist.
 So to make this work for our function, we need to do a little more work too.
 
-Given that this is not a course in R programming, we will not go into the details of why this happens,
-but we will show one way of how to handle this.
-For learners intersted to learn more about why this happens,
-we recommend reading these two resources:
+Given that this is not a course in R programming,
+we will not go into the details of how data masking works here,
+but we will show the patterns you need to handle it.
+For learners interested to learn more about why this happens,
+the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix
+rebuilds a simple version of `select()` step by step to show how it works,
+and @sec-tidyverse-learn-more at the end of this section lists the `tidyverse` documentation these patterns come from.
 
-1. [Programming with `dplyr`](https://dplyr.tidyverse.org/articles/programming.html)
-2. [Metaprogramming](https://adv-r.hadley.nz/metaprogramming.html)
+### Two kinds of `tidyverse` arguments {#sec-tidyverse-argument-kinds}
+
+Not every `tidyverse` argument handles column names in the same way.
+There are two kinds,
+and which kind you are using decides which pattern you need:
+
+- **Data masking** arguments let you *compute with* columns,
+  as if each column were a variable:
+  `filter()`, `mutate()`, `summarise()`, `arrange()`, `group_by()`, `count()`,
+  and `aes()` in `ggplot2`.
+- **Tidy selection** arguments let you *choose* columns,
+  by name, by position or with a helper such as `starts_with()`:
+  `select()`, `rename()`, `relocate()`,
+  and the `.cols` argument of `across()`.
+  `pull()` chooses a single column in a similar way,
+  but it has a quirk with column names stored in strings (see @sec-tidyverse-pull).
+
+The help page of each function says which kind each argument is:
+look for `<data-masking>` or `<tidy-select>` in the description of the argument
+(for example, in `?dplyr::filter` and `?dplyr::select`).
+
+### Where does the column name come from? {#sec-tidyverse-patterns}
+
+The other half of the question is how the column name reaches your code.
+There are two common cases:
+
+1. **As a bare name passed into a function you wrote,**
+   like `filter_penguins(species, "Gentoo")`.
+2. **As a string stored in a variable,**
+   like `col <- "species"`.
+   This is what you get from command line arguments
+   (see the [Non-interactive scripts chapter](0810-scripts.qmd)),
+   from configuration files,
+   and from a vector of column names you loop over.
+
+Together, the two kinds of arguments and the two cases give four patterns:
+
+|                                                                        | Bare name passed into your function | Column name stored in a string   |
+|------------------------------------------------------------------------|-------------------------------------|----------------------------------|
+| **Data masking** (`filter()`, `mutate()`, `summarise()`, `group_by()`, `aes()`) | `{{ col }}`                         | `.data[[col]]`                   |
+| **Tidy selection** (`select()`, `rename()`, `relocate()`, `across()`)  | `{{ cols }}`                        | `all_of(cols)` or `any_of(cols)` |
+| **`pull()`**                                                           | `{{ col }}`                         | `.data[[col]]`                   |
+
+The rest of this section works through each of them.
 
 ### Defining `tidyverse` functions by embracing column names: `{{ }}`
 
-In the newest release of the `rlang` R package, there has been the introduction of the `{{` (pronounced "curly curly") operator.
-This operator does the necessary work behind the scenes so that you can continue to use unquoted column names
-with the `tidyverse` functions even when you use them in functions that you write yourself.
+The `{{ }}` operator (pronounced "curly curly"), from the `rlang` package,
+passes the code your user typed through your function,
+so that the `tidyverse` function receives it just as if the user had called it directly.
+To use the `{{ }}` operator, we "embrace" the argument when we refer to it inside our function body.
 
-To use the `{{` operator, we "embrace" the unquoted column names when we refer to them inside our function body.
-An important note is that there are several ways to implement the usage of unquoted column names in R,
-and  the `{{` operator only works with the `tidyverse` functions.
-Please refer to the [Metaprogramming](https://adv-r.hadley.nz/metaprogramming.html) chapter of Advanced R
-if you need to do this with non-tidyverse functions.
-
-Here's the function we show above working when we use the `{{` operator to "embrace" the unquoted column names:
+Here's the function we show above working when we use the `{{ }}` operator to "embrace" the unquoted column name:
 
 ```{r}
-filter_gap <- function(col, val) {
-  filter(gapminder, {{col}} == val)
+filter_penguins <- function(col, val) {
+  filter(penguins, {{ col }} == val)
 }
+
+filter_penguins(species, "Gentoo")
+```
+
+`{{ }}` works the same way for tidy selection arguments,
+so the users of your function can pass anything that `select()` accepts,
+including several columns at once and selection helpers:
+
+```{r}
+select_penguins <- function(cols) {
+  select(penguins, {{ cols }})
+}
+
+select_penguins(c(species, island))
 ```
 
 ```{r}
-filter_gap(country, "Canada")
+select_penguins(starts_with("bill"))
 ```
+
+:::{.callout-note}
+There are several ways to implement the usage of unquoted column names in R,
+and the `{{ }}` operator only works with functions that use data masking or tidy selection,
+such as the functions from the `tidyverse`.
+Please refer to the [Metaprogramming](https://adv-r.hadley.nz/metaprogramming.html) chapters of Advanced R
+if you need to do this with other functions.
+:::
+
+### Column names stored in strings {#sec-tidyverse-strings}
+
+When the column name arrives as a string,
+`{{ }}` is not the tool to use.
+`{{ }}` passes along *code*,
+and a variable holding the string `"species"` is not the code `species`.
+Worse, the mistake does not cause an error:
+
+```{r}
+filter_penguins(col = "species", val = "Gentoo")
+```
+
+We get no rows back, because `filter` compared the *string* `"species"` to the string `"Gentoo"`,
+which is never true.
+Instead, we need to tell the `tidyverse` function
+"this is a string: use the column with this name".
+How we do that depends on the kind of argument.
+
+#### In data masking arguments: the `.data` pronoun
+
+In data masking arguments, we look the column up in `.data` with double square brackets, `.data[[col]]`:
+
+```{r}
+group_col <- "species"
+value_col <- "body_mass_g"
+
+penguins |>
+  group_by(.data[[group_col]]) |>
+  summarise(mean_mass = mean(.data[[value_col]], na.rm = TRUE))
+```
+
+This works in any data masking argument,
+including `aes()` in `ggplot2`,
+which is handy when a script takes the columns to plot as command line arguments:
+
+```{r}
+#| fig-alt: "Scatter plot of penguin body mass in grams against flipper length in millimetres."
+library(ggplot2)
+
+x_col <- "flipper_length_mm"
+y_col <- "body_mass_g"
+
+ggplot(penguins, aes(x = .data[[x_col]], y = .data[[y_col]])) +
+  geom_point(na.rm = TRUE)
+```
+
+If the string does not match a column name,
+`.data[[col]]` stops with an error that names the missing column,
+rather than quietly giving you the wrong answer:
+
+```{r}
+penguins |>
+  summarise(mean_mass = mean(.data[["body_mass"]], na.rm = TRUE))
+```
+
+:::{.callout-note}
+`.data` is not a data frame.
+It is a special object, called a *pronoun*,
+that stands for "the columns of the data this function is working on",
+and it only works inside data masking arguments.
+You can also write `.data$species`,
+which makes it explicit that `species` is a column and not an object in your environment,
+but only `.data[[col]]` lets you use a column name stored in a variable.
+:::
+
+#### In tidy selection arguments: `all_of()` and `any_of()`
+
+In tidy selection arguments, we wrap the strings in `all_of()`:
+
+```{r}
+cols <- c("species", "island", "body_mass_g")
+
+penguins |>
+  select(all_of(cols))
+```
+
+`all_of()` stops with an error if any of the names is not a column,
+which catches typos early:
+
+```{r}
+penguins |>
+  select(all_of(c("species", "flipper_lenght_mm")))
+```
+
+`any_of()` is the forgiving version:
+it skips names that are not columns.
+That is useful when, for example, you want to drop columns that may or may not be in the data:
+
+```{r}
+penguins |>
+  select(!any_of(c("year", "sex", "comments")))
+```
+
+:::{.callout-warning}
+## Why not just `select(cols)`?
+
+You will see older code that passes a variable holding strings straight to a tidy selection function,
+like `select(cols)`.
+This usage is deprecated (since `tidyselect` 1.1.0) because it is ambiguous:
+if the data happens to have a column with the same name as your variable,
+the column wins,
+and you get the wrong columns without any warning.
+Here we add a column called `cols` to the data,
+and `select(cols)` returns it instead of the `species` and `island` columns we wanted:
+
+```{r}
+cols <- c("species", "island")
+penguins_extra <- mutate(penguins, cols = 0)
+
+penguins_extra |>
+  select(cols)
+```
+
+`all_of()` removes the ambiguity: it always treats `cols` as a variable holding column names.
+
+```{r}
+penguins_extra |>
+  select(all_of(cols))
+```
+
+In tidy selection arguments, do not use `.data[[col]]`:
+using `.data` there is deprecated (since `tidyselect` 1.2.0),
+and `all_of()` is its replacement.
+:::
+
+#### In `pull()`: the `.data` pronoun {#sec-tidyverse-pull}
+
+`pull()` chooses a single column,
+and the `tidyverse` documentation suggests `all_of()` for it, as for the other tidy selection functions.
+However, `pull(all_of(col))` has a quirk:
+if the data has a column with the same name as your variable,
+`pull()` returns that column, even inside `all_of()`,
+without an error or a warning
+([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)).
+Here our variable is called `col`, and we add a column called `col` to the data:
+
+```{r}
+col <- "body_mass_g"
+penguins_col <- mutate(penguins, col = 0)
+
+penguins_col |>
+  pull(all_of(col)) |>
+  mean(na.rm = TRUE)
+```
+
+We get the mean of the column called `col` (0),
+not of `body_mass_g`.
+`.data[[col]]` does not have this problem,
+so we use it with `pull()`:
+
+```{r}
+penguins_col |>
+  pull(.data[[col]]) |>
+  mean(na.rm = TRUE)
+```
+
+Most of the time your data will not have a column with the same name as your variable,
+and both give the same answer.
+But in a script or a function, you do not know in advance which columns the data will have,
+so it is safer to use the version that cannot go wrong.
+The [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix explains why these collisions happen.
+
+#### Several columns from strings in data masking arguments: `pick()` and `across()`
+
+Data masking functions such as `group_by()` and `summarise()` often need several columns at once.
+To use a tidy selection inside a data masking argument,
+wrap it in `pick()`, to use the selected columns as they are,
+or in `across()`, to apply a function to each of the selected columns:
+
+```{r}
+group_cols <- c("species", "island")
+value_cols <- c("bill_length_mm", "body_mass_g")
+
+penguins |>
+  group_by(pick(all_of(group_cols))) |>
+  summarise(
+    across(all_of(value_cols), \(x) mean(x, na.rm = TRUE)),
+    .groups = "drop"
+  )
+```
+
+`pick()` and `across()` take `{{ }}` as well,
+so the same function can also accept bare names from its users:
+`group_by(pick({{ group_cols }}))`.
 
 ### The walrus operator `:=` is needed when assigning values
-For similar reasons, the walrus operator (`:=`) is needed when writing functions that create new columns using unquoted column names with the `tidyverse` functions:
+
+For similar reasons, the walrus operator (`:=`) is needed when writing functions that create new columns using unquoted column names with the `tidyverse` functions.
+R does not allow code on the left-hand side of `=` when naming an argument,
+so `tidyverse` functions accept `:=` in its place:
 
 ```{r}
 group_summary <- function(data, group, col, fun) {
   data |>
     group_by({{ group }}) |>
-    summarise( {{ col }} := fun({{ col }}))
+    summarise({{ col }} := fun({{ col }}, na.rm = TRUE))
 }
+
+group_summary(penguins, species, body_mass_g, mean)
+```
+
+The left-hand side of `:=` can also be a template for the new column's name,
+using the syntax of the [`glue` package](https://glue.tidyverse.org/):
+`{{ }}` inserts the name of an embraced argument,
+and `{ }` inserts the value of a variable holding a string.
+
+```{r}
+mean_by <- function(data, group, col) {
+  data |>
+    group_by({{ group }}) |>
+    summarise("mean_{{ col }}" := mean({{ col }}, na.rm = TRUE))
+}
+
+mean_by(penguins, species, body_mass_g)
 ```
 
 ```{r}
-group_summary(gapminder, continent, gdpPercap, mean)
+col <- "body_mass_g"
+
+penguins |>
+  summarise("mean_{col}" := mean(.data[[col]], na.rm = TRUE))
 ```
+
+### Older patterns: `!!`, `enquo()` and `sym()`
+
+In older code, blog posts and Stack Overflow answers,
+you will see other ways of doing the same things.
+They come from earlier versions of the `tidyverse`,
+before `{{ }}`, `.data` and `all_of()` were the recommended tools:
+
+| Older pattern                                         | Use instead                                                           |
+|-------------------------------------------------------|-----------------------------------------------------------------------|
+| `col <- enquo(col)`, then `!!col`                     | `{{ col }}`                                                           |
+| `!!sym(col)` or `!!as.name(col)` for a string         | `.data[[col]]` in data masking and `pull()`, `all_of(col)` in tidy selection |
+| `!!!syms(cols)`, for several strings                  | `pick(all_of(cols))` or `across(all_of(cols))` in data masking, `all_of(cols)` in tidy selection |
+| `select(cols)`, with `cols` holding strings           | `select(all_of(cols))`                                                |
+| `aes_string(x = col)` in `ggplot2`                    | `aes(x = .data[[col]])`                                               |
+
+`!!` is not deprecated, and most of the older patterns still work.
+What is deprecated is
+`aes_string()` (since `ggplot2` 3.0.0),
+passing a variable holding strings straight to a tidy selection function (since `tidyselect` 1.1.0),
+and using `.data` inside tidy selection functions (since `tidyselect` 1.2.0).
+`{{ }}` is shorthand for `!!enquo()`,
+and `!!` (the "injection" operator) and `!!!` (the "splice" operator)
+are still the right tools for more advanced metaprogramming;
+the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix shows how they work.
+
+### Learn more {#sec-tidyverse-learn-more}
+
+The patterns in this section come from the `tidyverse` documentation:
+
+- [Programming with `dplyr`](https://dplyr.tidyverse.org/articles/programming.html):
+  `{{ }}` for function arguments, `.data[[var]]` in data masking, and `all_of()` in tidy selection.
+- The `dplyr` reference pages for [data masking](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)
+  and [tidy selection](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html) arguments.
+- [Data mask programming patterns](https://rlang.r-lib.org/reference/topic-data-mask-programming.html),
+  from the `rlang` documentation,
+  including `across(all_of(vars))` to use a vector of column names in a data masking function.
+- [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html),
+  on collisions between column names and objects in your environment,
+  and how the `.data` and `.env` pronouns prevent them.
+- [The injection operator `!!`](https://rlang.r-lib.org/reference/injection-operator.html)
+  and [embracing with `{{`](https://rlang.r-lib.org/reference/embrace-operator.html),
+  in the `rlang` documentation.
+
+The deprecations mentioned in this section are documented in:
+
+- [Using an external vector in selections](https://tidyselect.r-lib.org/reference/faq-external-vector.html),
+  the `tidyselect` FAQ on `select(cols)` versus `select(all_of(cols))`.
+- [tidyselect 1.2.0](https://www.tidyverse.org/blog/2022/10/tidyselect-1-2-0/),
+  the release post that deprecated `.data` in tidy selection.
+- [`aes_()` and `aes_string()`](https://ggplot2.tidyverse.org/reference/aes_.html)
+  and [Using ggplot2 in packages](https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html),
+  in the `ggplot2` documentation.
+- [tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376),
+  the `pull(all_of())` quirk.
+
+To learn how it all works underneath:
+
+- The [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix.
+- [Metaprogramming](https://adv-r.hadley.nz/metaprogramming.html), in Advanced R.
+- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
+  ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+  a talk by Daniel Chen that rebuilds `select()` step by step
+  to explain quoting, quosures and the data mask.
+  It was recorded in 2020, so a few of its patterns have since been superseded:
+  use `aes(x = .data[[col]])` instead of `aes_string()`,
+  `all_of(col)` instead of passing a variable holding a string straight to `select()`,
+  and `.data[[col]]` instead of `rlang::parse_expr()` with `!!`.
 
 ## Function documentation
 
@@ -422,7 +762,16 @@ Function documentation is extremely useful at both the time of function creation
 
 ### Function documentation in R
 
-In R, we write function documentation in a style that the [`roxygen2` R package](https://roxygen2.r-lib.org/) can use to automatically generate nicely formatted documentation, accessible via R's help function, when we create R packages. This is not available to us until we package our functions in software packages, however it is a good practice to get into because it helps ensure you document the key aspects of a function for your user, and it means that when you go to create an R package to share your function, you will have already correctly formatted the function documentation - saving future you some work!
+In R, we write function documentation in a style that the
+[`roxygen2` R package](https://roxygen2.r-lib.org/)
+can use to automatically generate nicely formatted documentation,
+accessible via R's help function,
+when we create R packages.
+This is not available to us until we package our functions in software packages,
+however it is a good practice to get into because it helps ensure you document the key aspects of a function for your user,
+and it means that when you go to create an R package to share your function,
+you will have already correctly formatted the function documentation,
+saving future you some work!
 
 ```{r}
 #| slideshow: {slide_type: fragment}
