@@ -28,7 +28,7 @@ Then, from the project root:
 
 ```bash
 make setup    # install the Python and R packages
-make render   # render the book into docs/
+make render   # render the book into book/_book/
 make preview  # preview the book, re-rendering on save
 ```
 
@@ -64,6 +64,23 @@ and `r-version` pins R.
 When you move the book to a new version of R,
 update `r-version` in both `publish.yml` and `pr.yml`
 to match the version in `renv.lock`.
+
+### Publishing and pull request previews
+
+Every push to `main` renders the book and deploys it to the `gh-pages` branch
+(`.github/workflows/publish.yml`),
+which GitHub Pages serves at
+<https://ubc-dsci.github.io/reproducible-and-trustworthy-workflows-for-data-science/>.
+
+Every pull request from a branch in this repository also renders the book
+and publishes a preview at
+`https://ubc-dsci.github.io/reproducible-and-trustworthy-workflows-for-data-science/pr-preview/pr-<N>/`,
+where `<N>` is the pull request number
+(`.github/workflows/pr.yml`, using [pr-preview-action](https://github.com/rossjrw/pr-preview-action)).
+A bot comment on the pull request links to the preview,
+and the preview is removed when the pull request closes.
+Pull requests from forks cannot publish a preview,
+because their workflow runs cannot write to this repository.
 
 ## Chapter filenames and URLs
 

@@ -1,23 +1,31 @@
 on:
-    workflow_dispatch:
-    pull_request:
-      branches: main
+  pull_request:
+    branches: main
+    types: [opened, reopened, synchronize, closed]
 
 name: Quarto PR Preview
 
+# one preview build per PR at a time
+concurrency: preview-${{ github.ref }}
+
 jobs:
-  build-deploy:
+  preview:
     runs-on: macos-latest # ubuntu-latest windows-latest
     permissions:
-      contents: write
+      contents: write # push the preview to gh-pages
+      pull-requests: write # comment the preview link on the PR
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      # The build steps are skipped when the PR closes;
+      # the last step then removes the preview.
       - name: Set up Quarto
+        if: github.event.action != 'closed'
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Set up uv
+        if: github.event.action != 'closed'
         # setup-uv publishes no floating major tag; pin the SHA
         uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
@@ -25,27 +33,33 @@ jobs:
           enable-cache: true
 
       - name: Install Python and Dependencies
+        if: github.event.action != 'closed'
         run: |
           uv sync --locked
           echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Install R
+        if: github.event.action != 'closed'
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: '4.6.2'
 
       - name: Install R Dependencies
+        if: github.event.action != 'closed'
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
 
       - name: Render Quarto
+        if: github.event.action != 'closed'
         uses: quarto-dev/quarto-actions/render@v2
         with:
           path: book
-      
-      - name: Upload rendered HTML
-        uses: actions/upload-artifact@v4
+
+      # Deploys book/_book/ to gh-pages under pr-preview/pr-<N>/ and comments the link,
+      # or removes the preview when the PR closes.
+      - name: Deploy PR preview
+        # third-party action with write access: pin the SHA, not the moving v1 tag
+        uses: rossjrw/pr-preview-action@873417d2df72380da1f3978378fb58560bcde976 # v1.8.2
         with:
-          name: quarto-html-preview
-          path: docs/
+          source-dir: book/_book

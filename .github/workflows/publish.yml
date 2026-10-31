@@ -39,10 +39,18 @@ jobs:
         with:
           cache-version: 1
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Render Quarto
+        uses: quarto-dev/quarto-actions/render@v2
         with:
-          target: gh-pages
           path: book
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Unlike `quarto publish`, this keeps the PR previews in pr-preview/
+      # and does not force-push, as the pr-preview-action README recommends.
+      - name: Deploy to GitHub Pages
+        # third-party action with write access: pin the SHA
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4.9.0
+        with:
+          folder: book/_book
+          branch: gh-pages
+          clean-exclude: pr-preview
+          force: false
