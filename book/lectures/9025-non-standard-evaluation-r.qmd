@@ -1,0 +1,508 @@
+---
+title: Non-standard evaluation in R
+output-file: non-standard-evaluation-r.html
+error: true
+---
+
+When we write `select(penguins, species)`,
+`species` is not an object in our environment,
+yet the code works.
+Normally, R evaluates every argument we give a function:
+it looks up `species`, and stops with an error if it cannot find it.
+Functions like `select()` instead capture the code we typed
+and evaluate it somewhere else, such as inside a data frame.
+This is called **non-standard evaluation** (NSE).
+The `tidyverse` way of doing it is called **tidy evaluation**,
+and it is built on three ideas:
+
+1. **Quoting and unquoting:**
+   capturing code without running it,
+   and inserting values into captured code.
+2. **Quosures:**
+   captured code together with the environment it was written in.
+3. **The data mask:**
+   evaluating code so that the columns of a data frame are found before other objects.
+
+This chapter builds up these ideas by writing our own simple version of `select()`, step by step.
+It is adapted from the talk
+[Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
+by Daniel Chen
+([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+updated for the current versions of the `tidyverse`.
+If you are looking for which pattern to use in your own code,
+rather than how it works,
+see the "Programming with the `tidyverse` functions" section of the
+[Defining functions in R](9020-functions-r.qmd) appendix (@sec-tidyverse-patterns).
+
+We use the `rlang` package, which implements tidy evaluation,
+and the `penguins` data set from the `palmerpenguins` package:
+
+```{r}
+library(dplyr)
+library(rlang)
+library(palmerpenguins)
+
+penguins
+```
+
+## Many ways to select columns
+
+R has many ways of selecting columns from a data frame.
+Most of them take the column name as a string, or the column's position:
+
+```{r}
+penguins[, c("species", "island")]
+```
+
+```{r}
+penguins[, c(1, 3, 5)]
+```
+
+```{r}
+#| results: hide
+penguins$species
+penguins[["species"]]
+```
+
+Two of them take the bare column name, without quotes:
+
+```{r}
+subset(penguins, select = species)
+```
+
+```{r}
+select(penguins, species)
+```
+
+So non-standard evaluation is not just a `tidyverse` thing:
+base R's `subset()` uses it too.
+But if we try to use a bare column name with `[`,
+R evaluates `species` as an object in our environment,
+and there is no such object:
+
+```{r}
+penguins[, species]
+```
+
+## Quoting code: expressions
+
+When we type `3 + 3`, R evaluates it straight away:
+
+```{r}
+3 + 3
+```
+
+`quote()` captures the code instead of running it.
+The result is called an **expression**:
+
+```{r}
+ex <- quote(3 + 3)
+ex
+```
+
+We can run the expression later with `eval()`:
+
+```{r}
+eval(ex)
+```
+
+`rlang::expr()` does the same thing as `quote()`:
+
+```{r}
+expr(3 + 3)
+```
+
+You can think of an expression as the code before it runs.
+It is not a string, but that is a reasonable first approximation.
+A bare name like `species` is a special kind of expression, called a **symbol**,
+and `3 + 3`, which calls the function `+`, is called a **call**:
+
+```{r}
+str(quote(species))
+```
+
+```{r}
+str(quote(3 + 3))
+```
+
+The `rlang` documentation calls quoting **defusing**:
+the code is captured like a defused bomb, so that it does not go off until we decide.
+
+## Rebuilding `select()`
+
+### Try 1: strings
+
+Our first `my_select()` passes the column name straight to `[`:
+
+```{r}
+my_select <- function(data, col) {
+  data[, col, drop = FALSE]
+}
+```
+
+It works when we give it a string:
+
+```{r}
+my_select(penguins, "species")
+```
+
+but not with a bare column name,
+because R evaluates `species` as soon as `[` needs the value of `col`:
+
+```{r}
+my_select(penguins, species)
+```
+
+So we need to quote what the user typed, instead of evaluating it.
+
+### Try 2: quoting inside the function
+
+`expr()` quotes exactly what we type, so inside a function,
+`expr(col)` gives us the symbol `col`: the name of the argument,
+not what the user passed to it:
+
+```{r}
+f_expr <- function(x) {
+  expr(x)
+}
+
+f_expr(hello)
+```
+
+To capture what the user typed,
+we need the "enriched" version, `enexpr()`:
+
+```{r}
+f_enexpr <- function(x) {
+  enexpr(x)
+}
+
+f_enexpr(hello)
+```
+
+The `en` prefix means "capture the code given to this argument".
+
+### Try 3: capturing what the user typed
+
+Now we can capture the user's column names with `enexprs()`
+(the plural of `enexpr()`, for `...`),
+turn them into strings,
+find their positions with `match()`,
+and subset the data on those positions with regular base R:
+
+```{r}
+my_select <- function(data, ...) {
+  cols <- enexprs(...)                             # quote what the user typed
+  cols_chr <- as.vector(cols, mode = "character")  # turn the expressions into strings
+  idx <- match(cols_chr, names(data))              # find the column positions
+  data[, idx, drop = FALSE]                        # regular base R
+}
+```
+
+```{r}
+my_select(penguins, species, year, "island")
+```
+
+It works on a `data.frame` as well as a tibble:
+
+```{r}
+head(my_select(iris, Species, Petal.Width))
+```
+
+This is the general idea behind `select()`:
+work out the positions of the columns the user asked for,
+then subset the data on those positions.
+
+## Unquoting: `!!` and `!!!`
+
+What if the column name is stored in a variable?
+
+```{r}
+col_name <- "species"
+my_select(penguins, col_name, island)
+```
+
+Our function quoted `col_name` as the symbol `col_name`,
+and there is no column with that name.
+We need a way to tell a quoting function
+"use the *value* of this variable, not its name".
+That is what `!!` (pronounced "bang-bang") does:
+it **unquotes** (`rlang` calls it **injects**) a value into the code before the function captures it:
+
+```{r}
+my_select(penguins, !!col_name, island)
+```
+
+`!!!` ("bang-bang-bang") does the same for a list of values,
+inserting each one as a separate argument
+(similar to `*args` in Python).
+`rlang` calls this **splicing**:
+
+```{r}
+cols <- exprs(species, island, year)
+my_select(penguins, !!!cols)
+```
+
+`!!` and `!!!` only work inside functions that quote their arguments
+with `enexpr()`, `enquo()`, `{{ }}` and friends (and in `rlang::inject()`).
+Anywhere else, `!!` is just two `!` (not) operators in a row:
+
+```{r}
+!!TRUE
+```
+
+## Quosures: code plus its environment
+
+### Environments
+
+An expression on its own does not say where to find the objects it uses.
+`eval()` looks them up in an **environment**:
+a collection of named objects, like the global environment you work in.
+
+```{r}
+e <- new.env()
+e$z <- 3
+
+eval(quote(3 + z))
+```
+
+```{r}
+eval(quote(3 + z), envir = e)
+```
+
+### Quosures
+
+A **quosure** (quote + closure) is an expression bundled with the environment it was created in,
+so it always knows where to look up its objects.
+`enquo()` and `enquos()` capture arguments as quosures
+(`quo()` and `new_quosure()` also exist, but you rarely need them).
+`rlang::eval_tidy()` evaluates a quosure in its own environment:
+
+```{r}
+q <- new_quosure(expr(3 + z), env = e)
+q
+```
+
+```{r}
+eval_tidy(q)
+```
+
+Why does this matter?
+The code a user passes to your function should be evaluated where the user wrote it,
+so that it finds *their* objects, not the objects inside your function.
+Here, both functions create their own `x`,
+but only the quosure version uses the user's `x`:
+
+```{r}
+x <- 100
+
+times_two_expr <- function(arg) {
+  x <- 1
+  eval(enexpr(arg))
+}
+
+times_two_quo <- function(arg) {
+  x <- 1
+  eval_tidy(enquo(arg))
+}
+```
+
+```{r}
+times_two_expr(x * 2)
+```
+
+```{r}
+times_two_quo(x * 2)
+```
+
+Formulas (`~`) work the same way:
+a formula is an expression plus the environment it was created in,
+which is why model formulas can find the variables you use in them.
+
+## The data mask
+
+`eval_tidy()` can also take a data frame (or a list) as its `data` argument.
+The columns of the data are then found *before* the objects in the quosure's environment.
+This is the **data mask**: the data "masks" the environment.
+
+```{r}
+q1 <- new_quosure(expr(x * y), env(x = 100))
+df <- data.frame(y = 1:5)
+
+eval_tidy(q1, data = df)
+```
+
+`y` was found in the data, and `x` in the quosure's environment.
+This is how `filter(penguins, species == "Gentoo")` finds the `species` column.
+
+### Try 4: quosures and a data mask
+
+Now we can make `my_select()` work like `select()` does:
+we evaluate each argument in a data mask where every column name stands for its position.
+A bare column name evaluates to its position,
+a number stays a number,
+and anything else (like a variable holding a string)
+is evaluated in the user's environment:
+
+```{r}
+my_select <- function(data, ...) {
+  cols <- enquos(...)                                      # quote what the user typed
+  positions <- as.list(set_names(seq_along(data), names(data))) # column name = position
+  idx <- vapply(cols, function(col) {
+    value <- eval_tidy(col, data = positions)              # evaluate in the data mask
+    as.integer(if (is.character(value)) positions[[value]] else value)
+  }, integer(1))
+  data[, idx, drop = FALSE]                                # regular base R
+}
+```
+
+```{r}
+col_name <- "species"
+my_select(penguins, col_name, year, "island", 6)
+```
+
+`col_name` is not a column,
+so it is found in our environment, where it holds `"species"`,
+without needing `!!`.
+
+### Collisions: the data mask ambiguity
+
+What if the data *does* have a column called `col_name`?
+
+```{r}
+penguins_extra <- mutate(penguins, col_name = 0)
+
+my_select(penguins_extra, col_name, island)
+```
+
+The column wins, and we get the wrong column, with no error.
+This is called the [data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html):
+when a column and an object in our environment have the same name,
+the data mask picks the column.
+
+This is exactly the quirk of `pull(all_of(col))` described in @sec-tidyverse-pull.
+`pull()` is built on `tidyselect::vars_pull()`,
+which evaluates its argument in a data mask of column positions,
+just like our `my_select()`:
+
+```{r}
+body(tidyselect::vars_pull)
+```
+
+So inside `pull(all_of(col))`,
+`col` is looked up in the data first,
+and if the data has a column called `col`,
+`all_of()` receives that column's position instead of our string.
+
+### The `.data` and `.env` pronouns
+
+To remove the ambiguity, `eval_tidy()` provides two **pronouns** in every data mask:
+`.data`, which only looks in the data,
+and `.env`, which only looks in the environment.
+They work in our `my_select()` too:
+
+```{r}
+my_select(penguins_extra, .env$col_name, island)
+```
+
+and in every `tidyverse` function that uses data masking:
+
+```{r}
+df <- data.frame(x = NA, y = 2)
+x <- 100
+
+mutate(df, y = y / x)
+```
+
+```{r}
+mutate(df, y = y / .env$x)
+```
+
+`.data[[var]]` evaluates `var` in the environment,
+and then looks up the column with that name only in the data,
+so it cannot collide with a column called `var`.
+That is why `.data[[col]]` is the safe way to use a column name stored in a string,
+including in `pull()`.
+
+## Back to the `tidyverse`
+
+With these pieces, the patterns from the
+[Defining functions in R](9020-functions-r.qmd) appendix are less mysterious.
+
+`{{ col }}` is shorthand for capturing an argument as a quosure and injecting it:
+`!!enquo(col)`.
+These two functions are the same:
+
+```{r}
+filter_penguins <- function(col, val) {
+  col <- enquo(col)
+  filter(penguins, !!col == val)
+}
+
+filter_penguins(species, "Chinstrap")
+```
+
+```{r}
+filter_penguins <- function(col, val) {
+  filter(penguins, {{ col }} == val)
+}
+
+filter_penguins(species, "Chinstrap")
+```
+
+`.data[[col]]` uses the `.data` pronoun from the data mask,
+and `all_of(cols)` is how tidy selection takes a vector of names from the environment.
+
+The talk this chapter is based on ended with a table of four cases:
+does the user pass a string or a bare name,
+and does the function you are calling need a string or a bare name?
+Here they are with today's recommended tools:
+
+| The user passes | The function needs | Use                                                                 |
+|-----------------|--------------------|---------------------------------------------------------------------|
+| a string        | a string           | the string, as is: `penguins[[col]]`                                |
+| a string        | a bare name        | `.data[[col]]` in data masking, `all_of(col)` in tidy selection     |
+| a bare name     | a string           | `as_name(enquo(col))`, or `englue("{{ col }}")` to build a longer string |
+| a bare name     | a bare name        | `{{ col }}`                                                         |
+
+For example, a bare name can be turned into a string for a title or a file name:
+
+```{r}
+mean_label <- function(col) {
+  englue("Mean of {{ col }}")
+}
+
+mean_label(body_mass_g)
+```
+
+Some patterns from 2020 are no longer recommended:
+
+- `aes_string()` in `ggplot2` is deprecated (since `ggplot2` 3.0.0).
+  Use `aes(x = .data[[col]])` for strings and `aes(x = {{ col }})` for bare names.
+- Turning a string into code with `rlang::parse_expr()` and then injecting it with `!!`
+  runs whatever the string contains as code,
+  and fails on column names that are not valid R names:
+
+  ```{r}
+  parse_expr("body mass")
+  ```
+
+  Use `.data[[col]]` instead, which treats the string as a name and nothing else.
+
+## Learn more
+
+- @sec-tidyverse-learn-more in the [Defining functions in R](9020-functions-r.qmd) appendix
+  lists the `tidyverse` documentation for each pattern and deprecation.
+- The `rlang` documentation:
+  [What is data-masking and why do I need `{{`?](https://rlang.r-lib.org/reference/topic-data-mask.html),
+  [Defusing R expressions](https://rlang.r-lib.org/reference/topic-defuse.html),
+  [Injecting with `!!`, `!!!`, and glue syntax](https://rlang.r-lib.org/reference/topic-inject.html),
+  [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html)
+  and [What happens if I use injection operators out of context?](https://rlang.r-lib.org/reference/topic-inject-out-of-context.html).
+- The Metaprogramming chapters of Advanced R:
+  [Expressions](https://adv-r.hadley.nz/expressions.html),
+  [Quasiquotation](https://adv-r.hadley.nz/quasiquotation.html)
+  and [Evaluation](https://adv-r.hadley.nz/evaluation.html).
+- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
+  ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+  the talk this chapter is based on.

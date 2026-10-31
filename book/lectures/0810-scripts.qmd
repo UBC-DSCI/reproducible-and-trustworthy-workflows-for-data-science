@@ -272,7 +272,7 @@ main <- function(var) {
 
   # print out statistic of variable of interest
   out <- data |>
-    pull(!!var) |>
+    pull(.data[[var]]) |>
     mean(na.rm = TRUE)
   print(out)
 }
@@ -281,12 +281,81 @@ main(opt$var)
 ```
 
 :::{.callout-note}
-Note: we use `!!` in front of `opt$col` because all command line arguments are passed into R
-as strings, and are thus quoted. However, `pull` is a function from the `tidyverse` that expects
-an unquoted column name of a data frame. `!!` does this unquoting.
-This is similar to `{{` that we saw before with functions
-(which quotes and unquotes values when they are passed into functions).
-However here we use `!!` as we have no indirection and just need to perform unquoting.
+## Why `.data[[var]]`?
+
+`docopt` gives us every command line argument as a string,
+so `var` holds the string `"fare"`, not the column `fare` itself.
+`.data[[var]]` means "the column of the data whose name is stored in `var`".
+`.data` is a special object (called a *pronoun*) that `tidyverse` functions provide,
+and it stands for the columns of the data the function is working on.
+
+The same pattern works in the `tidyverse` functions that compute with columns,
+like `filter()`, `mutate()`, `summarise()`, `group_by()` and `aes()` in `ggplot2`.
+Here we run it on the first five rows of `titanic.csv`:
+
+```{r}
+#| message: false
+library(dplyr)
+
+data <- tibble(
+  sex = c("male", "female", "female", "female", "male"),
+  fare = c(7.25, 71.2833, 7.925, 53.1, 8.05)
+)
+var <- "fare"
+group_var <- "sex"
+
+data |>
+  group_by(.data[[group_var]]) |>
+  summarise(mean = mean(.data[[var]], na.rm = TRUE))
+```
+
+You may also have seen `{{ var }}` in the [Defining functions in R](9020-functions-r.qmd) appendix.
+That is for bare column names passed into a function you wrote, like `my_function(data, fare)`,
+and it does not work with strings from the command line:
+it would use the string `"fare"` itself rather than the column,
+often without an error.
+:::
+
+:::{.callout-warning}
+## Selecting columns from strings: use `all_of()`
+
+`select()`, `rename()` and `relocate()` choose columns rather than compute with them,
+and in those functions using `.data` is deprecated (since `tidyselect` 1.2.0).
+Use `all_of()` instead,
+as we do in the configuration file example later in this chapter:
+
+```{r}
+data |>
+  select(all_of(c(var, "sex")))
+```
+
+The `tidyverse` documentation suggests `all_of()` for `pull()` too,
+but `pull(all_of(var))` has a quirk:
+if the data happens to have a column with the same name as your variable
+(here, a column called `var`),
+`pull()` returns that column instead of the column named in `var`,
+without an error or a warning
+([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)):
+
+```{r}
+var <- "fare"
+data_with_var <- data |>
+  mutate(var = 0)
+
+# returns the column called var: the mean is 0
+data_with_var |>
+  pull(all_of(var)) |>
+  mean(na.rm = TRUE)
+
+# returns the fare column, as intended
+data_with_var |>
+  pull(.data[[var]]) |>
+  mean(na.rm = TRUE)
+```
+
+`pull(.data[[var]])` does not have this problem, which is why we use it in this chapter.
+See @sec-tidyverse-strings for all of these patterns with examples you can run,
+and the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix for why they work the way they do.
 :::
 
 And we would run a script like this from the command line as follows:
@@ -305,7 +374,7 @@ Let's make our script even more flexible, and let us specify that dataset as wel
 "This script calculates the mean for a specified column
 from titanic.csv.
 
-Usage: quick_titanic_col_mean.R <file_path> <var>
+Usage: quick_csv_col_mean.R <file_path> <var>
 " -> doc
 
 
@@ -321,7 +390,7 @@ main <- function(file_path, var) {
 
   # print out statistic of variable of interest
   out <- data |>
-    pull(!!var) |>
+    pull(.data[[var]]) |>
     mean(na.rm = TRUE)
   print(out)
 }
@@ -368,7 +437,7 @@ main <- function(file_path, var) {
 
   # print out statistic of variable of interest
   out <- data |>
-    pull(!!var) |>
+    pull(.data[[var]]) |>
     mean(na.rm = TRUE)
   print(out)
 }
@@ -379,13 +448,13 @@ main(opt$file_path, opt$var)
 And we would run a script like this that uses options like this:
 
 ```bash
-Rscript src/quick_csv_col_mean.R --file_path=data/titanic.csv --col=fare
+Rscript src/quick_csv_col_mean.R --file_path=data/titanic.csv --var=fare
 ```
 
 or like this:
 
 ```bash
-Rscript src/quick_csv_col_mean.R --col=fare --file_path=data/titanic.csv
+Rscript src/quick_csv_col_mean.R --var=fare --file_path=data/titanic.csv
 ```
 
 because we gave the arguments names, and thus their position no longer matters!
