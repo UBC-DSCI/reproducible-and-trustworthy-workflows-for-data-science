@@ -13,6 +13,58 @@ with others using version control tools,
 such as Git and GitHub. 
 Concepts are learned and applied using real data and case studies.
 
+## Project setup
+
+The book is written with Quarto and runs both R and Python code,
+so rendering it needs:
+
+- [Quarto](https://quarto.org/docs/get-started/)
+- R 4.6.2, the version recorded in `renv.lock`
+  ([rig](https://github.com/r-lib/rig) installs it with `rig add 4.6.2`)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/),
+  which installs the Python version in `.python-version` for you
+
+Then, from the project root:
+
+```bash
+make setup    # install the Python and R packages
+make render   # render the book into docs/
+make preview  # preview the book, re-rendering on save
+```
+
+`make help` lists every target.
+
+### Python packages (uv)
+
+Python packages are declared in `pyproject.toml` and locked in `uv.lock`.
+`uv sync` (run by `make setup`) creates `.venv/` with exactly those versions,
+and `make render` and `make preview` run Quarto through `uv run`,
+so the book's Python code runs in that environment.
+To add a package, run `uv add <package>`
+and commit both `pyproject.toml` and `uv.lock`.
+
+### R packages (renv)
+
+R packages are locked in `renv.lock`.
+`renv::restore()` (run by `make setup`) installs them into the project library,
+and Quarto uses that library automatically through the project's `.Rprofile`.
+renv only reads the packages listed in `DESCRIPTION`,
+not the `library()` calls in the chapters,
+so to add a package:
+add it to `DESCRIPTION`,
+install it with `renv::install("<package>")`,
+then run `renv::snapshot()`,
+and commit both `DESCRIPTION` and `renv.lock`.
+
+### Continuous integration
+
+The workflows in `.github/workflows/` build the book with the same versions:
+`setup-uv` installs the Python in `.python-version` and runs `uv sync --locked`,
+and `r-version` pins R.
+When you move the book to a new version of R,
+update `r-version` in both `publish.yml` and `pr.yml`
+to match the version in `renv.lock`.
+
 ## Chapter filenames and URLs
 
 Chapter files in `book/lectures/` are named `PPCC-<url>.qmd`
