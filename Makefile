@@ -10,14 +10,16 @@ setup: ## Install the Python (uv) and R (renv) environments
 preview: ## Preview the book, re-rendering on save
 	uv run quarto preview book/index.qmd --port 54321
 
-render: clean ## Render the book into docs/
+render: clean ## Render the book into book/_book/
 	uv run quarto render book/
 
 clean: ## Remove the rendered book and render leftovers
-	rm -rf docs
+	rm -rf book/_book
 	rm -rf book/lectures/*.quarto_ipynb
 	rm -rf book/lectures/*.log
 	rm -rf book/.quarto
 
-publish: ## Render the book and publish it to the gh-pages branch
-	uv run quarto publish gh-pages book --no-prompt --no-browser
+publish: ## No need: GitHub Actions publishes the book and PR previews
+	@echo "No need to publish manually: GitHub Actions does this for you."
+	@echo "  - every push to main deploys the book to GitHub Pages (.github/workflows/publish.yml)"
+	@echo "  - every pull request from a branch gets a preview at pr-preview/pr-<N>/ (.github/workflows/pr.yml)"
