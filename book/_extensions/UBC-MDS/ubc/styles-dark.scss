@@ -1,0 +1,43 @@
+/*-- scss:defaults --*/
+
+// Dark-mode-only Sass overrides.
+//
+// Quarto builds the light and dark stylesheets as two separate Bootstrap
+// compilations rather than using Bootstrap's own `[data-bs-theme="dark"]`
+// scope, so the dark build still runs with light-mode defaults. Anything
+// Bootstrap derives from `$black` therefore stays black even though the page
+// behind it is dark.
+//
+// `$body-emphasis-color` is the one that actually breaks. Quarto never sets it,
+// so it falls through to Bootstrap's default of `$black`, and the active tab of
+// a `.panel-tabset` takes its label colour from it while taking its fill from
+// `$body-bg` — #001328 on #001328, an invisible tab title. It also feeds
+// `.text-body-emphasis` and the `.list-group-item-*` variants.
+//
+// This cannot live in `_brand.yml`, because `defaults.bootstrap` is shared by
+// both colour modes. It also cannot use `$brand-white`: this file sits above
+// the brand layer, so its defaults are emitted before the brand layer defines
+// any `$brand-*` variable. Hence the literal — it is `white` from the palette
+// in `_brand.yml`.
+$body-emphasis-color: #ffffff;
+
+/*-- scss:rules --*/
+
+// Native scrollbars — the one on a listing wide enough to overflow, most
+// visibly — are painted by the browser from `color-scheme`, not from any of
+// our colours. Bootstrap only sets `color-scheme: dark` inside its own
+// `[data-bs-theme="dark"]` scope, which Quarto does not put on `<html>`, so the
+// page stays at `normal` and a bright white scrollbar sits across the bottom of
+// a dark code block. This also darkens form controls and the canvas behind the
+// page.
+:root {
+  color-scheme: dark;
+
+  // The hover on a quiz button, answer or chip. quizdown darkens the surface
+  // (`filter: brightness(0.9)`), which is only a change you can see when the
+  // surface starts light; on the dark page the same filter walks a near-black
+  // panel towards black and nothing appears to happen. Lighten instead. The
+  // light value, and every other `--mds-quiz-*`, is in `styles.scss`; this is
+  // the one that cannot be derived from a `$`-variable brand.yml sets by mode.
+  --mds-quiz-press: brightness(1.45);
+}

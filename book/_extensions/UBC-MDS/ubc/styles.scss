@@ -1,0 +1,302 @@
+/*-- scss:rules --*/
+
+// Colours and fonts live in `_brand.yml`, which Quarto layers in ahead of this
+// file (see `format.html.theme` in `_quarto.yml`). Everything from its palette
+// is available here as `$brand-<name>`, and as `--brand-<name>` in CSS.
+//
+// What is left in this file is the part brand.yml cannot express: the geometry
+// of `<kbd>`, the two custom callouts, the label above a listing, and the
+// colours the quizzes read out of a shadow root. Rules that apply to only one
+// colour mode go in `styles-dark.scss`, which is layered on top of this one
+// for dark.
+
+// `<kbd>` is used throughout the book for key names. Bootstrap paints its grey
+// box on an inline box, and an inline box takes its height from the font's em
+// box, not from `line-height` — so padding pushes the box outside its own line
+// and keys collide with the lines above and below. Switching to inline-block
+// lets `line-height` govern the height, which leaves `kbd-padding-*` in
+// `_brand.yml` as the only thing between the glyph and the edge of the box.
+kbd {
+  display: inline-block;
+  line-height: 1;
+}
+
+// Custom callouts: `.activity` and `.exercise`, rendered by the
+// coatless-quarto/custom-callout extension (configured in `_quarto.yml`).
+//
+// The extension draws the icon as a Font Awesome glyph rather than a background
+// image, so the glyph needs its own spacing and colour, and it only emits one
+// colour per callout, so the dark-theme variants are set here.
+//
+// NOTE: the `color:` values under `custom-callout:` in `_quarto.yml` have to be
+// literal hex — that YAML cannot see Sass — so keep them in sync with these:
+//   activity -> $brand-ubc-blue-deep (#0055B7)
+//   exercise -> $brand-mds-green     (#1C5F2E)
+$activity-color: $brand-ubc-blue-deep;
+$exercise-color: $brand-mds-green;
+
+div.callout-activity .callout-icon::before,
+div.callout-exercise .callout-icon::before {
+  margin-right: 0.4em;
+}
+
+div.callout-activity .callout-icon::before {
+  color: $activity-color;
+}
+
+div.callout-exercise .callout-icon::before {
+  color: $exercise-color;
+}
+
+// The base colours are too dark to read against the dark background, so
+// lighten the border and icon for the dark theme.
+body.quarto-dark {
+  div.callout-activity.callout {
+    border-left-color: $brand-ubc-blue-light;
+  }
+
+  div.callout-activity .callout-icon::before {
+    color: $brand-ubc-blue-light;
+  }
+
+  div.callout-exercise.callout {
+    border-left-color: $brand-mds-green-light;
+  }
+
+  div.callout-exercise .callout-icon::before {
+    color: $brand-mds-green-light;
+  }
+}
+
+// Activity and exercise callouts are numbered automatically, per page, in
+// document order. The source carries no numbers, so moving, inserting or
+// deleting one renumbers the rest for free.
+//
+// Trade-off: these numbers are generated content, so they are not part of the
+// page text and will not appear in Quarto's search index. Nothing in the book
+// cites a callout by number, so that costs us nothing today. If we ever need
+// the numbers to be real text (searchable, cross-referenceable), the fix is a
+// Lua filter that injects them into the title before custom-callout runs.
+//
+// This only works while every activity/exercise uses its default title; a
+// callout with its own `## Title` would get a stray number appended.
+main {
+  counter-reset: activity exercise;
+}
+
+.callout-activity {
+  counter-increment: activity;
+}
+
+.callout-exercise {
+  counter-increment: exercise;
+}
+
+.callout-activity > .callout-header .callout-title-container::after {
+  content: " " counter(activity);
+}
+
+.callout-exercise > .callout-header .callout-title-container::after {
+  content: " " counter(exercise);
+}
+
+// ---------------------------------------------------------------- listings
+//
+// Every static listing in the book carries a label saying where its contents
+// belong -- "Terminal", "Output", "penguins.py". `bash` and `out` get theirs
+// from `code-labels.lua`; anything else carries an explicit `filename`. Both
+// routes emit Quarto's `.code-with-filename` markup, so everything here styles
+// one construct.
+//
+// The label is the second half of a pair of signals. The first is the copy
+// button, which Quarto only attaches to a `.sourceCode` block: a listing you
+// are meant to run or paste has one, and an `out` listing -- which is not a
+// language Pandoc highlights, so it never becomes `.sourceCode` -- does not.
+// That is why output is tagged `out` rather than `text` or a bare fence: it is
+// the fence that makes "do not copy this" visible.
+
+// Quarto's own bar is a flat grey (#dbdbdb light, #555 dark) sized for a
+// filename you read once. These sit above nearly every listing in the book --
+// forty of them down lecture 7a -- so they are pulled back to a quiet
+// monospace tag: small, muted, and painted in the book's own palette rather
+// than a grey that belongs to neither mode.
+.code-with-filename .code-with-filename-file {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  font-family: $font-family-monospace;
+  font-size: 0.75em;
+  background-color: mix($brand-ubc-blue, $brand-white, 8%);
+  border-color: mix($brand-ubc-blue, $brand-white, 8%);
+  color: mix($brand-ubc-blue, $brand-white, 70%); // 5.21:1 on the bar
+
+  // Quarto flattens the label to `font-weight: 400`, which at this size reads
+  // as a caption rather than a heading for the block below it.
+  strong {
+    font-weight: 600;
+  }
+}
+
+// Quarto squares off the top of a `div.sourceCode` sitting under a label bar,
+// but writes no matching rule for a bare `<pre>` -- which is what an `out`
+// listing is. Without this the output block keeps its rounded top corners and
+// its own top margin, and floats away from the label naming it.
+.code-with-filename pre.out {
+  margin-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+// `out` is the machine answering the command above it, so it reads as the
+// quieter half of the pair: its own surface instead of the code surface, and
+// muted text. Colours and the contrast ratios behind them are in `_brand.yml`.
+//
+// A bare `<pre>` gets none of the geometry Quarto gives a `div.sourceCode`, so
+// it is matched here: the same 0.4em inset, and a 1px border painted in its own
+// background so the two blocks come out the same width. That invisible border
+// is how Quarto sizes a code block too -- borrowing it keeps a command and its
+// output aligned to the pixel, and keeps every listing a plain fill rather than
+// giving output an outline nothing else on the page has.
+pre.out {
+  padding: 0.4em;
+  border: 1px solid $brand-output-bg;
+  border-radius: $border-radius;
+  background-color: $brand-output-bg;
+  color: $brand-output-fg;
+
+  code {
+    color: inherit;
+  }
+}
+
+body.quarto-dark {
+  .code-with-filename .code-with-filename-file {
+    background-color: mix($brand-white, $brand-ubc-blue-video, 10%);
+    border-color: mix($brand-white, $brand-ubc-blue-video, 10%);
+    color: mix($brand-white, $brand-ubc-blue-video, 65%); // 6.29:1 on the bar
+  }
+
+  pre.out {
+    border-color: $brand-output-bg-dark;
+    background-color: $brand-output-bg-dark;
+    color: $brand-output-fg-dark;
+  }
+}
+
+// ------------------------------------------------------------------- quizzes
+//
+// Colours for the quizdown quizzes. The rules that consume these are NOT here
+// -- they cannot be. Each quiz lives in a shadow root, which no stylesheet on
+// the page can reach into, so they are injected by `quizdown-theme.html` (see
+// the header of that file for why, and for what is deliberately left alone).
+//
+// Custom properties *do* inherit through a shadow boundary, which is the whole
+// reason this split works: the values are declared here, once, and read from
+// inside every quiz. Declaring them means the colour-mode toggle needs no
+// JavaScript -- Quarto compiles this file into both bundles and swaps them, so
+// each `$`-variable below is already the value for the mode being rendered.
+//
+// That last point is only true of Sass variables `_brand.yml` actually sets
+// per mode. `$body-color`, `$body-bg`, `$primary`, `$success`, `$danger`,
+// `$code-color` and `$code-bg` all are. Anything Bootstrap merely *derives*
+// keeps its light-mode value in the dark build -- see the header of
+// `styles-dark.scss` for how that bites.
+//
+// Ratios below are against the background of the mode in question: white /
+// `$brand-white` for light, `#001328` / `$brand-ubc-blue-video` for dark.
+:root {
+  // Body text on a quiz surface: 13.99:1 light, 13.80:1 dark.
+  --mds-quiz-fg: #{$body-color};
+
+  // Placeholders, the `->` between a prompt and its slot, the credit line.
+  // Muted, but still AA on both the page (5.41:1 light, 7.39:1 dark) and on
+  // the quiz surface (4.69:1 / 6.37:1) -- quizdown's own `#bbb` and
+  // `lightgray` clear neither.
+  --mds-quiz-muted: #{mix($body-color, $body-bg, 66%)};
+
+  // The fill under an answer, a chip, a prompt, a button. Reads as a panel
+  // lifted off the page (1.15:1 light, 1.16:1 dark) rather than as the flat
+  // `#f2f2f2` quizdown paints in both modes.
+  --mds-quiz-surface: #{mix($body-color, $body-bg, 7%)};
+
+  // The dashed edge of a drop zone. A real boundary rather than decoration,
+  // so it is held to the 3:1 that AA asks of a UI component and not to
+  // quizdown's `#ccc`, which is 1.6:1 on white: 3.27:1 light, 4.65:1 dark.
+  --mds-quiz-border: #{mix($body-color, $body-bg, 50%)};
+
+  // The progress bar, the border of a selected answer, links in a question.
+  --mds-quiz-accent: #{$primary};
+
+  // The evaluated state. The text colours are the book's own `$success` and
+  // `$danger`, on the page (7.70:1 / 7.50:1 light, 10.72:1 / 7.21:1 dark);
+  // the fills are those hues taken almost all the way down to the page, so
+  // body text stays >= 13:1 on them in both modes.
+  --mds-quiz-correct: #{$success};
+  --mds-quiz-correct-bg: #{mix($success, $body-bg, 12%)};
+  --mds-quiz-wrong: #{$danger};
+  --mds-quiz-wrong-bg: #{mix($danger, $body-bg, 12%)};
+
+  // Inline code inside a question, from `typography.monospace-inline` in
+  // `_brand.yml`: 10.53:1 light, 9.72:1 dark.
+  --mds-quiz-code-fg: #{$code-color};
+  --mds-quiz-code-bg: #{$code-bg};
+
+  // The hover on a button, an answer and a chip. quizdown darkens
+  // (`brightness(0.9)`), which is a change you can only see when the surface
+  // starts light -- so dark mode lightens instead, in `styles-dark.scss`.
+  --mds-quiz-press: brightness(0.93);
+}
+
+// ---- Console window ---------------------------------------------------------
+// A captured terminal session, shown as a window so a student recognises it as
+// "my screen" rather than a code listing. The content is always REAL output
+// from a real run; the spans mark what the terminal itself coloured. The window
+// carries its own dark ground in both light and dark mode, on purpose: a
+// terminal looks like a terminal. Markup:
+//
+//   ::: {.term}
+//   ```{=html}
+//   <pre><span class="tp">$ git status</span>
+//   ...</pre>
+//   ```
+//   :::
+//
+// Escape < > & inside the pre.
+.term {
+  background: #1d2129;
+  border-radius: 10px;
+  padding: 0.9em 1.1em 0.8em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  margin: 1.1em 0 0.7em;
+  max-width: 100%;
+
+  // the three window dots
+  &::before {
+    content: "";
+    display: block;
+    width: 3.4em;
+    height: 0.85em;
+    margin-bottom: 0.55em;
+    background:
+      radial-gradient(circle at 0.45em 50%, #ff5f56 0.33em, transparent 0.36em),
+      radial-gradient(circle at 1.6em 50%, #ffbd2e 0.33em, transparent 0.36em),
+      radial-gradient(circle at 2.75em 50%, #27c93f 0.33em, transparent 0.36em);
+  }
+
+  pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #d8dee9;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .tp { color: #ffffff; font-weight: 600; }  // the prompt line
+  .tr { color: #ef6a6a; }                    // red:    removed, error, unstaged
+  .tg { color: #5ec269; }                    // green:  added, staged
+  .ty { color: #d7ba5f; }                    // yellow: sha, commit line
+  .tc { color: #6fc3df; }                    // cyan:   hunk header, section
+}
