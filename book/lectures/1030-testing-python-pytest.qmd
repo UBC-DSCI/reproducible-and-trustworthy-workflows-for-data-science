@@ -80,23 +80,20 @@ and correspondingly what it should return is listed below:
 
 *Function input:*
 
-1. dataframe
+1. DataFrame
 
 ```{python}
-#| eval: false
-
-  class_labels values
-0       class1    0.2
-1       class2    0.5
-2       class1    0.8
-3       class2    0.5
+pd.DataFrame(
+    {
+        "class_labels": ["class1", "class2", "class1", "class2"],
+        "values": [0.2, 0.5, 0.8, 0.5],
+    }
+)
 ```
 
 2. column name (a string)
 
 ```{python}
-#| eval: false
-
 "class_labels"
 ```
 
@@ -105,11 +102,7 @@ and correspondingly what it should return is listed below:
 DataFrame
 
 ```{python}
-#| eval: false
-
-   class count
-0 class1     2
-1 class2     2
+pd.DataFrame({"class": ["class1", "class2"], "count": [2, 2]})
 ```
 
 #### Simple expected use test case #2
@@ -119,23 +112,20 @@ and only one observation in the other
 
 *Function input:*
 
-1. dataframe
+1. DataFrame
 
 ```{python}
-#| eval: false
-
-  class_labels values
-0       class1    1.0
-1       class1    0.9
-2       class2    0.9
+pd.DataFrame(
+    {
+        "class_labels": ["class1", "class1", "class2"],
+        "values": [1.0, 0.9, 0.9],
+    }
+)
 ```
-
 
 2. column name (a string)
 
 ```{python}
-#| eval: false
-
 "class_labels"
 ```
 
@@ -144,11 +134,7 @@ and only one observation in the other
 DataFrame
 
 ```{python}
-#| eval: false
-
-   class count
-0 class1     2
-1 class2     1
+pd.DataFrame({"class": ["class1", "class2"], "count": [2, 1]})
 ```
 
 #### Edge test case #1
@@ -157,34 +143,24 @@ DataFrame
 
 *Function input:*
 
-1. dataframe
+1. DataFrame
 
 ```{python}
-#| eval: false
-
-  class_labels values
-0       class1    0.7
-1       class1    0.5
+pd.DataFrame({"class_labels": ["class1", "class1"], "values": [0.7, 0.5]})
 ```
 
 2. column name (a string)
 
 ```{python}
-#| eval: false
-
 "class_labels"
 ```
 
 *Expected function output:*
 
-
 DataFrame
 
 ```{python}
-#| eval: false
-
-   class count
-0 class1     2
+pd.DataFrame({"class": ["class1"], "count": [2]})
 ```
 
 #### Edge test case #2
@@ -193,19 +169,15 @@ DataFrame
 
 *Function input:*
 
-1. dataframe
+1. DataFrame
 
 ```{python}
-#| eval: false
-
-  class_labels values
+pd.DataFrame({"class_labels": [], "values": []})
 ```
 
 2. column name (a string)
 
 ```{python}
-#| eval: false
-
 "class_labels"
 ```
 
@@ -214,9 +186,7 @@ DataFrame
 DataFrame
 
 ```{python}
-#| eval: false
-
-   class count
+pd.DataFrame({"class": [], "count": []})
 ```
 
 #### Error test case #1
@@ -228,17 +198,15 @@ DataFrame
 1. dictionary
 
 ```{python}
-#| eval: false
-
-{"class_labels": ["class1", "class2", "class1", "class2"],
- "values": [0.4, 0.0, 0.8, 0.6]}
+{
+    "class_labels": ["class1", "class2", "class1", "class2"],
+    "values": [0.4, 0.0, 0.8, 0.6],
+}
 ```
 
 2. column name (a string)
 
 ```{python}
-#| eval: false
-
 "class_labels"
 ```
 
@@ -246,11 +214,10 @@ DataFrame
 
 Error
 
-```{python}
-#| eval: false
-
+```{.python}
 TypeError: `data_frame` should be a pandas DataFrame
 ```
+
 
 #### Summary of the test cases
 
