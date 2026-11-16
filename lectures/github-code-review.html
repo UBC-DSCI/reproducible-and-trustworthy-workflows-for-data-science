@@ -82,20 +82,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-activity.callout {
-  border-left-color: #0055B7;
-}
-div.callout-activity.callout-style-default .callout-header {
-  background-color: rgba(0, 85, 183, 0.13);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\e53d' !important;
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: #0077C8;
 }
@@ -108,6 +94,20 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   font-weight: 900;
   font-style: normal;
   content: '\f542' !important;
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: #0055B7;
+}
+div.callout-activity.callout-style-default .callout-header {
+  background-color: rgba(0, 85, 183, 0.13);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\e53d' !important;
   background-image: none;
 }
 div.callout-definition.callout {
@@ -1032,20 +1032,24 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 <p><strong>Steps:</strong></p>
 <ol type="1">
 <li><p>Click the green “Use this template” button in <a href="https://github.com/ttimbers/review-my-pull-request">this repository</a> to obtain a copy of it for yourself (do not fork it).</p></li>
-<li><p>Go to Repository Settings &gt; Actions &gt; General &gt; under “Workflow permissions” make sure read and write permissions are enabled and also GitHub Actions is able to create and approve Pull Requests. Under “Actions permissions” select “Allow all actions and reuseable workflows”. It should look like this:</p></li>
-</ol>
-<p><img src="../img/gha-general-settings.png" width="100%"></p>
-<ol start="3" type="1">
+<li><p>Go to Repository Settings &gt; Actions &gt; General and change two settings:</p>
+<ul>
+<li>Under “Actions permissions”, select “Allow all actions and reusable workflows”.</li>
+<li>Under “Workflow permissions”, select “Read and write permissions”, and tick “Allow GitHub Actions to create and approve pull requests”. A repository made from a template does not keep this box ticked, so you need to tick it yourself.</li>
+</ul>
+<p>Click the “Save” button under each section you change. When you are done, the page should look like this:</p>
+<p><img src="../img/gha-actions-settings-page.png" width="60%" alt="GitHub's Settings, Actions, General page for a repository. Under Actions permissions, Allow all actions and reusable workflows is selected. Under Workflow permissions, Read and write permissions is selected and Allow GitHub Actions to create and approve pull requests is ticked."></p>
+<p>Here are the two “Workflow permissions” settings up close:</p>
+<p><img src="../img/gha-general-settings.png" width="100%" alt="The Workflow permissions section, with red arrows pointing to the selected Read and write permissions option and the ticked Allow GitHub Actions to create and approve pull requests checkbox."></p>
+<p>If you skip this step, the workflow in the next step fails with an error like <code>remote: Permission to &lt;user&gt;/&lt;repo&gt;.git denied to github-actions[bot]</code> and <code>The requested URL returned error: 403</code>. Changing these settings fixes it.</p></li>
 <li><p>Click on the Actions tab, and then click on the workflow <code>.github/workflows/pr.yml</code>. You then should see a <strong>“Run workflow”</strong> button with a drop down menu, from that menu select <strong>“Run workflow”</strong>.</p></li>
-<li><p>Click on the Pull Requests tab of your copy of the repository, click on the pull request titled “Report most accomplished pilots”, and then click on “Files Changed”. Next click on the <code>star-wars.Rmd</code> file. Review the file and observe the following problems with the R Markdown report that was submitted via the pull request:</p></li>
-</ol>
+<li><p>Click on the Pull Requests tab of your copy of the repository, click on the pull request titled “Report most accomplished pilots”, and then click on “Files Changed”. Next click on the <code>star-wars.Rmd</code> file. Review the file and observe the following problems with the R Markdown report that was submitted via the pull request:</p>
 <ul>
 <li>Reasoning of the sentence on line 15</li>
 <li>Incompatibility with the sentence on line 15 with the code in the code chunk named <code>table-of-most-accomplished-pilots</code></li>
-<li>Incorrect code in code chunk named <code>table-of-most-accomplished-pilots</code> (unested <code>film</code> instead of <code>starships</code>) leads to naming the wrong pilot as the most accomplished pilot on line 19</li>
-<li>Incorrect code in code chunk named <code>table-of-most-accomplished-pilots</code> (unested <code>film</code> instead of <code>starships</code>) leads to the use of the wrong character’s picture in the image that is sourced in the code chunk named <code>top-pilot</code> (it should be a picture of Obi-Wan Kenobi, you could use this URL for example: <a href="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg" class="uri">https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg</a>).</li>
-</ul>
-<ol start="4" type="1">
+<li>Incorrect code in code chunk named <code>table-of-most-accomplished-pilots</code> (unnested <code>film</code> instead of <code>starships</code>) leads to naming the wrong pilot as the most accomplished pilot on line 19</li>
+<li>Incorrect code in code chunk named <code>table-of-most-accomplished-pilots</code> (unnested <code>film</code> instead of <code>starships</code>) leads to the use of the wrong character’s picture in the image that is sourced in the code chunk named <code>top-pilot</code> (it should be a picture of Obi-Wan Kenobi, you could use this URL for example: <a href="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg" class="uri">https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/ewan-mcgregor-obi-wan-1570898048.jpg</a>).</li>
+</ul></li>
 <li><p>Add comments and suggested changes using the <code>+</code> sign beside the line numbers (the first time you do this will trigger the start of your code review. Need help? See <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/reviewing-proposed-changes-in-a-pull-request">GitHub’s how to on reviewing proposed changes in a pull request</a>.</p></li>
 <li><p>After you have made all the comments and suggested changes, then add a general comment for the code review, select “Request Changes” and submit your code review.</p></li>
 </ol>
