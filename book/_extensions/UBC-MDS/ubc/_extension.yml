@@ -1,0 +1,49 @@
+title: UBC brand
+author: UBC Master of Data Science
+version: 0.1.0
+quarto-required: ">=1.10.0"
+contributes:
+  # The brand applies to any project with this extension installed, whatever
+  # its format: colours, fonts and the dark-mode toggle (the rest, dark mode's
+  # readable tab titles included, needs ubc-html). A format alone cannot carry it:
+  # its `brand` theme layer means the project's brand.
+  metadata:
+    project:
+      brand: brand.yml
+  formats:
+    html:
+      # Precedence is left to right, so styles.scss wins over the brand.
+      theme:
+        light: [brand, styles.scss, ubc.scss]
+        dark: [brand, styles.scss, styles-dark.scss, ubc.scss, ubc-dark.scss]
+      # custom-callout and quizdown are not shipped here (Q&A 33): a project
+      # installs them and lists them under its own `filters:`, because a filter
+      # an extension names resolves only inside that extension's folder.
+      # This format styles them: the callout types below, and the themes.
+      filters:
+        - code-labels.lua
+      # Themes the quizdown quizzes, which render into a shadow root.
+      include-after-body: [quizdown-theme.html, ubc-quizdown.html]
+      # custom-callout's settings for the brand's types. Literal hex: this YAML
+      # cannot read Sass. Keep in step with brand.yml.
+      custom-callout:
+        activity:
+          title: "Activity"
+          icon: true
+          icon-symbol: "fa-person-chalkboard"
+          color: "#0055B7"
+        exercise:
+          title: "Exercise"
+          icon: true
+          icon-symbol: "fa-dumbbell"
+          color: "#1C5F2E"
+        definition:
+          title: "Definition"
+          icon: true
+          icon-symbol: "fa-book-open"
+          color: "#8A6D2B"
+        relevance-project:
+          title: "Relevance to course project"
+          icon: true
+          icon-symbol: "fa-diagram-project"
+          color: "#0077C8"

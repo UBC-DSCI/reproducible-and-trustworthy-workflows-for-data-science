@@ -1,0 +1,63 @@
+/*-- scss:defaults --*/
+
+// The extension's own layer, after DSCI 521's files, which stay as fetched
+// (Q&A 22, 26). Its defaults, and `ubc-dark.scss`'s, are `!default`: Quarto
+// emits later layers' defaults first, so a book's own wins, then the dark
+// layer's in the dark build. They are literal hex: defaults are emitted before
+// the brand layer defines any `$brand-*`.
+
+// Quarto fills a Mermaid subgraph with `lighten($body-color, 20%)`: a grey on
+// a near-black body colour, but a saturated blue on the brand's navy, which
+// hides the labels inside. `ubc-blue-tint`:
+$mermaid-fg-color--lightest: #F2F7FB !default;
+
+// Built-in callouts (Q&A 26). The brand's yellow, ubc-gold (#A89565), is
+// 2.94:1 on white, so warning takes ubc-gold-dark (4.88:1). UBC publishes no
+// orange; caution takes one derived at hue 28 degrees, 4.63:1 on white.
+$callout-color-warning: #8A6D2B !default;
+$callout-color-caution: #B85B0A !default;
+
+/*-- scss:rules --*/
+
+// The fill and border of a quiz's answer chips, which `ubc-quizdown.html`
+// injects into each quiz: a tint of the primary colour, per mode, under
+// `--mds-quiz-fg` text.
+:root {
+  --mds-quiz-chip-bg: #{mix($primary, $body-bg, 12%)};
+  --mds-quiz-chip-border: #{mix($primary, $body-bg, 35%)};
+}
+
+// The two callout types DSCI 521 does not have (Q&A 8, 26), styled as its
+// styles.scss styles activity and exercise: a spaced, coloured icon, and a
+// lighter border and icon on the dark page. `body.quarto-dark` outranks the
+// colour custom-callout writes into the page.
+div.callout-definition .callout-icon::before,
+div.callout-relevance-project .callout-icon::before {
+  margin-right: 0.4em;
+}
+
+div.callout-definition .callout-icon::before {
+  color: $brand-ubc-gold-dark;
+}
+
+div.callout-relevance-project .callout-icon::before {
+  color: $brand-ubc-blue-mid;
+}
+
+body.quarto-dark {
+  div.callout-definition.callout {
+    border-left-color: $brand-ubc-gold;
+  }
+
+  div.callout-definition .callout-icon::before {
+    color: $brand-ubc-gold;
+  }
+
+  div.callout-relevance-project.callout {
+    border-left-color: $brand-ubc-blue-bright;
+  }
+
+  div.callout-relevance-project .callout-icon::before {
+    color: $brand-ubc-blue-bright;
+  }
+}

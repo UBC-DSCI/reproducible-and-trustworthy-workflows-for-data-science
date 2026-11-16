@@ -1,0 +1,175 @@
+# Brand definition for the book, consumed by Quarto via `theme: [brand, ...]`
+# in `_quarto.yml`. See https://posit-dev.github.io/brand-yml/
+#
+# Colours come from the UBC Visual Identity Colour Palette (August 2025):
+# https://brand.ubc.ca/  — PMS numbers are noted against each swatch so they
+# can be checked against the official guide.
+#
+# Every colour pairing below meets WCAG AA (>= 4.5:1) for body text against the
+# background of its own mode; the ratios are noted where the choice isn't
+# obvious.
+
+color:
+  palette:
+    # -- UBC primary ---------------------------------------------------------
+    white: "#FFFFFF"
+    ubc-blue: "#002145" # PMS 282 — the UBC blue
+
+    # -- UBC secondary, darkest to palest ------------------------------------
+    ubc-blue-video: "#001328" # UBC Video Blue — the RGB/screen match for PMS 282
+    ubc-blue-deep: "#0055B7" # PMS 2935
+    ubc-blue-mid: "#0077C8" # PMS 3005
+    ubc-blue-bright: "#00A7E1" # PMS 2995
+    ubc-blue-light: "#40B4E5" # PMS 298
+    ubc-blue-lighter: "#6EC4E8" # PMS 297
+    ubc-blue-pale: "#97D4E9" # PMS 2975
+    ubc-gold: "#A89565" # PMS 8383
+
+    # -- Derived, not in the UBC guide ---------------------------------------
+    # PMS 8383 gold is only 2.94:1 on white, so it cannot carry text in light
+    # mode. This is the same hue darkened until it clears AA (4.88:1).
+    ubc-gold-dark: "#8A6D2B"
+    # A near-white blue tint for `.bg-light`, table stripes and callout fills.
+    ubc-blue-tint: "#F2F7FB"
+    # A lifted navy for panels sitting on the dark background.
+    ubc-blue-panel: "#0B2540"
+
+    # Terminal output surfaces. An `out` listing is the machine answering the
+    # command above it, so it reads as the quieter of the pair: its own surface
+    # rather than the code surface, and text muted well short of the body
+    # foreground. Both still clear AA comfortably -- the muting is a step down
+    # from the 14.53:1 and 13.31:1 that code text gets, not down to the line.
+    #
+    # The light surface is deliberately neutral grey where the code surface is
+    # blue-tinted, so the two are told apart by hue as well as by lightness.
+    output-bg: "#E7EAEE" # 1.09 against the code surface, 1.21 against the page
+    output-fg: "#3D5166" # 6.78:1 on output-bg
+    output-bg-dark: "#071D33" # 1.10 against the code surface, 1.10 against the page
+    output-fg-dark: "#A9BACB" # 8.58:1 on output-bg-dark
+
+    # -- Outside the UBC palette ---------------------------------------------
+    # UBC publishes no green or red, so `success` and `danger` are chosen to
+    # sit with the blues and clear AA. The green is the one the exercise
+    # callout has always used.
+    mds-green: "#1C5F2E"
+    mds-green-light: "#88D4AB"
+    alert-red: "#A6192E"
+    alert-red-light: "#F08080"
+
+    # -- Bootstrap-conventional aliases --------------------------------------
+    # Tools that read brand.yml look for these names.
+    blue: ubc-blue-deep
+    cyan: ubc-blue-bright
+    green: mds-green
+    red: alert-red
+    yellow: ubc-gold
+    black: ubc-blue-video
+
+  foreground:
+    light: ubc-blue # 16.11:1 on white
+    dark: "#E9EEF4" # 16.02:1 on ubc-blue-video
+  background:
+    light: white
+    dark: ubc-blue-video
+
+  primary:
+    light: ubc-blue-deep # 7.04:1 on white
+    dark: ubc-blue-light # 7.90:1 on ubc-blue-video
+  secondary:
+    light: ubc-blue
+    dark: ubc-blue-pale
+  tertiary:
+    light: ubc-blue-mid
+    dark: ubc-blue-lighter
+
+  success:
+    light: mds-green # 7.70:1 on white
+    dark: mds-green-light
+  info:
+    light: ubc-blue-mid # 4.70:1 on white
+    dark: ubc-blue-bright
+  warning:
+    light: ubc-gold-dark
+    dark: ubc-gold # 6.36:1 on ubc-blue-video
+  danger:
+    light: alert-red # 7.50:1 on white
+    dark: alert-red-light
+
+  # Bootstrap's `$light` / `$dark` keep their usual near-white / near-black
+  # roles in both modes, so they are not split by mode.
+  light: ubc-blue-tint
+  dark: ubc-blue
+
+typography:
+  # Both families are variable fonts on Google Fonts (weights 200-800, with
+  # italics). Only the weights actually used are requested.
+  #
+  # `fonts:` drives the Google Fonts @import, so the names there must be the
+  # exact family names. The `family:` fields below are emitted verbatim as
+  # `$font-family-base` / `$font-family-monospace`, so they carry a full CSS
+  # stack — that is the only place a fallback can be given (Quarto layers
+  # `defaults.bootstrap.defaults` *under* the typography block, so setting the
+  # stack there is silently ignored).
+  fonts:
+    - family: Atkinson Hyperlegible Next
+      source: google
+      weight: [400, 500, 600, 700]
+      style: [normal, italic]
+    - family: Atkinson Hyperlegible Mono
+      source: google
+      weight: [400, 500, 600, 700]
+      style: [normal, italic]
+
+  base:
+    family: '"Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+    line-height: 1.6
+  headings:
+    family: '"Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'
+    weight: 700
+    line-height: 1.25
+
+  monospace:
+    family: '"Atkinson Hyperlegible Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
+    size: 0.9em
+    # The surface behind all code, inline and fenced alike.
+    #
+    # This has to sit on `monospace` rather than on the two specific elements
+    # below: for HTML, `monospace-block.background-color` maps to `$pre-bg`,
+    # which never reaches `div.sourceCode` — the wrapper that actually paints
+    # a highlighted block. Only `monospace` forwards to `$code-block-bg` too.
+    #
+    # Leaving it unset is not neutral. `$code-block-bg` then stays at its
+    # default of `true`, and Quarto derives the panel from `$progress-bg`
+    # (Bootstrap's $gray-200) in *both* modes, so dark mode gets a light grey
+    # panel under the dark syntax theme's near-white text.
+    background-color:
+      light: "#EEF4F9"
+      dark: ubc-blue-panel
+  monospace-inline:
+    color:
+      light: "#0B3A63" # 10.53:1 on the light surface
+      dark: "#9FD4F0" # 9.72:1 on the dark surface
+  monospace-block:
+    line-height: 1.5
+
+
+defaults:
+  bootstrap:
+    defaults:
+      # Quarto derives `$navbar-bg` from `$primary`, which in dark mode is the
+      # bright #40B4E5 — a light band across the top of a dark page. brand.yml
+      # cannot set a Bootstrap variable per colour mode (`defaults.bootstrap`
+      # is shared by light and dark), so the header is pinned to the UBC navy
+      # in both, which is also how UBC's own sites set their header. Quarto
+      # computes the navbar's text and icon colours from this value, so it has
+      # to be set here rather than overridden in `styles.scss`.
+      navbar-bg: $brand-ubc-blue
+
+      # Quarto's `_bootstrap-customize.scss` raises kbd padding from
+      # Bootstrap's .1875rem/.375rem to 0.4rem on both axes. Inline padding
+      # does not grow the line box, so at the book's 1.6 line-height the grey
+      # key boxes overflowed their line and collided with keys on the line
+      # above and below. Back off the vertical padding until each box fits
+      # inside one line; the horizontal padding is trimmed to match.
+      kbd-padding-y: 0.15rem
+      kbd-padding-x: 0.35rem
