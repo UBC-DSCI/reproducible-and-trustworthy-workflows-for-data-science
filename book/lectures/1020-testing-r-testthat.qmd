@@ -62,17 +62,16 @@ and correspondingly what it should return is listed below:
 
 1. dataframe
 
-```{r, eval=FALSE}
-  class_labels values
-1       class1    0.2
-2       class2    0.5
-3       class1    0.8
-4       class2    0.5
+```{r}
+library(tibble)
+
+tibble(class_labels = c("class1", "class2", "class1", "class2"),
+       values = c(0.2, 0.5, 0.8, 0.5))
 ```
 
 2. unquoted column name
 
-```{r, eval=FALSE}
+```{.r}
 class_labels
 ```
 
@@ -80,10 +79,9 @@ class_labels
 
 Dataframe (or tibble)
 
-```{r, eval=FALSE}
-   class count
-1 class1     2
-2 class2     2
+```{r}
+tibble(class = c("class1", "class2"),
+       count = c(2, 2))
 ```
 
 #### Simple expected use test case #2
@@ -95,17 +93,14 @@ and only one observation in the other
 
 1. dataframe
 
-```{r, eval=FALSE}
-  class_labels values
-1       class1    1.0
-2       class1    0.9
-3       class2    0.9
+```{r}
+tibble(class_labels = c("class1", "class1", "class2"),
+       values = c(1.0, 0.9, 0.9))
 ```
-
 
 2. unquoted column name
 
-```{r, eval=FALSE}
+```{.r}
 class_labels
 ```
 
@@ -113,10 +108,9 @@ class_labels
 
 Dataframe (or tibble)
 
-```{r, eval=FALSE}
-   class count
-1 class1     2
-2 class2     1
+```{r}
+tibble(class = c("class1", "class2"),
+       count = c(2, 1))
 ```
 
 #### Edge test case #1
@@ -127,26 +121,24 @@ Dataframe (or tibble)
 
 1. dataframe
 
-```{r, eval=FALSE}
-  class_labels values
-1       class1    0.7
-2       class1    0.5
+```{r}
+tibble(class_labels = c("class1", "class1"),
+       values = c(0.7, 0.5))
 ```
 
 2. unquoted column name
 
-```{r, eval=FALSE}
+```{.r}
 class_labels
 ```
 
 *Expected function output:*
 
-
 Dataframe (or tibble)
 
-```{r, eval=FALSE}
-   class count
-1 class1     2
+```{r}
+tibble(class = "class1",
+       count = 2)
 ```
 
 #### Edge test case #2
@@ -157,13 +149,14 @@ Dataframe (or tibble)
 
 1. dataframe
 
-```{r, eval=FALSE}
-  class_labels values
+```{r}
+tibble(class_labels = character(0),
+       values = double(0))
 ```
 
 2. unquoted column name
 
-```{r, eval=FALSE}
+```{.r}
 class_labels
 ```
 
@@ -171,8 +164,9 @@ class_labels
 
 Dataframe (or tibble)
 
-```{r, eval=FALSE}
-   class count
+```{r}
+tibble(class = character(0),
+       count = numeric(0))
 ```
 
 #### Error test case #1
@@ -183,17 +177,14 @@ Dataframe (or tibble)
 
 1. list
 
-```{r, eval=FALSE}
-$class_labels
-[1] "class1" "class2" "class1" "class2"
-
-$values
-[1] 0.4 0.7 0.0 0.6
+```{r}
+list(class_labels = c("class1", "class2", "class1", "class2"),
+     values = c(0.4, 0.7, 0.0, 0.6))
 ```
 
 2. unquoted list element name
 
-```{r, eval=FALSE}
+```{.r}
 class_labels
 ```
 
@@ -201,7 +192,7 @@ class_labels
 
 Error
 
-```{r, eval=FALSE}
+```{.r}
 Error :
   `data_frame` should be a dataframe or dataframe extension (e.g. a tibble)
 ```
