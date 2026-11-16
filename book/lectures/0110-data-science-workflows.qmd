@@ -43,7 +43,7 @@ From this definition, we must also define reproducible and auditable analysis:
 
 - It is important that insights from data science are trustworthy!
 
-To quote [Russel Hardin](https://as.nyu.edu/faculty/russell-hardin.html),
+To quote [Russell Hardin](https://as.nyu.edu/faculty/russell-hardin.html),
 "Trust involves giving discretion to another to affect one’s interests."
 Data science insights are very often used to make important,
 real-life decisions that impact people and the environment
@@ -85,7 +85,46 @@ Some possible criteria:
 
 Yes! There are both small and big ways this can impact your work.
 
-### An example with large impact
+### Examples with large impact
+
+Here are two cases where a problem with how data were handled had large consequences,
+one in public health reporting and one in medical research.
+
+#### Lost COVID-19 test results in England
+
+In October 2020, Public Health England
+[announced](https://www.gov.uk/government/news/phe-statement-on-delayed-reporting-of-covid-19-cases)
+that 15,841 positive COVID-19 test results,
+from tests taken between 25 September and 2 October,
+had been left out of England's daily case counts.
+Because these cases were not counted,
+contact tracing for them was delayed,
+while the people they had been in contact with could still be spreading the virus.
+
+What went wrong?
+
+The labs sent their results as CSV files,
+which were then loaded into Excel templates.
+[According to the BBC](https://www.bbc.com/news/technology-54423988),
+the templates used Excel's old `.xls` format, which can hold at most 65,536 rows,
+and because each test result took up several rows,
+each template could hold only about 1,400 cases.
+When a template was full,
+further cases were simply left off,
+and the daily counts came out too small.
+
+How could this have been prevented via using reproducible tools?
+
+A scripted data analysis pipeline
+(see the [pipelines chapter](0910-pipelines-scripts.qmd))
+that reads the CSV files with code, instead of copying them through a spreadsheet,
+would not have had a row limit.
+And a simple data validation check
+(see the [data validation chapter](0710-data-validation.qmd)),
+such as "the number of results we report equals the number of results the labs sent us",
+would have caught the missing cases straight away.
+
+#### A retracted COVID-19 drug trial
 
 [*RETRACTED ARTICLE: Safety and efficacy of favipiravir versus hydroxychloroquine in management of COVID-19: A randomised controlled trial*](https://www.nature.com/articles/s41598-021-98683-5)
 
@@ -93,7 +132,7 @@ Yes! There are both small and big ways this can impact your work.
 
 - [A research paper was published in March 2021](https://www.nature.com/articles/s41598-021-85227-0) that claimed that a drug, Favipiravir, was a safe and effective alternative to another drug, hydroxychloroquine (a medication commonly used to prevent or treat malaria), in mild or moderate COVID-19 infected patients.
 
-- In September, 2021 the paper we retracted by the editors - in part due to reproducibility issues:
+- In September, 2021 the paper was retracted by the editors - in part due to reproducibility issues:
 
 
 *"After concerns were brought to the Editors' attention after publication, the raw data underlying the study were requested. The authors provided several versions of their dataset. Post-publication peer review confirmed that none of these versions fully recapitulates the results presented in the cohort background comparisons, casting doubt on the reliability of the data. Additional concerns were raised about the randomisation procedure, as the equal distribution of male and female patients is unlikely unless sex is a parameter considered during randomisation. However, based on the clarification provided by the authors, sex was not considered during this process. The Editors therefore no longer have confidence in the results and conclusions presented."*
@@ -104,6 +143,32 @@ The problem doesn't just stop once the article is retracted... Between the time 
 
 ### How big is this problem?
 
+Errors like this are not rare.
+When a spreadsheet program opens a data file,
+it guesses what kind of value is in each cell,
+and it often guesses wrong.
+For example, Excel converts the gene name *SEPT2* (Septin 2) into a date (2 September),
+and the change is kept when the file is saved.
+When researchers scanned the supplementary data files of published genomics papers,
+they found gene names converted like this
+in about one in five papers with Excel gene lists published between 2005 and 2015
+([Ziemann, Eren and El-Osta, 2016](https://doi.org/10.1186/s13059-016-1044-7)),
+and in 30.9% of those published between 2014 and 2020
+([Abeysooriya et al., 2021](https://doi.org/10.1371/journal.pcbi.1008984)).
+The problem is so widespread that the committee that names human genes renamed the affected genes,
+so *SEPT1* became *SEPTIN1* and *MARCH1* became *MARCHF1*
+([Bruford et al., 2020](https://doi.org/10.1038/s41588-020-0669-3)).
+
+How could this have been prevented via using reproducible tools?
+
+Reading data files with code,
+for example with `read_csv()` in R or `pandas.read_csv()` in Python,
+leaves values like *SEPT2* as they are,
+and you can state what type each column should be.
+The original data file is never changed,
+so the analysis can always be re-run from the raw data.
+
+Retractions are another way to see the size of the problem.
 Searching the [Retraction Watch Database](http://retractiondatabase.org/) for "Results Not Reproducible" we find 635 records that match!
 
 <img src="../img/retraction-watch.png" width=800>
@@ -189,7 +254,7 @@ corresponding to the chosen cost from the table below:
 | Unfixable error                               | 💥 (collision) |
 | Work discarded.                               | 🗑️(wastebasket)|
 
-*Source: http://www.bonkersworld.net/building-software/*
+*Source: <https://bonkersworld.net/building-software>*
 
 :::
 
