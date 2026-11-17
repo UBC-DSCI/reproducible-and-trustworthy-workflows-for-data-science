@@ -1,0 +1,308 @@
+---
+title: "uv: rendering Quarto documents"
+output-file: virtual-environments-python-uv-quarto.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0550-virtual-environments-python-uv-quarto.qmd >}}
+
+## Why this needs its own chapter
+
+A Quarto document with Python chunks runs that Python somewhere.
+In a uv project you want it to run in the project's `.venv`,
+with the packages `uv.lock` records.
+`quarto render` on its own does not know about your project.
+`uv run quarto render` does.
+
+This chapter shows the difference with a small project,
+`quarto-demo`,
+and one document, `report.qmd`,
+that prints which Python ran it and which pandas it found:
+
+````{.markdown filename="report.qmd"}
+---
+title: "Which Python?"
+format: html
+---
+
+```{{python}}
+import sys
+import pandas as pd
+
+print(sys.executable)
+print(pd.__version__)
+```
+````
+
+## What Quarto needs from your project
+
+Quarto runs Python chunks through Jupyter,
+so the project's environment needs a few packages besides the ones your analysis uses:
+
+- `ipykernel`, the kernel that runs the Python code
+- `nbclient`, which Quarto uses to run the chunks one after another
+- `pyyaml`, which Quarto's own Jupyter runner imports
+
+The [docker-uv-renv](https://github.com/chendaniely/docker-uv-renv) example project
+(MIT licence) lists exactly these, with the comment "Quarto needs these to run Python code".
+Here is the demo project's `pyproject.toml`
+after `uv add pandas ipykernel nbclient pyyaml`,
+with exact pins as in [uv: pinning exact versions](0545-virtual-environments-python-uv-exact-pins.qmd):
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "quarto-demo"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "ipykernel==7.4.0",
+    "nbclient==0.11.0",
+    "pandas==3.1.1",
+    "pyyaml==6.0.3",
+]
+
+[tool.uv]
+add-bounds = "exact"
+```
+
+## How Quarto picks a Python
+
+If the `QUARTO_PYTHON` environment variable is set,
+Quarto uses the Python it names.
+Otherwise, on macOS and Linux,
+Quarto uses the first `python3` on your `PATH`.
+On Windows, it asks the Python launcher, `py`, which Python to use.
+
+`quarto check jupyter` tells you which Python that is.
+Here it is in a new terminal on a Mac,
+inside the `quarto-demo` folder:
+
+```bash
+quarto check jupyter
+```
+
+```out
+Quarto 1.11.6
+[✓] Checking Python 3 installation....OK
+      Version: 3.15.2
+      Path: /opt/homebrew/opt/python@3.15/bin/python3.15
+      Jupyter: (None)
+
+      Jupyter is not available in this Python installation.
+      Install with python3 -m pip install jupyter
+
+      There is an unactivated Python environment in .venv. Did you forget to activate it?
+```
+
+Quarto found Homebrew's Python 3.15,
+the first `python3` on the `PATH`.
+The project pins 3.14,
+and the packages are in `.venv`, not in Homebrew's Python.
+
+Quarto even notices the `.venv` folder
+and suggests activating it.
+You do not need to.
+Do not follow the other suggestion either.
+Installing Jupyter into Homebrew's Python with `pip`
+puts packages outside your project,
+where `uv.lock` does not record them.
+
+## What `uv run` changes
+
+For the one command it runs,
+`uv run` puts the project's `.venv/bin` folder first on the `PATH`
+and sets the `VIRTUAL_ENV` environment variable to the project's `.venv`.
+On macOS and Linux, the first `python3` Quarto finds is then the project's.
+On Windows, the Python launcher runs the Python of the environment named in `VIRTUAL_ENV`,
+which is the same one:
+
+```bash
+uv run quarto check jupyter
+```
+
+```out
+Quarto 1.11.6
+[✓] Checking Python 3 installation....OK
+      Version: 3.14.3
+      Path: /Users/dan/quarto-demo/.venv/bin/python3
+      Jupyter: 5.9.1
+      Kernels: python3
+
+[✓] Checking Jupyter engine render....OK
+```
+
+Same folder, same Quarto,
+a different Python.
+The path now ends in `quarto-demo/.venv/bin/python3`,
+the version is the pinned 3.14,
+and Jupyter is there because `ipykernel` and `nbclient` are in the project.
+
+:::{.callout-note title="On Windows"}
+The `Path:` line should end in `.venv\Scripts\python.exe`.
+If it does not,
+for example because your Python came from `uv` and the Python launcher `py` is not installed,
+set `QUARTO_PYTHON` as shown in the last section of this chapter.
+:::
+
+## Rendering, without and with `uv run`
+
+Without `uv run`, the render fails:
+
+```bash
+quarto render report.qmd
+```
+
+```out
+Starting python3 kernel...Traceback (most recent call last):
+  File ".../share/jupyter/jupyter.py", line 20, in <module>
+    from notebook import notebook_execute, RestartKernel
+  File ".../share/jupyter/notebook.py", line 15, in <module>
+    from yaml import safe_load as parse_string
+ModuleNotFoundError: No module named 'yaml'
+Python 3 installation:
+{}
+Jupyter is not available in this Python installation.
+Install with python3 -m pip install jupyter
+There is an unactivated Python environment in .venv. Did you forget to activate it?
+WARN: Error encountered when rendering files
+```
+
+The `ModuleNotFoundError` is about Quarto's own runner,
+which needs `pyyaml`,
+not about your code.
+It fails before your first chunk runs.
+
+With `uv run`, it works:
+
+```bash
+uv run quarto render report.qmd
+```
+
+```out
+Output created: report.html
+```
+
+and the report shows the project's Python and the locked pandas:
+
+```out
+/Users/dan/quarto-demo/.venv/bin/python3
+3.1.1
+```
+
+For a Quarto project with a `_quarto.yml`,
+such as a website or a book,
+it is the same, `uv run quarto render` from the project folder.
+`quarto preview` becomes `uv run quarto preview`.
+
+## The failure you do not see
+
+A failed render is the good case,
+because you know something is wrong.
+The bad case is a render that works with the wrong Python.
+
+Suppose your terminal still has another project's environment activated,
+one that happens to have Jupyter and an older pandas.
+Plain `quarto render` finds that environment's Python first on the `PATH`,
+and succeeds:
+
+```bash
+quarto render report.qmd
+```
+
+```out
+Output created: report.html
+```
+
+```out
+/Users/dan/other-project/.venv/bin/python3
+3.0.5
+```
+
+The report rendered with pandas 3.0.5,
+not the 3.1.1 that this project's `uv.lock` records,
+and nothing warned you.
+If the two versions compute something differently,
+your report shows numbers your collaborators cannot reproduce.
+
+`uv run` ignores the other environment,
+tells you so,
+and uses the project's:
+
+```bash
+uv run quarto render report.qmd
+```
+
+```out
+warning: `VIRTUAL_ENV=/Users/dan/other-project/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Output created: report.html
+```
+
+```out
+/Users/dan/quarto-demo/.venv/bin/python3
+3.1.1
+```
+
+To check which Python a render will use,
+run `quarto check jupyter` the same way you render,
+with `uv run` in front,
+and read the `Path:` line.
+
+## Without `uv run`, use `QUARTO_PYTHON`
+
+If a tool runs `quarto render` for you and you cannot add `uv run` in front,
+point `QUARTO_PYTHON` at the project's Python instead:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+QUARTO_PYTHON=.venv/bin/python quarto render report.qmd
+```
+
+## Windows (Git Bash)
+
+```bash
+QUARTO_PYTHON=.venv/Scripts/python.exe quarto render report.qmd
+```
+
+## Windows (PowerShell)
+
+```powershell
+$env:QUARTO_PYTHON = ".venv\Scripts\python.exe"
+quarto render report.qmd
+```
+:::
+
+On macOS:
+
+```out
+Output created: report.html
+```
+
+```out
+/Users/dan/quarto-demo/.venv/bin/python
+3.1.1
+```
+
+`QUARTO_PYTHON` has two costs compared with `uv run`.
+You have to set it again on every render
+(or once per session in PowerShell),
+and it does not check that `.venv` matches `uv.lock`,
+which `uv run` does before every command.
+Prefer `uv run`.
+
+## Put it in the Makefile
+
+The easiest way to never forget `uv run` is to not type the command at all.
+A Makefile target writes it down once:
+
+```make
+render: ## Render the report with the project's Python
+	uv run quarto render report.qmd
+```
+
+This book does the same.
+Its own `Makefile` renders and previews the book with
+`uv run quarto render book/` and `uv run quarto preview`,
+so `make render` always uses the book's `.venv`.
