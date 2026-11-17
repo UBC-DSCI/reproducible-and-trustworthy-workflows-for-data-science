@@ -9,8 +9,7 @@ When we write `select(penguins, species)`,
 yet the code works.
 Normally, R evaluates every argument we give a function:
 it looks up `species`, and stops with an error if it cannot find it.
-Functions like `select()` instead capture the code we typed
-and evaluate it somewhere else, such as inside a data frame.
+Functions like `select()` instead capture the code we typed and evaluate it somewhere else, such as inside a data frame.
 This is called **non-standard evaluation** (NSE).
 The `tidyverse` way of doing it is called **tidy evaluation**,
 and it is built on three ideas:
@@ -24,15 +23,11 @@ and it is built on three ideas:
    evaluating code so that the columns of a data frame are found before other objects.
 
 This chapter builds up these ideas by writing our own simple version of `select()`, step by step.
-It is adapted from the talk
-[Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
-by Daniel Chen
-([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+It is adapted from the talk [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU) by Daniel Chen ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
 updated for the current versions of the `tidyverse`.
 If you are looking for which pattern to use in your own code,
 rather than how it works,
-see the "Programming with the `tidyverse` functions" section of the
-[Defining functions in R](9020-functions-r.qmd) appendix (@sec-tidyverse-patterns).
+see the "Programming with the `tidyverse` functions" section of the [Defining functions in R](9020-functions-r.qmd) appendix (@sec-tidyverse-patterns).
 
 We use the `rlang` package, which implements tidy evaluation,
 and the `penguins` data set from the `palmerpenguins` package:
@@ -126,7 +121,8 @@ str(quote(3 + 3))
 ```
 
 The `rlang` documentation calls quoting **defusing**:
-the code is captured like a defused bomb, so that it does not go off until we decide.
+the code is captured like a defused bomb,
+so that it does not go off until we decide.
 
 ## Rebuilding `select()`
 
@@ -184,8 +180,7 @@ The `en` prefix means "capture the code given to this argument".
 
 ### Try 3: capturing what the user typed
 
-Now we can capture the user's column names with `enexprs()`
-(the plural of `enexpr()`, for `...`),
+Now we can capture the user's column names with `enexprs()` (the plural of `enexpr()`, for `...`),
 turn them into strings,
 find their positions with `match()`,
 and subset the data on those positions with regular base R:
@@ -224,8 +219,7 @@ my_select(penguins, col_name, island)
 
 Our function quoted `col_name` as the symbol `col_name`,
 and there is no column with that name.
-We need a way to tell a quoting function
-"use the *value* of this variable, not its name".
+We need a way to tell a quoting function "use the *value* of this variable, not its name".
 That is what `!!` (pronounced "bang-bang") does:
 it **unquotes** (`rlang` calls it **injects**) a value into the code before the function captures it:
 
@@ -234,8 +228,7 @@ my_select(penguins, !!col_name, island)
 ```
 
 `!!!` ("bang-bang-bang") does the same for a list of values,
-inserting each one as a separate argument
-(similar to `*args` in Python).
+inserting each one as a separate argument (similar to `*args` in Python).
 `rlang` calls this **splicing**:
 
 ```{r}
@@ -243,8 +236,8 @@ cols <- exprs(species, island, year)
 my_select(penguins, !!!cols)
 ```
 
-`!!` and `!!!` only work inside functions that quote their arguments
-with `enexpr()`, `enquo()`, `{{ }}` and friends (and in `rlang::inject()`).
+`!!` and `!!!` only work inside functions
+that quote their arguments with `enexpr()`, `enquo()`, `{{ }}` and friends (and in `rlang::inject()`).
 Anywhere else, `!!` is just two `!` (not) operators in a row:
 
 ```{r}
@@ -426,8 +419,7 @@ including in `pull()`.
 
 ## Back to the `tidyverse`
 
-With these pieces, the patterns from the
-[Defining functions in R](9020-functions-r.qmd) appendix are less mysterious.
+With these pieces, the patterns from the [Defining functions in R](9020-functions-r.qmd) appendix are less mysterious.
 
 `{{ col }}` is shorthand for capturing an argument as a quosure and injecting it:
 `!!enquo(col)`.
@@ -491,18 +483,14 @@ Some patterns from 2020 are no longer recommended:
 
 ## Learn more
 
-- @sec-tidyverse-learn-more in the [Defining functions in R](9020-functions-r.qmd) appendix
-  lists the `tidyverse` documentation for each pattern and deprecation.
+- @sec-tidyverse-learn-more in the [Defining functions in R](9020-functions-r.qmd) appendix lists the `tidyverse` documentation for each pattern and deprecation.
 - The `rlang` documentation:
   [What is data-masking and why do I need `{{`?](https://rlang.r-lib.org/reference/topic-data-mask.html),
   [Defusing R expressions](https://rlang.r-lib.org/reference/topic-defuse.html),
   [Injecting with `!!`, `!!!`, and glue syntax](https://rlang.r-lib.org/reference/topic-inject.html),
-  [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html)
-  and [What happens if I use injection operators out of context?](https://rlang.r-lib.org/reference/topic-inject-out-of-context.html).
+  [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html) and [What happens if I use injection operators out of context?](https://rlang.r-lib.org/reference/topic-inject-out-of-context.html).
 - The Metaprogramming chapters of Advanced R:
   [Expressions](https://adv-r.hadley.nz/expressions.html),
-  [Quasiquotation](https://adv-r.hadley.nz/quasiquotation.html)
-  and [Evaluation](https://adv-r.hadley.nz/evaluation.html).
-- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
-  ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+  [Quasiquotation](https://adv-r.hadley.nz/quasiquotation.html) and [Evaluation](https://adv-r.hadley.nz/evaluation.html).
+- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU) ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
   the talk this chapter is based on.

@@ -49,7 +49,8 @@ D.  `renv::start()`
 
 :::
 
-One of the other distinguishing factors between R and Python is CRAN, the package repository for R.
+One of the other distinguishing factors between R and Python is CRAN,
+the package repository for R.
 CRAN checks every package it hosts, every day,
 and removes packages that stop working with the rest of CRAN,
 so on any given calendar day the packages on CRAN are meant to install together.
@@ -176,18 +177,22 @@ This is the line that "activates" the `renv` environment for you automatically,
 assuming you are in the correct working directory.
 
 All the environment files and packages are installed in the `renv/` directory.
-This directory has its own `.gitignore` file that will ignore the correct things for you in that directory,
+This directory has its own `.gitignore` file
+that will ignore the correct things for you in that directory,
 so you do not need to worry about checking in your entire set of packages.
 
-Finally, the `renv.lock` file is the file that contains all the packages used in the repository,
-their versions, and where they were installed from (e.g., CRAN or GitHub).
+Finally,
+the `renv.lock` file is the file that contains all the packages used in the repository,
+their versions,
+and where they were installed from (e.g., CRAN or GitHub).
 
 ### Snapshot packages
 
 When you install and use R packages in your project,
 you will occasionally run `renv::snapshot()`.
 This will update the `renv.lock` file with all the packages and dependencies for you.
-Do not forget to `add`, `commit`, and `push` this file to your remote repository.
+Do not forget to `add`, `commit`, and `push` this file
+to your remote repository.
 
 Say we add `library(tidyr)` to `analysis.R`.
 `renv::status()` notices that the code now uses a package that is not installed:
@@ -326,8 +331,14 @@ see [renv: declaring packages in `DESCRIPTION`](0565-virtual-environments-r-renv
 :::{.activity}
 What would be the main files committed to the repository by default when using `renv`?
 
-- A. All content of the `renv` folder in your project, because `renv` stores all packages there.
-- B. `renv.lock` and `renv/activate.R`, because both are necessary to reproduce and activate the environment on another machine, and most local `renv/` folders are excluded in `.gitignore`.
-- C. `renv/library` and `renv/staging` directories, because `renv`, in contrast to `conda`, needs to have binary packages in the repository.
-- D. Only the source code of the packages in `renv/library` because we want our environment to be identical
+- A. All content of the `renv` folder in your project,
+  because `renv` stores all packages there.
+- B. `renv.lock` and `renv/activate.R`,
+  because both are necessary to reproduce and activate the environment on another machine,
+  and most local `renv/` folders are excluded in `.gitignore`.
+- C. `renv/library` and `renv/staging` directories,
+  because `renv`, in contrast to `conda`,
+  needs to have binary packages in the repository.
+- D. Only the source code of the packages in `renv/library`
+  because we want our environment to be identical
 :::

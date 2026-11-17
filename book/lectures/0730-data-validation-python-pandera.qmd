@@ -7,20 +7,22 @@ aliases:
 
 ## Introduction to Python's Pandera
 
-Python's [Pandera](https://pandera.readthedocs.io/en/stable/) is a package
-designed to make data validation/checking of dataframes and other dataframe-like
-objects easy, readable and robust. Key features of Pandera that we will discuss include:
+Python's [Pandera](https://pandera.readthedocs.io/en/stable/) is a package designed
+to make data validation/checking of dataframes and other dataframe-like objects easy,
+readable and robust.
+Key features of Pandera that we will discuss include:
 
-- The ability to define a data schema and use it to validate dataframes and other dataframe-like
-objects
+- The ability to define a data schema and use it to validate dataframes
+  and other dataframe-like objects
 - Check the types and properties of columns
-- Perform statistical validation of data
-  (we do not cover this here; see [Hypothesis Testing](https://pandera.readthedocs.io/en/stable/hypothesis.html) in the Pandera documentation)
-- Execute all validation in a lazy manner, so that validation rules are executed before raising an error
-- Handle invalid data in a number of ways, including throwing errors, writing data validation logs, and dropping observations that are invalid
+- Perform statistical validation of data (we do not cover this here;
+  see [Hypothesis Testing](https://pandera.readthedocs.io/en/stable/hypothesis.html) in the Pandera documentation)
+- Execute all validation in a lazy manner,
+  so that validation rules are executed before raising an error
+- Handle invalid data in a number of ways, including throwing errors,
+  writing data validation logs, and dropping observations that are invalid
 
-The [Pandera documentation](https://pandera.readthedocs.io/en/stable/)
-is the reference for everything in this chapter,
+The [Pandera documentation](https://pandera.readthedocs.io/en/stable/) is the reference for everything in this chapter,
 and the place to look for the features we do not cover.
 
 ### Validating data with Pandera
@@ -31,10 +33,11 @@ by first defining an instance of the `DataFrameSchema` class.
 This object specifies the properties we expect (and thus would like to check)
 for our dataframe index and columns.
 After the `DataFrameSchema` instance has been created and defined,
-the `DataFrameSchema.validate` method
-can be applied to a `pandas.DataFrame` instance to validate, or check,
-all of the properties we specified that we expect for our dataframe index
-and columns in the `DataFrameSchema` instance.
+the `DataFrameSchema.validate` method can be applied to a `pandas.DataFrame` instance
+to validate,
+or check,
+all of the properties we specified that we expect for our dataframe index and columns
+in the `DataFrameSchema` instance.
 
 ### Dataframe Schema
 
@@ -44,14 +47,11 @@ for our dataframe index and columns.
 
 #### Creating `pa.DataFrameSchema` and setting required columns
 
-To create an instance of the `DataFrameSchema` class
-we first import the Pandera package using the alias `pa`,
+To create an instance of the `DataFrameSchema` class we first import the Pandera package using the alias `pa`,
 and then the function `pa.DataFrameSchema`.
 Below we demonstrate creating an instance of the `DataFrameSchema` class
-for the first two columns of the
-[Wisconsin Breast Cancer data set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)
-from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/)
-(Dua and Graff 2017).
+for the first two columns of the [Wisconsin Breast Cancer data set](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)
+from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/) (Dua and Graff 2017).
 
 ```{python}
 import pandas as pd
@@ -67,8 +67,8 @@ schema = pa.DataFrameSchema(
 ```
 
 :::{.callout-note}
-By default all columns listed
-are required to be in the dataframe for it to pass validation.
+By default all columns listed are required to be in the dataframe
+for it to pass validation.
 If we wanted to make a column optional,
 we would set `required=False` in the column constructor.
 :::
@@ -88,9 +88,7 @@ Possible values include:
 The Pandera documentation recommends the built-in Python types for common data types,
 which is what we use in this chapter.
 
-See the Pandera
-[Data Type Validation docs](https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation)
-for details beyond what we present here.
+See the Pandera [Data Type Validation docs](https://pandera.readthedocs.io/en/stable/dtype_validation.html#dtype-validation) for details beyond what we present here.
 
 If we continue our example from above,
 we can specify that we expect the `class` column to be a string
@@ -111,9 +109,8 @@ By default Column objects assume there should be no null/missing values.
 If you want to allow missing values,
 you need to set `nullable=True` in the column constructor.
 We demonstrate that below for the `mean_radius` column of our working example.
-Note that we do not set this to be true for our class column
-as we likely do not want to be working with observations
-where the target/response variable is missing.
+Note that we do not set this to be true for our class column as we likely do not want
+to be working with observations where the target/response variable is missing.
 
 ```{python}
 schema = pa.DataFrameSchema(
@@ -128,22 +125,21 @@ If you wanted to allow a percentage of the values for a particular column
 to be allowed to be missing,
 then you could do this by writing a lambda function in a call to `pa.Check`
 in the column constructor.
-We show an example of that below
-where allow up to 5% of the `mean_radius` column values to be missing.
+We show an example of that below where allow up
+to 5% of the `mean_radius` column values to be missing.
 
 :::{.callout-note}
 This is putting the cart a bit before the horse here,
 as we have not yet introduced `pa.Check`.
 We will do that in the next section,
-so please fell free to skip this
-and come back to this example after you have read that.
+so please fell free to skip this and come back to this example
+after you have read that.
 :::
 
 By default, Pandera removes missing values before it runs a check,
 so a check that counts missing values would never see any.
-Setting `ignore_na=False` makes Pandera give the check every value, missing or not
-(see [Handling null values](https://pandera.readthedocs.io/en/stable/checks.html#handling-null-values)
-in the Pandera documentation).
+Setting `ignore_na=False` makes Pandera give the check every value,
+missing or not (see [Handling null values](https://pandera.readthedocs.io/en/stable/checks.html#handling-null-values) in the Pandera documentation).
 
 ```{python}
 schema = pa.DataFrameSchema(
@@ -162,11 +158,9 @@ schema = pa.DataFrameSchema(
 :::{.callout-note}
 Above we have created our custom check on-the-fly using a `lambda` function.
 We could do this here because the check was fairly simple.
-If we needed a custom check that was more complex
-(e.g., needs to generate data as part of the check)
-then we would be better to register our custom check.
-For situations like this, we direct the reader to the
-[Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions).
+If we needed a custom check that was more complex (e.g., needs to generate data
+as part of the check) then we would be better to register our custom check.
+For situations like this, we direct the reader to the [Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions).
 :::
 
 #### Checking values in columns
@@ -176,13 +170,13 @@ For any type of data,
 there is usually some reasonable range of values that we would expect.
 These usually come from domain knowledge about the data.
 For example,
-a column named `age` for a data set about adult human patients age in years
-should probably be an integer and have a range of values between 18 and 122
+a column named `age` for a data set about adult human patients age
+in years should probably be an integer and have a range of values between 18 and 122
 ([the oldest person whose age has ever been independently verified](https://en.wikipedia.org/wiki/List_of_the_verified_oldest_people#cite_note-5)).
-To specify a check for a range like this,
-we can use the `pa.Check.between` method.
-We demonstrate how to do this below with our working example
-to check that the `mean_radius` values are between 5 and 45, inclusive.
+To specify a check for a range like this, we can use the `pa.Check.between` method.
+We demonstrate how to do this below with our working example to check
+that the `mean_radius` values are between 5 and 45,
+inclusive.
 
 ```{python}
 schema = pa.DataFrameSchema(
@@ -194,8 +188,9 @@ schema = pa.DataFrameSchema(
 ```
 
 In our working example,
-we might also want to check that the `class` column only contains
-the strings we think are acceptable for our category label,
+we might also want to check
+that the `class` column only contains the strings we think are acceptable
+for our category label,
 which would be `"Benign"` and `"Malignant"`.
 We can do this using the `pa.Check.isin` method, which we demonstrate below:
 
@@ -208,13 +203,15 @@ schema = pa.DataFrameSchema(
 )
 ```
 
-There are many more built-in `pa.Check` methods. A list can be found in the Pandera `Check` API docs:
+There are many more built-in `pa.Check` methods.
+A list can be found in the Pandera `Check` API docs:
 - <https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html#pandera.api.checks.Check>
 
-If there is a check you wish to do that is not part of the Pandera `Check` API
-you have two options:
+If there is a check you wish to do
+that is not part of the Pandera `Check` API you have two options:
 
-1) Use a `lambda` function with boolean logic inside of `pa.Check` (good for simple checks, similar to the percentage of missingness in the section above), or
+1) Use a `lambda` function with boolean logic inside of `pa.Check`
+   (good for simple checks, similar to the percentage of missingness in the section above), or
 2) Register our custom check (see how to in [Pandera Extension docs](https://pandera.readthedocs.io/en/stable/extensions.html#extensions))
 
 #### Duplicates
@@ -222,12 +219,12 @@ you have two options:
 To check for duplicate rows,
 we list the columns that should be unique together
 in the `unique` argument of `pa.DataFrameSchema`
-(see [Validating the joint uniqueness of columns](https://pandera.readthedocs.io/en/stable/dataframe_schemas.html#validating-the-joint-uniqueness-of-columns)
-in the Pandera documentation).
-Listing every column means that no two rows can be identical.
+(see [Validating the joint uniqueness of columns](https://pandera.readthedocs.io/en/stable/dataframe_schemas.html#validating-the-joint-uniqueness-of-columns) in the Pandera documentation).
+Listing every column means
+that no two rows can be identical.
 We also set `report_duplicates="exclude_first"`,
-so that Pandera treats the first copy of a row as valid
-and only reports the rows that repeat it:
+so that Pandera treats the first copy of a row as valid and only reports the rows
+that repeat it:
 
 ```{python}
 schema = pa.DataFrameSchema(
@@ -244,18 +241,17 @@ schema = pa.DataFrameSchema(
 
 Pandera has no built-in check for rows where every value is missing,
 so we write our own check with `pa.Check`.
-A check given to the `checks` argument of `pa.DataFrameSchema`
-receives the whole data frame,
+A check given to the `checks` argument of `pa.DataFrameSchema` receives the whole data frame,
 and should return one `True` or `False` for each row,
-so that Pandera can report which rows failed
-(see [Wide checks](https://pandera.readthedocs.io/en/stable/checks.html#wide-checks)
+so that Pandera can report which rows failed (see [Wide checks](https://pandera.readthedocs.io/en/stable/checks.html#wide-checks)
 in the Pandera documentation).
-`df.isna().all(axis="columns")` is `True` for each row
-where the value in every column is missing,
+`df.isna().all(axis="columns")` is `True` for each row where the value
+in every column is missing,
 so `~df.isna().all(axis="columns")` is `True` for every row that is not empty.
 
-By default, Pandera removes every row that contains a missing value
-before it runs a check on the whole data frame,
+By default,
+Pandera removes every row that contains a missing value before it runs a check
+on the whole data frame,
 which would hide exactly the rows we are looking for.
 Setting `ignore_na=False` makes Pandera run the check on every row
 (see [Handling null values](https://pandera.readthedocs.io/en/stable/checks.html#handling-null-values)):
@@ -280,18 +276,15 @@ schema = pa.DataFrameSchema(
 
 ### Data validation
 
-Once we have specified our the properties we expect
-(and thus would like to check)
-for our dataframe index and columns
-by creating an instance of `pa.DataFrameSchema`,
-we can use the `pa.DataFrameSchema.validate` method on a dataframe
-to check if the dataframe is valid considering the schema we specified.
+Once we have specified our the properties we expect (and thus would like to check)
+for our dataframe index and columns by creating an instance of `pa.DataFrameSchema`,
+we can use the `pa.DataFrameSchema.validate` method on a dataframe to check
+if the dataframe is valid considering the schema we specified.
 
 To demonstrate this,
 below we create two very simple versions of the Wisconsin Breast Cancer data set.
 One which we expect to pass our validation checks,
-and one where we introduce four data anomalies
-that should cause some checks to fail.
+and one where we introduce four data anomalies that should cause some checks to fail.
 
 First we create two data frames:
 
@@ -309,14 +302,14 @@ invalid_data = pd.DataFrame({
 })
 ```
 
-Let's see what happens when we apply `pa.DataFrameSchema.validate`
-to our valid data:
+Let's see what happens when we apply `pa.DataFrameSchema.validate` to our valid data:
 
 ```{python}
 schema.validate(valid_data)
 ```
 
-It returns a dataframe and does not throw an error. Excellent!
+It returns a dataframe and does not throw an error.
+Excellent!
 What happens when we pass clearly invalid data?
 
 ```{python}
@@ -335,18 +328,16 @@ SchemaError: columns '('class', 'mean_radius')' not unique:
 ```
 
 The error arose because row `1` of our `invalid_data` is a copy of row `0`,
-and we specified in our `pa.DataFrameSchema` instance
-that the `class` and `mean_radius` columns must be unique together.
+and we specified in our `pa.DataFrameSchema` instance that the `class`
+and `mean_radius` columns must be unique together.
 
 What about the other errors we expect from our invalid data?
 For example, the `class` column contains the string `"benign"`,
 but we only accept `"Benign"` and `"Malignant"`,
 there's a value of `-9999` in the `mean_radius` column
-that is well outside of the range we said was valid in the schema (5, 45),
-and we have an empty row as well.
+that is well outside of the range we said was valid in the schema (5, 45), and we have an empty row as well.
 Why are these validation errors not reported?
-Pandera's default is to throw an error
-after the first instance of non-valid data.
+Pandera's default is to throw an error after the first instance of non-valid data.
 To change this behaviour, we can set `lazy=True`.
 When we do this we see that all errors get reported.
 
@@ -358,10 +349,10 @@ schema.validate(invalid_data, lazy=True)
 ### Handling invalid data
 
 By default Pandera will throw an error when a check is not passed.
-Depending on your situation, this can be a desired expected behaviour
-(e.g., a static data analysis published in a report)
-or a very undesired behaviour
-that could potentially be dangerous (e.g., autonomous driving application).
+Depending on your situation,
+this can be a desired expected behaviour (e.g., a static data analysis published
+in a report) or a very undesired behaviour that could potentially be dangerous
+(e.g., autonomous driving application).
 In the latter case, we would want to do something different than throw an error.
 Possibilities we will cover here include dropping invalid observations
 and writing log files that report the errors.
@@ -369,16 +360,14 @@ and writing log files that report the errors.
 ### Dropping invalid observations
 
 In an in-production system,
-dropping non-valid data could be a reasonable path forward
-instead of throwing an error.
+dropping non-valid data could be a reasonable path forward instead of throwing an error.
 Another situation where this might be a reasonable thing to do
 is when training a machine learning model with a million observations.
 You don't want to throw an error in the middle of training
 if only one observation is invalid!
 
 To change the behaviour of `pa.DataFrameSchema.validate`
-to instead return a dataframe with the invalid rows dropped
-we need to do two things:
+to instead return a dataframe with the invalid rows dropped we need to do two things:
 
 1. add `drop_invalid_rows=True` to our  `pa.DataFrameSchema` instance
 2. add `lazy=True` to our call to the `pa.DataFrameSchema.validate` method
@@ -407,23 +396,23 @@ schema.validate(invalid_data, lazy=True)
 ```
 
 Notice that Pandera also dropped the duplicate row and the empty row.
-It can do that because both `unique` and our empty row check
-tell Pandera exactly which rows failed.
+It can do that because both `unique` and our empty row check tell Pandera exactly
+which rows failed.
 A check that returns a single `True` or `False` for the whole data frame,
-such as `lambda df: ~df.duplicated().any()`,
-cannot tell Pandera which rows to drop,
-and recent versions of Pandera stop with an error
-if you combine one with `drop_invalid_rows=True`.
+such as `lambda df: ~df.duplicated().any()`, cannot tell Pandera which rows to drop,
+and recent versions of Pandera stop with an error if you combine one
+with `drop_invalid_rows=True`.
 
 
 ### Writing data validation logs
 
-Is removing the rows sufficient? Not at all!
-A human should be told that there was invalid data
-so that upstream data collection, cleaning and transformation processes
-can be reviewed to minimize the chances of future invalid data.
-One way to do this is to again specify `lazy=True`
-so that all errors can be observed and reported.
+Is removing the rows sufficient?
+Not at all!
+A human should be told that there was invalid data so that upstream data collection,
+cleaning and transformation processes can be reviewed
+to minimize the chances of future invalid data.
+One way to do this is to again specify `lazy=True` so that all errors can be observed
+and reported.
 Then we can get the `SchemaErrors` and write them to a log file.
 We show below how to do this for our working example
 so that the valid rows are returned as a dataframe named `validated_data`
@@ -486,21 +475,18 @@ else:
 ## Learn more
 
 - The [Pandera documentation](https://pandera.readthedocs.io/en/stable/).
-  This chapter uses its pandas API, described in
-  [DataFrame schemas](https://pandera.readthedocs.io/en/stable/dataframe_schemas.html)
-  and [checks](https://pandera.readthedocs.io/en/stable/checks.html).
-  Pandera can also [validate Polars data frames](https://pandera.readthedocs.io/en/stable/polars.html)
-  with `import pandera.polars as pa`, using a very similar API.
-- Two posit::conf workshops called "Data Science Workflows with Posit Tools: Python Focus"
-  validate data with Pandera as one step of a full pipeline
-  that loads raw data, tidies it, validates it, and writes it to a database.
-  - The [2023 workshop](https://github.com/posit-conf-2023/ds-workflows-python)
-    validates pandas data frames in its
-    [data exploration and validation notebook](https://github.com/posit-conf-2023/ds-workflows-python/blob/main/materials/solutions/02-data-exploration-and-validation/notebook.ipynb).
+  This chapter uses its pandas API, described in [DataFrame schemas](https://pandera.readthedocs.io/en/stable/dataframe_schemas.html) and [checks](https://pandera.readthedocs.io/en/stable/checks.html).
+  Pandera can also [validate Polars data frames](https://pandera.readthedocs.io/en/stable/polars.html) with `import pandera.polars as pa`,
+  using a very similar API.
+- Two posit::conf workshops called "Data Science Workflows with Posit Tools:
+  Python Focus" validate data with Pandera as one step of a full pipeline
+  that loads raw data,
+  tidies it, validates it, and writes it to a database.
+  - The [2023 workshop](https://github.com/posit-conf-2023/ds-workflows-python) validates pandas data frames
+    in its [data exploration and validation notebook](https://github.com/posit-conf-2023/ds-workflows-python/blob/main/materials/solutions/02-data-exploration-and-validation/notebook.ipynb).
     It was written for an older version of Pandera,
     which it imports with `import pandera as pa`.
-    Current Pandera imports the pandas API
-    with `import pandera.pandas as pa`, as this chapter does.
-  - The [2024 workshop](https://github.com/posit-conf-2024/ds-workflows-python)
-    validates Polars data frames with `pandera.polars`, in Task 4 of its
-    [data exploration and validation notebook](https://github.com/posit-conf-2024/ds-workflows-python/blob/main/materials/02-data-exploration-and-validation/notebook.ipynb).
+    Current Pandera imports the pandas API with `import pandera.pandas as pa`,
+    as this chapter does.
+  - The [2024 workshop](https://github.com/posit-conf-2024/ds-workflows-python) validates Polars data frames with `pandera.polars`,
+    in Task 4 of its [data exploration and validation notebook](https://github.com/posit-conf-2024/ds-workflows-python/blob/main/materials/02-data-exploration-and-validation/notebook.ipynb).

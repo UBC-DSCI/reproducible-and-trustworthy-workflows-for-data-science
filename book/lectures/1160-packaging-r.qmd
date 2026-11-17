@@ -30,13 +30,16 @@ What do each of these do?
 
 - `DESCRIPTION` stores all the metadata and dependency installation instructions for the package.
 
-- The `man` directory contains the function documentation in `.Rd` files (one per function). The contents are from these are generated from the `ROxygen2` function documentation in the `R/*.R` files.
+- The `man` directory contains the function documentation in `.Rd` files (one per function).
+  The contents are from these are generated from the `ROxygen2` function documentation in the `R/*.R` files.
 
 - Unsurprisingly, the `NAMESPACE` file is important in defining your package’s namespace.
 
-- `R` is the directory for the `*.R` files which contain your exported (i.e., user-facing) functions.
+- `R` is the directory for the `*.R` files
+  which contain your exported (i.e., user-facing) functions.
 
-- `functions.R` (this one can be named something else!) contains the functions you would like to share with your package users.
+- `functions.R` (this one can be named something else!) contains the functions
+  you would like to share with your package users.
 
 ## Getting to know a `DESCRIPTION` file's contents
 
@@ -70,11 +73,16 @@ URL: https://github.com/ttimbers/foofactors                                 ┐ 
 BugReports: https://github.com/ttimbers/foofactors/issues                   ┘
 ```
 
-This is equivalent to the `pyproject.toml` file in Python packages. Again, almost everything in it is customizable based on your package's specifics.
+This is equivalent to the `pyproject.toml` file in Python packages.
+Again, almost everything in it is customizable based on your package's specifics.
 
 ## `man/*Rd` files
 
-The `man` directory contains the function documentation in `.Rd` files (one per function). These can be created from the function's `roxygen2` documentation using `devtools::document`. They use a custom syntax that is loosely based on LaTeX, which can be rendered to different formats for sharing with the package users.
+The `man` directory contains the function documentation in `.Rd` files (one per function).
+These can be created from the function's `roxygen2` documentation
+using `devtools::document`.
+They use a custom syntax that is loosely based on LaTeX,
+which can be rendered to different formats for sharing with the package users.
 
 For example, this `roxygen2` documention in `R/fbind.R`:
 
@@ -120,7 +128,12 @@ fcount(iris$Species)
 
 ## `NAMESPACE` file
 
-In it are commands applied to R objects. Common commands include indicating that a function should be exported from your package, and/or that a another package should be imported to be used internally. The contents of this file are best to be created automatically using `devtools` to pull this information from the package function's `roxygen2` documentation (exports) and the `DESCRIPTION` file (imports).
+In it are commands applied to R objects.
+Common commands include indicating that a function should be exported from your package,
+and/or that a another package should be imported to be used internally.
+The contents of this file are best to be created automatically
+using `devtools` to pull this information from the package function's `roxygen2` documentation (exports)
+and the `DESCRIPTION` file (imports).
 
 Here's an example `NAMESPACE` file:
 
@@ -138,15 +151,25 @@ importFrom(brio,readLines)
 
 ### Dealing with package dependencies in R
 
-- When we write code in our package that uses functions from other packages we need to import those functions from the namespace of their packages.
+- When we write code in our package that uses functions from other packages we need
+  to import those functions from the namespace of their packages.
 
-- In R, we do this via `use_package`, which adds that package to the “Imports” section of DESCRIPTION
+- In R, we do this via `use_package`,
+  which adds that package to the “Imports” section of DESCRIPTION
 
 - We also need to refer to that package in our function code, there are two ways to do this:
-  1. refer the function by `package::fun_name` (e.g., `dplyer::filter`) whenever you use the function in your code
-  2. add the function to your packages namespace so that you can just refer to it as your normally would. To do this add `@importFrom <package_name> <function_or_operator>` to the Roxygen documentation of the function that you would like to use the function from the other package in and then use `document()` to update the DESCRIPTION and NAMESPACE file.
+  1. refer the function by `package::fun_name`
+     (e.g., `dplyer::filter`) whenever you use the function in your code
+  2. add the function to your packages namespace
+     so that you can just refer to it as your normally would.
+     To do this add `@importFrom <package_name> <function_or_operator>`
+     to the Roxygen documentation of the function
+     that you would like to use the function from the other package
+     in and then use `document()` to update the DESCRIPTION and NAMESPACE file.
 
-*It is recommended to use method 1 (`pkg::fun_name`) because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you). The trade off is that it’s a little more work to write.*
+*It is recommended to use method 1 (`pkg::fun_name`)
+because it is more explicit on what external functions your package code depends on (making it easier to read for collaborators, including future you).
+The trade off is that it’s a little more work to write.*
 
 ## Package documentation for R
 
@@ -160,12 +183,17 @@ There are several levels of documentation possible for R packages:
 - We learned the basics of how to write Roxygen-style comments in DSCI 511
 - In the package context, there are Namespace tags you should know about:
     - `@export` - this should be added to all package functions you want your user to know about
-    - `@NoRd` - this should be added to helper/internal helper functions that you don't want your user to know about
+    - `@NoRd` - this should be added to helper/internal helper functions
+      that you don't want your user to know about
 
 ## Vignettes
-It is common for packages to have vignettes (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. Think of your vignette as a demonstration of how someone would use your function to solve a problem.
+It is common for packages to have vignettes
+(think demos with narratives) showing how to use the package
+in a more real-world scenario than the documentation examples show.
+Think of your vignette as a demonstration of how someone would use your function to solve a problem.
 
-- It should demonstrate how the individual functions in your package work, as well as how they can be integrated together.
+- It should demonstrate how the individual functions in your package work,
+  as well as how they can be integrated together.
 
 - To create a template for your vignette, run:
     ```
@@ -178,21 +206,26 @@ As an example, here's the `dplyr` vignette: <https://cran.r-project.org/web/pack
 
 ## Package websites (via [`pkgdown`](https://pkgdown.r-lib.org/))
 
-- Vignettes are very helpful, however they are not that discoverable by others, websites are a much easier way to share your package with others.
+- Vignettes are very helpful, however they are not that discoverable by others,
+  websites are a much easier way to share your package with others.
 
 - The `pkgdown` R package let's you build a beautiful website for your R package in 4 steps!
 
-    1. Turn on GitHub pages in your package repository, setting `main branch / docs folder` as the source.
+    1. Turn on GitHub pages in your package repository,
+       setting `main branch / docs folder` as the source.
 
     2. Install `pkgdown`: `install.packages("pkgdown")
 
-    3. Run `pkgdown::build_site()` from the root of your project, and commit and push the changes made by this.
+    3. Run `pkgdown::build_site()` from the root of your project,
+       and commit and push the changes made by this.
 
     4. Push your code, including the `docs` directory to GitHub.com
 
 
-In addition to the beautiful website, `pkgdown` automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉
+In addition to the beautiful website,
+`pkgdown` automatically links to your vignette under the articles section of the website!!! 🎉🎉🎉
 
-> Note you can also configure a GitHub Actions workflow to automate the rebuilding of the `pkgdown` site
-> anytime changes are pushed to your package's GitHub repository.
+> Note you can also configure a GitHub Actions workflow
+> to automate the rebuilding of the `pkgdown` site anytime changes are pushed
+> to your package's GitHub repository.
 > We will discuss this later in the course under the topic of continuous deployment.

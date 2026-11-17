@@ -11,9 +11,11 @@ aliases:
 
 ## Data analysis pipelines
 
-- As analysis grows in length and complexity, one literate code document generally is not enough
+- As analysis grows in length and complexity,
+  one literate code document generally is not enough
 
-- To improve code report readability (and code reproducibility and modularity) it is better to abstract at least parts of the code away (e.g, to scripts)
+- To improve code report readability (and code reproducibility
+  and modularity) it is better to abstract at least parts of the code away (e.g, to scripts)
 
 - These scripts save figures and tables that will be imported into the final report
 
@@ -26,18 +28,22 @@ aliases:
 
 Adapted from [Software Carpentry](http://software-carpentry.org/)
 
-To illustrate how to make a data analysis pipeline using a shell script to drive other scripts, we will work through an example together. Here are some set-up instructions so that we can do this together:
+To illustrate how to make a data analysis pipeline
+using a shell script to drive other scripts, we will work through an example together.
+Here are some set-up instructions so that we can do this together:
 
 #### Set-up instructions
 
-1. Click the green “Use this template” button from [this GitHub repository](https://github.com/ttimbers/data-analysis-pipeline-bash-practice) to obtain a copy of it for yourself (do not fork it).
+1. Click the green “Use this template” button from [this GitHub repository](https://github.com/ttimbers/data-analysis-pipeline-bash-practice)
+   to obtain a copy of it for yourself (do not fork it).
 
 2. Clone this repository to your computer.
 
 #### Let's do some analysis!
 
 Suppose we have a script, `wordcount.py`, that reads in a text file,
-counts the words in this text file, and outputs a data file:
+counts the words in this text file,
+and outputs a data file:
 
 ```bash
 python scripts/wordcount.py \
@@ -51,9 +57,9 @@ If we view the first 5 rows of the data file using `head`,
 head -5 results/isles.dat
 ```
 
-we can see that the file consists of one row per word. Each row shows the word itself,
-the number of occurrences of that word, and the number of occurrences as a percentage of
-the total number of words in the text file.
+we can see that the file consists of one row per word.
+Each row shows the word itself, the number of occurrences of that word,
+and the number of occurrences as a percentage of the total number of words in the text file.
 
 ```sh
 the 3822 6.7371760973
@@ -63,8 +69,8 @@ to 1479 2.60708619778
 a 1308 2.30565838181
 ```
 
-Suppose we also have a script, `plotcount.py`, that reads in a data
-file and save a plot of the 10 most frequently occurring words:
+Suppose we also have a script, `plotcount.py`,
+that reads in a data file and save a plot of the 10 most frequently occurring words:
 
 ```bash
 python scripts/plotcount.py \
@@ -79,9 +85,10 @@ Together these scripts implement a data analysis pipeline:
 3. Write the analysis results to a new file.
 4. Plot a graph of the analysis results.
 
-To document how we'd like the analysis to be run, so we (and others) have a record and
-can replicate it, we will build a shell script called `run_all.sh`. Let's work to try
-to build this pipeline so it does all that!
+To document how we'd like the analysis to be run,
+so we (and others) have a record and can replicate it,
+we will build a shell script called `run_all.sh`.
+Let's work to try to build this pipeline so it does all that!
 
 ```bash
 # run_all.sh
@@ -105,13 +112,15 @@ python scripts/plotcount.py \
     --output_file=results/figure/isles.png
 ```
 
-We actually have 4 books that we want to analyze, and then put the figures in a report.
+We actually have 4 books that we want to analyze,
+and then put the figures in a report.
 
 1. Read a data file.
 2. Perform an analysis on this data file.
 3. Write the analysis results to a new file.
 4. Plot a graph of the analysis results.
-5. Save the graph as an image, so we can put it in a paper.
+5. Save the graph as an image,
+   so we can put it in a paper.
 
 Let's extend our shell script to do that!
 
@@ -196,4 +205,5 @@ Rscript -e "rmarkdown::render('doc/breast_cancer_predict_report.Rmd', output_for
 
 - What are the advantages to using a data analysis pipeline?
 
-- How "good" is a shell script as a data analysis pipeline? What might not be ideal about this?
+- How "good" is a shell script as a data analysis pipeline?
+  What might not be ideal about this?

@@ -17,8 +17,10 @@ It is now available for installation via:
 - Miniconda Python distribution (this is what we recommended most of you install for this course)
 - Miniforge (this is what we recommended folks with Mac ARM machines install for this course)
 
-Conda builds of R and Python packages, are in fact R and Python packages and built from
-R and Python source code, but they are packaged up and built differently,
+Conda builds of R and Python packages,
+are in fact R and Python packages
+and built from R and Python source code,
+but they are packaged up and built differently,
 and with a different tool chain.
 How to create `conda` packages from R and Python source code
 is beyond the scope of this course.
@@ -33,7 +35,9 @@ in a way that they can recreate it on their computer.
 
 ### Managing Conda
 
-Let's first start by checking if conda is installed (it should be if we followed the recommended course computer setup instructions) by running:
+Let's first start by checking if conda is installed
+(it should be if we followed the recommended course computer setup instructions)
+by running:
 
 ```bash
 conda --version
@@ -51,7 +55,8 @@ conda update --help
 ```
 
 Let's update our conda to the latest version.
-Note that you might already have the latest version since we downloaded it recently.
+Note that you might already have the latest version
+since we downloaded it recently.
 
 ```bash
 conda update conda
@@ -116,7 +121,8 @@ it will let you know if it is out of date when you are installing new packages.
 
 #### What is a conda environment and why is it so useful?
 
-Using `conda`, you can create an isolated R or Python virtual environment for your project.
+Using `conda`,
+you can create an isolated R or Python virtual environment for your project.
 The default environment is the `base` environment,
 which contains only the essential packages from Miniconda
 (and anything else you have installed in it since installing Miniconda).
@@ -140,8 +146,8 @@ you can either do this through:
 
 We will now discuss both, as they are both relevant workflows for data science.
 When do you use one versus the other?
-I typically use the manual specifications of packages when I am creating
-a new data science project.
+I typically use the manual specifications of packages
+when I am creating a new data science project.
 From that I generate an environment file in YAML format
 that I can share with collaborators (or anyone else who wants to reproduce my work).
 Thus, I use an environment file in YAML format when I join a project as a collaborator
@@ -153,7 +159,8 @@ or when I want to reproduce someone else's work.
 We can create `test_env` conda environment by typing `conda -n <name-of-env>`.
 However,
 it is often useful to specify more than just the name of the environment,
-e.g. the channel from which to install packages, the Python version,
+e.g. the channel from which to install packages,
+the Python version,
 and a list of packages to install into the new env.
 In the example below,
 I am creating the `test_env` environment
@@ -177,16 +184,19 @@ you can type `conda activate test_env`
 Since you will do this often,
 we created an alias shortcut `ca`
 that you can use to activate environments.
-To know the current environment that you're in you can look at the prefix
-of the prompt string in your shell which now changed to (`test_env`).
+To know the current environment that you're
+in you can look at the prefix of the prompt string in your shell
+which now changed to (`test_env`).
 And to see all your environments,
 you can type `conda env list`.
 
 ### Seeing what packages are available in an environment
 
 We will now check packages that are available to us.
-The command below will list all the packages in an environment, in this case `test_env`.
-The list will include versions of each package, the specific build,
+The command below will list all the packages in an environment,
+in this case `test_env`.
+The list will include versions of each package,
+the specific build,
 and the channel that the package was downloaded from.
 `conda list` is also useful to ensure that you have installed the packages that you desire.
 
@@ -209,18 +219,26 @@ libgfortran               3.0.0                         0    conda-forge
 
 ### Installing conda package
 
-Under the name column of the result in the terminal or the package column in the Anaconda Cloud listing,
+Under the name column of the result in the terminal
+or the package column in the Anaconda Cloud listing,
 shows the necessary information to install the package.
 e.g. conda-forge/rasterio.
-The first word list the channel that this package is from and the second part shows the name of the package.
+The first word list the channel that this package
+is from and the second part shows the name of the package.
 
-To install the latest version available within the channel, do not specify in the install command. We will install version 0.35 of `rasterio` from conda-forge into `test_env` in this example. Conda will also automatically install the dependencies for this package.
+To install the latest version available within the channel,
+do not specify in the install command.
+We will install version 0.35 of `rasterio` from conda-forge into `test_env` in this example.
+Conda will also automatically install the dependencies for this package.
 
 ```bash
 conda install -c conda-forge rasterio=0.35
 ```
 
-If you have a few trusted channels that you prefer to use, you can pre-configure these so that everytime you are creating an environment, you won't need to explicitly declare the channel.
+If you have a few trusted channels that you prefer to use,
+you can pre-configure these
+so that everytime you are creating an environment,
+you won't need to explicitly declare the channel.
 
 ```bash
 conda config --add channels conda-forge
@@ -228,8 +246,11 @@ conda config --add channels conda-forge
 
 ### Removing a conda package
 
-We decided that rasterio is not needed in this tutorial, so we will remove it from `test_env`.
-Note that this will remove the main package rasterio and its dependencies (unless a dependency was installed explicitly at an earlier point in time or is required be another package).
+We decided that rasterio is not needed in this tutorial,
+so we will remove it from `test_env`.
+Note that this will remove the main package rasterio and its dependencies
+(unless a dependency was installed explicitly at an earlier point in time
+or is required be another package).
 
 ```bash
 conda remove -n test_env rasterio
@@ -259,8 +280,7 @@ which will list each package and its version
 in the format `package=version=build`.
 
 Exporting your environment to a file called `environment.yaml`
-(it could be called anything,
-but this is the conventional name
+(it could be called anything, but this is the conventional name
 and using it makes it easy for others
 to recognize that this is a conda env file,
 the extension can be either `.yaml` or `.yml`):
@@ -280,13 +300,14 @@ e.g. `numpy`.
 This is good in the sense that it gives an exact copy of *everything*
 in your environment.
 
-We use the `--from-history` flag/option above as
-some dependencies might differ between operating systems,
+We use the `--from-history` flag/option above
+as some dependencies might differ between operating systems,
 so this file *might* not work with someone from a different OS.
 The `--from-history` flag,
 looks at the history of the packages you explicitly told `conda` to install
 and only list those in the export.
-The required dependencies will then be handled in an OS-specific manner during the installation,
+The required dependencies will then be handled
+in an OS-specific manner during the installation,
 which guarantees that they will work across OSes.
 This `environment.yaml` file would be much shorter and look something like this:
 
@@ -311,7 +332,8 @@ you **NEED** to add the version string manually.
 
 ### Creating environment from an environment file
 
-Now, let's install `environment.yml` environment file above so that we can create a conda environment called `test_env`.
+Now, let's install `environment.yml` environment file above
+so that we can create a conda environment called `test_env`.
 
 ```bash
 $ conda env create --file environment.yml
@@ -323,19 +345,28 @@ Create an environment on your laptop with an older version of Python!
 
 1. Clone [this GitHub repository](https://github.com/ttimbers/conda_env_practice/blob/main/README.md).
 
-2. Try to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as `python -c "print 'Back from the Future'"`. This should fail.
+2. Try to run some antiquated (Python 3.0.0 and higher compatible) Python code,
+   such as `python -c "print 'Back from the Future'"`.
+   This should fail.
 
-3. In the terminal, navigate to the root of the repository and run: `conda env create --file environment.yml` (note: If you have a M1/M2 Mac, please run this command instead: CONDA_SUBDIR=osx-64 conda env create --file environment.yml).
+3. In the terminal, navigate to the root of the repository and run:
+   `conda env create --file environment.yml`
+   (note: If you have a M1/M2 Mac, please run this command instead:
+   CONDA_SUBDIR=osx-64 conda env create --file environment.yml).
 
 4. Activate the environment by typing `conda activate oldie_but_a_goodie`
 
-5. Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code, such as `python -c "print 'Back from the Future'"`. If you activated your environment correctly, this should succeed!
+5. Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code,
+   such as `python -c "print 'Back from the Future'"`.
+   If you activated your environment correctly,
+   this should succeed!
 :::
 
 ### Copying an environment
 
 We can make an exact copy of an environment to an environment with a different name.
-This maybe useful for any testing versus live environments or different Python 3.7 versions for the same packages.
+This maybe useful for any testing versus live environments
+or different Python 3.7 versions for the same packages.
 In this example, `test_env` is cloned to create `live_env`.
 
 ```bash
@@ -397,7 +428,8 @@ there is a package called `nb_conda_kernels` that makes it possible
 to have a single installation of JupyterLab access kernels in other conda environments.
 This package needs to be installed in the conda environment
 where JupyterLab is installed.
-For the computer setup for this course, we did that in the `base` environment,
+For the computer setup for this course,
+we did that in the `base` environment,
 so that is where you would need to install `nb_conda_kernels` to make this work.
 
 

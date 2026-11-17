@@ -7,11 +7,11 @@ aliases:
 
 ## Example of workflow for writing python functions and tests for data science
 
-Let's say we want to write a function
-for a task we repeatedly are performing in our data analysis.
+Let's say we want to write a function for a task we repeatedly
+are performing in our data analysis.
 For example, summarizing the number of observations in each class.
-This is a common task performed for almost every classification problem
-to examine how many classes there are to understand if we are facing a binary
+This is a common task performed for almost every classification problem to examine
+how many classes there are to understand if we are facing a binary
 or multi-class classification problem,
 as well as to examine whether there are any class imbalances
 that we may need to deal with before tuning our models.
@@ -19,7 +19,8 @@ that we may need to deal with before tuning our models.
 ### 1. Write the function specifications and documentation - but do not implement the function
 
 The first thing we should do is write the function specifications and documentation.
-This can effectively represented by an empty function and docstrings in Python as shown below:
+This can effectively represented by an empty function
+and docstrings in Python as shown below:
 
 ```{python}
 import pandas as pd
@@ -108,7 +109,7 @@ pd.DataFrame({"class": ["class1", "class2"], "count": [2, 2]})
 #### Simple expected use test case #2
 
 - DataFrame with 2 classes, with 2 observations for one class,
-and only one observation in the other
+  and only one observation in the other
 
 *Function input:*
 
@@ -234,11 +235,9 @@ using the names in the last column:
 | Error #1               | dictionary (instead of a DataFrame) with 2 classes, 2 observations per class | `TypeError`                                    | `two_classes_2_obs_as_dict`                            |
 
 Next, I sketch out a skeleton for the unit tests.
-For Python,
-we will use the well maintained and popular `pytest` Python package
-for writing our tests.
-For extra resources on `Pytest` beyond what is demonstrated here,
-we recommend reading:
+For Python, we will use the well maintained
+and popular `pytest` Python package for writing our tests.
+For extra resources on `Pytest` beyond what is demonstrated here, we recommend reading:
 - [`pytest` documentation](https://docs.pytest.org/en/stable/contents.html)
 
 With Python and `pytest`,
@@ -275,9 +274,11 @@ def test_count_classes_errors():
 
 Now that we have a plan, we can create reproducible test data for that plan!
 When we do this, we want to keep our data as small and tractable as possible.
-We want to test things we know the answer to, or can at a minimum calculate by hand.
+We want to test things we know the answer to,
+or can at a minimum calculate by hand.
 We will use Python code to reproducibly create the test data.
-We will need to do this for the data we will feed in as inputs to our function in the tests,
+We will need to do this for the data we will feed in as inputs
+to our function in the tests,
 as well as the data we expect our function to return.
 
 ```{python}
@@ -332,8 +333,8 @@ one_class_2_obs_output = pd.DataFrame({"class": ["class1"], "count": [2]})
 
 ### 4. Write the tests to evaluate your function based on the planned test cases and test data
 
-Now that we have the skeletons for our tests, and our reproducible test data,
-we can actually write the internals for our tests!
+Now that we have the skeletons for our tests,
+and our reproducible test data, we can actually write the internals for our tests!
 We will do this by using `assert` statements and `pytest.raises`.
 
 ```{python}
@@ -368,8 +369,7 @@ def test_count_classes_errors():
 
 Defining a test function does not run it.
 In a project, `pytest` finds every function whose name starts with `test_`
-in the test files and runs them for us
-(see [Where do the tests go?](#where-do-the-tests-go) below).
+in the test files and runs them for us (see [Where do the tests go?](#where-do-the-tests-go) below).
 Here, we call each test function ourselves so that we can see what happens:
 
 ```{python}
@@ -387,13 +387,16 @@ test_count_classes_edge()
 test_count_classes_errors()
 ```
 
-Wait what??? All of our tests fail...
+Wait what???
+All of our tests fail...
 
 Yes, we expect that, we haven't written our function body yet!
 
 ### 5. Implement the function by writing the needed code in the function body to pass the tests
 
-FINALLY!! We can write the function body for our function! And then call our tests to see if they pass!
+FINALLY!!
+We can write the function body for our function!
+And then call our tests to see if they pass!
 
 ```{python}
 # translated my R Code to Python using ChatGPT, then edited.
@@ -454,19 +457,27 @@ test_count_classes_edge()
 test_count_classes_errors()
 ```
 
-There are no errors this time, so the tests passed!
+There are no errors this time,
+so the tests passed!
 
 <img src="https://media.giphy.com/media/EXFAJtutz5Ig8/giphy.gif" >
 
-Are we done? For the purposes of this demo, yes! **However in practice you would usually cycle through steps 2-5 two-three more times to further improve our tests and and function!**
+Are we done?
+For the purposes of this demo, yes!
+**However in practice you would usually cycle through steps 2-5 two-three more times
+to further improve our tests and and function!**
 
-**Discussion:** Does test-driven development afford testability? How might it do so? Let's discuss controllability, observability, isolateablilty, and automatability in our case study of test-driven development of `count_classes`.
+**Discussion:** Does test-driven development afford testability?
+How might it do so?
+Let's discuss controllability, observability, isolateablilty,
+and automatability in our case study of test-driven development of `count_classes`.
 
 ### Where do the function and test files go?
 
-In the workflow above,
-we skipped over where we should put our functions we will use in our data analyses,
-as well as where we put the tests for our function, and how we call those tests!
+In the workflow above, we skipped over where we should put our functions
+we will use in our data analyses,
+as well as where we put the tests for our function,
+and how we call those tests!
 
 We summarize the answer to these questions below,
 but **highly recommend you explore and test out our demonstration GitHub repository
@@ -474,17 +485,16 @@ that has a minimal working example of this: <https://github.com/ttimbers/demo-te
 
 #### Where does the function go?
 
-In Python, functions should be abstracted to Python scripts (plain text files that end in `.py`)
-which typicaly live in the project's `src` directory.
+In Python, functions should be abstracted to Python scripts (plain text files
+that end in `.py`) which typicaly live in the project's `src` directory.
 Commonly we name the Python script with the same name as the function
 (however, we might choose a more general name if the Python script contains many functions).
 
-In the analysis script or notebook file where we call the function (e.g. `eda.py`)
-we need to call `from PATH.TO.FILE import FUNCTION`
-before we are able to use the function(s) contained in that Python script inside our analysis file.
-If we have to go up a directory (to a parent directory)
-in our PATH to point to the file containing the function,
-we will need to add that path to Python.
+In the analysis script or notebook file where we call the function
+(e.g. `eda.py`) we need to call `from PATH.TO.FILE import FUNCTION` before
+we are able to use the function(s) contained in that Python script inside our analysis file.
+If we have to go up a directory (to a parent directory) in our PATH to point
+to the file containing the function, we will need to add that path to Python.
 We can do that via:
 
 ```
@@ -497,43 +507,58 @@ from src.count_classes import count_classes
 #### Where do the tests go?
 
 The tests for the function should live in `tests/test_FUNCTION_NAME.py`
-(`pytest` only looks for tests in files whose names start with `test_` or end with `_test.py`).
+(`pytest` only looks for tests in files whose names start
+with `test_` or end with `_test.py`).
 The test suite can be run via running `pytest` in the project root.
 
 ## Reproducibly generating test data
 
 As highlighted above, where at all possible,
-we should use code to generate reproducible, simple
-and tractable helper data for our tests.
+we should use code to generate reproducible,
+simple and tractable helper data for our tests.
 Code for generating data can live in the test files themselves.
 If the code is complex, or the data needs to be shared across several test files,
-then we recommend defining `pytest` fixture functions in a file
-named `conftest.py` in the `tests` directory.
+then we recommend defining `pytest` fixture functions in a file named `conftest.py`
+in the `tests` directory.
 A nice example of how this works can be seen here:
 <https://www.tutorialspoint.com/pytest/pytest_conftest_py.htm>
 
-In some cases, many test cases are needed to be generated and iterated over
-to test a function that can take many values.
+In some cases, many test cases are needed to be generated
+and iterated over to test a function that can take many values.
 In these cases, parameterization can be useful.
 An example of how to do this with `pytest` is shown here:
 <https://www.tutorialspoint.com/pytest/pytest_parameterizing_tests.htm>
 
 ## Common types of test levels in data science
 
-1. Unit tests - exercise individual components, usually methods or functions, in isolation. This kind of testing is usually quick to write and the tests incur low maintenance effort since they touch such small parts of the system. They typically ensure that the unit fulfills its contract making test failures more straightforward to understand. *This is the kind of tests we wrote for our example for `count_classes` above.*
+1. Unit tests - exercise individual components, usually methods or functions, in isolation.
+   This kind of testing is usually quick to write
+   and the tests incur low maintenance effort since they touch such small parts of the system.
+   They typically ensure that the unit fulfills its contract making test failures more straightforward to understand.
+   *This is the kind of tests we wrote for our example for `count_classes` above.*
 
-2. Integration tests -  exercise groups of components to ensure that their contained units interact correctly together. Integration tests touch much larger pieces of the system and are more prone to spurious failure. Since these tests validate many different units in concert, identifying the root-cause of a specific failure can be difficult. *In data science, this might be testing whether several functions that call each other, or run in sequence, work as expected (e.g., tests for a `tidymodel`'s `workflow` function)*
+2. Integration tests - exercise groups of components to ensure
+   that their contained units interact correctly together.
+   Integration tests touch much larger pieces of the system
+   and are more prone to spurious failure.
+   Since these tests validate many different units in concert,
+   identifying the root-cause of a specific failure can be difficult.
+   *In data science, this might be testing whether several functions that call each other,
+   or run in sequence, work as expected (e.g., tests for a `tidymodel`'s `workflow` function)*
 
 *Source: [CPSC 310 class notes from Reid Holmes, UBC](https://github.com/ubccpsc/310/blob/master/resources/readings/Testing.md)*
 
 
 ## Testing in Python resources
 
-- testing in [Python with Pytest](https://py-pkgs.org/05-testing) (from the *Python packages* book)
+- testing in [Python with Pytest](https://py-pkgs.org/05-testing)
+  (from the *Python packages* book)
 - [Pytest documentation](https://docs.pytest.org/en/6.2.x/contents.html)
-- [Testing Software](https://third-bit.com/py-rse/testing.html) (from the *Research Software Engineering with Python* book)
+- [Testing Software](https://third-bit.com/py-rse/testing.html)
+  (from the *Research Software Engineering with Python* book)
 
 ## Attribution
 - [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
 - [The Tidynomicon](https://third-bit.com/tidynomicon/) by Greg Wilson
-- [CPSC 310](https://github.com/ubccpsc/310/tree/2019sept) and [CPSC 410](https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf) class notes by Reid Holmes, UBC
+- [CPSC 310](https://github.com/ubccpsc/310/tree/2019sept)
+  and [CPSC 410](https://www.cs.ubc.ca/~rtholmes/teaching/2015t1/cpsc410/slides/410_19_testability.pdf) class notes by Reid Holmes, UBC
