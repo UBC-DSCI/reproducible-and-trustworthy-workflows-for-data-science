@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>17&nbsp; Virtual environments: Python (uv) – Reproducible and Trustworthy Workflows for Data Science</title>
+<title>16&nbsp; Virtual environments: Python (uv) – Reproducible and Trustworthy Workflows for Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -36,8 +71,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../lectures/virtual-environments-python-conda.html" rel="next">
-<link href="../lectures/virtual-environments-r-renv.html" rel="prev">
+<link href="../lectures/virtual-environments-python-uv-install.html" rel="next">
+<link href="../lectures/virtual-environments.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
@@ -82,18 +117,18 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <style>
-div.callout-exercise.callout {
-  border-left-color: #1C5F2E;
+div.callout-activity.callout {
+  border-left-color: #0055B7;
 }
-div.callout-exercise.callout-style-default .callout-header {
-  background-color: rgba(28, 95, 46, 0.13);
+div.callout-activity.callout-style-default .callout-header {
+  background-color: rgba(0, 85, 183, 0.13);
 }
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
   font-family: 'Font Awesome 7 Free';
   font-weight: 900;
   font-style: normal;
-  content: '\f44b' !important;
+  content: '\e53d' !important;
   background-image: none;
 }
 div.callout-definition.callout {
@@ -110,6 +145,20 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '\f518' !important;
   background-image: none;
 }
+div.callout-exercise.callout {
+  border-left-color: #1C5F2E;
+}
+div.callout-exercise.callout-style-default .callout-header {
+  background-color: rgba(28, 95, 46, 0.13);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f44b' !important;
+  background-image: none;
+}
 div.callout-relevance-project.callout {
   border-left-color: #0077C8;
 }
@@ -122,20 +171,6 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   font-weight: 900;
   font-style: normal;
   content: '\f542' !important;
-  background-image: none;
-}
-div.callout-activity.callout {
-  border-left-color: #0055B7;
-}
-div.callout-activity.callout-style-default .callout-header {
-  background-color: rgba(0, 85, 183, 0.13);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\e53d' !important;
   background-image: none;
 }
 </style>
@@ -323,7 +358,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/virtual-environments.html">Virtual Environments</a></li><li class="breadcrumb-item"><a href="../lectures/virtual-environments-python-uv.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/virtual-environments.html">Virtual Environments</a></li><li class="breadcrumb-item"><a href="../lectures/virtual-environments-python-uv.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></a></li></ol></nav>
         <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -503,26 +538,74 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/virtual-environments-r-renv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: R (renv)</span></span></a>
+  <a href="../lectures/virtual-environments-python-uv.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../lectures/virtual-environments-python-uv.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></span></a>
+  <a href="../lectures/virtual-environments-python-uv-install.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">uv: installing uv and managing Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-projects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">uv: projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-run.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">uv: <code>uv run</code> and activating an environment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-sharing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">uv: sharing and managing an environment</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-jupyter-scripts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">uv: JupyterLab and standalone scripts</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-exact-pins.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">uv: pinning exact versions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-python-uv-quarto.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">uv: rendering Quarto documents</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-r-renv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Virtual environments: R (renv)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lectures/virtual-environments-r-renv-description.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">renv: declaring packages in <code>DESCRIPTION</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/virtual-environments-python-conda.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/virtual-environments-python-conda-lock.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda-lock)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda-lock)</span></span></a>
   </div>
 </li>
       </ul>
@@ -539,25 +622,25 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/containers.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Introduction to containerization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/containers-running.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Using and running containers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/containers-docker-compose.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Containers: Docker Compose</span></span></a>
+ <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Containers: Docker Compose</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/containers-building.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Customizing and building containers</span></span></a>
   </div>
 </li>
       </ul>
@@ -574,31 +657,31 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/data-validation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Data validation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/data-validation-r-pointblank.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data validation: R (pointblank)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Data validation: R (pointblank)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/data-validation-python-pandera.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Data validation: Python (Pandera)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Data validation: Python (Pandera)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/data-validation-python-deepchecks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Data validation: Python (Deepchecks)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Data validation: Python (Deepchecks)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/data-validation-python-pointblank.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Data validation: Python (pointblank)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Data validation: Python (pointblank)</span></span></a>
   </div>
 </li>
       </ul>
@@ -615,13 +698,13 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Non-interactive scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/reproducible-reports-quarto.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Reproducible reports: Quarto</span></span></a>
+ <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Reproducible reports: Quarto</span></span></a>
   </div>
 </li>
       </ul>
@@ -638,13 +721,13 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/pipelines-scripts.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
+ <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Data analysis pipelines with scripts</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/pipelines-make.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
+ <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Data analysis pipelines with GNU Make</span></span></a>
   </div>
 </li>
       </ul>
@@ -661,31 +744,31 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
+ <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Introduction to testing code for data science</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/testing-r-testthat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">Testing: R (testthat)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Testing: R (testthat)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">Testing: Python (pytest)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Testing: Python (pytest)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/testing-images.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">Testing: images</span></span></a>
+ <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Testing: images</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/testing-quality.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">37</span>&nbsp; <span class="chapter-title">Testing: evaluating test suite quality</span></span></a>
+ <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Testing: evaluating test suite quality</span></span></a>
   </div>
 </li>
       </ul>
@@ -702,43 +785,43 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">38</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Python packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">39</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Packaging: Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-python-uv.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">40</span>&nbsp; <span class="chapter-title">Packaging: Python (uv)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">Packaging: Python (uv)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-python-poetry.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">41</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">Packaging: Python (Poetry)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-python-hatch.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">42</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">Packaging: Python (Hatch)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">43</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Packaging: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/packaging-tool-philosophies.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">44</span>&nbsp; <span class="chapter-title">Packaging: R and Python tool philosophies</span></span></a>
+ <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Packaging: R and Python tool philosophies</span></span></a>
   </div>
 </li>
       </ul>
@@ -755,13 +838,13 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-testing-python-pytest.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">45</span>&nbsp; <span class="chapter-title">Package testing: Python (pytest)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Package testing: Python (pytest)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-coverage-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">46</span>&nbsp; <span class="chapter-title">Package coverage: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Package coverage: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -778,37 +861,37 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/continuous-integration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">47</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">55</span>&nbsp; <span class="chapter-title">Automated testing and continuous integration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/github-actions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">48</span>&nbsp; <span class="chapter-title">GitHub Actions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">56</span>&nbsp; <span class="chapter-title">GitHub Actions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/github-actions-matrix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">49</span>&nbsp; <span class="chapter-title">GitHub Actions: matrix workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">57</span>&nbsp; <span class="chapter-title">GitHub Actions: matrix workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/github-actions-testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">50</span>&nbsp; <span class="chapter-title">GitHub Actions: testing workflows</span></span></a>
+ <span class="menu-text"><span class="chapter-number">58</span>&nbsp; <span class="chapter-title">GitHub Actions: testing workflows</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/github-actions-case-study-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">51</span>&nbsp; <span class="chapter-title">Case study: Python CI workflow (<code>pypkgs-cookiecutter</code>’s <code>ci.yml</code>)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">59</span>&nbsp; <span class="chapter-title">Case study: Python CI workflow (<code>pypkgs-cookiecutter</code>’s <code>ci.yml</code>)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/github-actions-case-study-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">52</span>&nbsp; <span class="chapter-title">Case study: R CI workflow (a simplified <code>check-release.yaml</code>)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">60</span>&nbsp; <span class="chapter-title">Case study: R CI workflow (a simplified <code>check-release.yaml</code>)</span></span></a>
   </div>
 </li>
       </ul>
@@ -825,19 +908,19 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-documentation-python-sphinx.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">53</span>&nbsp; <span class="chapter-title">Package documentation: Python (Sphinx)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">61</span>&nbsp; <span class="chapter-title">Package documentation: Python (Sphinx)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-documentation-python-quartodoc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">54</span>&nbsp; <span class="chapter-title">Package documentation: Python (quartodoc)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">62</span>&nbsp; <span class="chapter-title">Package documentation: Python (quartodoc)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-documentation-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">55</span>&nbsp; <span class="chapter-title">Package documentation: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">63</span>&nbsp; <span class="chapter-title">Package documentation: R</span></span></a>
   </div>
 </li>
       </ul>
@@ -854,37 +937,37 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/continuous-deployment.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">56</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">64</span>&nbsp; <span class="chapter-title">Deploying and publishing packages</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/continuous-deployment-python-poetry.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">57</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Poetry)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Poetry)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/continuous-deployment-python-hatch-quartodoc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">58</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Hatch and quartodoc)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">66</span>&nbsp; <span class="chapter-title">Continuous deployment: Python (Hatch and quartodoc)</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/continuous-deployment-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">59</span>&nbsp; <span class="chapter-title">Continuous deployment: R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">67</span>&nbsp; <span class="chapter-title">Continuous deployment: R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-peer-review.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">60</span>&nbsp; <span class="chapter-title">Package peer review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">68</span>&nbsp; <span class="chapter-title">Package peer review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/package-versioning-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">61</span>&nbsp; <span class="chapter-title">Package versioning: Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">69</span>&nbsp; <span class="chapter-title">Package versioning: Python</span></span></a>
   </div>
 </li>
       </ul>
@@ -901,7 +984,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/copyright-licenses.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">62</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
+ <span class="menu-text"><span class="chapter-number">70</span>&nbsp; <span class="chapter-title">Copyright and licenses</span></span></a>
   </div>
 </li>
       </ul>
@@ -918,7 +1001,7 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/reproducibility-wrap-up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">63</span>&nbsp; <span class="chapter-title">Workflows for reproducible and trustworthy data science wrap-up</span></span></a>
+ <span class="menu-text"><span class="chapter-number">71</span>&nbsp; <span class="chapter-title">Workflows for reproducible and trustworthy data science wrap-up</span></span></a>
   </div>
 </li>
       </ul>
@@ -935,31 +1018,31 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/functions-python.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">64</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
+ <span class="menu-text"><span class="chapter-number">72</span>&nbsp; <span class="chapter-title">Defining functions in Python</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/functions-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">65</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">73</span>&nbsp; <span class="chapter-title">Defining functions in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/non-standard-evaluation-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">66</span>&nbsp; <span class="chapter-title">Non-standard evaluation in R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">74</span>&nbsp; <span class="chapter-title">Non-standard evaluation in R</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/reproducible-reports-rmarkdown-jupyter.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">67</span>&nbsp; <span class="chapter-title">Reproducible reports: R Markdown and Jupyter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">75</span>&nbsp; <span class="chapter-title">Reproducible reports: R Markdown and Jupyter</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../lectures/quarto-github-pages.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">68</span>&nbsp; <span class="chapter-title">Quarto and GitHub Pages</span></span></a>
+ <span class="menu-text"><span class="chapter-number">76</span>&nbsp; <span class="chapter-title">Quarto and GitHub Pages</span></span></a>
   </div>
 </li>
       </ul>
@@ -973,16 +1056,29 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
+  <li><a href="#a-project-that-already-uses-uv" id="toc-a-project-that-already-uses-uv" class="nav-link" data-scroll-target="#a-project-that-already-uses-uv"><span class="header-section-number">16.1</span> A project that already uses uv</a></li>
+  <li><a href="#virtual-environments" id="toc-virtual-environments" class="nav-link" data-scroll-target="#virtual-environments"><span class="header-section-number">16.2</span> Virtual environments</a></li>
+  <li><a href="#the-python-packaging-ecosystem" id="toc-the-python-packaging-ecosystem" class="nav-link" data-scroll-target="#the-python-packaging-ecosystem"><span class="header-section-number">16.3</span> The Python packaging ecosystem</a>
+  <ul class="collapse">
+  <li><a href="#what-a-requirements.txt-does-not-tell-you" id="toc-what-a-requirements.txt-does-not-tell-you" class="nav-link" data-scroll-target="#what-a-requirements.txt-does-not-tell-you"><span class="header-section-number">16.3.1</span> What a <code>requirements.txt</code> does not tell you</a></li>
+  <li><a href="#doing-it-by-hand" id="toc-doing-it-by-hand" class="nav-link" data-scroll-target="#doing-it-by-hand"><span class="header-section-number">16.3.2</span> Doing it by hand</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/virtual-environments.html">Virtual Environments</a></li><li class="breadcrumb-item"><a href="../lectures/virtual-environments-python-uv.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../parts/virtual-environments.html">Virtual Environments</a></li><li class="breadcrumb-item"><a href="../lectures/virtual-environments-python-uv.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></h1>
+<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: Python (uv)</span></h1>
 </div>
 
 
@@ -999,14 +1095,284 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
 </header>
 
 
-<p>Placeholder for managing Python environments with uv: creating a project environment, adding and removing packages, and sharing the environment with a <code>uv.lock</code> lock file.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Adapted from DSCI 521
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This chapter is adapted from the DSCI 521 notes, <a href="https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/virtual-environments-uv.html">Virtual Environments: Python + uv</a>. If you took DSCI 521, it is review.</p>
+</div>
+</div>
+<section id="learning-objectives" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
+<ol type="1">
+<li>Explain what a computational environment is and how it can ensure the reproducibility of a project</li>
+<li>Differentiate Python, PyPI, <code>pip</code>, <code>venv</code>, and <code>uv</code></li>
+<li>Distinguish between the packages a project <em>declares</em> (<code>pyproject.toml</code>) and the packages a project <em>locks</em> (<code>uv.lock</code>)</li>
+</ol>
+<div class="callout callout-style-default callout-activity callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Activity</span>Activity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Imagine you’re working on a project with a colleague, and you’ve created a reproducible report to share your analysis. You want them to replicate your work on their own machine. To demonstrate this, try running the following code on your system (doesn’t matter how/where you write it)</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>Python</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="Python"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> palmerpenguins <span class="im">import</span> load_penguins</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> load_penguins()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>penguins.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-project-that-already-uses-uv" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="a-project-that-already-uses-uv"><span class="header-section-number">16.1</span> A project that already uses uv</h2>
+<p>Many Python projects you clone arrive with their environment already described. Two files are committed to the repository, <code>pyproject.toml</code> and <code>uv.lock</code>, and the first thing you run after <code>git clone</code> is one line:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>That single command reads those two files and creates a <code>.venv/</code> folder holding every Python package the project needs, along with the packages those packages depend on. Nobody installs them by hand, and everyone who runs <code>uv sync</code> on the project gets the same versions.</p>
+<p>Every Python command in the project then goes through <code>uv run</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run quarto render report.qmd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>You type <code>uv run jupyter lab</code>, not <code>jupyter lab</code>. So working in someone else’s uv project takes only <code>uv sync</code> and <code>uv run</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="op">&lt;</span>the project you cloned<span class="op">&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run jupyter lab</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The rest of this chapter, and the uv chapters that follow it, are the <em>how</em> and the <em>why</em>:</p>
 <ul>
-<li>uv: <a href="https://docs.astral.sh/uv/" class="uri">https://docs.astral.sh/uv/</a></li>
-<li>Working on projects: <a href="https://docs.astral.sh/uv/guides/projects/" class="uri">https://docs.astral.sh/uv/guides/projects/</a></li>
-<li>Locking and syncing: <a href="https://docs.astral.sh/uv/concepts/projects/sync/" class="uri">https://docs.astral.sh/uv/concepts/projects/sync/</a></li>
+<li>What <code>uv sync</code> is actually doing to your machine</li>
+<li>Why <code>uv run</code> is worth the extra word</li>
+<li>What those two files are and why there are two of them</li>
+<li>How to build a project like that yourself for work that is your own</li>
 </ul>
+</section>
+<section id="virtual-environments" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="virtual-environments"><span class="header-section-number">16.2</span> Virtual environments</h2>
+<p>Virtual environments let you have multiple versions of packages and programs on the same computer without them creating conflicts with each other. You will be using virtual Python and R environments throughout this book to set up the packages for each project.</p>
+<p>There are several major benefits of using environments:</p>
+<ul>
+<li>You can guarantee that someone else can reproduce your project by specifying which package versions you used and making it easy for others to install the same versions.</li>
+<li>If two of your projects rely on different versions of the same package, you can install these in different environments.</li>
+<li>If you want to play around with a new package, you don’t have to change the packages you use for your data analysis and risk messing something up.</li>
+<li>When you develop your own packages, you need to know exactly which packages yours depend on, so that it runs on other systems than your own.</li>
+</ul>
+</section>
+<section id="the-python-packaging-ecosystem" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="the-python-packaging-ecosystem"><span class="header-section-number">16.3</span> The Python packaging ecosystem</h2>
+<p>Before we talk about <code>uv</code>, it helps to know the pieces it is standing on top of.</p>
+<ul>
+<li><strong>Python</strong> is the language.</li>
+<li>The Python standard library includes a module called <code>venv</code> that can create an isolated folder of packages.</li>
+<li><strong><code>pip</code></strong> is the package installer that comes with Python. It downloads packages from <strong>PyPI</strong> (the <a href="https://pypi.org/">Python Package Index</a>), the central repository for Python packages.</li>
+<li><strong><code>requirements.txt</code></strong> is a list of packages to install, one per line, sometimes with a version attached.
+<ul>
+<li>It is input for <code>pip</code>, and needs no other tool: <code>pip install -r requirements.txt</code>. There is nothing else in the file. It is an instruction to install some things, not a description of a project. Historically it is also what people reached for when they wanted a lockfile, which is where the trouble starts.</li>
+<li>You will still see it around because it works with Python without any additional tools or packages.</li>
+</ul></li>
+<li><strong><code>pyproject.toml</code></strong> describes the project itself. It holds a lot of metadata about a Python project, including the version of Python and the packages that need to be installed.
+<ul>
+<li>It is not specific to any one tool. It is the format the Python community agreed on, which is why <code>uv</code> and <code>pip</code> can both read it.</li>
+<li>You will see it in the projects in this book.</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Commands and modules
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Unlike <code>venv</code>, <code>pip</code> does install a command of its own, so both <code>pip install</code> and <code>python -m pip install</code> work.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where <code>pyproject.toml</code> came from
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>🤖 A mini research from Claude Opus 5:</p>
+<p><code>pyproject.toml</code> was not designed all at once. It was assembled one piece at a time through a series of Python Enhancement Proposals (PEPs), the documents the Python community uses to propose, debate, and ratify changes to the language and the tools around it. Each PEP below added one part of the file you now write in a single sitting:</p>
+<ul>
+<li><a href="https://peps.python.org/pep-0517/">PEP 517</a> (proposed September 2015, accepted September 2017) separated <em>what</em> a project is from <em>how</em> it gets built, which is what the <code>build-backend</code> setting names. Before this, building a Python package meant <code>setuptools</code>.</li>
+<li><a href="https://peps.python.org/pep-0518/">PEP 518</a> (proposed May 2016, accepted May 2016) created the file itself. It defined the <code>[build-system]</code> section, and reserved a <code>[tool]</code> section where individual tools can keep their own settings, which is why <code>uv</code> is allowed to write <code>[tool.uv]</code>.</li>
+<li><a href="https://peps.python.org/pep-0621/">PEP 621</a> (proposed June 2020, accepted November 2020) added the <code>[project]</code> section, with the project’s <code>name</code>, the <code>requires-python</code> version, and the <code>dependencies</code> list. This is the part you will edit most often.
+<ul>
+<li><a href="https://peps.python.org/pep-0631/">PEP 631</a> (proposed August 2020, superseded by PEP 621) was a competing proposal for how to write that same dependency list. It was never accepted. Its approach was folded into PEP 621, and the PEP itself is now marked <em>Superseded</em>.</li>
+</ul></li>
+<li><a href="https://peps.python.org/pep-0735/">PEP 735</a> (proposed November 2023, accepted October 2024) added <code>[dependency-groups]</code>, for the packages you need only while developing, such as a test runner or a linter. This is what <code>uv add --dev</code> writes to.</li>
+</ul>
+<p>Look at the years.</p>
+<ul>
+<li>PEP 518 was accepted in the same month it was proposed, but the build backend idea that came <em>before</em> it took two years to settle, and was not final until 2017, a year after the file it lives in already existed.</li>
+<li>Agreeing on how to write down a list of dependencies took two competing proposals in 2020, one of which was superseded by the other.</li>
+<li>Saying “this package is only for development” was not standardized until the end of 2024.</li>
+</ul>
+<p>That is roughly a decade to agree on a single configuration file.</p>
+<p>This is why <code>requirements.txt</code> is still everywhere. A standard being finished is not the same as a standard being adopted. Tools have to implement it, and people have to learn it.</p>
+<p>The PEPs are the historical record of <em>who decided what, and why</em>. They are frozen once accepted, so they are not the place to look up what a setting means today. For that, use the maintained specification: <a href="https://packaging.python.org/en/latest/specifications/pyproject-toml/" class="uri">https://packaging.python.org/en/latest/specifications/pyproject-toml/</a></p>
+</div>
+</div>
+<section id="what-a-requirements.txt-does-not-tell-you" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="what-a-requirements.txt-does-not-tell-you"><span class="header-section-number">16.3.1</span> What a <code>requirements.txt</code> does not tell you</h3>
+<p>The problem with a <code>requirements.txt</code> is that it can document projects in different ways, and it is not obvious how it is documented.</p>
+<p>Someone might write it by hand, listing only the packages they asked for:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>requirements.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-filename="requirements.txt"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pandas</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>palmerpenguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Or they version only the packages they asked for:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>requirements.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-filename="requirements.txt"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pandas==3.0.5</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>palmerpenguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Or they might generate it from an environment they had already built, using <code>pip freeze</code>:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>requirements.txt</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-filename="requirements.txt"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iniconfig==2.3.0</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>numpy==2.5.2</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>packaging==26.3</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>palmerpenguins==0.1.6</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>pandas==3.0.5</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pluggy==1.6.0</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>pygments==2.21.0</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>pytest==9.1.1</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>python-dateutil==2.9.0.post0</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>six==1.17.0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>All three files describe the same project. All are called <code>requirements.txt</code>. All are a list of packages. But nothing inside any of them tells you which kind you are holding.</p>
+<p>Only two of those ten packages are ones the analysis asked for. <code>numpy</code> and <code>six</code> came along as dependencies of <code>pandas</code>. Technically, you only needed <code>palmerpenguins</code>, since <code>pandas</code> is one of its dependencies.</p>
+<p><code>pytest</code> was installed deliberately, but it is a testing tool and has nothing to do with the analysis itself. <code>pip freeze</code> cannot separate any of them, because all it does is report what is currently installed.</p>
+<p>That distinction has a name, and the uv chapters are built on it:</p>
+<ul>
+<li>what a project <strong>declares</strong>, the packages you asked for</li>
+<li>what a project <strong>locks</strong>, the packages you actually got, at exact versions</li>
+</ul>
+<p>A <code>requirements.txt</code> can be either one of those, and never says which. <code>uv</code> gives the two jobs two separate files instead. <code>pyproject.toml</code> declares, and <code>uv.lock</code> locks.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>pip can install from <code>pyproject.toml</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>pip</code> has caught up on the declaring half of this. Recent versions can install straight from a <code>pyproject.toml</code> using:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--only-deps</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This installs a project’s dependencies without installing the project itself, and <code>pip install --group dev</code> installs a named group (see dependency groups in <a href="../lectures/virtual-environments-python-uv-sharing.html">uv: sharing and managing an environment</a>).</p>
+<p>What a plain <code>pip</code> workflow does not do is keep a lockfile up to date for you. Nothing writes down what you actually got each time you add a package, which is the gap <code>uv.lock</code> fills and the reason these chapters are about <code>uv</code> rather than about <code>pip</code>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>New since DSCI 521
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Recent versions of <code>pip</code> include a <code>pip lock</code> command that writes a <code>pylock.toml</code>, the standard lockfile format from <a href="https://peps.python.org/pep-0751/">PEP 751</a>. <code>pip</code> still marks the command as experimental, and you have to remember to run it again whenever your packages change. <code>uv</code> updates <code>uv.lock</code> every time you add or remove a package.</p>
+</div>
+</div>
+</section>
+<section id="doing-it-by-hand" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="doing-it-by-hand"><span class="header-section-number">16.3.2</span> Doing it by hand</h3>
+<p>Doing this by hand using <code>venv</code> and <code>pip</code> means running several separate tools in the right order:</p>
+<ol type="1">
+<li>create a virtual environment with <code>python -m venv</code></li>
+<li>remember to activate it</li>
+<li>install packages with <code>pip</code></li>
+<li>keep a <code>requirements.txt</code> up to date yourself</li>
+</ol>
+<p>Nothing keeps those steps in sync, and forgetting the activation step is how packages end up installed somewhere you did not intend. <code>venv</code> and <code>pip</code> are still heavily used together, because they come with Python without installing anything else.</p>
+<p><a href="https://docs.astral.sh/uv/"><strong>uv</strong></a> is a <strong>project and package manager</strong> for Python that does all of those jobs with one program. It is written in Rust, which is why it resolves and installs packages noticeably faster than the tools it replaces.</p>
+<p>Things <code>uv</code> can do for you:</p>
+<ul>
+<li>creates the environment</li>
+<li>resolves and installs the packages</li>
+<li>manages your Python interpreter versions</li>
+<li>writes a lockfile recording exactly what it installed</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have used <code>conda</code> before, <code>uv</code> fills the same role, but the commands and the philosophy are different. There is a chapter on <code>conda</code>, <a href="../lectures/virtual-environments-python-conda.html">Virtual environments: Python (conda)</a>, later in this part, if you need it for a project.</p>
+<p>The biggest difference is that <code>uv</code> ties an environment to a <em>project directory</em> rather than to a <em>name</em>. This is much closer to how <code>renv</code> works in R, which you will see in <a href="../lectures/virtual-environments-r-renv.html">Virtual environments: R (renv)</a>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-activity callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Activity</span>Activity
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Which of the following items is NOT a benefit of using virtual environments?</p>
+<ol type="A">
+<li>Increase code performance</li>
+<li>Helping with reproducibility</li>
+<li>Using different versions of the same package</li>
+<li>Creating isolated computational environment for testing new packages</li>
+</ol>
+</div>
+</div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <!--
@@ -1799,13 +2165,13 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   </script>
 <nav class="page-navigation" aria-label="Page">
   <div class="nav-page nav-page-previous">
-      <a href="../lectures/virtual-environments-r-renv.html" class="pagination-link" aria-label="Virtual environments: R (renv)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Virtual environments: R (renv)</span></span>
+      <a href="../lectures/virtual-environments.html" class="pagination-link" aria-label="Virtual environments">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Virtual environments</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../lectures/virtual-environments-python-conda.html" class="pagination-link" aria-label="Virtual environments: Python (conda)">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Virtual environments: Python (conda)</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../lectures/virtual-environments-python-uv-install.html" class="pagination-link" aria-label="uv: installing uv and managing Python">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">uv: installing uv and managing Python</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
