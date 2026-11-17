@@ -1,0 +1,281 @@
+---
+title: "renv: declaring packages in `DESCRIPTION`"
+output-file: virtual-environments-r-renv-description.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0565-virtual-environments-r-renv-description.qmd >}}
+
+## From implicit to explicit
+
+In [Virtual environments: R (renv)](0560-virtual-environments-r-renv.qmd),
+`renv` decided which packages to record by reading our code.
+That is an **implicit** snapshot.
+The project's code *is* its list of declared packages.
+
+This book uses **explicit** snapshots instead.
+The project lists the packages it needs in a file called `DESCRIPTION`,
+and `renv::snapshot()` records those packages, and only those,
+in `renv.lock`.
+It is the same split `uv` uses,
+where `pyproject.toml` declares and `uv.lock` locks.
+
+Explicit snapshots work better for collaboration and container building:
+
+- **The lockfile records what the project needs, not what any file happens to load.**
+  An implicit snapshot scans every R file in the project,
+  including a scratch script you wrote once to try a package.
+  An explicit snapshot ignores them.
+- **People can read `DESCRIPTION`.**
+  It is a short list of packages with their versions,
+  easy to check in a code review,
+  where `renv.lock` lists every dependency of every package.
+- **A container rebuilds exactly the declared set.**
+  When the project is built from scratch,
+  in a container or on a collaborator's computer,
+  a package the code uses but the project never declared
+  fails right there, instead of quietly working on your computer only.
+  The container chapters rely on this.
+
+We will switch the project from that chapter to explicit snapshots.
+Its `analysis.R` loads two packages:
+
+```{.r filename="analysis.R"}
+library(dplyr)
+library(tidyr)
+
+species_counts <- starwars |>
+  count(species, sort = TRUE)
+```
+
+## The `DESCRIPTION` file
+
+A `DESCRIPTION` file comes from R packages,
+where it holds a package's name, version and dependencies.
+A data analysis project can use one too,
+with `Type: project` to say it is not a package.
+
+Here is the one from the
+[docker-uv-renv](https://github.com/chendaniely/docker-uv-renv) example project
+(MIT licence), which the container chapters build on:
+
+```{.default filename="DESCRIPTION"}
+Type: project
+Version: 2026.11.13
+Description: The R packages this project uses. renv.lock locks them.
+Depends:
+    dplyr (== 1.2.1),
+    ggplot2 (== 4.0.3),
+    knitr (== 1.52),
+    rmarkdown (== 2.32)
+```
+
+The `Depends` field lists the packages,
+separated by commas,
+each with an exact version in parentheses.
+`(== 1.2.1)` is the R version of the exact pins in
+[uv: pinning exact versions](0545-virtual-environments-python-uv-exact-pins.qmd).
+
+Our project starts by declaring only `dplyr`:
+
+```{.default filename="DESCRIPTION"}
+Type: project
+Description: The R packages this project uses. renv.lock locks them.
+Depends:
+    dplyr (== 1.2.1)
+```
+
+## Switching to explicit snapshots
+
+The snapshot type is a project setting:
+
+```r
+renv::settings$snapshot.type("explicit")
+```
+
+`renv` stores it in `renv/settings.json`,
+which you commit,
+so everyone on the project uses it:
+
+```{.default filename="renv/settings.json"}
+  "snapshot.type": "explicit",
+```
+
+Now take a snapshot:
+
+```r
+renv::snapshot()
+```
+
+```out
+- The project is out-of-sync -- use `renv::status()` for details.
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- cpp11     [0.5.5 -> *]
+- purrr     [1.2.2 -> *]
+- stringi   [1.8.9 -> *]
+- stringr   [1.6.0 -> *]
+- tidyr     [1.3.2 -> *]
+
+- Lockfile written to "~/Desktop/my_r_project/renv.lock".
+```
+
+`[1.3.2 -> *]` means the package was *removed* from the lockfile.
+`renv` no longer reads `analysis.R`.
+`DESCRIPTION` declares only `dplyr`,
+so the snapshot dropped `tidyr` and the packages that came with it.
+
+## The package you forgot to declare
+
+This is the mistake explicit snapshots make possible,
+and `renv::status()` does not catch it:
+
+```r
+renv::status()
+```
+
+```out
+No issues found -- the project is in a consistent state.
+```
+
+From `renv`'s point of view, `DESCRIPTION`, `renv.lock` and the project library agree.
+`tidyr` is still installed on *your* computer,
+so `analysis.R` still runs for you.
+
+Your collaborator clones the project and runs `renv::restore()`,
+which installs what `renv.lock` records.
+Then they run the analysis from a terminal.
+In R, `source("analysis.R")` does the same,
+and on Windows it is the easier way,
+because R's installer does not put `Rscript` on the Git Bash `PATH`.
+
+```bash
+Rscript analysis.R
+```
+
+```out
+Error in library(tidyr) : there is no package called ‘tidyr’
+Execution halted
+```
+
+To catch this yourself,
+compare the packages your code uses with the ones `DESCRIPTION` declares.
+`renv::dependencies()` lists the packages a file uses:
+
+```r
+renv::dependencies("analysis.R")$Package
+```
+
+```out
+[1] "dplyr" "tidyr"
+```
+
+`tidyr` is not in `DESCRIPTION`.
+The more reliable check is to run the analysis from a fresh environment,
+which is what building and rendering in a container does in the container chapters.
+
+## Adding a package: install, declare, snapshot
+
+The fix is the loop you follow for every new package.
+The README of the docker-uv-renv example project spells it out.
+
+Install the package and look up the version you got:
+
+```r
+renv::install("tidyr")
+```
+
+```out
+# Installing packages --------------------------------------------------------
+✔ tidyr 1.3.2                              [linked from cache]
+Successfully installed 1 package in 2.1 milliseconds.
+```
+
+```r
+packageVersion("tidyr")
+```
+
+```out
+[1] ‘1.3.2’
+```
+
+Declare it in `DESCRIPTION` with that version:
+
+```{.default filename="DESCRIPTION"}
+Type: project
+Description: The R packages this project uses. renv.lock locks them.
+Depends:
+    dplyr (== 1.2.1),
+    tidyr (== 1.3.2)
+```
+
+Before you snapshot,
+`renv::status()` now reports that `tidyr` is declared but not recorded:
+
+```r
+renv::status()
+```
+
+```out
+- The project is out-of-sync -- use `renv::status()` for details.
+The following package(s) are in an inconsistent state:
+
+ package installed recorded used
+ cpp11   y         n        y
+ purrr   y         n        y
+ stringi y         n        y
+ stringr y         n        y
+ tidyr   y         n        y
+
+See `?renv::status` for advice on resolving these issues.
+```
+
+With explicit snapshots, "used" means declared in `DESCRIPTION`,
+or needed by a package that is.
+`recorded` is `n` because `renv.lock` does not have them yet.
+Snapshot to record them:
+
+```r
+renv::snapshot()
+```
+
+```out
+- The project is out-of-sync -- use `renv::status()` for details.
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- cpp11     [* -> 0.5.5]
+- purrr     [* -> 1.2.2]
+- stringi   [* -> 1.8.9]
+- stringr   [* -> 1.6.0]
+- tidyr     [* -> 1.3.2]
+
+- Lockfile written to "~/Desktop/my_r_project/renv.lock".
+```
+
+```r
+renv::status()
+```
+
+```out
+No issues found -- the project is in a consistent state.
+```
+
+Commit `DESCRIPTION` and `renv.lock` together.
+
+## The same split as uv
+
+| Job | `renv` with explicit snapshots | `uv` |
+| --- | --- | --- |
+| Declare the packages, with exact versions | `DESCRIPTION`, `dplyr (== 1.2.1)` | `pyproject.toml`, `pandas==3.1.1` |
+| Lock every package and dependency | `renv.lock` | `uv.lock` |
+| Add a package | `renv::install()`, edit `DESCRIPTION`, `renv::snapshot()` | `uv add` (all three at once) |
+| Check that the declared, locked and installed packages match (not their versions) | `renv::status()` | `uv sync --check` |
+| Recreate the environment | `renv::restore()` | `uv sync` |
+
+`uv` never scans your code,
+so it always behaves like an explicit snapshot.
+With `renv`, the three steps of adding a package are separate,
+and the declare step is the one that is easy to forget.
