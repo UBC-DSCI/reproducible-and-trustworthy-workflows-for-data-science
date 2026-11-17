@@ -3,10 +3,346 @@ title: "Virtual environments: Python (uv)"
 output-file: virtual-environments-python-uv.html
 ---
 
-Placeholder for managing Python environments with uv:
-creating a project environment, adding and removing packages,
-and sharing the environment with a `uv.lock` lock file.
+:::{.callout-note title="Adapted from DSCI 521"}
+This chapter is adapted from the DSCI 521 notes,
+[Virtual Environments: Python + uv](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/virtual-environments-uv.html).
+If you took DSCI 521, it is review.
+:::
 
-- uv: <https://docs.astral.sh/uv/>
-- Working on projects: <https://docs.astral.sh/uv/guides/projects/>
-- Locking and syncing: <https://docs.astral.sh/uv/concepts/projects/sync/>
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0520-virtual-environments-python-uv.qmd >}}
+
+:::{.activity}
+Imagine you're working on a project with a colleague,
+and you've created a reproducible report to share your analysis.
+You want them to replicate your work on their own machine.
+To demonstrate this, try running the following code on your system
+(doesn't matter how/where you write it)
+
+```{.python filename="Python"}
+from palmerpenguins import load_penguins
+penguins = load_penguins()
+penguins.head()
+```
+:::
+
+## A project that already uses uv
+
+Many Python projects you clone arrive with their environment already described.
+Two files are committed to the repository,
+`pyproject.toml` and `uv.lock`,
+and the first thing you run after `git clone` is one line:
+
+```bash
+uv sync
+```
+
+That single command reads those two files
+and creates a `.venv/` folder holding every Python package the project needs,
+along with the packages those packages depend on.
+Nobody installs them by hand,
+and everyone who runs `uv sync` on the project gets the same versions.
+
+Every Python command in the project then goes through `uv run`:
+
+```bash
+uv run jupyter lab
+uv run quarto render report.qmd
+uv run pytest
+```
+
+You type `uv run jupyter lab`, not `jupyter lab`.
+So working in someone else's uv project takes only `uv sync` and `uv run`:
+
+```bash
+cd <the project you cloned>
+uv sync
+uv run jupyter lab
+```
+
+The rest of this chapter,
+and the uv chapters that follow it,
+are the *how* and the *why*:
+
+- What `uv sync` is actually doing to your machine
+- Why `uv run` is worth the extra word
+- What those two files are and why there are two of them
+- How to build a project like that yourself for work that is your own
+
+## Virtual environments
+
+Virtual environments let you have multiple versions of packages
+and programs on the same computer
+without them creating conflicts with each other.
+You will be using virtual Python and R environments
+throughout this book to set up the packages for each project.
+
+There are several major benefits of using environments:
+
+- You can guarantee that someone else can reproduce your project
+  by specifying which package versions you used
+  and making it easy for others to install the same versions.
+- If two of your projects rely on different versions of the same package,
+  you can install these in different environments.
+- If you want to play around with a new package,
+  you don't have to change the packages you use for your data analysis
+  and risk messing something up.
+- When you develop your own packages,
+  you need to know exactly which packages yours depend on,
+  so that it runs on other systems than your own.
+
+## The Python packaging ecosystem
+
+Before we talk about `uv`,
+it helps to know the pieces it is standing on top of.
+
+- **Python** is the language.
+- The Python standard library includes a module called `venv`
+  that can create an isolated folder of packages.
+- **`pip`** is the package installer that comes with Python.
+  It downloads packages from **PyPI**
+  (the [Python Package Index](https://pypi.org/)),
+  the central repository for Python packages.
+- **`requirements.txt`** is a list of packages to install,
+  one per line,
+  sometimes with a version attached.
+  - It is input for `pip`, and needs no other tool:
+    `pip install -r requirements.txt`.
+    There is nothing else in the file.
+    It is an instruction to install some things,
+    not a description of a project.
+    Historically it is also what people reached for
+    when they wanted a lock file,
+    which is where the trouble starts.
+  - You will still see it around because
+    it works with Python without any additional tools or packages.
+- **`pyproject.toml`** describes the project itself.
+  It holds a lot of metadata about a Python project,
+  including the version of Python and the packages that need to be installed.
+  - It is not specific to any one tool.
+    It is the format the Python community agreed on,
+    which is why `uv` and `pip` can both read it.
+  - You will see it in the projects in this book.
+
+:::{.callout-note title="Commands and modules"}
+Unlike `venv`, `pip` does install a command of its own,
+so both `pip install` and `python -m pip install` work.
+:::
+
+:::{.callout-note title="Where `pyproject.toml` came from"}
+🤖 A mini research from Claude Opus 5:
+
+`pyproject.toml` was not designed all at once.
+It was assembled one piece at a time
+through a series of Python Enhancement Proposals (PEPs),
+the documents the Python community uses
+to propose, debate, and ratify changes
+to the language and the tools around it.
+Each PEP below added one part of the file
+you now write in a single sitting:
+
+- [PEP 517](https://peps.python.org/pep-0517/)
+  (proposed September 2015, accepted September 2017)
+  separated *what* a project is from *how* it gets built,
+  which is what the `build-backend` setting names.
+  Before this, building a Python package meant `setuptools`.
+- [PEP 518](https://peps.python.org/pep-0518/)
+  (proposed May 2016, accepted May 2016)
+  created the file itself.
+  It defined the `[build-system]` section,
+  and reserved a `[tool]` section
+  where individual tools can keep their own settings,
+  which is why `uv` is allowed to write `[tool.uv]`.
+- [PEP 621](https://peps.python.org/pep-0621/)
+  (proposed June 2020, accepted November 2020)
+  added the `[project]` section,
+  with the project's `name`,
+  the `requires-python` version,
+  and the `dependencies` list.
+  This is the part you will edit most often.
+  - [PEP 631](https://peps.python.org/pep-0631/)
+    (proposed August 2020, superseded by PEP 621)
+    was a competing proposal
+    for how to write that same dependency list.
+    It was never accepted.
+    Its approach was folded into PEP 621,
+    and the PEP itself is now marked *Superseded*.
+- [PEP 735](https://peps.python.org/pep-0735/)
+  (proposed November 2023, accepted October 2024)
+  added `[dependency-groups]`,
+  for the packages you need only while developing,
+  such as a test runner or a linter.
+  This is what `uv add --dev` writes to.
+
+Look at the years.
+PEP 518 was accepted in the same month it was proposed,
+but the build backend idea that came *before* it
+took two years to settle,
+and was not final until 2017,
+a year after the file it lives in already existed.
+Agreeing on how to write down a list of dependencies
+took two competing proposals in 2020,
+one of which was superseded by the other.
+And saying "this package is only for development"
+was not standardized until the end of 2024.
+That is roughly a decade
+to agree on a single configuration file.
+
+This is why `requirements.txt` is still everywhere.
+A standard being finished is not the same as a standard being adopted.
+Tools have to implement it,
+and people have to learn it.
+
+The PEPs are the historical record of *who decided what, and why*.
+They are frozen once accepted,
+so they are not the place to look up what a setting means today.
+For that, use the maintained specification:
+<https://packaging.python.org/en/latest/specifications/pyproject-toml/>
+:::
+
+### What a `requirements.txt` does not tell you
+
+The problem with a `requirements.txt`
+is that it can document projects in different ways,
+and it is not obvious how it is documented.
+
+Someone might write it by hand,
+listing only the packages they actually asked for:
+
+```{.default filename="requirements.txt"}
+pandas
+palmerpenguins
+```
+
+Or they version only the packages they asked for:
+
+```{.default filename="requirements.txt"}
+pandas==3.0.5
+palmerpenguins
+```
+
+Or they might generate it from an environment they had already built,
+using `pip freeze`:
+
+```{.default filename="requirements.txt"}
+iniconfig==2.3.0
+numpy==2.5.2
+packaging==26.3
+palmerpenguins==0.1.6
+pandas==3.0.5
+pluggy==1.6.0
+pygments==2.21.0
+pytest==9.1.1
+python-dateutil==2.9.0.post0
+six==1.17.0
+```
+
+All three files describe the same project.
+All are called `requirements.txt`.
+All are a list of packages.
+But nothing inside any of them tells you which kind you are holding.
+
+Only two of those ten packages are ones the analysis actually asked for.
+`numpy` and `six` came along as dependencies of `pandas`.
+Technically, you only needed `palmerpenguins`, since `pandas` is one of its dependencies.
+
+`pytest` was installed deliberately,
+but it is a testing tool and has nothing to do with the analysis itself.
+`pip freeze` cannot separate any of them,
+because all it does is report what is currently installed.
+
+That distinction has a name,
+and the uv chapters are built on it:
+
+- what a project **declares**, the packages you asked for
+- what a project **locks**, the packages you actually got, at exact versions
+
+A `requirements.txt` can be either one of those,
+and never says which.
+`uv` gives the two jobs two separate files instead.
+`pyproject.toml` declares,
+and `uv.lock` locks.
+
+:::{.callout-note title="pip can install from `pyproject.toml`"}
+`pip` has caught up on the declaring half of this.
+Recent versions can install straight from a `pyproject.toml` using:
+
+```bash
+pip install --only-deps .
+```
+
+This installs a project's dependencies
+without installing the project itself,
+and `pip install --group dev` installs a named group
+(see dependency groups in [uv: sharing and managing an environment](0535-virtual-environments-python-uv-sharing.qmd)).
+
+What a plain `pip` workflow does not do is keep a lock file up to date for you.
+Nothing writes down what you actually got each time you add a package,
+which is the gap `uv.lock` fills
+and the reason these chapters are about `uv` rather than about `pip`.
+:::
+
+:::{.callout-tip title="New since DSCI 521"}
+Recent versions of `pip` include a `pip lock` command
+that writes a `pylock.toml`,
+the standard lock file format from [PEP 751](https://peps.python.org/pep-0751/).
+`pip` still marks the command as experimental,
+and you have to remember to run it again whenever your packages change.
+`uv` updates `uv.lock` every time you add or remove a package.
+:::
+
+### Doing it by hand
+
+Doing this by hand using `venv` and `pip`
+means running several separate tools in the right order:
+
+1. create a virtual environment with `python -m venv`
+2. remember to activate it
+3. install packages with `pip`
+4. keep a `requirements.txt` up to date yourself
+
+Nothing keeps those steps in sync,
+and forgetting the activation step is how packages end up
+installed somewhere you did not intend.
+`venv` and `pip` are still heavily used together,
+because they come with Python
+without installing anything else.
+
+[**uv**](https://docs.astral.sh/uv/)
+is a **project and package manager** for Python
+that does all of those jobs with one program.
+It is written in Rust,
+which is why it resolves and installs packages
+noticeably faster than the tools it replaces.
+
+Things `uv` can do for you:
+
+- creates the environment
+- resolves and installs the packages
+- manages your Python interpreter versions
+- writes a lockfile recording exactly what it installed
+
+:::{.callout-note}
+If you have used `conda` before,
+`uv` fills the same role,
+but the commands and the philosophy are different.
+There is a chapter on `conda`,
+[Virtual environments: Python (conda)](0570-virtual-environments-python-conda.qmd),
+later in this part, if you need it for a project.
+
+The biggest difference is that `uv` ties an environment
+to a *project directory* rather than to a *name*.
+This is much closer to how `renv` works in R,
+which you will see in [Virtual environments: R (renv)](0560-virtual-environments-r-renv.qmd).
+:::
+
+:::{.activity}
+Which of the following items is NOT a benefit of using virtual environments?
+
+A.  Increase code performance
+B.  Helping with reproducibility
+C.  Using different versions of the same package
+D.  Creating isolated computational environment for testing new packages
+
+:::
