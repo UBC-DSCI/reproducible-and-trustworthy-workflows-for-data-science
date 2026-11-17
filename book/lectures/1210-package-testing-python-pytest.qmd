@@ -10,8 +10,8 @@ But now let's see how we can use `pytest` when we are working with a python pack
 
 ## Simple Example Package with `pytest` testing
 
-We'll be using the `pytest` and `cookiecutter` package to set up an example python package
-and write tests to be run by `pytest`.
+We'll be using the `pytest` and `cookiecutter` package
+to set up an example python package and write tests to be run by `pytest`.
 But first, remember to create a new environment for the packages.
 
 Also remember you need to have `poetry` installed as well.
@@ -57,8 +57,9 @@ Choose from 1, 2, 3 [1]:
 
 In your `src` folder, we will create a `count_letters` function
 that will take a string and return the number of characters in the string.
-We will be following a test-driven development workflow so we'll create a function
-skeleton first, and then write the tests for the function.
+We will be following a test-driven development workflow
+so we'll create a function skeleton first,
+and then write the tests for the function.
 
 Let's create a `count_char.py` file in the `src` directory
 
@@ -146,8 +147,8 @@ def test_count_char():
     assert actual == expected
 ```
 
-Before running our test, we will make sure that our `pyproject.toml` file
-will list `pytest` as a development dependency for our package.
+Before running our test, we will make sure
+that our `pyproject.toml` file will list `pytest` as a development dependency for our package.
 
 ```bash
 poetry add --group dev pytest
@@ -227,7 +228,8 @@ tests/test_countchar.py .                                                       
 
 ### Change the implementation logic
 
-The benefit of setting up unit tests, is that if we change something with the implementation,
+The benefit of setting up unit tests,
+is that if we change something with the implementation,
 we can still be sure the functional unit behaves as we expected.
 For example, we can re-write the counting implementation to use a `for` loop,
 and then still expect all our tests to pass.
@@ -272,21 +274,24 @@ def test_count_char_wrong_input():
 
 There are a few techniques you can use if you find yourself re-using code in your tests.
 
-- Fixtures: provide a mechanism to share setup code between individual tests. For example,
-  if you need to create, load, or connect to the same data source over and over without
-  wanting to copy and paste the same setup code
+- Fixtures: provide a mechanism to share setup code between individual tests.
+  For example, if you need to create, load,
+  or connect to the same data source over and over without wanting to copy
+  and paste the same setup code
 - Parameterizations: when the actual test code logic is the same,
   but the only part that is changing are a few parameters between individual tests.
-  This is useful to consolidate all the same testing logic together, without having
-  to create totally separate test functions that are mostly the same
-- `conftest.py`: this file allows you to re-use and share the same text fixtures across multiple test modules.
-   For example, you have different functions but need the same example data set and fixture setup.
+  This is useful to consolidate all the same testing logic together,
+  without having to create totally separate test functions that are mostly the same
+- `conftest.py`: this file allows you to re-use
+  and share the same text fixtures across multiple test modules.
+  For example, you have different functions
+  but need the same example data set and fixture setup.
 
 
 ### Fixtures
 
-Fixtures are useful if you know you will be reusing code that will be be used across
-multiple tests.
+Fixtures are useful if you know you will be reusing code
+that will be be used across multiple tests.
 
 Let's create a new file that contains multiple lines of text.
 We will then write tests for each line of the file.
@@ -348,8 +353,8 @@ def test_line_3():
 We need the `.strip()` to remove the trailing new line break
 :::
 
-You can see here in the testing code above we are repeatedly running
-the same code that reads in the text file.
+You can see here in the testing code above we are repeatedly running the same code
+that reads in the text file.
 
 ```python
     file_path = "tests/text.txt"
@@ -388,12 +393,12 @@ def test_line_3(text_data):
 ### Parameterizations
 
 Parameterizations are useful when you have to run the same test with different arguments.
-In our current example, when we are using our `tests/text.txt` file to read in the lines of
-the file to do our character counts,
+In our current example, when we are using our `tests/text.txt` file to read
+in the lines of the file to do our character counts,
 the only real difference is the actual line we are trying to read in.
 
-We can use the `pytest` `@pytest.mark.parametrize(argnames, argvalues)` decorator to create
-parameterizations.
+We can use the `pytest` `@pytest.mark.parametrize(argnames, argvalues)` decorator
+to create parameterizations.
 
 ```python
 import pytest
@@ -473,7 +478,8 @@ def count_letters(input_string):
 print(count_letters("Hello, 世界! 123"))
 ```
 
-Our package now has 2 modules, and we'll have 2 separate testing modules.
+Our package now has 2 modules,
+and we'll have 2 separate testing modules.
 
 
 ```bash
@@ -499,8 +505,8 @@ Now that we have 2 separate testing modules,
 we may want to share the same file reading fixture across both modules.
 We can use `conftest.py` to share fixtures across different testing modules.
 
-We will move the current text fixture from `count_char.py` and paste it into
-a `conftest.py` file.
+We will move the current text fixture from `count_char.py`
+and paste it into a `conftest.py` file.
 
 
 
@@ -573,7 +579,5 @@ def test_line_n(text_data, test_data_line_number, expected_count):
 
 ## More `pytest` features
 
-See the
-[py-pkgs testing chatper](https://py-pkgs.org/05-testing)
-to learn more about testing and`pytest` features
-(e.g., regression testing, and parameterization)
+See the [py-pkgs testing chatper](https://py-pkgs.org/05-testing)
+to learn more about testing and`pytest` features (e.g., regression testing, and parameterization)

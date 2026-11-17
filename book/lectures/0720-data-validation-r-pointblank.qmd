@@ -5,8 +5,10 @@ aliases:
   - 131-data_validation-r-pointblank.html
 ---
 
-- See this workshop repo for reference: <https://github.com/posit-conf-2024/ds-workflows-r>
-- Specifically this slide deck: <https://posit-conf-2024.github.io/ds-workflows-r/slides/03_data_validation_and_alerting.html#/>
+- See this workshop repo for reference:
+  <https://github.com/posit-conf-2024/ds-workflows-r>
+- Specifically this slide deck:
+  <https://posit-conf-2024.github.io/ds-workflows-r/slides/03_data_validation_and_alerting.html#/>
 
 
 ```{r}
@@ -53,8 +55,7 @@ small_table |>
   col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
 ```
 
-We can fix this by either fixing the data,
-or the actual test.
+We can fix this by either fixing the data, or the actual test.
 
 ```{r}
 small_table |>
@@ -70,9 +71,13 @@ From the docs:
 
 > There are three things that should be noted here:
 >
-> - Validation steps: each step is a separate test on the table, focused on a certain aspect of the table.
-> - Validation rules: the validation type is provided here along with key constraints.
-> - Validation results: interrogation results are provided here, with a breakdown of test units (total, passing, and failing), threshold flags, and more.
+> - Validation steps: each step is a separate test on the table,
+>   focused on a certain aspect of the table.
+> - Validation rules:
+>   the validation type is provided here along with key constraints.
+> - Validation results: interrogation results are provided here,
+>   with a breakdown of test units (total, passing, and failing), threshold flags,
+>   and more.
 
 Create the `agent`, apply validation rules, then `interrogate()` it.
 
@@ -95,17 +100,18 @@ agent |>
 
 ## Post-interrogation
 
-There are a few
-[post-interrogation](https://rstudio.github.io/pointblank/reference/index.html#post-interrogation)
-steps you can do with your agents.
-One of the more useful ones may be separately looking at the passing and failing data.
+There are a few [post-interrogation](https://rstudio.github.io/pointblank/reference/index.html#post-interrogation) steps you can do with your agents.
+One of the more useful ones may be separately looking at the passing
+and failing data.
 
-The `get_sundered_data()` and `get_data_extracts()` are a few useful functions to accomplish this goal.
+The `get_sundered_data()` and `get_data_extracts()` are a few useful functions
+to accomplish this goal.
 
 Here is our agent that has failing validation checks.
 
 :::{.callout-important}
-Don't forget to `interrogate()` your `agent` before running post-interrogation functions.
+Don't forget to `interrogate()` your `agent`
+before running post-interrogation functions.
 :::
 
 ```{r}
@@ -129,7 +135,8 @@ get_sundered_data(agent, type = "pass")
 get_sundered_data(agent, type = "fail")
 ```
 
-The `combined` option creates a `.ph_combined` column that you can use in a downstream process.
+The `combined` option creates a `.ph_combined` column that you can use
+in a downstream process.
 
 ```{r}
 get_sundered_data(agent, type = "combined")
@@ -145,8 +152,7 @@ get_data_extracts(agent)
 ## Pipeline Data Validation
 
 When you want to run your validation checks non-interactively,
-you may want to use `{pointblank}` in the
-[Pipeline Data Validation Workflow](https://rstudio.github.io/pointblank/articles/VALID-II.html).
+you may want to use `{pointblank}` in the [Pipeline Data Validation Workflow](https://rstudio.github.io/pointblank/articles/VALID-II.html).
 
 In this workflow we do not need to create an `agent` object,
 and rely on the actual warning or failures from the validation checks.

@@ -6,19 +6,18 @@ aliases:
 ---
 
 When we want to finally publish our package,
-we still need to manage the metadata in the `pyproject.toml` file to make sure the `version`
-value is up to date.
+we still need to manage the metadata in the `pyproject.toml` file to make sure the `version` value is up to date.
 
 ## Package versioning
 
 Semantic versioning uses the `major.minor.patch` numbering scheme for package versions
 
-- See these resources about semantic versioning
-  -<https://py-pkgs.org/07-releasing-versioning#version-numbering>
+- See these resources about semantic versioning -<https://py-pkgs.org/07-releasing-versioning#version-numbering>
 - <https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-versions.html#semver-rules>
 - <https://semver.org/>
 
-Calenar versioning (calver) is another way to version package, it uses part of the date of publishing in the package version number
+Calenar versioning (calver) is another way to version package,
+it uses part of the date of publishing in the package version number
 
 - <https://calver.org/index.html>
 
@@ -41,7 +40,8 @@ Resources:
 
 ## hatch-vcs + git tags
 
-We will make our auto version bumping a bit more flexiable by allowing us to create the version bump on a git tag trigger.
+We will make our auto version bumping a bit more flexiable by allowing us
+to create the version bump on a git tag trigger.
 We will be using hatch-vcs for this:<https://github.com/ofek/hatch-vcs>
 
 ### Prepare the `pyproject.toml` file
@@ -80,7 +80,8 @@ Then we need to configure the hatch tool so it knows to use `hatch-vcs`,
 If you need to configure more `hatch-vcs` options you cand find it in the documentation:
 <https://github.com/ofek/hatch-vcs?tab=readme-ov-file#version-source-options>
 
-For example "to prevent incrementing version numbers on non-release commits, you can adjust the version_scheme parameter".
+For example "to prevent incrementing version numbers on non-release commits,
+you can adjust the version_scheme parameter".
 
 ```toml
 [tool.hatch.version]
@@ -111,7 +112,8 @@ Then you can run hatch build, which will run `hatch-vcs`
 $ hatch build
 ```
 
-Since we haven't set up a git tag yet, it may give us a version number that is a 0.0 with some `dev+` information.
+Since we haven't set up a git tag yet,
+it may give us a version number that is a 0.0 with some `dev+` information.
 We'll deal with that in a bit.
 
 You will notice that the `src/pytest1/__version__.py` has been created with a lot of text.
@@ -183,8 +185,8 @@ jobs:
 
 ### Prepare repository
 
-It'll be a good time to run `hatch build` on your local computer and see if the
-`dist/` directory is properly creating the package and version in the bundle.
+It'll be a good time to run `hatch build` on your local computer and see
+if the `dist/` directory is properly creating the package and version in the bundle.
 If so, you can push and merge your changes into `main`/`master`.
 
 ## Github Actions and PyPI/Test
@@ -218,8 +220,8 @@ git tag v0.0.1
 ```
 
 Here you can use whatever number you'd like for your package,
-if your package is already published, make sure the tag version you are using is "newer"
-than the version already pusbliehd in PyPI / PyPI Test
+if your package is already published,
+make sure the tag version you are using is "newer" than the version already pusbliehd in PyPI / PyPI Test
 
 Also, we are giving our tag name a `v` prefix.
 This is also there so our workflow trigger has something to search for,
@@ -239,5 +241,6 @@ git push origin main # push to the main branch
 git push origin v0.0.1 # push your tag
 ```
 
-You can navigate to your repository, and you will see a new tag being listed by the release section.
+You can navigate to your repository,
+and you will see a new tag being listed by the release section.
 And your automation will start.

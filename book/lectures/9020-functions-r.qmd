@@ -9,7 +9,9 @@ error: true
 
 ## Defining functions in R:
 
-In this course, we will get to practice writing functions (and then testing them) in the R programming language. Given this has not been covered in the course pre-requisites, we will cover it here briefly. To learn more about functions in R, we refer you to the [functions chapter in the Advanced R book](https://adv-r.hadley.nz/functions.html).
+In this course, we will get to practice writing functions (and then testing them) in the R programming language.
+Given this has not been covered in the course pre-requisites, we will cover it here briefly.
+To learn more about functions in R, we refer you to the [functions chapter in the Advanced R book](https://adv-r.hadley.nz/functions.html).
 
 - Use `variable <- function(…arguments…) { …body… }` to create a function and give it a name
 
@@ -25,8 +27,10 @@ add_two_numbers <- function(x, y) {
 add_two_numbers(1, 4)
 ```
 
-- Functions in R are objects. This is referred to as “first-class functions”.
-- The last line of the function returns the object created, or listed there. To return a value early use the special word `return` (as shown below).
+- Functions in R are objects.
+  This is referred to as “first-class functions”.
+- The last line of the function returns the object created, or listed there.
+  To return a value early use the special word `return` (as shown below).
 
 ```{r}
 #| slideshow: {slide_type: slide}
@@ -72,7 +76,8 @@ math_two_numbers (1, 4, "subtract")
 
 ##### Extra arguments via `...`
 
-If we want our function to be able to take extra arguments that we don't specify, we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):
+If we want our function to be able to take extra arguments that we don't specify,
+we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):
 
 ```{r}
 #| slideshow: {slide_type: skip}
@@ -92,7 +97,11 @@ R’s lexical scoping follows several rules, we will cover the following 3:
 
 #### Name masking
 
-Object names which are defined inside a function mask object names defined outside of that function. For example, below `x` is first defined in the global environment, and then also defined in the function environment. `x` in the function environment masks `x` in the global environment, so the value of 5 is used in `to_add + x` instead of 10:
+Object names which are defined inside a function mask object names defined outside of that function.
+For example, below `x` is first defined in the global environment,
+and then also defined in the function environment.
+`x` in the function environment masks `x` in the global environment,
+so the value of 5 is used in `to_add + x` instead of 10:
 
 ```{r}
 #| slideshow: {slide_type: fragment}
@@ -106,13 +115,18 @@ add_to_x <- function(to_add) {
 add_to_x(2)
 ```
 
-If a function refers to an object name that is not defined inside the function, then R looks at the environment one level above. And if it is not found there, it again, looks another level above. This will happen all the way up the environment tree until it searches all possible environments for that session (including the global environment and loaded packages).
+If a function refers to an object name
+that is not defined inside the function, then R looks at the environment one level above.
+And if it is not found there, it again, looks another level above.
+This will happen all the way up the environment tree until it searches all possible environments
+for that session (including the global environment and loaded packages).
 
 <img src="../img/env-lookup.png" width=600>
 
 *__Attribution__: Derived from [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham*
 
-Here `x` is not defined in the function environment, and so R then looks one-level up to the global environment to try to find `x`. In this case it does and it is then used to calculate `to_add + x`:
+Here `x` is not defined in the function environment, and so R then looks one-level up to the global environment
+to try to find `x`. In this case it does and it is then used to calculate `to_add + x`:
 
 ```{r}
 x <- 10
@@ -126,9 +140,12 @@ add_to_x(2)
 
 #### Dynamic lookup
 
-R does not look up the values for objects it references when it is defined/created, instead it does this when the function is called. This can lead to the function returning different things depending on the values of the objects it references outside of the function's environment.
+R does not look up the values for objects it references when it is defined/created,
+instead it does this when the function is called.
+This can lead to the function returning different things depending on the values of the objects it references outside of the function's environment.
 
-For example, each time the function `add_to_x` is run, R looks up the current value of `x` and uses that to compute `to_add + x`:
+For example, each time the function `add_to_x` is run,
+R looks up the current value of `x` and uses that to compute `to_add + x`:
 
 ```{r}
 #| slideshow: {slide_type: fragment}
@@ -145,9 +162,11 @@ add_to_x(2)
 
 #### A fresh start
 
-Functions in R have no memory of what happened the last time they were called. This happens because a new function environment is created, R created a new environment in which to execute it.
+Functions in R have no memory of what happened the last time they were called.
+This happens because a new function environment is created, R created a new environment in which to execute it.
 
-For example, even though we update the value of `x` inside the function by adding two to it every time we execute it, it returns the same value each time, because R creates a new function environment each time we run it and that environment has no recollection of what happened the last time the function was run:
+For example, even though we update the value of `x` inside the function by adding two to it every time we execute it, it returns the same value each time,
+because R creates a new function environment each time we run it and that environment has no recollection of what happened the last time the function was run:
 
 ```{r}
 #| slideshow: {slide_type: fragment}
@@ -165,7 +184,8 @@ add_to_x(2)
 
 ### Lazy evaluation
 
-In R, function arguments are lazily evaluated: they’re only evaluated if accessed.
+In R, function arguments are lazily evaluated:
+they’re only evaluated if accessed.
 
 
 Knowing that, now consider the `add_one` function written in both R and Python below:
@@ -185,10 +205,14 @@ def add_one(x, y):
     return x
 ```
 
-Why will the above `add_one` function will work in R, but the equivalent version of the function in python would break?
+Why will the above `add_one` function will work in R,
+but the equivalent version of the function in python would break?
 
-- Python evaluates the function arguments before it evaluates the function and because it doesn't know what `y` is, it will break even though it is not used in the function.
-- R performs lazy evaluation, meaning it delays the evaluation of the function arguments until its value is needed within/inside the function. Since `y` is never referenced inside the function, R doesn't complain, or even notice it.
+- Python evaluates the function arguments before it evaluates the function and because it doesn't know what `y` is,
+  it will break even though it is not used in the function.
+- R performs lazy evaluation,
+  meaning it delays the evaluation of the function arguments until its value is needed within/inside the function.
+  Since `y` is never referenced inside the function, R doesn't complain, or even notice it.
 
 #### `add_one` in R
 
@@ -266,12 +290,18 @@ dplyr::select(mtcars, mpg, cyl, hp, qsec)
 ```
 
 Notes:
-- There's more than just lazy evaluation happening in the code above, but lazy evaluation is part of it.
+- There's more than just lazy evaluation happening in the code above,
+  but lazy evaluation is part of it.
 - `package::function()` is a way to use a function from an R package without loading the entire library.
 
 ## Exception handling
 
-Sometimes our code is correct but we still encounter errors. This commonly occurs with functions when users attempt to use them in weird and creative ways that the developer did not intend. Developers are well advised to try to anticipate some of this user behaviour and guard against this in a way that can be of help to the user. One way to do this is to have a function fail intentionally when incorrect user input is given.
+Sometimes our code is correct but we still encounter errors.
+This commonly occurs with functions when users attempt
+to use them in weird and creative ways that the developer did not intend.
+Developers are well advised to try to anticipate some of this user behaviour
+and guard against this in a way that can be of help to the user.
+One way to do this is to have a function fail intentionally when incorrect user input is given.
 
 Imagine we have a simple function to convert temperatures from Fahrenheit to Celsius:
 
@@ -281,7 +311,8 @@ fahr_to_celsius <- function(temp) {
 }
 ```
 
-What if our user anticipates that our function can handle numbers written as strings? When this happens our users gets a somewhat cryptic error message (which is inversely correlated with their knowledge of the R programming language):
+What if our user anticipates that our function can handle numbers written as strings?
+When this happens our users gets a somewhat cryptic error message (which is inversely correlated with their knowledge of the R programming language):
 
 ```
 fahr_to_celsius("thirty")
@@ -294,9 +325,17 @@ Traceback:
 1. fahr_to_celsius("thirty")
 ```
 
-This error message is not as helpful as it could be! Also, if this calculation happened to take a long time, it might be nicer to check the data type before we attempt the calculation and then if the wrong data type was given, throw an purposeful error with a more helpful error message. One way we can do this simply in R is using a conditional (i.e., `if` statement) to test the type and then calling `stop` with a useful error message if the type is incorrect.
+This error message is not as helpful as it could be!
+Also, if this calculation happened to take a long time,
+it might be nicer to check the data type before we attempt the calculation and then if the wrong data type was given,
+throw an purposeful error with a more helpful error message.
+One way we can do this simply in R is using a conditional (i.e., `if` statement)
+to test the type and then calling `stop` with a useful error message if the type is incorrect.
 
-For example with the `fahr_to_celsius` function, we can use `if(!is.numeric(temp))` to check whether `temp` is not numeric. And then if it is not, `stop` causes a break and the printing out of the more helpful error message "`fahr_to_celsius` expects a vector of numeric values
+For example with the `fahr_to_celsius` function, we can use `if(!is.numeric(temp))`
+to check whether `temp` is not numeric.
+And then if it is not, `stop` causes a break
+and the printing out of the more helpful error message "`fahr_to_celsius` expects a vector of numeric values
 
 ```{r}
 #| slideshow: {slide_type: fragment}
@@ -320,9 +359,12 @@ Traceback:
 2. stop("`fahr_to_celsius` expects a vector of numeric values")   # at line 3 of file <text>
 ```
 
-If you wanted to issue a warning instead of an error, you could use `warning` in place of `stop` in the example above. However, in most cases it is better practice to throw an error than to print a warning...
+If you wanted to issue a warning instead of an error, you could use `warning` in place of `stop` in the example above.
+However, in most cases it is better practice to throw an error than to print a warning...
 
-More advanced exception handling exists in R, and I invite interested learner to read more about it here in the [Condition Handling](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling) and [Defensive Programming](http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming) sections of Advanced R.
+More advanced exception handling exists in R,
+and I invite interested learner to read more about it here in the [Condition Handling](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling)
+and [Defensive Programming](http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming) sections of Advanced R.
 
 ## Programming with the `tidyverse` functions
 
@@ -346,8 +388,7 @@ where every column name is written out as `penguins$`:
 penguins[penguins$species == "Gentoo" & penguins$year == 2007, ]
 ```
 
-However, referring to column names without quotations
-leads to problems when we try to use them in a function.
+However, referring to column names without quotations leads to problems when we try to use them in a function.
 For example,
 
 ```{r}
@@ -479,8 +520,8 @@ filter_penguins(col = "species", val = "Gentoo")
 
 We get no rows back, because `filter` compared the *string* `"species"` to the string `"Gentoo"`,
 which is never true.
-Instead, we need to tell the `tidyverse` function
-"this is a string: use the column with this name".
+Instead, we need to tell the `tidyverse` function "this is a string:
+use the column with this name".
 How we do that depends on the kind of argument.
 
 #### In data masking arguments: the `.data` pronoun
@@ -597,8 +638,7 @@ and the `tidyverse` documentation suggests `all_of()` for it, as for the other t
 However, `pull(all_of(col))` has a quirk:
 if the data has a column with the same name as your variable,
 `pull()` returns that column, even inside `all_of()`,
-without an error or a warning
-([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)).
+without an error or a warning ([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)).
 Here our variable is called `col`, and we add a column called `col` to the data:
 
 ```{r}
@@ -652,7 +692,8 @@ so the same function can also accept bare names from its users:
 
 ### The walrus operator `:=` is needed when assigning values
 
-For similar reasons, the walrus operator (`:=`) is needed when writing functions that create new columns using unquoted column names with the `tidyverse` functions.
+For similar reasons, the walrus operator (`:=`) is needed when writing functions
+that create new columns using unquoted column names with the `tidyverse` functions.
 R does not allow code on the left-hand side of `=` when naming an argument,
 so `tidyverse` functions accept `:=` in its place:
 
@@ -704,13 +745,12 @@ before `{{ }}`, `.data` and `all_of()` were the recommended tools:
 | `aes_string(x = col)` in `ggplot2`                    | `aes(x = .data[[col]])`                                               |
 
 `!!` is not deprecated, and most of the older patterns still work.
-What is deprecated is
-`aes_string()` (since `ggplot2` 3.0.0),
+What is deprecated is `aes_string()` (since `ggplot2` 3.0.0),
 passing a variable holding strings straight to a tidy selection function (since `tidyselect` 1.1.0),
 and using `.data` inside tidy selection functions (since `tidyselect` 1.2.0).
 `{{ }}` is shorthand for `!!enquo()`,
-and `!!` (the "injection" operator) and `!!!` (the "splice" operator)
-are still the right tools for more advanced metaprogramming;
+and `!!` (the "injection" operator)
+and `!!!` (the "splice" operator) are still the right tools for more advanced metaprogramming;
 the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix shows how they work.
 
 ### Learn more {#sec-tidyverse-learn-more}
@@ -719,16 +759,14 @@ The patterns in this section come from the `tidyverse` documentation:
 
 - [Programming with `dplyr`](https://dplyr.tidyverse.org/articles/programming.html):
   `{{ }}` for function arguments, `.data[[var]]` in data masking, and `all_of()` in tidy selection.
-- The `dplyr` reference pages for [data masking](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)
-  and [tidy selection](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html) arguments.
+- The `dplyr` reference pages for [data masking](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html) and [tidy selection](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html) arguments.
 - [Data mask programming patterns](https://rlang.r-lib.org/reference/topic-data-mask-programming.html),
   from the `rlang` documentation,
   including `across(all_of(vars))` to use a vector of column names in a data masking function.
 - [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html),
   on collisions between column names and objects in your environment,
   and how the `.data` and `.env` pronouns prevent them.
-- [The injection operator `!!`](https://rlang.r-lib.org/reference/injection-operator.html)
-  and [embracing with `{{`](https://rlang.r-lib.org/reference/embrace-operator.html),
+- [The injection operator `!!`](https://rlang.r-lib.org/reference/injection-operator.html) and [embracing with `{{`](https://rlang.r-lib.org/reference/embrace-operator.html),
   in the `rlang` documentation.
 
 The deprecations mentioned in this section are documented in:
@@ -737,8 +775,7 @@ The deprecations mentioned in this section are documented in:
   the `tidyselect` FAQ on `select(cols)` versus `select(all_of(cols))`.
 - [tidyselect 1.2.0](https://www.tidyverse.org/blog/2022/10/tidyselect-1-2-0/),
   the release post that deprecated `.data` in tidy selection.
-- [`aes_()` and `aes_string()`](https://ggplot2.tidyverse.org/reference/aes_.html)
-  and [Using ggplot2 in packages](https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html),
+- [`aes_()` and `aes_string()`](https://ggplot2.tidyverse.org/reference/aes_.html) and [Using ggplot2 in packages](https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html),
   in the `ggplot2` documentation.
 - [tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376),
   the `pull(all_of())` quirk.
@@ -747,10 +784,8 @@ To learn how it all works underneath:
 
 - The [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix.
 - [Metaprogramming](https://adv-r.hadley.nz/metaprogramming.html), in Advanced R.
-- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU)
-  ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
-  a talk by Daniel Chen that rebuilds `select()` step by step
-  to explain quoting, quosures and the data mask.
+- [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU) ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
+  a talk by Daniel Chen that rebuilds `select()` step by step to explain quoting, quosures and the data mask.
   It was recorded in 2020, so a few of its patterns have since been superseded:
   use `aes(x = .data[[col]])` instead of `aes_string()`,
   `all_of(col)` instead of passing a variable holding a string straight to `select()`,
@@ -758,17 +793,23 @@ To learn how it all works underneath:
 
 ## Function documentation
 
-Function documentation is extremely useful at both the time of function creation/development, as well as at the time of function usage by the user. At the time of creation/development, it is useful for clearly delineating and communication the planned function's specifications. At the time of usage, it is often the primary documentation a user will refer to in order to understand how to use the function. If a function is not well documented, it will not be well understood or widely used.
+Function documentation is extremely useful at both the time of function creation/development,
+as well as at the time of function usage by the user.
+At the time of creation/development,
+it is useful for clearly delineating and communication the planned function's specifications.
+At the time of usage, it is often the primary documentation a user will refer
+to in order to understand how to use the function.
+If a function is not well documented, it will not be well understood or widely used.
 
 ### Function documentation in R
 
-In R, we write function documentation in a style that the
-[`roxygen2` R package](https://roxygen2.r-lib.org/)
-can use to automatically generate nicely formatted documentation,
+In R, we write function documentation in a style that the [`roxygen2` R package](https://roxygen2.r-lib.org/) can use
+to automatically generate nicely formatted documentation,
 accessible via R's help function,
 when we create R packages.
 This is not available to us until we package our functions in software packages,
-however it is a good practice to get into because it helps ensure you document the key aspects of a function for your user,
+however it is a good practice to get
+into because it helps ensure you document the key aspects of a function for your user,
 and it means that when you go to create an R package to share your function,
 you will have already correctly formatted the function documentation,
 saving future you some work!
@@ -788,7 +829,9 @@ fahr_to_celsius <- function(temp) {
 }
 ```
 
-RStudio has a nice feature to provide a `roxygen2` formatted skeleton for function documentation. To use it, you put the cursor in the function definition, and then select the menu items "Code" > "Insert Roxygen Skeleton":
+RStudio has a nice feature to provide a `roxygen2` formatted skeleton for function documentation.
+To use it, you put the cursor in the function definition,
+and then select the menu items "Code" > "Insert Roxygen Skeleton":
 
 <img src="../img/insert_roxygen.png" width=600>
 
@@ -796,14 +839,21 @@ RStudio has a nice feature to provide a `roxygen2` formatted skeleton for functi
 
 To practice writing functions in R, you can attempt this worksheet: https://github.com/UBC-DSCI/dsci-310-student/blob/main/practice/worksheet_functions_in_r.ipynb
 
-*Note: to access the automated software tests for feedback on your answers, you will want to clone or download [this GitHub repo](https://github.com/UBC-DSCI/dsci-310-student) and navigate to the `practice` directory.*
+*Note: to access the automated software tests for feedback on your answers,
+you will want to clone or download [this GitHub repo](https://github.com/UBC-DSCI/dsci-310-student) and navigate to the `practice` directory.*
 
 ## Defining functions in Python
 
-In this course, we will get to practice writing functions (and then testing them) in the Python programming language. We will only cover it here briefly. To learn more about functions in Python, we refer you to the [Module 6: Functions Fundamentals and Best Practices
-](https://prog-learn.mds.ubc.ca/en/module6) from the Programming in Python for Data Science course.
+In this course, we will get to practice writing functions (and then testing them) in the Python programming language.
+We will only cover it here briefly.
+To learn more about functions in Python,
+we refer you to the [Module 6: Functions Fundamentals and Best Practices](https://prog-learn.mds.ubc.ca/en/module6) from the Programming in Python for Data Science course.
 
-Functions in Python are defined using the reserved word `def`. A colon follows the function arguments to indicate where the function body should starte. White space, in particular indentation, is used to indicate which code belongs in the function body and which does not. A general form for fucntion definition is shown below:
+Functions in Python are defined using the reserved word `def`.
+A colon follows the function arguments to indicate where the function body should starte.
+White space, in particular indentation,
+is used to indicate which code belongs in the function body and which does not.
+A general form for fucntion definition is shown below:
 
 ```
 def function_name(…function arguments…):
@@ -821,8 +871,10 @@ add_two_numbers <- function(x, y) {
 add_two_numbers(1, 4)
 ```
 
-- Functions in R are objects. This is referred to as “first-class functions”.
-- The last line of the function returns the object created, or listed there. To return a value early use the special word `return` (as shown below).
+- Functions in R are objects.
+  This is referred to as “first-class functions”.
+- The last line of the function returns the object created, or listed there.
+  To return a value early use the special word `return` (as shown below).
 
 ```{r}
 #| slideshow: {slide_type: slide}
@@ -868,4 +920,5 @@ math_two_numbers (1, 4, "subtract")
 
 ##### Extra arguments via `...`
 
-If we want our function to be able to take extra arguments that we don't specify, we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):
+If we want our function to be able to take extra arguments that we don't specify,
+we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):

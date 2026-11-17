@@ -13,27 +13,27 @@ aliases:
 
 In Python, we use formatted docstrings to generate our code-level documentation.
 We then use a tool called [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
-to take those formatted docstrings to generate our API reference documentation
-for our package website, and several of our Markdown files in our packages
-GitHub repository to generate other pages for our package website
-(Contributing, Code of Conduct, etc).
-We then serve the website up on some platform, such as [Read the Docs](https://readthedocs.org/)
-(others exist as well).
+to take those formatted docstrings to generate our API reference documentation for our package website,
+and several of our Markdown files in our packages GitHub repository
+to generate other pages for our package website (Contributing, Code of Conduct, etc).
+We then serve the website up on some platform, such as [Read the Docs](https://readthedocs.org/) (others exist as well).
 
 ### API reference docs
 
 - We learned the basics of how to write formatted docstrings using numpy-style documentation.
 
-- These docstrings can not only be accessed via `?function_name`, but can also be used to automatically generate package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
+- These docstrings can not only be accessed via `?function_name`,
+  but can also be used to automatically generate package-level documentation via [`sphinx`](https://www.sphinx-doc.org/en/master/index.html)
 
 - We already did this with our toy `pycounts` package by:
     - adding our doc dependencies into our `dev` dependency group via `poetry add --group dev myst-nb sphinx-autoapi sphinx-rtd-theme
     - and then running `make html` from the `docs` directory
 
-- The `py-pkgs-cookiecutter` template also has some [extensions added to `docs/conf.py`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/00ca3be8cd9964f863481a2ffe1763f0158087f3/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/conf.py#L18)
-that are needed for this to work.
+- The `py-pkgs-cookiecutter` template also has some [extensions added to `docs/conf.py`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/00ca3be8cd9964f863481a2ffe1763f0158087f3/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/conf.py#L18) that are needed for this to work.
 
-- To have `sphinx` correctly render the docstring as package-level documentation, we need to either write our docstrings in the correct format for restructured text (RST) or we can use the `sphinx` extension `napolean` that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).
+- To have `sphinx` correctly render the docstring as package-level documentation,
+  we need to either write our docstrings in the correct format for restructured text (RST) or we can use the `sphinx` extension `napolean`
+  that can render Numpy- or Google-style docstrings (which are much easier for you to write and read).
 
 ### Example of RST formatted docstrings:
 
@@ -77,11 +77,15 @@ that are needed for this to work.
 
 ### Rendering the docs locally
 
-It is not essential that you locally render the docs, as we will see next that Read the Docs does this for your on their remote machines, however it is a best practice to do so because it is a lot faster than Read the Docs and therefore editing and proof-reading is more efficient when done locally.
+It is not essential that you locally render the docs,
+as we will see next that Read the Docs does this for your on their remote machines,
+however it is a best practice to do so because it is a lot faster than Read the Docs
+and therefore editing and proof-reading is more efficient when done locally.
 
 ## Adding new page to your package-level documentation
 
-How do we add new pages to our Python package-level documentation? The pages that show up in the rendered document on ReadtheDocs are controlled by [`docs/index.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md).
+How do we add new pages to our Python package-level documentation?
+The pages that show up in the rendered document on ReadtheDocs are controlled by [`docs/index.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md).
 
 Let's take a look at the [raw version of that file from our `pypkgs-cookiecutter`](https://raw.githubusercontent.com/py-pkgs/py-pkgs-cookiecutter/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md):
 
@@ -91,7 +95,8 @@ This results in a side bar on our webpage that looks like this:
 
 <img src="../img/original-index.png" width=700>
 
-Thus, to add new pages, we add them to the `toctree` list. They will then show up in that position in the rendered side bar.
+Thus, to add new pages, we add them to the `toctree` list.
+They will then show up in that position in the rendered side bar.
 
 What if we want headers in our side bar?
 To do this, we need to add multiple `toctree`'s and add a caption.
@@ -106,7 +111,12 @@ Which will result in this rendering:
 
 ## Vignettes/tutorials
 
-It is common for packages to have vignettes/tutorials (think demos with narratives) showing how to use the package in a more real-world scenario than the documentation examples show. In your Python package, this ideally might go in an "Examples" section of the docs. The `pypkgs-cookiecutter` gives a template file for you to use as a starting place (`docs/example.ipynb`). As indicated in the section above you can rename this file and add others, just make sure you update the `toctree` in `docs/index.md`.
+It is common for packages to have vignettes/tutorials (think demos with narratives) showing how
+to use the package in a more real-world scenario than the documentation examples show.
+In your Python package, this ideally might go in an "Examples" section of the docs.
+The `pypkgs-cookiecutter` gives a template file for you to use as a starting place (`docs/example.ipynb`).
+As indicated in the section above you can rename this file and add others,
+just make sure you update the `toctree` in `docs/index.md`.
 
 Here are some good examples of vignettes/tutorials from packages you know and love:
 
@@ -122,9 +132,11 @@ The standard practice for hosting and sharing docs in the Python community is to
 
 - Similar to codecov.io, to use Read the Docs with our package, we need to link it to our GitHub repository
 
-- Read the Docs then checks out the files from the GitHub repo and uses their remote machines to render and serve your documentation
+- Read the Docs then checks out the files from the GitHub repo
+  and uses their remote machines to render and serve your documentation
 
-- To do this, Read the Docs needs access to the packages `pyproject.toml` file. This is done via the creation of a `.readthedocs.yml` file in the root of your project that looks like this:
+- To do this, Read the Docs needs access to the packages `pyproject.toml` file.
+  This is done via the creation of a `.readthedocs.yml` file in the root of your project that looks like this:
 
 ```yaml
 # .readthedocs.yaml
@@ -158,7 +170,8 @@ sphinx:
 
 *note 1 - the version of Python specified here has to be a version that your package can be installed with!*
 
-*note 2 - all your documentation dependencies need to be in `pyproject.toml` for ReadtheDocs to be able to successfully render your docs!*
+*note 2 - all your documentation dependencies need
+to be in `pyproject.toml` for ReadtheDocs to be able to successfully render your docs!*
 
 ### Sphinx themes
 
@@ -170,7 +183,8 @@ See the link below to view and read the docs for other Sphinx themes:
 
 ### Documentation metadata in `pyproject.toml`
 
-To get your packages `README` and important links to show-up on the TestPyPI and PyPI pages for your package, add the following information to the `[tool.poetry]` table in `pyproject.toml`.
+To get your packages `README` and important links to show-up on the TestPyPI and PyPI pages for your package,
+add the following information to the `[tool.poetry]` table in `pyproject.toml`.
 
 ```
 readme = "README.md"

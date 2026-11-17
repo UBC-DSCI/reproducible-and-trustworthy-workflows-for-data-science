@@ -7,7 +7,8 @@ aliases:
 
 ## GitHub actions
 
-A tool and service for automating software development tasks, located in the same place where you already store your code.
+A tool and service for automating software development tasks,
+located in the same place where you already store your code.
 
 ### Key concepts:
 **Actions:** Individual tasks you want to perform.
@@ -24,7 +25,8 @@ A tool and service for automating software development tasks, located in the sam
 
 ### Examples of GitHub Actions
 
-You have already interacted with GitHub Actions in this class! We used it to:
+You have already interacted with GitHub Actions in this class!
+We used it to:
 
 1. Generate the issues in the [`dsci-310-homework` repo](https://github.com/UBC-DSCI/dsci-310-homework) upon push to the "create" branch: <https://github.com/UBC-DSCI/dsci-310-homework/blob/master/.github/workflows/create_issues.yml>
 
@@ -33,7 +35,9 @@ You have already interacted with GitHub Actions in this class! We used it to:
 :::{.exercise}
 Getting to know GitHub Actions workflows
 
-We are going to each create our own GitHub Actions workflow. This workflow is a very simple toy example where we run some `echo` shell commands to print things to the runner's terminal.
+We are going to each create our own GitHub Actions workflow.
+This workflow is a very simple toy example
+where we run some `echo` shell commands to print things to the runner's terminal.
 
 #### Steps:
 
@@ -117,11 +121,14 @@ The file above has:
 
 ### Commands vs actions
 
-Steps can consist commands or actions. Let's spend some time to discuss what each of these are and how they differ.
+Steps can consist commands or actions.
+Let's spend some time to discuss what each of these are and how they differ.
 
 ### Commands
 
-Steps that use commands look like the one shown below. They consist of a `name` and a `run` parameter. The commands listed after `run` are run in the runner's shell:
+Steps that use commands look like the one shown below.
+They consist of a `name` and a `run` parameter.
+The commands listed after `run` are run in the runner's shell:
 
 ```yaml
 - name: Run a one-line script
@@ -139,7 +146,13 @@ As shown in the file above, we can run multiple commands in a step using the `|`
 
 ### Actions
 
-Steps that use actions look like the one shown below (which builds and publishes Docker containers). They always have a `uses` parameter, and often also have `name` and `with` parameters. The `uses` parameter specifies which action to use, and the `with` parameters provide arguments to those actions. The `@master` at the name of the `uses` line, specifies whether to use the version at the head of the actions default branch, or a specific version (*e.g.,* `@v2`).
+Steps that use actions look like the one shown below (which builds and publishes Docker containers).
+They always have a `uses` parameter, and often also have `name` and `with` parameters.
+The `uses` parameter specifies which action to use,
+and the `with` parameters provide arguments to those actions.
+The `@master` at the name of the `uses` line,
+specifies whether to use the version at the head of the actions default branch,
+or a specific version (*e.g.,* `@v2`).
 
 ```yaml
 - name: Publish to Registry
@@ -150,13 +163,18 @@ Steps that use actions look like the one shown below (which builds and publishes
         password: ${{ secrets.DOCKER_PASSWORD }}
 ```
 
-Actions commonly perform one task in a workflow. There are two ways to build actions, either using JavaScript or by creating a Docker container that runs a shell script. For the latter such actions are defined by:
+Actions commonly perform one task in a workflow.
+There are two ways to build actions,
+either using JavaScript or by creating a Docker container that runs a shell script.
+For the latter such actions are defined by:
 
 - a Dockerfile
 - a shell script to run inside the Docker container
 
 :::{.callout-note}
-In this course we will use actions built by others, but not build our own. That is beyond the scope of this course. However, if you are interested in learning more, I point you to the documentation below.
+In this course we will use actions built by others, but not build our own.
+That is beyond the scope of this course.
+However, if you are interested in learning more, I point you to the documentation below.
 :::
 
 #### Optional:
@@ -175,17 +193,28 @@ Read the docs here to learn how to build your own JavaScript GitHub action:
 
 ## Storing and use GitHub Actions credentials safely via GitHub Secrets
 
-Some of the tasks we want to do in our workflows require authentication. However, the whole point of this is to automate this process - so how can we do that without sharing our authentication tokens, usernames or passwords in our workflow files?
+Some of the tasks we want to do in our workflows require authentication.
+However, the whole point of this is to automate this process -
+so how can we do that without sharing our authentication tokens,
+usernames or passwords in our workflow files?
 
 GitHub Secrets is the solution to this!
 
-GitHub Secrets are encrypted environment variables that are used only with GitHub Actions, and specified on a repository-by-repository basis. They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`
+GitHub Secrets are encrypted environment variables that are used only with GitHub Actions,
+and specified on a repository-by-repository basis.
+They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`
 
 See GitHub's help docs for how to do this: <https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets>
 
 ## Authenticating with the `GITHUB_TOKEN`
 
-What if you need to do Git/GitHub things in your workflow? Like checkout your files to run the tests? Create a release? Open an issue? To help with this GitHub automatically (i.e., you do not need to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow. You access this token in your workflow file via:
+What if you need to do Git/GitHub things in your workflow?
+Like checkout your files to run the tests?
+Create a release?
+Open an issue?
+To help with this GitHub automatically (i.e., you do not need
+to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow.
+You access this token in your workflow file via:
 
 ```yaml
 ${{ secrets.GITHUB_TOKEN }}
@@ -193,7 +222,8 @@ ${{ secrets.GITHUB_TOKEN }}
 
 ## Creating and accessing environment variables in GitHub Actions
 
-Sometimes our commands or actions need environment variables. In both of these scenarios, we create environment variables and access them within a step via:
+Sometimes our commands or actions need environment variables.
+In both of these scenarios, we create environment variables and access them within a step via:
 
 ```yaml
 steps:

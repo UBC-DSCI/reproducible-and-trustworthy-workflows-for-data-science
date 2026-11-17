@@ -11,8 +11,11 @@ aliases:
 
 ## Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) versus Scripts
 
-- Up until now, we have primarily been using R and Python in an Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode)
-- Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) is when we run our code in the console in R/Python, or in cells/chunks in the RStudio/Juptyer notebooks
+- Up until now, we have primarily been using R
+  and Python in an Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode)
+- Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode)
+  is when we run our code in the console in R/Python,
+  or in cells/chunks in the RStudio/Juptyer notebooks
 - A Read-eval-print-loop (REPL) framework (*i.e.,* interactive mode) is very useful for:
     - solving small problems
     - developing code that will be knit to an analytic report
@@ -20,7 +23,10 @@ aliases:
 
 ## What is a script?
 
-An R/Python script is simply a plain text file containing (almost) the same commands that you would enter into R/Python's console or in cells/chunks in the RStudio/Juptyer notebooks. We often run these from top to bottom from the command line/unix shell.
+An R/Python script is simply a plain text file containing (almost) the same commands
+that you would enter into R/Python's console
+or in cells/chunks in the RStudio/Juptyer notebooks.
+We often run these from top to bottom from the command line/unix shell.
 
 ### Why write scripts?
 
@@ -35,11 +41,17 @@ You can find the code repository for this lesson here: <https://github.com/DSCI-
 
 ## Scripts in R
 
-Let's start with a small, simple example to demonstrate how we write and run scripts in R (it is very similar in Python and we will get to this later in the lesson).
+Let's start with a small,
+simple example to demonstrate how we write
+and run scripts in R (it is very similar in Python
+and we will get to this later in the lesson).
 
-Our script will be called `print_mean_hp.R`, and it will calculate the mean horsepower of the cars from the built-in R data frame `mtcars`.
+Our script will be called `print_mean_hp.R`,
+and it will calculate the mean horsepower of the cars
+from the built-in R data frame `mtcars`.
 
-We will develop this script inside RStudio, make sure it works, and then run it from the command line/terminal/Git bash.
+We will develop this script inside RStudio, make sure it works,
+and then run it from the command line/terminal/Git bash.
 
 ### Our first R script
 
@@ -58,9 +70,12 @@ print(mean_hp)
 
 ### Running our first R script
 
-To run our R script, we need to open the command line/terminal/Git bash, and either navigate to the directory that houses the script OR point to it when we call it. We will do the former.
+To run our R script, we need to open the command line/terminal/Git bash,
+and either navigate to the directory that houses the script OR point to it when we call it.
+We will do the former.
 
-Then to run the R script, we use the `Rscript` command, followed by the name/path to the file:
+Then to run the R script, we use the `Rscript` command,
+followed by the name/path to the file:
 
 ```bash
 Rscript print_mean_hp.R
@@ -74,13 +89,23 @@ The output should be:
 
 ### A couple notes about scripts
 
-- If you want something to be output to the command line/terminal/Git bash, you **should** explicitly ask for it to be print. *This is not an absolute requirement in R, but it is in Python!*
-- Similar with figures, they need to be saved! You will never see a figure created in a script unless you write it to a file.
-- From a reproducibility perspective, if we want input from the user, usually we will design the scripts to take command line arguments, and not use keyboard/user prompts.
+- If you want something to be output to the command line/terminal/Git bash,
+  you **should** explicitly ask for it to be print.
+  *This is not an absolute requirement in R, but it is in Python!*
+- Similar with figures, they need to be saved!
+  You will never see a figure created in a script unless you write it to a file.
+- From a reproducibility perspective,
+  if we want input from the user,
+  usually we will design the scripts to take command line arguments,
+  and not use keyboard/user prompts.
 
 ### Script structure and organization
 
-Although not necessary in R or Python, it is still good practice and advised to organize the code in your script into related sections. This practice keeps your code readable and organized. Below we outline how we typically organize R scripts:
+Although not necessary in R or Python,
+it is still good practice and advised to organize the code
+in your script into related sections.
+This practice keeps your code readable and organized.
+Below we outline how we typically organize R scripts:
 
 ### Example R script organization:
 
@@ -105,9 +130,13 @@ main() # pass any command line args to main here
 
 ### R script example
 
-Here we write a script called `quick_titanic_fare_mean.R` which reads in the [titanic dataset](https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv) (*original source: <https://biostat.app.vumc.org/wiki/Main/DataSets>*) and calculates the  mean for the fare (ticket price) variable.
+Here we write a script called `quick_titanic_fare_mean.R`
+which reads in the [titanic dataset](https://raw.githubusercontent.com/ttimbers/rscript-demo/main/data/titanic.csv) (*original source: <https://biostat.app.vumc.org/wiki/Main/DataSets>*) and calculates the mean for the fare (ticket price) variable.
 
-Our script has two functions, a function we defined to calculate the standard error of the mean (such a function does not exist in R) and a `main` function which runs the "body" of our code.
+Our script has two functions,
+a function we defined to calculate the standard error of the mean
+(such a function does not exist in R) and a `main` function
+which runs the "body" of our code.
 
 ```r
 # author: Tiffany Timbers
@@ -134,11 +163,11 @@ main()
 ### Saving things from scripts
 
 Above we just printed the mean to the terminal.
-That is was done because the purpose of that script
-was to have a very simple illustration of how to create and run scripts in R.
-However, in practice, we typically want to save our analysis artifacts (figures, tables, values, etc)
-to disc so that we can load them into other files
-(e.g., our final reports to communicate our analysis findings).
+That is was done because the purpose of that script was
+to have a very simple illustration of how to create and run scripts in R. However,
+in practice, we typically want to save our analysis artifacts
+(figures, tables, values, etc) to disc so that we can load them into other files (e.g.,
+our final reports to communicate our analysis findings).
 
 Below we show an example of how we would use `readr::write_csv`
 to save the mean value we calculated to a `.csv` file:
@@ -170,23 +199,25 @@ There needs to be a `results` directory created before this script would work.
 :::
 
 ## Using command line arguments in R
-Let's make our script more flexible, and let us specify what column variable we want to calculate the mean for when we call the script.
+Let's make our script more flexible,
+and let us specify what column variable we want to calculate the mean
+for when we call the script.
 
-To do this, we use the `docopt` R package. This will allow us to collect the text we enter at the command line when we call the script, and make it available to us when we run the script.
+To do this, we use the `docopt` R package.
+This will allow us to collect the text we enter at the command line when we call the script,
+and make it available to us when we run the script.
 
-When we run `docopt` it takes the text we entered at the command line 
-and gives it to us as a named list of the text provided after the script name. 
+When we run `docopt` it takes the text we entered at the command line
+and gives it to us as a named list of the text provided after the script name.
 The names of the items in the list come from the documentation.
-Whitespace at the command line is what is used to parse the text 
-into separate items in the list.
+Whitespace at the command line is what is used to parse the text into separate items in the list.
 The list is a bit funny, in that the arguments are duplicated in the list.
-In the first occurrence of the arguments in the list, 
-the names include the syntax 
-of how you specify the argument in the `docopt` docs
+In the first occurrence of the arguments in the list,
+the names include the syntax of how you specify the argument in the `docopt` docs
 (so it can include characters like `<` and `-` and `[`).
-These make the names for the arguments non-syntactic, 
-and thus difficult to program with in R.
-Thus, they are also given without those special `docopt` characters.
+These make the names for the arguments non-syntactic,
+and thus difficult to program with in R. Thus,
+they are also given without those special `docopt` characters.
 
 It might be easier to understand if we see an example.
 Consider this script named `demo-docopt.R`:
@@ -211,9 +242,8 @@ print(opt)
 print(typeof(opt))
 ```
 
-If we run this via `Rscript demo-docopt.R I LOVE MDS` 
-(so our three arguments were `I`, `LOVE` and `MDS`),
-we get this output:
+If we run this via `Rscript demo-docopt.R I LOVE MDS`
+(so our three arguments were `I`, `LOVE` and `MDS`), we get this output:
 
 ```bash
 List of 6
@@ -227,23 +257,20 @@ NULL
 [1] "list"
 ```
 
-You can see that `opt` (the list of command line arguments)
-is of length 6, even though there are only 3 command line 
-arguments expected by the script 
-and there were only 3 command line 
-arguments passed to the script at the command line.
+You can see that `opt` (the list of command line arguments) is of length 6,
+even though there are only 3 command line arguments expected by the script
+and there were only 3 command line arguments passed to the script at the command line.
 The argument values are repeated, with only the names being different.
-The second occurence of the argument name is easier to work with
-because it doesn't have the special docopt command line characters.
+The second occurence of the argument name is easier to work
+with because it doesn't have the special docopt command line characters.
 So to reference a command line argument value,
 let's say the second command line argument value in the example above,
 we would type `opt$arg2`.
 
 :::{.callout-note}
-We could also use numerical indexing 
-to access the second command line argument value in the example above.
+We could also use numerical indexing to access the second command line argument value in the example above.
 To do that we could type either `opt[[2]]` or `opt[[5]]`.
-But this is far less readable, 
+But this is far less readable,
 and so we tend to reference the command line arguments using the `$name` approach.
 :::
 
@@ -310,10 +337,10 @@ data |>
 ```
 
 You may also have seen `{{ var }}` in the [Defining functions in R](9020-functions-r.qmd) appendix.
-That is for bare column names passed into a function you wrote, like `my_function(data, fare)`,
+That is for bare column names passed into a function you wrote,
+like `my_function(data, fare)`,
 and it does not work with strings from the command line:
-it would use the string `"fare"` itself rather than the column,
-often without an error.
+it would use the string `"fare"` itself rather than the column, often without an error.
 :::
 
 :::{.callout-warning}
@@ -321,8 +348,7 @@ often without an error.
 
 `select()`, `rename()` and `relocate()` choose columns rather than compute with them,
 and in those functions using `.data` is deprecated (since `tidyselect` 1.2.0).
-Use `all_of()` instead,
-as we do in the configuration file example later in this chapter:
+Use `all_of()` instead, as we do in the configuration file example later in this chapter:
 
 ```{r}
 data |>
@@ -332,10 +358,9 @@ data |>
 The `tidyverse` documentation suggests `all_of()` for `pull()` too,
 but `pull(all_of(var))` has a quirk:
 if the data happens to have a column with the same name as your variable
-(here, a column called `var`),
-`pull()` returns that column instead of the column named in `var`,
-without an error or a warning
-([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)):
+(here, a column called `var`), `pull()` returns
+that column instead of the column named in `var`,
+without an error or a warning ([tidyselect issue #376](https://github.com/r-lib/tidyselect/issues/376)):
 
 ```{r}
 var <- "fare"
@@ -353,9 +378,11 @@ data_with_var |>
   mean(na.rm = TRUE)
 ```
 
-`pull(.data[[var]])` does not have this problem, which is why we use it in this chapter.
+`pull(.data[[var]])` does not have this problem,
+which is why we use it in this chapter.
 See @sec-tidyverse-strings for all of these patterns with examples you can run,
-and the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix for why they work the way they do.
+and the [Non-standard evaluation in R](9025-non-standard-evaluation-r.qmd) appendix
+for why they work the way they do.
 :::
 
 And we would run a script like this from the command line as follows:
@@ -364,7 +391,9 @@ And we would run a script like this from the command line as follows:
 Rscript src/quick_titanic_col_mean.R fare
 ```
 
-Let's make our script even more flexible, and let us specify that dataset as well (we could then use it more generally on other files, such as the [Gapminder `.csv`'s](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder-FiveYearData.csv)).
+Let's make our script even more flexible,
+and let us specify that dataset as well (we could then use it more generally
+on other files, such as the [Gapminder `.csv`'s](https://swcarpentry.github.io/r-novice-gapminder/data/gapminder-FiveYearData.csv)).
 
 
 ```r
@@ -406,9 +435,18 @@ Rscript src/quick_csv_col_mean.R data/titanic.csv fare
 
 ### Positional arguments vs options
 
-In the examples above, we used `docopt` to specify positional arguments. This means that the order matters! If we change the order of the values of the arguments at the command line, our script will likely throw an error, because it will try to perform the wrong operations on the wrong values.
+In the examples above, we used `docopt` to specify positional arguments.
+This means that the order matters!
+If we change the order of the values of the arguments at the command line,
+our script will likely throw an error,
+because it will try to perform the wrong operations on the wrong values.
 
-Another downside to positional arguments, is that without good documentation, they can be less readable. And certainly the call to the script to is less readable. We can instead give the arguments names using `--ARGUMENT_NAME` syntax. We call these "options". Below is the same script but specified using options as opposed to positional arguments:
+Another downside to positional arguments, is that without good documentation,
+they can be less readable.
+And certainly the call to the script to is less readable.
+We can instead give the arguments names using `--ARGUMENT_NAME` syntax.
+We call these "options".
+Below is the same script but specified using options as opposed to positional arguments:
 
 ```r
 # author: Tiffany Timbers
@@ -457,7 +495,8 @@ or like this:
 Rscript src/quick_csv_col_mean.R --var=fare --file_path=data/titanic.csv
 ```
 
-because we gave the arguments names, and thus their position no longer matters!
+because we gave the arguments names,
+and thus their position no longer matters!
 
 ### Some tips for RStudio IDE
 
@@ -491,26 +530,32 @@ if __name__ == "__main__":
 ```
 
 :::{.callout-note}
-You can see that R and Python scripts should have roughly the same style. There is the difference of `if __name__ == "__main__":` in Python scripts, and R does not really have an equivalent. The benefit of some control flow around `main`, as is done in Python, is so that you could import or source the other functions in the script without running the `main` function.
+You can see that R and Python scripts should have roughly the same style.
+There is the difference of `if __name__ == "__main__":` in Python scripts,
+and R does not really have an equivalent.
+The benefit of some control flow around `main`,
+as is done in Python, is so that you could import
+or source the other functions in the script without running the `main` function.
 
-Another important note is that if you are using the `click` package
-for parsing command line arguments in Python,
+Another important note is
+that if you are using the `click` package for parsing command line arguments in Python,
 this packages uses decorators on the `main` function to do this.
-As a consequence, these decorators **need** to be positioned directly
-above the `main` function definition.
-So, in this case the organization rules for "# parse/define command line arguments here"
-above is a little different.
+As a consequence, these decorators **need** to be positioned directly above the `main` function definition.
+So, in this case the organization rules for "# parse/define command line arguments here" above is a little different.
 :::
 
 :::{.callout-tip}
-It is still worthwhile however to have a `main` function in your R scripts, as it helps with organization and readability.
+It is still worthwhile however to have a `main` function in your R scripts,
+as it helps with organization and readability.
 :::
 
 
 ### Using command line arguments in Python
 
-Although `docopt` for Python exists, it is not currently being supported by an active development community.
-Thus, we will use the [`click`](https://click.palletsprojects.com/en/8.1.x/) Python package instead. It is widely used, has a healthy and active development community,
+Although `docopt` for Python exists,
+it is not currently being supported by an active development community.
+Thus, we will use the [`click`](https://click.palletsprojects.com/en/8.1.x/) Python package instead.
+It is widely used, has a healthy and active development community,
 and excellent functionality.
 
 Below is an example of using `click` for a simple Python script:
@@ -544,12 +589,15 @@ The sum of 5 and 7 is 12
 
 :::{.callout-note}
 We do not need to pass the variables into `main()`.
-The `click` decorators take care of that for us! How nice!!!
+The `click` decorators take care of that for us!
+How nice!!!
 :::
 
 ### Positional arguments vs options in Python
 
-If we instead wanted to use options in the script above, we swap the `argument` method for the `option` method and add `--` to the prefix of our options:
+If we instead wanted to use options in the script above,
+we swap the `argument` method for the `option` method
+and add `--` to the prefix of our options:
 
 ```python
 import click
@@ -581,17 +629,27 @@ The sum of 5 and 7 is 12
 ## Saving objects from scripts
 
 ### Tables
-As mentioned already, it is important you save results from your scripts so that you can import
-them into your reports (or other other data products).
-For data frame objects that will be presented as tables, writing the objects to a `.csv` file
-through `readr` (in R) or `pandas` (in Python) is great.
+As mentioned already, it is important you save results from your scripts
+so that you can import them into your reports (or other other data products).
+For data frame objects that will be presented as tables,
+writing the objects to a `.csv` file through `readr` (in R)
+or `pandas` (in Python) is great.
 
 ### Figures
-For figures, saving images as `.png` is also a good choice. Although the downstream usage of the figure can sometimes change this recommendation. For a brief but more thorough discussion of this topic, see the ["Saving the visualization" chapter](https://datasciencebook.ca/viz.html#saving-the-visualization) from *Data Science: An Introduction* by Timbers, Campbell & Lee (2020).
+For figures, saving images as `.png` is also a good choice.
+Although the downstream usage of the figure can sometimes change this recommendation.
+For a brief but more thorough discussion of this topic,
+see the ["Saving the visualization" chapter](https://datasciencebook.ca/viz.html#saving-the-visualization) from *Data Science: An Introduction* by Timbers, Campbell & Lee (2020).
 
 ### Model objects
 
-Model objects that are trained/fit in one script, and then need to be used again later in another script can and should be saved as binary files. In R, the format is `.RDS` and we use the functions `saveRDS()` and `readRDS()` to do this. In python, the format is `.pickle` and we use the functions `pickle.dump()` and `pickle.load()` from the `pickle` package.
+Model objects that are trained/fit in one script,
+and then need to be used again later in another script can
+and should be saved as binary files.
+In R, the format is `.RDS` and we use the functions `saveRDS()`
+and `readRDS()` to do this.
+In python, the format is `.pickle` and we use the functions `pickle.dump()`
+and `pickle.load()` from the `pickle` package.
 
 #### example of saving a model using `saveRDS()`
 
@@ -641,11 +699,23 @@ with open("knn_fit.pickle", 'rb') as f:
 
 ## Configuration files
 
-As your analysis grows in complexity, you may find that the number of command line arguments you need to pass to your scripts increases. If you are passing 5, 10, or even more arguments (e.g., hyperparameters for a machine learning model, multiple file paths, specific variable names), your command line calls can become extremely long, messy, and prone to typing errors.
+As your analysis grows in complexity,
+you may find that the number of command line arguments you need to pass
+to your scripts increases.
+If you are passing 5, 10,
+or even more arguments (e.g., hyperparameters for a machine learning model,
+multiple file paths, specific variable names),
+your command line calls can become extremely long, messy,
+and prone to typing errors.
 
-Furthermore, from a reproducibility standpoint, it is difficult to track exactly which parameters were used for a specific analysis run if they were just typed into a terminal session that has since been closed.
+Furthermore, from a reproducibility standpoint,
+it is difficult to track exactly which parameters were used
+for a specific analysis run if they were just typed into a terminal session
+that has since been closed.
 
-This is where **configuration files** come in. Instead of passing many individual arguments, we pass a single configuration file containing all the necessary parameters.
+This is where **configuration files** come in.
+Instead of passing many individual arguments,
+we pass a single configuration file containing all the necessary parameters.
 
 ### When to use configuration files?
 
@@ -658,9 +728,11 @@ This is where **configuration files** come in. Instead of passing many individua
 
 ### The YAML format
 
-A common format for configuration files in data science is **YAML** (`.yaml` or `.yml`). It is human-readable and works well with both R and Python.
+A common format for configuration files in data science is **YAML** (`.yaml` or `.yml`).
+It is human-readable and works well with both R and Python.
 
-Here is an example of what a `config.yaml` file might look like for a script that cleans data and fits a model:
+Here is an example of what a `config.yaml` file might look like for a script
+that cleans data and fits a model:
 
 ```yaml
 input_data: "data/raw/titanic.csv"
@@ -678,9 +750,13 @@ keep_cols:
 
 ### Reading configuration files in R
 
-To read YAML files in R, we use the `yaml` package. The `read_yaml` function reads the file and parses it into a named list, which we can then access using the `$` operator, similar to how we accessed `docopt` arguments.
+To read YAML files in R, we use the `yaml` package.
+The `read_yaml` function reads the file and parses it into a named list,
+which we can then access using the `$` operator,
+similar to how we accessed `docopt` arguments.
 
-Here is how you would modify a script to accept a configuration file using `docopt` and `yaml`:
+Here is how you would modify a script to accept a configuration file
+using `docopt` and `yaml`:
 
 ```r
 "This script cleans data based on parameters in a config file.
@@ -726,7 +802,8 @@ Rscript clean_data.R --config=config.yaml
 
 ### Reading configuration files in Python
 
-In Python, we use the `PyYAML` package (imported as `yaml`). We typically use `yaml.safe_load()` to read the file into a Python dictionary.
+In Python, we use the `PyYAML` package (imported as `yaml`).
+We typically use `yaml.safe_load()` to read the file into a Python dictionary.
 
 Here is how you would structure the Python equivalent using `click`:
 
@@ -773,5 +850,9 @@ python clean_data.py --config=config.yaml
 
 :::{.callout-tip}
 ### Tip for reproducibility
-When using configuration files, it is a great practice to associate a `config.yaml` file with the result it generated, such as by copying it into your results directory alongside your output figures and tables. This way, you have a permanent snapshot of exactly which parameters generated those specific results!
+When using configuration files,
+it is a great practice to associate a `config.yaml` file with the result
+it generated, such as by copying it into your results directory alongside your output figures and tables.
+This way, you have a permanent snapshot of exactly
+which parameters generated those specific results!
 :::
