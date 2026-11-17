@@ -18,59 +18,42 @@ as well as modified slightly to fit the MDS lecture format.
 
 ## Virtual environments
 
-Virtual environments let's you have multiple versions of programming languages
-packages, and other programs on the same computer, while keeping them isolated
-so they do not create conflicts with each other.
-In practice virtual environments are used in one or multiple projects.
-And you might have several virtual environments stored on your laptop,
-so that you can have a different collection of versions programming languages
-and their packages for each project, as needed.
+A virtual environment lets you have several versions of programming languages,
+packages, and other programs on the same computer,
+kept apart so they do not conflict with each other.
+You might have a different environment for each project,
+each with its own versions of a language and its packages.
 
-Most virtual environment tools have a sharing functionality which aids in making
-data science projects reproducible,
-as not only is there a record of the computational environment,
-but that computational environment can be shared to others computer -
-facilitating the reproduction of results from data and code.
-This facilitation comes from the fact that programming languages
-and their packages are not static - they change!
-There are new features added, bugs are fixed, etc,
-and this can impact how your code runs!
-Therefore, for a data science project to be reproducible across time,
-you need the computational environment in addition to the data and the code.
+Most virtual environment tools can also share an environment,
+which helps make data science projects reproducible:
 
-There are several other major benefits of using environments:
+- the environment is written down,
+  so there is a record of which versions the project used
+- other people can recreate the same environment on their own computers,
+  and reproduce your results from your data and code
+- programming languages and their packages change over time,
+  with new features and bug fixes that can change how your code runs,
+  so a project needs its environment, as well as its data and code,
+  to stay reproducible over time
 
-- If two of your projects on your computer rely on different versions of the same package,
+Environments have other benefits too:
+
+- If two of your projects rely on different versions of the same package,
   you can install these in different environments.
-- If you want to play around with a new package,
-  you don't have to change the packages versions you use for your data analysis project
-  and risk messing something up
-  (package version often get upgraded when we install other new packages that share dependencies).
+- If you want to try a new package,
+  you don't have to change the package versions your data analysis uses
+  and risk breaking something.
+  (Installing a new package can upgrade other packages it shares dependencies with.)
 - When you develop your own packages,
-  it is essential to use environments,
-  since you want to to make sure you know exactly which packages yours depend on,
-  so that it runs on other systems than your own.
+  environments are essential,
+  because you need to know exactly which packages yours depends on,
+  so that it runs on other computers than your own.
 
+There are many virtual environment tools,
+even if we only look at R and Python:
 
-There are **MANY** version virtual environment tools out there,
-even if we just focus on R and Python.
-When we do that we can generate this list:
-
-#### R virtual environment tools
-- `packrat`
-- `renv`
-- `conda`
-
-#### Python virtual environment tools
-- `uv`
-- `venv`
-- `virtualenv`
-- `conda`
-- `mamba`
-- `poetry`
-- `pipenv`
-- ... there may be more that I have missed.
-
+- **R:** `packrat` (which `renv` replaced), `renv`, and `conda`
+- **Python:** `uv`, `venv`, `virtualenv`, `conda`, `mamba`, `poetry`, `pipenv`, and more
 
 In this book, we use `uv` for Python and `renv` for R:
 
@@ -87,21 +70,22 @@ You will also meet `conda` in other projects,
 so this part ends with two chapters on it,
 [Virtual environments: Python (conda)](0570-virtual-environments-python-conda.qmd)
 and [Virtual environments: Python (conda-lock)](0580-virtual-environments-python-conda-lock.qmd).
-`conda` is nice because it can work with both R and Python.
-Although a downside of `conda` is that it is not as widely adopted in the R community
-as Python is, and therefore there are less R packages available from it,
-and less recent versions of those R packages than available directly from the R package index (CRAN).
-It is true, that you can create a `conda` package for any R package that exists on CRAN,
-however this takes time and effort and is sometimes non-trivial.
 
-Given that, we use `renv` for R, a virtual environment tool
-that is widely adopted in the R community.
-It works directly with the packages on CRAN,
-and therefore allows users to crete R virtual environments with
-the most up to date packages, and all R packages on CRAN, with less work compared to `conda`.
+- `conda` is nice because it works with both R and Python.
+- It is less widely adopted in the R community than in Python,
+  so fewer R packages are available from it,
+  and often at older versions than on CRAN, R's package repository.
+- You can make a `conda` package for any R package on CRAN,
+  but it takes time and effort, and is sometimes not straightforward.
 
-:::{.callout-note}
-Note on terminology: Technically what we are discussing here in this topic are referred to as virtual environments.
-However, in practice we often drop the "virtual" when discussing this and refer to these as simply "environments".
-That may happen in these lecture notes, as well as in the classroom.
+That is why we use `renv` for R.
+It is widely adopted in the R community,
+and it works directly with the packages on CRAN,
+so you can build environments with the most recent version of any CRAN package,
+with less work than `conda`.
+
+:::{.callout-note title="A note on terminology"}
+Technically, what this part discusses are *virtual* environments.
+In practice we often drop the "virtual" and call them "environments",
+in this book and in class.
 :::

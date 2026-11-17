@@ -45,7 +45,7 @@ so the project's environment needs a few packages besides the ones your analysis
 - `pyyaml`, which Quarto's own Jupyter runner imports
 
 The [docker-uv-renv](https://github.com/chendaniely/docker-uv-renv) example project
-(MIT licence) lists exactly these, with the comment "Quarto needs these to run Python code".
+(MIT license) lists exactly these, with the comment "Quarto needs these to run Python code".
 Here is the demo project's `pyproject.toml`
 after `uv add pandas ipykernel nbclient pyyaml`,
 with exact pins as in [uv: pinning exact versions](0545-virtual-environments-python-uv-exact-pins.qmd):
@@ -293,11 +293,13 @@ Output created: report.html
 3.1.1
 ```
 
-`QUARTO_PYTHON` has two costs compared with `uv run`.
-You have to set it again on every render
-(or once per session in PowerShell),
-and it does not check that `.venv` matches `uv.lock`,
-which `uv run` does before every command.
+`QUARTO_PYTHON` has two costs compared with `uv run`:
+
+- you have to set it again on every render
+  (or once per session in PowerShell)
+- it does not check that `.venv` matches `uv.lock`,
+  which `uv run` does before every command
+
 Prefer `uv run`.
 
 ## Put it in the Makefile

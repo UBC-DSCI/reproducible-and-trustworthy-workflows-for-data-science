@@ -81,12 +81,15 @@ uv cache dir
 A package is downloaded into that cache once.
 When a project needs one that is already in there,
 `uv` does not copy it into that project's `.venv`.
-It uses the cheapest thing the filesystem offers,
-a **copy-on-write clone** on macOS and Linux,
-or a **hard link** on Windows.
+It uses the cheapest thing the filesystem offers:
+
+- a **copy-on-write clone** on macOS and Linux
+- a **hard link** on Windows
+
 That choice is uv's
 [`link-mode`](https://docs.astral.sh/uv/reference/settings/#link-mode)
 setting, and you will almost certainly never need to change it.
+
 Either way the file appears inside the `.venv`
 while sharing its blocks on disk with the cached original,
 so the second environment costs close to nothing.
@@ -152,7 +155,7 @@ Installed 1 package in 3ms
 but it is not in `pyproject.toml` and not in `uv.lock`.
 The environment and the lockfile disagree.
 The next `uv sync` resolves that disagreement
-in favour of the lockfile:
+in favor of the lockfile:
 
 ```bash
 uv sync
@@ -181,10 +184,10 @@ when running your script.
 You added `matplotlib` to the project yesterday.
 What should they run?
 
-A.  pip install matplotlib
-B.  uv sync
-C.  uv init
-D.  uv add matplotlib
+A.  `pip install matplotlib`
+B.  `uv sync`
+C.  `uv init`
+D.  `uv add matplotlib`
 
 :::
 
@@ -310,7 +313,7 @@ Then `uv sync` to apply it.
 Commit the resulting change to `uv.lock`.
 A diff on a lockfile is a record of exactly what changed in your environment
 and when,
-which is a genuinely useful thing to have
+which is a useful thing to have
 when a project that worked last month stops working today.
 
 ### Dependency groups
