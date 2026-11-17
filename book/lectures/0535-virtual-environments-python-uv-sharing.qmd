@@ -1,0 +1,358 @@
+---
+title: "uv: sharing and managing an environment"
+output-file: virtual-environments-python-uv-sharing.html
+---
+
+:::{.callout-note title="Adapted from DSCI 521"}
+This chapter is adapted from the DSCI 521 notes,
+[Virtual Environments: Python + uv](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/virtual-environments-uv.html).
+If you took DSCI 521, it is review.
+:::
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0535-virtual-environments-python-uv-sharing.qmd >}}
+
+## Sharing your environment
+
+This is the payoff for everything in [uv: projects](0530-virtual-environments-python-uv-projects.qmd).
+
+Your collaborator clones your repository.
+They get `pyproject.toml`, `uv.lock`, `.python-version`, and your code,
+but no `.venv/`.
+They run one command:
+
+```bash
+uv sync
+```
+
+```out
+Using CPython 3.14.3
+Creating virtual environment at: .venv
+Resolved 6 packages in 21ms
+Installed 5 packages in 55ms
+ + numpy==2.5.5
+ + palmerpenguins==0.1.6
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+Their environment now matches yours exactly,
+down to the version number of a package neither of you has heard of.
+
+If you have ever cloned a project and run `uv sync`,
+you have been on the receiving end of this.
+Somebody else built an environment,
+`uv.lock` wrote down exactly what it contained,
+and that one command reproduced it on your computer.
+In your own projects you are the person on the other end,
+building the environment that someone else will sync.
+
+`uv sync` is the command you will run most often when working with others.
+Run it any time you clone a repository with a lockfile in it,
+and after every `git pull` that touched `uv.lock`.
+
+### One download, many environments
+
+When we ran `uv sync` it showed
+five packages installed in 55 milliseconds,
+and nothing was downloaded.
+That computer had already downloaded those versions for another project.
+Your collaborator's first `uv sync` downloads them once,
+and their later projects reuse that download the same way.
+
+Over time you will have a `.venv` in every project
+and every bit of scratch work you keep,
+and a good number of them will contain the same `pandas`.
+Those are not separate copies of it.
+
+`uv` keeps one cache of every version of every package
+it has ever downloaded for you:
+
+```bash
+uv cache dir
+```
+
+```out
+/Users/you/.cache/uv
+```
+
+A package is downloaded into that cache once.
+When a project needs one that is already in there,
+`uv` does not copy it into that project's `.venv`.
+It uses the cheapest thing the filesystem offers,
+a **copy-on-write clone** on macOS and Linux,
+or a **hard link** on Windows.
+That choice is uv's
+[`link-mode`](https://docs.astral.sh/uv/reference/settings/#link-mode)
+setting, and you will almost certainly never need to change it.
+Either way the file appears inside the `.venv`
+while sharing its blocks on disk with the cached original,
+so the second environment costs close to nothing.
+
+The effect is easy to measure.
+A freshly synced environment with JupyterLab in it
+reports as 164 MB:
+
+```bash
+du -sh .venv
+```
+
+```out
+164M    .venv
+```
+
+Sync a *second* project that needs those same versions,
+and the free space on the disk drops by a few megabytes, not 164.
+
+Two things follow from this that are worth knowing:
+
+- **The first `uv sync` for a set of packages is the slow one**,
+  because it is the one doing the downloading.
+  Every later `uv sync` that wants the same versions is close to instant.
+- **Deleting a `.venv` is cheap and safe.**
+  If an environment gets into a strange state,
+  `rm -rf .venv` followed by `uv sync`
+  rebuilds it from the cache in seconds.
+  That is a reasonable *first* thing to try,
+  and it is not something you would casually do
+  to a conda environment.
+
+The cache does grow over time.
+You can look at it, and tidy it up, with:
+
+```bash
+uv cache size --human
+uv cache prune
+```
+
+`uv cache prune` removes entries nothing points at any more.
+`uv cache clean` empties the cache completely,
+after which the next `uv sync` downloads everything again.
+
+### Sync makes the environment *match*, in both directions
+
+It is worth being precise about what "sync" means,
+because it is stronger than "install".
+Suppose someone installs a package directly,
+bypassing `uv add`:
+
+```bash
+uv pip install cowsay
+```
+
+```out
+Resolved 1 package in 9ms
+Installed 1 package in 3ms
+ + cowsay==6.1
+```
+
+`cowsay` is now in the environment
+but it is not in `pyproject.toml` and not in `uv.lock`.
+The environment and the lockfile disagree.
+The next `uv sync` resolves that disagreement
+in favour of the lockfile:
+
+```bash
+uv sync
+```
+
+```out
+Resolved 6 packages in 4ms
+Uninstalled 1 package in 2ms
+ - cowsay==6.1
+```
+
+`uv sync` installs what is missing **and removes what does not belong**.
+This is a feature, not a surprise.
+It means an environment you built with `uv sync`
+contains exactly what the lockfile says and nothing else,
+which is the only way "it works on my machine" can be a meaningful claim.
+
+The lesson is to add packages with `uv add`, not `uv pip install`.
+The `uv pip` subcommands exist so that older tutorials and scripts keep working,
+but anything installed that way is invisible to your project files.
+
+:::{.activity}
+Your collaborator pulls your latest changes and gets an
+`ModuleNotFoundError: No module named 'matplotlib'`
+when running your script.
+You added `matplotlib` to the project yesterday.
+What should they run?
+
+A.  pip install matplotlib
+B.  uv sync
+C.  uv init
+D.  uv add matplotlib
+
+:::
+
+## Managing packages
+
+Once a project is shared,
+you keep it up to date with a handful of commands.
+
+### Seeing what is installed
+
+`uv tree` shows you the packages you asked for
+and what each of them dragged in:
+
+```bash
+uv tree
+```
+
+```out
+Resolved 6 packages in 4ms
+penguin-analysis v0.1.0
+├── palmerpenguins v0.1.6
+│   ├── numpy v2.5.5
+│   └── pandas v3.1.1
+│       ├── numpy v2.5.5
+│       └── python-dateutil v4.0.0
+│           └── tzdata v2026.6
+└── pandas v3.1.1 (*)
+(*) Package tree already displayed
+```
+
+The indentation tells the story.
+We asked for `palmerpenguins` and `pandas`,
+and `numpy`, `python-dateutil`, and `tzdata` are along for the ride.
+This is the difference between `pyproject.toml` and `uv.lock`,
+drawn as a picture.
+
+For a flat list of what is actually in the environment,
+`uv pip list` works the way you would expect:
+
+```bash
+uv pip list
+```
+
+```out
+Package         Version
+--------------- -------
+numpy           2.5.5
+palmerpenguins  0.1.6
+pandas          3.1.1
+python-dateutil 4.0.0
+tzdata          2026.6
+```
+
+### Removing a package
+
+```bash
+uv remove pandas
+```
+
+```out
+Resolved 6 packages in 9ms
+Checked 5 packages in 0.74ms
+```
+
+This drops the line from `pyproject.toml`
+and updates `uv.lock`.
+Notice that nothing was uninstalled.
+`palmerpenguins` still needs `pandas`,
+so `pandas` stays in the environment as one of its dependencies.
+The tree above shows why.
+
+Remove the package that needed it,
+and `uv` uninstalls everything that nothing else needs any more:
+
+```bash
+uv remove palmerpenguins
+```
+
+```out
+Resolved 1 package in 5ms
+Uninstalled 5 packages in 215ms
+ - numpy==2.5.5
+ - palmerpenguins==0.1.6
+ - pandas==3.1.1
+ - python-dateutil==4.0.0
+ - tzdata==2026.6
+```
+
+One command keeps `pyproject.toml`, `uv.lock`, and `.venv/` in step.
+
+The rest of this chapter uses both packages, so add them back:
+
+```bash
+uv add pandas palmerpenguins
+```
+
+```out
+Resolved 6 packages in 6ms
+Installed 5 packages in 34ms
+ + numpy==2.5.5
+ + palmerpenguins==0.1.6
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+### Upgrading a package
+
+Your lockfile pins exact versions on purpose,
+so `uv sync` will not silently upgrade anything.
+When you *do* want a newer version,
+ask for it:
+
+```bash
+uv lock --upgrade-package pandas
+```
+
+This re-resolves just that package,
+leaving everything else pinned where it is,
+and writes the change into `uv.lock`.
+Then `uv sync` to apply it.
+
+Commit the resulting change to `uv.lock`.
+A diff on a lockfile is a record of exactly what changed in your environment
+and when,
+which is a genuinely useful thing to have
+when a project that worked last month stops working today.
+
+### Dependency groups
+
+Some packages are needed to *develop* the project
+but not to *run* it,
+such as a test runner, a linter, or a formatter.
+These go in a dependency group rather than the main list:
+
+```bash
+uv add --dev pytest
+```
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "penguin-analysis"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "palmerpenguins>=0.1.6",
+    "pandas>=3.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+```
+
+`uv sync` installs the `dev` group by default,
+which is what you want on your own machine.
+
+:::{.callout-note}
+Groups are optional,
+and for a data analysis project you often do not need them.
+This book's own `pyproject.toml` deliberately keeps everything
+in a single `dependencies` list
+so that there is exactly one install command to remember.
+
+You will meet dependency groups again in the
+[packaging chapters](1110-packaging.qmd),
+where the distinction between
+"what my users need" and "what I need to develop this"
+starts to matter a great deal.
+:::
