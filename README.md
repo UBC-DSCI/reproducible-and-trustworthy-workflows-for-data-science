@@ -123,5 +123,33 @@ aliases:
 - **Changing a published URL:** avoid it. If you must, add the old URL to `aliases`
   so existing links redirect.
 
+## Writing chapters
+
+The book's chapters follow these conventions.
+
+- **Semantic line breaks:** put each sentence on its own line,
+  and break after independent clauses
+  (at a comma, semicolon, colon, or em dash).
+  Aim for about 80 characters,
+  though links and inline code may run over.
+  Line breaks never change the rendered page.
+  See <https://sembr.org/> and the chapter
+  [Writing prose with semantic line breaks](book/lectures/0825-semantic-line-breaks.qmd).
+- **Bullets over long paragraphs:** a list of three or more things goes in bullets.
+- **No colon joining two clauses.**
+  A colon before a list or a code block is fine.
+- **No heading directly under another heading.**
+  Put at least a sentence between them.
+- **Runnable code:** executed chunks (` ```{python} `, ` ```{r} `) must run and show real output.
+  Do not put printed output in an `eval: false` chunk.
+  Shell commands go in ` ```bash ` blocks, their output in ` ```out ` blocks,
+  and code that should be shown but not run in ` ```{.python} ` or ` ```{.r} ` blocks.
+- **Windows:** assume Git Bash.
+  When a command differs by shell,
+  put it in a tabset with `group="shell"`
+  and the tabs `macOS and Linux`, `Windows (Git Bash)`, and `Windows (PowerShell)`.
+- **One topic per chapter:** split long chapters into small ones
+  (see [Chapter filenames and URLs](#chapter-filenames-and-urls)).
+
 ## License: 
 Software licensed under the [MIT License](https://spdx.org/licenses/MIT.html), non-software content licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/). See the [license file](LICENSE.md) for more information.
