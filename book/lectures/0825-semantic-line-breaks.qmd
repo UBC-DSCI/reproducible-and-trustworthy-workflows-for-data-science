@@ -1,0 +1,165 @@
+---
+title: "Writing prose with semantic line breaks"
+output-file: semantic-line-breaks.html
+---
+
+:::{.callout-note title="Adapted from DSCI 521"}
+This chapter is adapted from the DSCI 521 notes,
+[Semantic Line Breaks](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/appendix/semantic_line_breaks.html).
+If you took DSCI 521, it is review.
+:::
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0825-semantic-line-breaks.qmd >}}
+
+## One idea per line
+
+> **Hints for Preparing Documents**
+>
+> Most documents go through several versions (always more than you expected) before they are finally finished.
+> Accordingly, you should do whatever possible to make the job of changing them easy.
+>
+> First, when you do the purely mechanical operations of typing, type so subsequent editing will be easy.
+> Start each sentence on a new line.
+> Make lines short, and break lines at natural places, such as after commas and semicolons, rather than randomly.
+> Since most people change documents by rewriting phrases and adding, deleting and rearranging sentences,
+> these precautions simplify any editing you have to do later.
+>
+> — Brian W. Kernighan, *UNIX for Beginners*, 1974
+> (as quoted in Brandon Rhodes' [Semantic Linefeeds](https://rhodesmill.org/brandon/2012/one-sentence-per-line/))
+
+Writing this way is called **semantic line breaks**.
+The [Semantic Line Breaks specification](https://sembr.org/) sets out the rules:
+
+- a line break **must** come after each sentence
+- a line break **should** come after each independent clause,
+  at a comma, semicolon, colon, or em dash
+- a line break **must not** change how the document renders
+- lines of about 80 characters are recommended, but links and code can run over
+
+Semantic line breaks help your source files with version control,
+and they make the source file easier to read.
+The files that make up this book are written this way.
+
+## How Markdown treats line breaks
+
+Markdown, and so Quarto, joins lines that are next to each other into one paragraph.
+This is what makes semantic line breaks possible.
+
+```markdown
+We trained a logistic regression model on the penguin measurements.
+It predicted the species of 96% of the test penguins correctly,
+and most of its mistakes were Chinstrap penguins labeled as Adelie.
+```
+
+is rendered as one paragraph:
+
+We trained a logistic regression model on the penguin measurements.
+It predicted the species of 96% of the test penguins correctly,
+and most of its mistakes were Chinstrap penguins labeled as Adelie.
+
+An empty line between lines starts a new paragraph:
+
+```markdown
+We trained a logistic regression model on the penguin measurements.
+
+It predicted the species of 96% of the test penguins correctly.
+```
+
+is rendered as two paragraphs:
+
+We trained a logistic regression model on the penguin measurements.
+
+It predicted the species of 96% of the test penguins correctly.
+
+To end a line *inside* a paragraph without starting a new one,
+use the `<br/>` HTML tag at the end of the line:
+
+```markdown
+We trained a logistic regression model on the penguin measurements.<br/>
+It predicted the species of 96% of the test penguins correctly.
+```
+
+is rendered as:
+
+We trained a logistic regression model on the penguin measurements.<br/>
+It predicted the species of 96% of the test penguins correctly.
+
+Markdown also treats two spaces at the end of a line as a line break.
+This is easy to lose,
+because many text editors remove trailing spaces when you save,
+so prefer `<br/>`.
+
+## Why it matters for version control
+
+Git compares files line by line.
+When you change one word,
+`git diff` shows every line that changed,
+so how you break your lines decides how big the change looks.
+
+:::{.callout-tip title="New since DSCI 521"}
+Here is the same paragraph written three ways,
+in three files committed to Git:
+
+- `one-line.md` has the whole paragraph on one line.
+- `wrapped.md` is wrapped at 60 characters, as many editors do,
+  and re-wrapped after each edit.
+- `semantic.md` uses semantic line breaks.
+
+In each file, we add "with L2 regularization" to the first sentence.
+
+```bash
+git diff --stat
+```
+
+```out
+ one-line.md | 2 +-
+ semantic.md | 2 +-
+ wrapped.md  | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+```
+
+In `one-line.md`, the changed line is the whole paragraph,
+so you have to search it for the four new words:
+
+```out
+-We trained a logistic regression model on the penguin measurements. It predicted the species of 96% of the test penguins correctly, and most of its mistakes were Chinstrap penguins labeled as Adelie.
++We trained a logistic regression model with L2 regularization on the penguin measurements. It predicted the species of 96% of the test penguins correctly, and most of its mistakes were Chinstrap penguins labeled as Adelie.
+```
+
+In `wrapped.md`, re-wrapping moved every word after the edit,
+so all four lines changed:
+
+```out
+-We trained a logistic regression model on the penguin
+-measurements. It predicted the species of 96% of the test
+-penguins correctly, and most of its mistakes were Chinstrap
+-penguins labeled as Adelie.
++We trained a logistic regression model with L2
++regularization on the penguin measurements. It predicted the
++species of 96% of the test penguins correctly, and most of
++its mistakes were Chinstrap penguins labeled as Adelie.
+```
+
+In `semantic.md`, only the sentence you edited changed:
+
+```out
+-We trained a logistic regression model on the penguin measurements.
++We trained a logistic regression model with L2 regularization on the penguin measurements.
+ It predicted the species of 96% of the test penguins correctly,
+ and most of its mistakes were Chinstrap penguins labeled as Adelie.
+```
+
+The same is true in a pull request on GitHub,
+where your teammates review your changes line by line.
+:::
+
+:::{.activity}
+Rewrite this paragraph with semantic line breaks.
+Render it before and after to check that the output did not change.
+
+```markdown
+Our data comes from the Palmer Station Long Term Ecological Research program. It has measurements for 344 penguins from three species, collected on three islands between 2007 and 2009, and some of the measurements are missing.
+```
+:::
