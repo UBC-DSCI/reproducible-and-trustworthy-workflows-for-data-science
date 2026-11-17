@@ -1,0 +1,241 @@
+---
+title: "uv: `uv run` and activating an environment"
+output-file: virtual-environments-python-uv-run.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0532-virtual-environments-python-uv-run.qmd >}}
+
+## Two ways to use an environment
+
+The uv chapters run everything through `uv run`:
+
+- scripts, `uv run penguins.py`
+- JupyterLab, `uv run jupyter lab`
+- Quarto, `uv run quarto render`
+- tests, `uv run pytest`
+
+Many tutorials, and some tools, *activate* the environment instead.
+
+This chapter shows what each one does,
+using the `penguin_analysis` project from [uv: projects](0530-virtual-environments-python-uv-projects.qmd),
+and gives you a good way to think about `uv run`.
+
+## Activating, running, deactivating
+
+In a new terminal, `python3` is whatever Python your computer finds first.
+On this Mac that is Homebrew's:
+
+```bash
+which python3
+```
+
+```out
+/opt/homebrew/bin/python3
+```
+
+Activating the project's environment changes that:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+source .venv/bin/activate
+```
+
+## Windows (Git Bash)
+
+```bash
+source .venv/Scripts/activate
+```
+
+## Windows (PowerShell)
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+:::
+
+Your prompt now starts with `(penguin-analysis)`,
+and every command you type finds the environment first:
+
+```bash
+which python3
+echo $VIRTUAL_ENV
+```
+
+```out
+/Users/dan/penguin_analysis/.venv/bin/python3
+/Users/dan/penguin_analysis/.venv
+```
+
+Activating did two things.
+It put `.venv/bin` first on your `PATH`
+(`.venv\Scripts` on Windows),
+and it set the `VIRTUAL_ENV` environment variable to the environment's folder.
+Python's own documentation describes these two changes in
+[How venvs work](https://docs.python.org/3/library/venv.html#how-venvs-work).
+Now `python penguins.py`, `jupyter lab` and `quarto render` all use the project's packages:
+
+```bash
+python penguins.py
+```
+
+```out
+  species     island  bill_length_mm  ...  body_mass_g     sex  year
+0  Adelie  Torgersen            39.1  ...       3750.0    male  2007
+1  Adelie  Torgersen            39.5  ...       3800.0  female  2007
+...
+```
+
+The environment stays active until you deactivate it
+or close the terminal:
+
+```bash
+deactivate
+which python3
+```
+
+```out
+/opt/homebrew/bin/python3
+```
+
+## A good way to think about `uv run`
+
+uv's documentation says that `uv run` runs a command in the project environment,
+and that before every `uv run`,
+uv checks that `uv.lock` matches `pyproject.toml`
+and that `.venv` matches `uv.lock`
+([Running commands](https://docs.astral.sh/uv/guides/projects/#running-commands)).
+The same guide gives the alternative to `uv run`.
+You run `uv sync`, then activate the environment, then run your command.
+
+So a good way to think about `uv run <command>` is as a shortcut for four steps:
+
+1. `uv sync`, so `.venv` matches `uv.lock`
+2. activate the environment
+3. run the command
+4. deactivate the environment
+
+uv's documentation does not describe how `uv run` sets up the environment internally.
+You can see, though, that for the command it runs,
+it changes the same two things activating does:
+
+```bash
+uv run python -c "import os, sys; print(sys.executable); print(os.environ['VIRTUAL_ENV'])"
+which python3
+```
+
+```out
+/Users/dan/penguin_analysis/.venv/bin/python
+/Users/dan/penguin_analysis/.venv
+/opt/homebrew/bin/python3
+```
+
+Inside `uv run`, Python is the project's,
+and `VIRTUAL_ENV` names the project's `.venv`.
+Straight afterwards, `python3` is Homebrew's again.
+There is nothing to deactivate,
+because nothing stayed active.
+
+So these do the same work:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+uv sync
+source .venv/bin/activate
+python penguins.py
+deactivate
+```
+
+## Windows (Git Bash)
+
+```bash
+uv sync
+source .venv/Scripts/activate
+python penguins.py
+deactivate
+```
+
+## Windows (PowerShell)
+
+```powershell
+uv sync
+.venv\Scripts\Activate.ps1
+python penguins.py
+deactivate
+```
+:::
+
+```bash
+uv run penguins.py
+```
+
+## What `uv run` does that activating does not
+
+Before it runs your command,
+`uv run` makes sure `.venv` matches `uv.lock`,
+and creates `.venv` if it does not exist yet
+(uv's [`uv run` reference](https://docs.astral.sh/uv/reference/cli/#uv-run) says
+"the project environment will be created and updated before invoking the command").
+Activating only switches to whatever `.venv` already holds.
+
+The difference shows in a fresh clone of the project,
+which has `pyproject.toml`, `uv.lock` and the code,
+but no `.venv`:
+
+```bash
+source .venv/bin/activate
+```
+
+```out
+bash: .venv/bin/activate: No such file or directory
+```
+
+```bash
+uv run penguins.py
+```
+
+```out
+Using CPython 3.14.3
+Creating virtual environment at: .venv
+Installed 5 packages in 72ms
+  species     island  bill_length_mm  ...  body_mass_g     sex  year
+0  Adelie  Torgersen            39.1  ...       3750.0    male  2007
+1  Adelie  Torgersen            39.5  ...       3800.0  female  2007
+2  Adelie  Torgersen            40.3  ...       3250.0  female  2007
+3  Adelie  Torgersen             NaN  ...          NaN     NaN  2007
+4  Adelie  Torgersen            36.7  ...       3450.0  female  2007
+
+[5 rows x 8 columns]
+```
+
+| | Activate, run, deactivate | `uv run` |
+| --- | --- | --- |
+| Finds the environment's Python and programs | yes | yes |
+| How long it lasts | until `deactivate` or the terminal closes | one command |
+| Checks `.venv` against `uv.lock` first | no | yes |
+| Creates `.venv` if it is missing | no | yes |
+
+## Which to use
+
+Use `uv run` for scripts, JupyterLab, Quarto and tests,
+and put those commands in your Makefile targets.
+You never have to remember which environment is active,
+and the environment always matches the lockfile.
+
+Activating is fine when a tool expects an active environment,
+or when you want to type many commands in a row.
+If you do activate:
+
+- run `uv sync` first, so `.venv` matches `uv.lock`
+- `deactivate` when you are done
+
+A forgotten `deactivate` leaves the environment active
+for whatever you run next in that terminal,
+even in another project.
+[uv: rendering Quarto documents](0550-virtual-environments-python-uv-quarto.qmd)
+shows that happening with a Quarto report.

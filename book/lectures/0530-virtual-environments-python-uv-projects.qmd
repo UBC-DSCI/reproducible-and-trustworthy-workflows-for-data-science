@@ -1,0 +1,421 @@
+---
+title: "uv: projects"
+output-file: virtual-environments-python-uv-projects.html
+---
+
+:::{.callout-note title="Adapted from DSCI 521"}
+This chapter is adapted from the DSCI 521 notes,
+[Virtual Environments: Python + uv](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/virtual-environments-uv.html).
+If you took DSCI 521, it is review.
+:::
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0530-virtual-environments-python-uv-projects.qmd >}}
+
+## Creating a project
+
+We'll build a small analysis project to work through the commands.
+Make a directory and move into it:
+
+```bash
+mkdir penguin_analysis
+cd penguin_analysis
+```
+
+Now create the project:
+
+```bash
+uv init --bare
+```
+
+```out
+Initialized project `penguin-analysis`
+```
+
+The `--bare` flag says
+"only create the `pyproject.toml`, nothing else".
+That is what you want for a data analysis project.
+
+:::{.callout-warning}
+If you run `uv init` *without* `--bare`,
+`uv` sets you up to build and publish a Python **package**.
+It creates a `src/` directory, a `README.md`,
+a `[build-system]` block,
+and a git repository.
+
+That is the right thing when you are writing a library
+(see the [packaging chapters](1110-packaging.qmd) later in this book),
+but it is a lot of scaffolding you do not need
+for a folder of notebooks and scripts.
+Start with `--bare` and add what you need.
+:::
+
+Let's look at the one file it made:
+
+```bash
+cat pyproject.toml
+```
+
+```out
+[project]
+name = "penguin-analysis"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = []
+```
+
+This is the file where your project **declares** what it needs.
+Right now it needs nothing.
+
+### Pinning the Python version
+
+`requires-python` above says "any Python 3.14 or newer will do".
+That is a rule for the *solver*.
+It does not say which Python you are actually using.
+
+To record the exact version this project is built with:
+
+```bash
+uv python pin 3.14
+```
+
+```out
+Pinned `.python-version` to `3.14`
+```
+
+This creates a `.python-version` file containing a single line:
+
+```{.default filename=".python-version"}
+3.14
+```
+
+Commit this file.
+It is what makes `uv` pick the same interpreter on your collaborator's machine
+as it did on yours.
+
+:::{.callout-note}
+`.python-version` and `requires-python` have to agree.
+If you ask for a pin that the `pyproject.toml` forbids,
+`uv` will refuse rather than quietly do the wrong thing:
+
+```bash
+uv python pin 3.12
+```
+
+```out
+error: The requested Python version `3.12` is incompatible with the project `requires-python` value of `>=3.14`.
+```
+:::
+
+## Adding packages
+
+Now let's add the packages our analysis needs.
+
+```bash
+uv add pandas palmerpenguins
+```
+
+```out
+Using CPython 3.14.3
+Creating virtual environment at: .venv
+Resolved 6 packages in 268ms
+Downloading pandas (10.7MiB)
+Downloading numpy (5.3MiB)
+ Downloaded numpy
+ Downloaded pandas
+Prepared 5 packages in 2.02s
+Installed 5 packages in 33ms
+ + numpy==2.5.5
+ + palmerpenguins==0.1.6
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+Read that output line by line,
+because a single `uv add` did four separate things:
+
+1. **Found an interpreter** matching our pin (CPython 3.14.3).
+2. **Created the virtual environment** in a `.venv/` folder inside the project.
+   You never asked for this.
+   `uv` makes it the first time you need it.
+3. **Resolved** 6 packages.
+   That count includes the project itself.
+   We asked for 2,
+   and the other 3 are dependencies of the ones we asked for.
+4. **Installed** 5 packages, at exact versions.
+
+And the project directory now looks like this:
+
+```bash
+ls -a
+```
+
+```out
+.python-version
+.venv
+pyproject.toml
+uv.lock
+```
+
+Two new things appeared, `.venv/` and `uv.lock`.
+Our `pyproject.toml` also grew a `dependencies` list:
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "penguin-analysis"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "palmerpenguins>=0.1.6",
+    "pandas>=3.1.1",
+]
+```
+
+Notice that `uv` wrote `>=` and not `==`.
+It recorded "this project needs at least pandas 3.1.1",
+because that is what was current when you asked.
+If you need an exact version,
+say so when you add it:
+
+```bash
+uv add "pandas==3.1.1"
+```
+
+Quote version specifiers.
+An unquoted `==` happens to be safe,
+but the shell reads an unquoted `>` or `<` as a redirect.
+In Bash, `uv add pandas>=3.0.0` ignores the version you typed,
+adds pandas with `uv`'s own lower bound (`pandas>=3.1.1`),
+and leaves an empty file called `=3.0.0` in your project.
+In zsh, the default shell on macOS, it stops with `zsh: 3.0.0 not found`.
+
+:::{.callout-tip title="New since DSCI 521"}
+For an analysis project,
+this book declares exact versions for every package, not just one.
+[uv: pinning exact versions](0545-virtual-environments-python-uv-exact-pins.qmd)
+shows how to make `uv add` write `==` every time, and why.
+:::
+
+## The two files that matter
+
+This is the most important section of the chapter.
+
+`pyproject.toml` records what your project **asks for**.
+`uv.lock` records what it actually **got**.
+
+Open `uv.lock` in your editor and you will find something much longer
+than the lines you wrote in `pyproject.toml`:
+
+```{.toml filename="uv.lock"}
+version = 1
+revision = 5
+requires-python = ">=3.14"
+resolution-markers = [
+    "sys_platform == 'win32'",
+    "sys_platform == 'emscripten'",
+    "sys_platform != 'emscripten' and sys_platform != 'win32'",
+]
+
+[[package]]
+name = "numpy"
+version = "2.5.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4e/3a/.../numpy-2.5.5.tar.gz", hash = "sha256:..." }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6a/9a/.../numpy-2.5.5-cp314-cp314-macosx_10_15_x86_64.whl", hash = "sha256:..." },
+    ...
+]
+```
+
+Every package, at an exact version,
+including the ones you never named,
+with the URL it came from and a checksum of the file.
+The lockfile covers every operating system,
+which is why it lists a separate wheel for macOS, Linux, and Windows.
+That is what lets one lockfile work for your whole team.
+
+:::{.callout-warning}
+This is also where the `pip freeze` file we saw in
+[Virtual environments: Python (uv)](0520-virtual-environments-python-uv.qmd)
+falls down:
+
+```bash
+pip freeze > requirements.txt
+```
+
+`pip freeze` writes down whatever happens to be installed in your environment
+*right now*,
+on *your* operating system,
+with no distinction between the packages you asked for
+and the packages that came along for the ride.
+Send that file to someone on a different OS and it may not install.
+
+`uv.lock` is not that.
+It is generated from your `pyproject.toml` by a solver
+that knows about all platforms at once.
+This separation, declared versus locked,
+is the whole point,
+and it is the same idea as `renv.lock` in R.
+:::
+
+Both files get committed to git.
+The `.venv/` directory does **not** get committed.
+It contains hundreds of megabytes of installed packages
+that `uv` can rebuild in seconds from the lockfile.
+
+A minimal `.gitignore` for a `uv` project:
+
+```{.default filename=".gitignore"}
+# Python-generated files
+__pycache__/
+*.py[oc]
+
+# Virtual environments
+.venv
+```
+
+:::{.activity}
+Which files should you commit to your repository when using `uv`?
+(one or more correct answers)
+
+- A. `pyproject.toml`, because it declares which packages the project needs
+- B. `uv.lock`, because it records the exact versions that were installed
+- C. `.python-version`, because it records which interpreter the project uses
+- D. `.venv/`, because your collaborators need the installed packages
+- E. Only `uv.lock`, since it contains everything in `pyproject.toml` anyway
+
+:::
+
+## Running your code
+
+Here is where `uv` differs most from what you may have seen before.
+You do **not** activate the environment.
+
+Put this in a file called `penguins.py`:
+
+```{.python filename="penguins.py"}
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+print(penguins.head())
+```
+
+And run it with `uv run`:
+
+```bash
+uv run penguins.py
+```
+
+```out
+  species     island  bill_length_mm  ...  body_mass_g     sex  year
+0  Adelie  Torgersen            39.1  ...       3750.0    male  2007
+1  Adelie  Torgersen            39.5  ...       3800.0  female  2007
+2  Adelie  Torgersen            40.3  ...       3250.0  female  2007
+3  Adelie  Torgersen             NaN  ...          NaN     NaN  2007
+4  Adelie  Torgersen            36.7  ...       3450.0  female  2007
+
+[5 rows x 8 columns]
+```
+
+`uv run` does three things before it runs anything.
+It finds the project by walking up from your current directory,
+makes sure the environment matches the lockfile,
+and *then* runs your command inside that environment.
+
+:::{.callout-tip title="New since DSCI 521"}
+You can think of `uv run <command>` as a shortcut for
+`uv sync`, activating the environment,
+running the command,
+and deactivating the environment again.
+[uv: `uv run` and activating an environment](0532-virtual-environments-python-uv-run.qmd)
+shows the two side by side.
+:::
+
+You can confirm which interpreter you actually got:
+
+```bash
+uv run python -c "import sys; print(sys.executable)"
+```
+
+```out
+/Users/dan/penguin_analysis/.venv/bin/python
+```
+
+That is the project's `.venv`,
+not the system Python that `which python3` would have found.
+On Windows the path ends in `.venv\Scripts\python.exe` instead.
+
+This works for any command, not just Python scripts:
+
+```bash
+uv run jupyter lab
+uv run quarto render
+uv run pytest
+```
+
+Why Quarto needs `uv run` in particular has its own chapter,
+[uv: rendering Quarto documents](0550-virtual-environments-python-uv-quarto.qmd).
+
+:::{.callout-tip}
+The reason to prefer `uv run` over activating an environment
+is that it removes an entire category of bug.
+There is no "which environment am I in?" question to get wrong,
+and no half-remembered `activate` step
+between you and a reproducible result.
+
+You *can* activate the environment the traditional way
+if some tool requires it:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+source .venv/bin/activate
+```
+
+## Windows (Git Bash)
+
+```bash
+source .venv/Scripts/activate
+```
+
+## Windows (PowerShell)
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+:::
+
+But if you find yourself doing this often,
+it is usually a sign that a `uv run` would have been simpler.
+:::
+
+### Running something once
+
+Sometimes you want a package for a single command
+and you do not want it in your project.
+`uv run --with` installs it temporarily:
+
+```bash
+uv run --with cowsay cowsay -t "uv run --with is temporary"
+```
+
+```out
+Installed 1 package in 2ms
+  __________________________
+| uv run --with is temporary |
+  ==========================
+                          \
+                           \
+                             ^__^
+                             (oo)\_______
+                             (__)\       )\/\
+                                 ||----w |
+                                 ||     ||
+```
+
+Afterwards, `cowsay` is not in your project's environment,
+your `pyproject.toml` is unchanged,
+and your lockfile is unchanged.

@@ -1,0 +1,289 @@
+---
+title: "uv: installing uv and managing Python"
+output-file: virtual-environments-python-uv-install.html
+---
+
+:::{.callout-note title="Adapted from DSCI 521"}
+This chapter is adapted from the DSCI 521 notes,
+[Virtual Environments: Python + uv](https://ubc-mds.github.io/DSCI_521_platforms-dsci_book/lectures/virtual-environments-uv.html).
+If you took DSCI 521, it is review.
+:::
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0525-virtual-environments-python-uv-install.qmd >}}
+
+## Managing uv
+
+Let's first start by checking that `uv` is installed.
+Two checks work for any command-line program.
+`which` tells you *where* the program is,
+and `--version` confirms that it actually runs.
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+which uv
+```
+
+## Windows (Git Bash)
+
+```bash
+which uv
+```
+
+## Windows (PowerShell)
+
+```powershell
+where.exe uv
+```
+:::
+
+```out
+/opt/homebrew/bin/uv
+```
+
+```bash
+uv --version
+```
+
+```out
+uv 0.13.7 (Homebrew 2026-11-03 aarch64-apple-darwin)
+```
+
+If you get a `command not found` message,
+install `uv` by following its
+[installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+
+To see which `uv` commands are available,
+type `uv --help`.
+To see the full documentation for any of these commands,
+type the command followed by `--help`.
+For example,
+to learn about the `uv add` command:
+
+```bash
+uv add --help
+```
+
+```bash
+uv --help
+```
+
+```out
+An extremely fast Python package manager.
+
+Usage: uv [OPTIONS] <COMMAND>
+
+Commands:
+  auth       Manage authentication
+  run        Run a command or script
+  init       Create a new project
+  add        Add dependencies to the project
+  remove     Remove dependencies from the project
+  version    Read or update the project's version
+  sync       Update the project's environment
+  lock       Update the project's lockfile
+  export     Export the project's lockfile to an alternate format
+  tree       Display the project's dependency tree
+  format     Format Python code in the project
+  check      Run checks on the project
+  audit      Audit the project's dependencies
+  tool       Run and install commands provided by Python packages
+  python     Manage Python versions and installations
+  pip        Manage Python packages with a pip-compatible interface
+  venv       Create a virtual environment
+  build      Build Python packages into source distributions and wheels
+  publish    Upload distributions to an index
+  workspace  Inspect uv workspaces
+  cache      Manage uv's cache
+  self       Manage the uv executable
+  help       Display documentation for a command
+```
+
+That list is worth reading once.
+The commands in the top block (`run`, `init`, `add`, `remove`, `sync`, `lock`)
+are the ones you will use every day,
+and they are the ones the uv chapters cover.
+
+### Updating uv
+
+If you installed `uv` with the standalone installer,
+it can update itself:
+
+```bash
+uv self update
+```
+
+If you installed it through a package manager,
+`uv` will tell you so and hand you the right command instead:
+
+```bash
+uv self update
+```
+
+```out
+error: uv was installed through an external package manager and cannot update itself.
+
+hint: You installed uv using Homebrew. To update uv, run `brew update && brew upgrade uv`
+```
+
+This is a nice example of a program giving you an error message
+that also tells you how to fix it.
+Read your error messages.
+
+## Managing Python versions
+
+One of the jobs `uv` takes over is installing Python itself.
+You do not need to download Python from python.org
+or install it through Homebrew first.
+
+To see the Python versions `uv` knows about
+(both the ones already on your machine and the ones it could download):
+
+```bash
+uv python list
+```
+
+The output is longer than you expect,
+and it is important to understand what it is *not*:
+
+```out
+cpython-3.16.0a1-macos-aarch64-none                 <download available>
+cpython-3.16.0a1+freethreaded-macos-aarch64-none    <download available>
+cpython-3.15.2-macos-aarch64-none                   /opt/homebrew/bin/python3.15 -> ../Cellar/python@3.15/3.15.2/bin/python3.15
+cpython-3.15.2-macos-aarch64-none                   /opt/homebrew/bin/python3 -> ../Cellar/python@3.15/3.15.2/bin/python3
+cpython-3.15.2-macos-aarch64-none                   <download available>
+cpython-3.15.2+freethreaded-macos-aarch64-none      <download available>
+cpython-3.14.10-macos-aarch64-none                  /opt/homebrew/bin/python3.14 -> ../Cellar/python@3.14/3.14.10/bin/python3.14
+cpython-3.14.10-macos-aarch64-none                  <download available>
+cpython-3.9.6-macos-aarch64-none                    /usr/bin/python3
+pypy-3.12.15-macos-aarch64-none                     <download available>
+graalpy-3.13.0-macos-aarch64-none                   <download available>
+```
+
+(shortened, your own list will be longer)
+
+This is a **catalogue, not an inventory**.
+It is not a list of the Python versions you have installed.
+It is a list of the versions `uv` can give you,
+and on a new computer nearly every line will say `<download available>`,
+meaning that version is *not* on your machine
+and `uv` is offering to download it.
+
+:::{.callout-note title="One installation can appear on several lines"}
+`uv` lists every *path* that leads to a Python,
+not every copy of Python.
+One installation reached by two names is two lines.
+This surprises people who have installed Python
+through Homebrew or python.org before.
+
+Here is a real example, filtered to just the 3.14 entries:
+
+```bash
+uv python list | grep 3.14
+```
+
+```out
+cpython-3.14.10-macos-aarch64-none                  /opt/homebrew/bin/python3.14 -> ../Cellar/python@3.14/3.14.10/bin/python3.14
+cpython-3.14.10-macos-aarch64-none                  <download available>
+cpython-3.14.10+freethreaded-macos-aarch64-none     <download available>
+cpython-3.14.3-macos-aarch64-none                   /Users/dan/.local/bin/python3.14 -> /Users/dan/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14
+cpython-3.14.3-macos-aarch64-none                   /Users/dan/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14
+```
+
+Five lines, but only **two** Pythons are installed:
+
+- Line 1 is Homebrew's Python 3.14.10.
+- Lines 2 and 3 are not installed at all.
+  `uv` is offering to download its own 3.14.10,
+  which is a different build than Homebrew's
+  even though the version number matches,
+  and a free-threaded build of it.
+- Lines 4 and 5 are the *same* `uv`-managed installation,
+  first the shortcut in `~/.local/bin`,
+  then the real file in `~/.local/share/uv/python/` that it points to.
+  The `->` shows a symlink.
+
+Homebrew can do the same.
+In the full list above,
+its Python 3.15.2 appears twice,
+as `python3.15` and as `python3`,
+both pointing into the same folder.
+
+Anything under `~/.local/share/uv/python/` is a Python that `uv` installed
+and that `uv` manages.
+That is where the Pythons for your projects will live.
+:::
+
+There are two columns.
+The left is the version's full name,
+and the right is either where it lives on your computer
+or `<download available>`.
+
+The name is made of five parts separated by dashes,
+as in `cpython-3.14.10-macos-aarch64-none`:
+
+- the **implementation**, `cpython`,
+  which is the standard Python that almost everyone means by "Python".
+  You will also see `pypy` and `graalpy`, which are alternative implementations.
+  You do not need them.
+- the **version**, `3.14.10`
+- the **operating system**, `macos`
+- the **architecture**, `aarch64` for Apple silicon,
+  or `x86_64` for Intel machines
+- the **libc**, which is `none` on macOS,
+  and `gnu` or `musl` on Linux
+
+A `+freethreaded` in the name,
+such as `cpython-3.14.10+freethreaded-macos-aarch64-none`,
+is a special build of Python that runs without the
+GIL (global interpreter lock).
+You can ignore it for the projects in this book.
+
+If what you actually want to ask is
+"which Pythons do I have?",
+there is a flag for that:
+
+```bash
+uv python list --only-installed
+```
+
+example output:
+
+```out
+cpython-3.15.2-macos-aarch64-none     /opt/homebrew/bin/python3.15 -> ../Cellar/python@3.15/3.15.2/bin/python3.15
+cpython-3.15.2-macos-aarch64-none     /opt/homebrew/bin/python3 -> ../Cellar/python@3.15/3.15.2/bin/python3
+cpython-3.14.10-macos-aarch64-none    /opt/homebrew/bin/python3.14 -> ../Cellar/python@3.14/3.14.10/bin/python3.14
+cpython-3.14.3-macos-aarch64-none     /Users/dan/.local/bin/python3.14 -> /Users/dan/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14
+cpython-3.14.3-macos-aarch64-none     /Users/dan/.local/share/uv/python/cpython-3.14-macos-aarch64-none/bin/python3.14
+cpython-3.13.12-macos-aarch64-none    /Users/dan/.local/bin/python3.13 -> /Users/dan/.local/share/uv/python/cpython-3.13-macos-aarch64-none/bin/python3.13
+cpython-3.13.12-macos-aarch64-none    /Users/dan/.local/share/uv/python/cpython-3.13-macos-aarch64-none/bin/python3.13
+cpython-3.13.0-macos-aarch64-none     /Users/dan/.local/share/uv/python/cpython-3.13.0-macos-aarch64-none/bin/python3.13
+cpython-3.12.13-macos-aarch64-none    /Users/dan/.local/share/uv/python/cpython-3.12-macos-aarch64-none/bin/python3.12
+cpython-3.12.7-macos-aarch64-none     /Users/dan/.local/share/uv/python/cpython-3.12.7-macos-aarch64-none/bin/python3.12
+cpython-3.11.16-macos-aarch64-none    /Users/dan/.local/share/uv/python/cpython-3.11-macos-aarch64-none/bin/python3.11
+cpython-3.9.6-macos-aarch64-none      /usr/bin/python3
+```
+
+:::{.callout-warning title="Do not use system Python"}
+Depending on your operating system and computer,
+Python may be installed by default (e.g., `/usr/bin/python3`).
+This is the system Python.
+This is the Python that your operating system uses for its own tools.
+Do not use or change this version of Python,
+because you can break operating system tools that depend on it.
+This is another reason why virtual environments are important.
+:::
+
+To install a specific version:
+
+```bash
+uv python install 3.14
+```
+
+You will rarely run that command directly.
+More often you will pin a version for a project,
+and `uv` will download it for you the first time it needs it.
+You will see how in [uv: projects](0530-virtual-environments-python-uv-projects.qmd).

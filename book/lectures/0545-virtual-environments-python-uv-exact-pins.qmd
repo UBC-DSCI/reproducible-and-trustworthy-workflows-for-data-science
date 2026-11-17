@@ -1,0 +1,219 @@
+---
+title: "uv: pinning exact versions"
+output-file: virtual-environments-python-uv-exact-pins.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0545-virtual-environments-python-uv-exact-pins.qmd >}}
+
+## What `uv add` writes by default
+
+In [uv: projects](0530-virtual-environments-python-uv-projects.qmd),
+`uv add` wrote a *lower bound* for each package.
+Here is a fresh project after `uv add pandas`:
+
+```bash
+uv add pandas
+```
+
+```out
+Using CPython 3.14.3
+Creating virtual environment at: .venv
+Resolved 5 packages in 19ms
+Installed 4 packages in 65ms
+ + numpy==2.5.5
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "pins-demo"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas>=3.1.1",
+]
+```
+
+`pandas>=3.1.1` declares "pandas 3.1.1 or anything newer".
+The exact version you got is still written down,
+but only in `uv.lock`:
+
+```{.toml filename="uv.lock"}
+[[package]]
+name = "pandas"
+version = "3.1.1"
+```
+
+So the project *declares* a range and *locks* one version.
+As long as everyone runs `uv sync` against that `uv.lock`,
+everyone gets pandas 3.1.1.
+
+## Why an analysis project declares exact versions
+
+The range in `pyproject.toml` matters whenever the lockfile is not the thing being read.
+
+- **The lockfile gets regenerated.**
+  `uv lock --upgrade`, a deleted `uv.lock`,
+  or a merge conflict resolved by re-locking
+  lets every package move anywhere inside its range,
+  and nothing in `pyproject.toml` records that the analysis was run with 3.1.1.
+- **People read `pyproject.toml`, not `uv.lock`.**
+  It is short enough to read in a code review or a README.
+  `pandas==3.1.1` says what the analysis was run with,
+  and `pandas>=3.1.1` does not.
+- **Other tools read `pyproject.toml` too.**
+  `pip install --only-deps .` installs from it,
+  and it ignores `uv.lock`.
+
+With an exact pin in `pyproject.toml`,
+the declared version and the locked version are the same,
+and a version only changes when someone changes the pin.
+That change shows up in the diff of `pyproject.toml`,
+where reviewers will see it.
+
+A **package**, the kind of project you will build in the
+[packaging chapters](1110-packaging.qmd),
+is the opposite case.
+A package gets installed into *other people's* environments,
+next to whatever versions of pandas their projects already use.
+Exact pins there would make your package impossible to install alongside theirs,
+so packages declare ranges and leave the exact choice to the project that installs them.
+
+| Kind of project | Declares | Why |
+| --- | --- | --- |
+| Data analysis (an application) | exact versions, `pandas==3.1.1` | The result depends on the exact versions, and nobody installs it into another environment |
+| Package (a library) | ranges, `pandas>=3.0` | It has to fit into other people's environments |
+
+## Making `uv add` write exact versions
+
+`uv` has a setting for this.
+Add a `[tool.uv]` table to `pyproject.toml`:
+
+```{.toml filename="pyproject.toml"}
+[tool.uv]
+# `uv add` writes an exact version (==)
+add-bounds = "exact"
+```
+
+That table and comment are taken from the
+[docker-uv-renv](https://github.com/chendaniely/docker-uv-renv) example project
+(MIT license), which the container chapters build on.
+
+From then on, `uv add` writes `==`.
+Here is the same project after removing pandas and adding it again:
+
+```bash
+uv remove pandas
+uv add pandas
+```
+
+```out
+Resolved 1 package in 5ms
+Uninstalled 4 packages in 200ms
+ - numpy==2.5.5
+ - pandas==3.1.1
+ - python-dateutil==4.0.0
+ - tzdata==2026.6
+Resolved 5 packages in 7ms
+Installed 4 packages in 29ms
+ + numpy==2.5.5
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+```{.toml filename="pyproject.toml"}
+[project]
+name = "pins-demo"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "pandas==3.1.1",
+]
+
+[tool.uv]
+add-bounds = "exact"
+```
+
+The setting lives in `pyproject.toml`,
+so everyone on the project gets the same behavior from `uv add`.
+
+For a single command,
+`uv add --bounds exact pandas` does the same thing without the setting.
+`--bounds` also accepts `lower` (the default), `major` and `minor`,
+which write wider ranges.
+
+:::{.callout-warning title="Existing lower bounds do not change"}
+The setting only changes what `uv add` writes *from now on*.
+Running `uv add pandas` again in a project that already has `pandas>=3.1.1`
+leaves that line as it is.
+
+To convert a package you already have,
+look up the version you are using
+and add it again with that version:
+
+```bash
+uv tree --depth 1
+```
+
+```out
+Resolved 6 packages in 13ms
+penguin-analysis v0.1.0
+├── palmerpenguins v0.1.6
+└── pandas v3.1.1
+```
+
+```bash
+uv add "pandas==3.1.1" "palmerpenguins==0.1.6"
+```
+:::
+
+## Changing a pinned version
+
+With an exact pin,
+`uv lock --upgrade-package pandas` cannot move pandas,
+because `pyproject.toml` only allows one version.
+To move it, change the pin:
+
+```bash
+uv add "pandas==3.0.5"
+```
+
+```out
+Resolved 5 packages in 118ms
+Downloading pandas (9.5MiB)
+ Downloaded pandas
+Prepared 1 package in 1.16s
+Uninstalled 1 package in 100ms
+Installed 1 package in 14ms
+ - pandas==3.1.1
+ + pandas==3.0.5
+```
+
+One command updates `pyproject.toml`, `uv.lock`, and `.venv/` together,
+and the commit that changes the pin is the record of when and why it moved.
+
+The packages you did not name,
+such as `numpy` and `python-dateutil` here,
+are still pinned exactly, but only in `uv.lock`.
+`uv lock --upgrade-package numpy` moves one of them,
+as in [uv: sharing and managing an environment](0535-virtual-environments-python-uv-sharing.qmd).
+
+## The same idea in R
+
+R projects declare their packages in a `DESCRIPTION` file,
+and this book pins those exactly too:
+
+```{.default filename="DESCRIPTION"}
+Depends:
+    dplyr (== 1.2.1)
+```
+
+`DESCRIPTION` with `==` plays the part of `pyproject.toml` with `add-bounds = "exact"`,
+and `renv.lock` plays the part of `uv.lock`.
+[renv: declaring packages in `DESCRIPTION`](0565-virtual-environments-r-renv-description.qmd)
+shows how.
