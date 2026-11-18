@@ -20,7 +20,9 @@ Questions we should ask when trying to understand how observable our tests are:
 
 These questions are easier to answer and address for code
 that creates simpler data science objects such as data frames,
-as in the example above.
+as in the `count_classes` examples in
+[Testing: R (testthat)](1020-testing-r-testthat.qmd)
+and [Testing: Python (pytest)](1030-testing-python-pytest.qmd).
 However, when our code under test does something more complex,
 such as create a plot object, these questions are harder to answer,
 or can be answered less fully...
@@ -123,7 +125,7 @@ that recent changes to the code base do not break already implemented features.
 
 Thus, once a desired plot is generated from the plotting function,
 visual regression tests can be used to ensure
-that further code refactoring does not change the plot function.
+that further code refactoring does not change the plot.
 Tools for this exist for R in the [`vdiffr`](https://vdiffr.r-lib.org/) package.
 Matplotlib uses visual regression testing as well;
 you can see the docs for examples of this [here](https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test).
@@ -188,7 +190,9 @@ test_that("refactoring our code should not change our plot", {
 
 Then when you run `testthat::test_dir("tests/testthat")` to run your test suite
 for the first time, it will take a snapshot of the figure created in your test
-for that visualization and save it to `tests/testthat/_snaps/EXPECT_DOPPELGANGER_TITLE.svg`.
+for that visualization and save it to `tests/testthat/_snaps/TEST_FILE_NAME/EXPECT_DOPPELGANGER_TITLE.svg`
+(in the `vdiffr` demo below, the test in `tests/testthat/test-pretty_scatter.R`
+saves `tests/testthat/_snaps/pretty_scatter/pretty-scatter.svg`).
 Then, as you refactor your code
 and run `testthat::test_dir("tests/testthat")`,
 it will compare a new snapshot of the figure with the existing one.
@@ -235,7 +239,7 @@ and building off it locally.
 
 ### Example tests for Altair plots (using object attributes, not visual regression testing)
 
-Here's a function that creates a scatter plot:
+Here's a function that creates a line chart:
 
 ```python
 def scatter(df, x_axis, y_axis):
