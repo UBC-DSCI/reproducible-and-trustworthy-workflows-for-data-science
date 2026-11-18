@@ -117,6 +117,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-exercise.callout {
+  border-left-color: #1C5F2E;
+}
+div.callout-exercise.callout-style-default .callout-header {
+  background-color: rgba(28, 95, 46, 0.13);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f44b' !important;
+  background-image: none;
+}
 div.callout-activity.callout {
   border-left-color: #0055B7;
 }
@@ -143,20 +157,6 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   font-weight: 900;
   font-style: normal;
   content: '\f518' !important;
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: #1C5F2E;
-}
-div.callout-exercise.callout-style-default .callout-header {
-  background-color: rgba(28, 95, 46, 0.13);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f44b' !important;
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -1133,7 +1133,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </section>
 <section id="the-description-file" class="level2" data-number="25.2">
 <h2 data-number="25.2" class="anchored" data-anchor-id="the-description-file"><span class="header-section-number">25.2</span> The <code>DESCRIPTION</code> file</h2>
-<p>A <code>DESCRIPTION</code> file comes from R packages, where it holds a package’s name, version and dependencies. A data analysis project can use one too, with <code>Type: project</code> to say it is not a package.</p>
+<p>A <code>DESCRIPTION</code> file comes from R packages, where it holds a package’s name, version, and dependencies. A data analysis project can use one too, with <code>Type: project</code> to say it is not a package.</p>
 <p>Here is the one from the <a href="https://github.com/chendaniely/docker-uv-renv">docker-uv-renv</a> example project (MIT license), which the container chapters build on:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1148,7 +1148,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    knitr (== 1.52),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    rmarkdown (== 2.32)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>Depends</code> field lists the packages, separated by commas, each with an exact version in parentheses. <code>(== 1.2.1)</code> is the R version of the exact pins in <a href="../lectures/virtual-environments-python-uv-exact-pins.html">uv: pinning exact versions</a>.</p>
+<p>The <code>Depends</code> field lists the packages, separated by commas, each with an exact version in parentheses. <code>(== 1.2.1)</code> is the R equivalent of the exact pins in <a href="../lectures/virtual-environments-python-uv-exact-pins.html">uv: pinning exact versions</a>.</p>
 <p>Our project starts by declaring only <code>dplyr</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1197,7 +1197,7 @@ The following package(s) will be updated in the lockfile:
 <div class="code-with-filename-file"><pre><strong>Output</strong></pre></div>
 <pre class="out"><code>No issues found -- the project is in a consistent state.</code></pre>
 </div>
-<p>From <code>renv</code>’s point of view, <code>DESCRIPTION</code>, <code>renv.lock</code> and the project library agree. <code>tidyr</code> is still installed on <em>your</em> computer, so <code>analysis.R</code> still runs for you.</p>
+<p>From <code>renv</code>’s point of view, <code>DESCRIPTION</code>, <code>renv.lock</code>, and the project library agree. <code>tidyr</code> is still installed on <em>your</em> computer, so <code>analysis.R</code> still runs for you.</p>
 <p>Your collaborator clones the project and runs <code>renv::restore()</code>, which installs what <code>renv.lock</code> records. Then they run the analysis from a terminal. In R, <code>source("analysis.R")</code> does the same, and on Windows it is the easier way, because R’s installer does not put <code>Rscript</code> on the Git Bash <code>PATH</code>.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
@@ -1314,7 +1314,7 @@ The following package(s) will be updated in the lockfile:
 <td><code>uv add</code> (all three at once)</td>
 </tr>
 <tr class="even">
-<td>Check that the declared, locked and installed packages match (not their versions)</td>
+<td>Check that the declared, locked, and installed packages match (not their versions)</td>
 <td><code>renv::status()</code></td>
 <td><code>uv sync --check</code></td>
 </tr>

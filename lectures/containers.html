@@ -131,6 +131,20 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   content: '\e53d' !important;
   background-image: none;
 }
+div.callout-exercise.callout {
+  border-left-color: #1C5F2E;
+}
+div.callout-exercise.callout-style-default .callout-header {
+  background-color: rgba(28, 95, 46, 0.13);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f44b' !important;
+  background-image: none;
+}
 div.callout-definition.callout {
   border-left-color: #8A6D2B;
 }
@@ -157,20 +171,6 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   font-weight: 900;
   font-style: normal;
   content: '\f542' !important;
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: #1C5F2E;
-}
-div.callout-exercise.callout-style-default .callout-header {
-  background-color: rgba(28, 95, 46, 0.13);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f44b' !important;
   background-image: none;
 }
 </style>
@@ -1080,7 +1080,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   </ul></li>
   <li><a href="#container-useage-workflow" id="toc-container-useage-workflow" class="nav-link" data-scroll-target="#container-useage-workflow"><span class="header-section-number">28.6</span> Container useage workflow</a></li>
   <li><a href="#image-vs-container" id="toc-image-vs-container" class="nav-link" data-scroll-target="#image-vs-container"><span class="header-section-number">28.7</span> Image vs container?</a></li>
-  <li><a href="#what-is-a-container-registry" id="toc-what-is-a-container-registry" class="nav-link" data-scroll-target="#what-is-a-container-registry"><span class="header-section-number">28.8</span> What is a container registry</a></li>
+  <li><a href="#what-is-a-container-registry" id="toc-what-is-a-container-registry" class="nav-link" data-scroll-target="#what-is-a-container-registry"><span class="header-section-number">28.8</span> What is a container registry?</a></li>
   <li><a href="#how-do-we-specify-a-container-image" id="toc-how-do-we-specify-a-container-image" class="nav-link" data-scroll-target="#how-do-we-specify-a-container-image"><span class="header-section-number">28.9</span> How do we specify a container image?</a></li>
   </ul>
 </nav>
@@ -1113,26 +1113,31 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 <ol type="1">
 <li>Explain what containers are, and why they can be useful for reproducible data analyses</li>
 <li>Discuss the advantages and limitations of containerization (e.g., Docker) in the context of reproducible data analyses</li>
-<li>Compare and contrast the difference between running software/scripts in a virtual environment, a virtual machine and a container</li>
-<li>Evaluate, choose and justify an appropriate environment management solution based on the data analysis project’s complexity, expected usage and longevity.</li>
+<li>Compare and contrast the difference between running software/scripts in a virtual environment, a virtual machine, and a container</li>
+<li>Evaluate, choose, and justify an appropriate environment management solution based on the data analysis project’s complexity, expected usage, and longevity</li>
 </ol>
 </section>
 <section id="documenting-and-loading-dependencies" class="level2" data-number="28.1">
 <h2 data-number="28.1" class="anchored" data-anchor-id="documenting-and-loading-dependencies"><span class="header-section-number">28.1</span> Documenting and loading dependencies</h2>
-<p>You’ve made some beautiful data analysis pipeline/project using make, R, and/or Python. It runs on your machine, but how easily can you, or someone else, get it working on theirs? The answer usually is, it depends…</p>
+<p>You’ve made some beautiful data analysis pipeline/project using Make, R, and/or Python. It runs on your machine, but how easily can you, or someone else, get it working on theirs? The answer usually is, it depends…</p>
 <p>What does it depend on?</p>
 <ol type="1">
-<li><p>Does your <code>README</code> and your scripts make it blatantly obvious what programming languages and packages need to run your data analysis pipeline/project?</p></li>
-<li><p>Do you also document the version numbers of the programming languages and packages you used? This can have big consequences when it comes to reproducibility… (<em>e.g.</em>,the <a href="https://blog.revolutionanalytics.com/2019/05/whats-new-in-r-360.html">change to random number generation</a> in R in 2019?)</p></li>
-<li><p>Did you document what other software (beyond the the programming languages and packages used) and operating system dependencies are needed to run your data analysis pipeline/project?</p></li>
+<li><p>Do your <code>README</code> and your scripts make it blatantly obvious what programming languages and packages are needed to run your data analysis pipeline/project?</p></li>
+<li><p>Do you also document the version numbers of the programming languages and packages you used? This can have big consequences when it comes to reproducibility… (<em>e.g.</em>, the <a href="https://blog.revolutionanalytics.com/2019/05/whats-new-in-r-360.html">change to random number generation</a> in R in 2019?)</p></li>
+<li><p>Did you document what other software (beyond the programming languages and packages used) and operating system dependencies are needed to run your data analysis pipeline/project?</p></li>
 </ol>
-<p><em>Virtual environments can be tremendously helpful with #1 &amp; #2, however, they may or may not be helpful to manage #3…</em> <strong><em>Enter containerization as a possible solution!</em></strong></p>
+<p><em>Virtual environments can be tremendously helpful with #1 &amp; #2; however, they may or may not be helpful to manage #3…</em> <strong><em>Enter containerization as a possible solution!</em></strong></p>
 </section>
 <section id="what-is-a-container" class="level2" data-number="28.2">
 <h2 data-number="28.2" class="anchored" data-anchor-id="what-is-a-container"><span class="header-section-number">28.2</span> What is a container?</h2>
-<p>Containers are another way to generate (and share!) isolated computational environments. They differ from virtual environments (which we discussed previously) in that they are even more isolated from the computers operating system, as well as they can be used share many other types of software, applications and operating system dependencies.</p>
-<p>Before we can fully define containers, however, we need to define <strong>virtualization</strong>. Virtualization is a process that allows us to divide the the elements of a single computer into several virtual elements. These elements can include computer hardware platforms, storage devices, and computer network resources, and even operating system user spaces (e.g., graphical tools, utilities, and programming languages).</p>
-<p>Containers virtualize operating system user spaces so that they can isolate the processes they contain, as well as control the processes’ access to computer resources (e.g., CPUs, memory and disk space). What this means in practice, is that an operating system user space can be carved up into multiple containers running the same, or different processes, in isolation. Below we show the schematic of a container whose virtual user space contains the: - R programming language, the Bioconductor package manager, and two Bioconductor packages - Galaxy workflow software and two toolboxes that can be used with it - Python programming language, iPython interpreter and Jupyter notebook package</p>
+<p>Containers are another way to generate (and share!) isolated computational environments. They differ from virtual environments (which we discussed previously) in that they are even more isolated from the computer’s operating system, and they can be used to share many other types of software, applications, and operating system dependencies.</p>
+<p>Before we can fully define containers, however, we need to define <strong>virtualization</strong>. Virtualization is a process that allows us to divide the elements of a single computer into several virtual elements. These elements can include computer hardware platforms, storage devices, computer network resources, and even operating system user spaces (e.g., graphical tools, utilities, and programming languages).</p>
+<p>Containers virtualize operating system user spaces so that they can isolate the processes they contain, as well as control the processes’ access to computer resources (e.g., CPUs, memory, and disk space). What this means in practice is that an operating system user space can be carved up into multiple containers running the same or different processes in isolation. Below we show the schematic of a container whose virtual user space contains the:</p>
+<ul>
+<li>R programming language, the Bioconductor package manager, and two Bioconductor packages</li>
+<li>Galaxy workflow software and two toolboxes that can be used with it</li>
+<li>Python programming language, IPython interpreter, and Jupyter notebook package</li>
+</ul>
 <p><img src="../img/13742_2016_article_135_f7.jpeg" width="400"></p>
 <p><strong>Schematic of a container for genomics research.</strong> Source: <a href="https://doi.org/10.1186/s13742-016-0135-4" class="uri">https://doi.org/10.1186/s13742-016-0135-4</a></p>
 <div class="callout callout-style-default callout-exercise callout-titled">
@@ -1146,12 +1151,12 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Running a simple container</strong></p>
-<p>To further illustrate what a container looks like, and feels like, we can use Docker (containerization software) to run one and explore. First we will run an linux (debian-flavoured) container that has R installed. To run this type:</p>
+<p>To further illustrate what a container looks like, and feels like, we can use Docker (containerization software) to run one and explore. First we will run a Linux (Debian-flavored) container that has R installed. To run this, type:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> rocker/r-ver:4.3.2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When you successfully launch the container, R should have started. Check the version of R - is it the same as your computer’s version of R? Use <code>getwd()</code> and <code>list.files()</code> to explore the containers filesystem from R. Does this look like your computer’s filesystem or something else?</p>
+<p>When you successfully launch the container, R should have started. Check the version of R - is it the same as your computer’s version of R? Use <code>getwd()</code> and <code>list.files()</code> to explore the container’s filesystem from R. Does this look like your computer’s filesystem or something else?</p>
 <p>Type <code>q()</code> to quit R and exit the container.</p>
 </div>
 </div>
@@ -1167,28 +1172,28 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Running a container with RStudio as a web app</strong></p>
-<p>Next, try to use Docker to run a container that contains the RStudio server web-application installed:</p>
+<p>Next, try to use Docker to run a container that has the RStudio Server web application installed:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8787:8787 <span class="at">-e</span> PASSWORD=<span class="st">"apassword"</span> rocker/rstudio:4.4.2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Then visit a web browser on your computer and type: <a href="http://localhost:8787" class="uri">http://localhost:8787</a></p>
+<p>Then open a web browser on your computer and type: <a href="http://localhost:8787" class="uri">http://localhost:8787</a></p>
 <p>If it worked, then you should be at an RStudio Sign In page. To sign in, use the following credentials:</p>
 <ul>
 <li><strong>username:</strong> rstudio</li>
 <li><strong>password:</strong> apassword</li>
 </ul>
-<p>The RStudio server web app being run by the container should look something like this:</p>
+<p>The RStudio Server web app being run by the container should look something like this:</p>
 <p><img src="../img/rstudio-container-web-app.png" width="100%"></p>
 <p>Type <code>Cntrl</code> + <code>C</code> in the terminal where you launched the container to quit R and RStudio and exit the container.</p>
 </div>
 </div>
-<p>We can pass in multiple envivironment variables by using multile <code>-e</code> flags. For example, we can set the password for the rstudio user with the <code>PASSWORD</code> environment variable, but we can also disable the login screen with the <code>DISABLE_AUTH=true</code> variable.</p>
+<p>We can pass in multiple environment variables by using multiple <code>-e</code> flags. For example, we can set the password for the rstudio user with the <code>PASSWORD</code> environment variable, but we can also disable the login screen with the <code>DISABLE_AUTH=true</code> variable.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8787:8787 <span class="at">-e</span> PASSWORD=<span class="st">"apassword"</span> <span class="at">-e</span> DISABLE_AUTH=true rocker/rstudio:4.4.2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Each container will have its own set of environment variables to contol its behaviour. For the <code>rocker/rsutdio</code> project, you can find the environment variable documentation here: <a href="https://rocker-project.org/images/versioned/rstudio.html#environment-variables" class="uri">https://rocker-project.org/images/versioned/rstudio.html#environment-variables</a>.</p>
+<p>Each container will have its own set of environment variables to control its behavior. For the <code>rocker/rsutdio</code> project, you can find the environment variable documentation here: <a href="https://rocker-project.org/images/versioned/rstudio.html#environment-variables" class="uri">https://rocker-project.org/images/versioned/rstudio.html#environment-variables</a>.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1200,7 +1205,7 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Running a container with Jupyter as a web app</strong></p>
-<p>Next, try to use Docker to run a container that contains the Jupyter web-application installed:</p>
+<p>Next, try to use Docker to run a container that has the Jupyter web application installed:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-p</span> 8888:8888 quay.io/jupyter/datascience-notebook:2025-03-14</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1216,11 +1221,11 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Do not forget to copy the <code>token=</code> portion of the URL, if you only go to <code>localhost:8888</code> or <code>http://127.0.0.1:8888</code> it will ask you for the password/token.</p>
+<p>Do not forget to copy the <code>token=</code> portion of the URL. If you only go to <code>localhost:8888</code> or <code>http://127.0.0.1:8888</code>, it will ask you for the password/token.</p>
 </div>
 </div>
 <p><img src="../img/jupyter-container-web-app-launch-url.png" width="100%"></p>
-<p>The Jupyter web-application being run by the container should look something like this:</p>
+<p>The Jupyter web application being run by the container should look something like this:</p>
 <p><img src="../img/jupyter-container-web-app.png" width="100%"></p>
 <p>Type <kbd>Ctrl</kbd> + <kbd>c</kbd> in the terminal where you launched the container to quit Jupyter and exit the container.</p>
 </div>
@@ -1228,13 +1233,13 @@ Important
 </section>
 <section id="contrasting-containers-with-virtual-machines" class="level2" data-number="28.3">
 <h2 data-number="28.3" class="anchored" data-anchor-id="contrasting-containers-with-virtual-machines"><span class="header-section-number">28.3</span> Contrasting containers with virtual machines</h2>
-<p>Virtual machines are another technology that can be used to generate (and share) isolated computational environments. Virtual machines emulate the functionality an entire computer on a another physical computer. With virtual machine the virtualization occurs at the layer of software that sits between the computer’s hardware and the operating system(s). This software is called a hypervisor. For example, on a Mac laptop, you could install a program called <a href="https://www.virtualbox.org/">Oracle Virtual Box</a> to run a virtual machine whose operating system was Windows 10, as the screen shot below shows:</p>
+<p>Virtual machines are another technology that can be used to generate (and share) isolated computational environments. Virtual machines emulate the functionality of an entire computer on another physical computer. With virtual machines, the virtualization occurs at the layer of software that sits between the computer’s hardware and the operating system(s). This software is called a hypervisor. For example, on a Mac laptop, you could install a program called <a href="https://www.virtualbox.org/">Oracle VirtualBox</a> to run a virtual machine whose operating system was Windows 10, as the screenshot below shows:</p>
 <p><img src="https://www.virtualbox.org/raw-attachment/wiki/Screenshots/Windows_8.1_on_OSX.png"></p>
-<p><strong>A screenshot of a Mac OS computer running a Windows virtual machine.</strong> Source: <a href="https://www.virtualbox.org/wiki/Screenshots" class="uri">https://www.virtualbox.org/wiki/Screenshots</a></p>
-<p>Below, we share an illustration that compares where virtualization happens in containers compared to virtual machines. This difference, leads to containers being more light-weight and portable compared to virtual machines, and also less isolated.</p>
+<p><strong>A screenshot of a macOS computer running a Windows virtual machine.</strong> Source: <a href="https://www.virtualbox.org/wiki/Screenshots" class="uri">https://www.virtualbox.org/wiki/Screenshots</a></p>
+<p>Below, we share an illustration that compares where virtualization happens in containers compared to virtual machines. This difference leads to containers being more lightweight and portable compared to virtual machines, and also less isolated.</p>
 <p><img src="../img/container_v_vm.png" width="600"></p>
 <p><em>Source: https://www.docker.com/resources/what-container</em></p>
-<p><strong>Key take home:</strong> - Containerization software shares the host’s operating system, whereas virtual machines have a completely separate, additional operating system. This can make containers lighter (smaller in terms of size) and more resource and time-efficient than using a virtual machine.*</p>
+<p><strong>Key take-home:</strong> Containerization software shares the host’s operating system, whereas virtual machines have a completely separate, additional operating system. This can make containers lighter (smaller in terms of size) and more resource- and time-efficient than using a virtual machine.</p>
 </section>
 <section id="contrasting-common-computational-environment-virtualization-strategies" class="level2" data-number="28.4">
 <h2 data-number="28.4" class="anchored" data-anchor-id="contrasting-common-computational-environment-virtualization-strategies"><span class="header-section-number">28.4</span> Contrasting common computational environment virtualization strategies</h2>
@@ -1268,9 +1273,9 @@ Important
 </tr>
 <tr class="odd">
 <td>Size</td>
-<td>Extremely light-weight</td>
-<td>light-weight</td>
-<td>heavy-weight</td>
+<td>Extremely lightweight</td>
+<td>Lightweight</td>
+<td>Heavyweight</td>
 </tr>
 </tbody>
 </table>
@@ -1292,7 +1297,7 @@ Important
 <h4 class="anchored" data-anchor-id="disadvantages">Disadvantages</h4>
 <ul>
 <li>Not always possible to capture and share operating system dependencies, and other software your analysis depends upon</li>
-<li>Computational environment is not fully isolated, and so silent missed dependencies</li>
+<li>Computational environment is not fully isolated, and so missed dependencies can go unnoticed</li>
 </ul>
 </section>
 </section>
@@ -1301,7 +1306,7 @@ Important
 <section id="advantages-1" class="level4">
 <h4 class="anchored" data-anchor-id="advantages-1">Advantages</h4>
 <ul>
-<li>Somewhat light-weight in size (manageable for easy sharing - there are tools and software to facilitate this)</li>
+<li>Somewhat lightweight in size (manageable for easy sharing - there are tools and software to facilitate this)</li>
 <li>Possible to capture and share operating system dependencies, and other software your analysis depends upon</li>
 <li>Computational environment is fully isolated, and errors will occur if dependencies are missing</li>
 <li>Specify these with a single text file</li>
@@ -1321,8 +1326,8 @@ Important
 <section id="advantages-2" class="level4">
 <h4 class="anchored" data-anchor-id="advantages-2">Advantages</h4>
 <ul>
-<li>High security, because these are much more isolated (filesystem, ports, etc)</li>
-<li>Can share an entirely different operating system (might not so useful in the context of reproducibility however…)</li>
+<li>High security, because these are much more isolated (filesystem, ports, etc.)</li>
+<li>Can share an entirely different operating system (might not be so useful in the context of reproducibility however…)</li>
 </ul>
 </section>
 <section id="disadvantages-2" class="level4">
@@ -1336,7 +1341,7 @@ Important
 </section>
 <section id="container-useage-workflow" class="level2" data-number="28.6">
 <h2 data-number="28.6" class="anchored" data-anchor-id="container-useage-workflow"><span class="header-section-number">28.6</span> Container useage workflow</h2>
-<p>Below is a schematic of typical container useage workflow from a <a href="https://blog.octo.com/en/docker-registry-first-steps/">blog post</a> by Arnaud Mazin. The source code for container images is stored in a file called a <code>Dockerfile</code>. Similar to an <code>environment.yml</code> file, you would typically version control this with Git and store this in your GitHub repository with your analysis code. From the source <code>Dockerfile</code> we can build a Docker container image. This image is a binary file, from which we can run one, or more, container instances. Container instances are the computational environment in which you would run your analysis. Containers are usually ephemeral - we create them from the image when we want to run the analysis and then stop and remove/delete them after it has run. Docker images can (and should be) versioned and shared via container registries (which are akin to remote code repositories).</p>
+<p>Below is a schematic of a typical container usage workflow from a <a href="https://blog.octo.com/en/docker-registry-first-steps/">blog post</a> by Arnaud Mazin. The source code for container images is stored in a file called a <code>Dockerfile</code>. Similar to an <code>environment.yml</code> file, you would typically version control this with Git and store this in your GitHub repository with your analysis code. From the source <code>Dockerfile</code> we can build a Docker container image. This image is a binary file, from which we can run one, or more, container instances. Container instances are the computational environment in which you would run your analysis. Containers are usually ephemeral - we create them from the image when we want to run the analysis and then stop and remove/delete them after it has run. Docker images can (and should) be versioned and shared via container registries (which are akin to remote code repositories).</p>
 <p><img src="../img/docker-stages.png" width="600"></p>
 <p><em>Source: <a href="https://blog.octo.com/en/docker-registry-first-steps/">OctoTalks</a></em></p>
 </section>
@@ -1354,16 +1359,21 @@ quay.io/jupyter/datascience-notebook:2025-03-14   1a211fc8a877       6.42GB     
 rocker/r-ver:4.3.2                                f0b4e058dcfa        849MB             0B
 rocker/rstudio:4.3.1                              c8bd7a718854          2GB             0B
 rocker/rstudio:4.4.2                              4503182694c4       2.36GB             0B</code></pre>
-<p>You can list the states of containers that have been started by Docker on your computer (and not yet removed) via: <code>docker ps -a</code>:</p>
+<p>You can list the states of containers that have been started by Docker on your computer (and not yet removed) via <code>docker ps -a</code>:</p>
 <pre><code>CONTAINER ID   IMAGE                  COMMAND   CREATED          STATUS          PORTS                                       NAMES
 9160100c7d4b   rocker/r-ver:4.3.2     "R"       5 seconds ago    Up 4 seconds                                                friendly_merkle
 0d0871c90313   rocker/rstudio:4.3.2   "/init"   33 minutes ago   Up 33 minutes   0.0.0.0:8787-&gt;8787/tcp, :::8787-&gt;8787/tcp   exciting_kepler</code></pre>
 </section>
 <section id="what-is-a-container-registry" class="level2" data-number="28.8">
-<h2 data-number="28.8" class="anchored" data-anchor-id="what-is-a-container-registry"><span class="header-section-number">28.8</span> What is a container registry</h2>
-<p>A container registry is a remote repository, or collection of repositories, used to share container images. This is similar to remote version control repositories for sharing code. Instead of code however, it is container images that are pushed and pulled to/from there. For this course we will focus on the widely-used DockerHub container registry: <a href="https://hub.docker.com/" class="uri">https://hub.docker.com/</a>.</p>
-<p>However, there are many container registries that can be used, including: - <a href="https://github.com/" class="uri">https://github.com/</a> (yes! GitHub now also hosts container images in addition to code!) - <a href="https://quay.io/" class="uri">https://quay.io/</a> - <a href="https://aws.amazon.com/ecr/" class="uri">https://aws.amazon.com/ecr/</a> (yes! Amazon now also hosts container images too!)</p>
-<p>In the examples above we have used the <code>rocker/rstudio</code> container that is coming from DockerHub, and the jupyter server comes from <code>quay.io</code>.</p>
+<h2 data-number="28.8" class="anchored" data-anchor-id="what-is-a-container-registry"><span class="header-section-number">28.8</span> What is a container registry?</h2>
+<p>A container registry is a remote repository, or collection of repositories, used to share container images. This is similar to remote version control repositories for sharing code. Instead of code, however, it is container images that are pushed and pulled to/from there. For this course we will focus on the widely used Docker Hub container registry: <a href="https://hub.docker.com/" class="uri">https://hub.docker.com/</a>.</p>
+<p>However, there are many container registries that can be used, including:</p>
+<ul>
+<li><a href="https://github.com/" class="uri">https://github.com/</a> (yes! GitHub now also hosts container images in addition to code!)</li>
+<li><a href="https://quay.io/" class="uri">https://quay.io/</a></li>
+<li><a href="https://aws.amazon.com/ecr/" class="uri">https://aws.amazon.com/ecr/</a> (yes! Amazon now also hosts container images!)</li>
+</ul>
+<p>In the examples above, we have used the <code>rocker/rstudio</code> container, which comes from Docker Hub, and the Jupyter server comes from <code>quay.io</code>.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1381,13 +1391,13 @@ rocker/rstudio:4.4.2                              4503182694c4       2.36GB     
 <li><a href="https://quay.io/repository/jupyter/datascience-notebook?tab=tags">quay.io/jupyter/datascience-notebook</a></li>
 </ul>
 <p>Question: how did we get the images for the exercise earlier in class? We were just prompted to type <code>docker run...</code></p>
-<p>Answer: <code>docker run ...</code> will first look for images you have locally, and run those if they exist. If they do not exist, it then attempts to pull the image from DockerHub.</p>
+<p>Answer: <code>docker run ...</code> will first look for images you have locally, and run those if they exist. If they do not exist, it then attempts to pull the image from Docker Hub.</p>
 </div>
 </div>
 </section>
 <section id="how-do-we-specify-a-container-image" class="level2" data-number="28.9">
 <h2 data-number="28.9" class="anchored" data-anchor-id="how-do-we-specify-a-container-image"><span class="header-section-number">28.9</span> How do we specify a container image?</h2>
-<p>Container images are specified from plain text files! In the case of the Docker containerization software, we call these <code>Dockerfiles</code>. We will explain these in more detail later, however for now it is useful to look at one to get a general idea of their structure:</p>
+<p>Container images are specified from plain-text files! In the case of the Docker containerization software, we call these <code>Dockerfiles</code>. We will explain these in more detail later; however, for now it is useful to look at one to get a general idea of their structure:</p>
 <p>Example <code>Dockerfile</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the miniforge base, make sure you specify a verion</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> condaforge/miniforge3:latest</span>
@@ -1408,7 +1418,7 @@ rocker/rstudio:4.4.2                              4503182694c4       2.36GB     
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># run JupyterLab on container start</span></span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># uses the jupyterlab from the base environment</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"jupyter"</span>, <span class="st">"lab"</span>, <span class="st">"--ip=0.0.0.0"</span>, <span class="st">"--port=8888"</span>, <span class="st">"--no-browser"</span>, <span class="st">"--allow-root"</span>, <span class="st">"--IdentityProvider.token=''"</span>, <span class="st">"--ServerApp.password=''"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The commands in all capitals are Docker commands. <code>Dockerfile</code>s typically start with a <code>FROM</code> command that specifies which base image the new image should be built off. Docker images are built in layers - this helps make them more light-weight. The <code>FROM</code> command is usually followed by <code>RUN</code> commands that usually install new software, or execute configuration commands. Other commands in this example copy in needed configuration files, expose ports, specify the working directory, and specify programs to execute at start-up.</p>
+<p>The commands in all capitals are Docker commands. <code>Dockerfile</code>s typically start with a <code>FROM</code> command that specifies which base image the new image should be built off. Docker images are built in layers - this helps make them more lightweight. The <code>FROM</code> command is usually followed by <code>RUN</code> commands that usually install new software, or execute configuration commands. Other commands in this example copy in needed configuration files, expose ports, specify the working directory, and specify programs to execute at startup.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1420,8 +1430,16 @@ rocker/rstudio:4.4.2                              4503182694c4       2.36GB     
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Demonstration of container images being built from layers</strong></p>
-<p>Let’s take a look at the <code>Dockerfile</code> for the <code>jupyter/docker-stacks</code> <code>r-notebook</code> container image: - <a href="https://github.com/jupyter/docker-stacks/blob/main/images/r-notebook/Dockerfile">Dockerfile</a></p>
-<p>Questions: 1. What image does it build off? 2. What image does that build off? 3. And then the next one?</p>
+<p>Let’s take a look at the <code>Dockerfile</code> for the <code>jupyter/docker-stacks</code> <code>r-notebook</code> container image:</p>
+<ul>
+<li><a href="https://github.com/jupyter/docker-stacks/blob/main/images/r-notebook/Dockerfile">Dockerfile</a></li>
+</ul>
+<p>Questions:</p>
+<ol type="1">
+<li>What image does it build off?</li>
+<li>What image does that build off?</li>
+<li>And then the next one?</li>
+</ol>
 </div>
 </div>
 

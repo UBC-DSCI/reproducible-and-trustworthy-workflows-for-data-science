@@ -117,6 +117,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-definition.callout {
+  border-left-color: #8A6D2B;
+}
+div.callout-definition.callout-style-default .callout-header {
+  background-color: rgba(138, 109, 43, 0.13);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f518' !important;
+  background-image: none;
+}
 div.callout-activity.callout {
   border-left-color: #0055B7;
 }
@@ -143,20 +157,6 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   font-weight: 900;
   font-style: normal;
   content: '\f44b' !important;
-  background-image: none;
-}
-div.callout-definition.callout {
-  border-left-color: #8A6D2B;
-}
-div.callout-definition.callout-style-default .callout-header {
-  background-color: rgba(138, 109, 43, 0.13);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f518' !important;
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -1115,7 +1115,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </header>
 
 
-<p>When we write <code>select(penguins, species)</code>, <code>species</code> is not an object in our environment, yet the code works. Normally, R evaluates every argument we give a function: it looks up <code>species</code>, and stops with an error if it cannot find it. Functions like <code>select()</code> instead capture the code we typed and evaluate it somewhere else, such as inside a data frame. This is called <strong>non-standard evaluation</strong> (NSE). The <code>tidyverse</code> way of doing it is called <strong>tidy evaluation</strong>, and it is built on three ideas:</p>
+<p>When we write <code>select(penguins, species)</code>, <code>species</code> is not an object in our environment, yet the code works. Normally, R evaluates every argument we give a function. It looks up <code>species</code> and stops with an error if it cannot find it. Functions like <code>select()</code> instead capture the code we typed and evaluate it somewhere else, such as inside a data frame. This is called <strong>non-standard evaluation</strong> (NSE). The <code>tidyverse</code> way of doing it is called <strong>tidy evaluation</strong>, and it is built on three ideas:</p>
 <ol type="1">
 <li><strong>Quoting and unquoting:</strong> capturing code without running it, and inserting values into captured code.</li>
 <li><strong>Quosures:</strong> captured code together with the environment it was written in.</li>
@@ -1253,7 +1253,7 @@ Attaching package: 'palmerpenguins'</code></pre>
 # ℹ 334 more rows</code></pre>
 </div>
 </div>
-<p>So non-standard evaluation is not just a <code>tidyverse</code> thing: base R’s <code>subset()</code> uses it too. But if we try to use a bare column name with <code>[</code>, R evaluates <code>species</code> as an object in our environment, and there is no such object:</p>
+<p>So non-standard evaluation is not just a <code>tidyverse</code> thing. Base R’s <code>subset()</code> uses it too. But if we try to use a bare column name with <code>[</code>, R evaluates <code>species</code> as an object in our environment, and there is no such object:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>penguins[, species]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
@@ -1306,7 +1306,7 @@ Attaching package: 'palmerpenguins'</code></pre>
 <pre><code> language 3 + 3</code></pre>
 </div>
 </div>
-<p>The <code>rlang</code> documentation calls quoting <strong>defusing</strong>: the code is captured like a defused bomb, so that it does not go off until we decide.</p>
+<p>The <code>rlang</code> documentation calls quoting <strong>defusing</strong>. The code is captured like a defused bomb, so that it does not go off until we decide.</p>
 </section>
 <section id="rebuilding-select" class="level2" data-number="75.3">
 <h2 data-number="75.3" class="anchored" data-anchor-id="rebuilding-select"><span class="header-section-number">75.3</span> Rebuilding <code>select()</code></h2>
@@ -1350,7 +1350,7 @@ Attaching package: 'palmerpenguins'</code></pre>
 </section>
 <section id="try-2-quoting-inside-the-function" class="level3" data-number="75.3.2">
 <h3 data-number="75.3.2" class="anchored" data-anchor-id="try-2-quoting-inside-the-function"><span class="header-section-number">75.3.2</span> Try 2: quoting inside the function</h3>
-<p><code>expr()</code> quotes exactly what we type, so inside a function, <code>expr(col)</code> gives us the symbol <code>col</code>: the name of the argument, not what the user passed to it:</p>
+<p><code>expr()</code> quotes exactly what we type, so inside a function, <code>expr(col)</code> gives us the symbol <code>col</code>, the name of the argument, not what the user passed to it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>f_expr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expr</span>(x)</span>
@@ -1433,7 +1433,7 @@ Attaching package: 'palmerpenguins'</code></pre>
 ✖ It has a missing value at location 1.</code></pre>
 </div>
 </div>
-<p>Our function quoted <code>col_name</code> as the symbol <code>col_name</code>, and there is no column with that name. We need a way to tell a quoting function “use the <em>value</em> of this variable, not its name”. That is what <code>!!</code> (pronounced “bang-bang”) does: it <strong>unquotes</strong> (<code>rlang</code> calls it <strong>injects</strong>) a value into the code before the function captures it:</p>
+<p>Our function quoted <code>col_name</code> as the symbol <code>col_name</code>, and there is no column with that name. We need a way to tell a quoting function “use the <em>value</em> of this variable, not its name”. That is what <code>!!</code> (pronounced “bang-bang”) does. It <strong>unquotes</strong> (<code>rlang</code> calls it <strong>injects</strong>) a value into the code before the function captures it:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">my_select</span>(penguins, <span class="sc">!!</span>col_name, island)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1513,7 +1513,7 @@ Attaching package: 'palmerpenguins'</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;quosure&gt;
 expr: ^3 + z
-env:  0x830684e08</code></pre>
+env:  0x96a8cd1f8</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1548,12 +1548,12 @@ env:  0x830684e08</code></pre>
 <pre><code>[1] 200</code></pre>
 </div>
 </div>
-<p>Formulas (<code>~</code>) work the same way: a formula is an expression plus the environment it was created in, which is why model formulas can find the variables you use in them.</p>
+<p>Formulas (<code>~</code>) work the same way. A formula is an expression plus the environment it was created in, which is why model formulas can find the variables you use in them.</p>
 </section>
 </section>
 <section id="the-data-mask" class="level2" data-number="75.6">
 <h2 data-number="75.6" class="anchored" data-anchor-id="the-data-mask"><span class="header-section-number">75.6</span> The data mask</h2>
-<p><code>eval_tidy()</code> can also take a data frame (or a list) as its <code>data</code> argument. The columns of the data are then found <em>before</em> the objects in the quosure’s environment. This is the <strong>data mask</strong>: the data “masks” the environment.</p>
+<p><code>eval_tidy()</code> can also take a data frame (or a list) as its <code>data</code> argument. The columns of the data are then found <em>before</em> the objects in the quosure’s environment. This is the <strong>data mask</strong>. The data “masks” the environment.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>q1 <span class="ot">&lt;-</span> <span class="fu">new_quosure</span>(<span class="fu">expr</span>(x <span class="sc">*</span> y), <span class="fu">env</span>(<span class="at">x =</span> <span class="dv">100</span>))</span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
@@ -1566,7 +1566,7 @@ env:  0x830684e08</code></pre>
 <p><code>y</code> was found in the data, and <code>x</code> in the quosure’s environment. This is how <code>filter(penguins, species == "Gentoo")</code> finds the <code>species</code> column.</p>
 <section id="try-4-quosures-and-a-data-mask" class="level3" data-number="75.6.1">
 <h3 data-number="75.6.1" class="anchored" data-anchor-id="try-4-quosures-and-a-data-mask"><span class="header-section-number">75.6.1</span> Try 4: quosures and a data mask</h3>
-<p>Now we can make <code>my_select()</code> work like <code>select()</code> does: we evaluate each argument in a data mask where every column name stands for its position. A bare column name evaluates to its position, a number stays a number, and anything else (like a variable holding a string) is evaluated in the user’s environment:</p>
+<p>Now we can make <code>my_select()</code> work like <code>select()</code> does. We evaluate each argument in a data mask where every column name stands for its position. A bare column name evaluates to its position, a number stays a number, and anything else (like a variable holding a string) is evaluated in the user’s environment:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>my_select <span class="ot">&lt;-</span> <span class="cf">function</span>(data, ...) {</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  cols <span class="ot">&lt;-</span> <span class="fu">enquos</span>(...)                                      <span class="co"># quote what the user typed</span></span>
@@ -1624,7 +1624,7 @@ env:  0x830684e08</code></pre>
 # ℹ 334 more rows</code></pre>
 </div>
 </div>
-<p>The column wins, and we get the wrong column, with no error. This is called the <a href="https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html">data mask ambiguity</a>: when a column and an object in our environment have the same name, the data mask picks the column.</p>
+<p>The column wins, and we get the wrong column, with no error. This is called the <a href="https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html">data mask ambiguity</a>. When a column and an object in our environment have the same name, the data mask picks the column.</p>
 <p>This is exactly the quirk of <code>pull(all_of(col))</code> described in <a href="functions-r.html#sec-tidyverse-pull" class="quarto-xref"><span>Section 74.3.4.3</span></a>. <code>pull()</code> is built on <code>tidyselect::vars_pull()</code>, which evaluates its argument in a data mask of column positions, just like our <code>my_select()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">body</span>(tidyselect<span class="sc">::</span>vars_pull)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1784,7 +1784,7 @@ env:  0x830684e08</code></pre>
 </tr>
 </tbody>
 </table>
-<p>For example, a bare name can be turned into a string for a title or a file name:</p>
+<p>For example, a bare name can be turned into a string for a title or a filename:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>mean_label <span class="ot">&lt;-</span> <span class="cf">function</span>(col) {</span>
 <span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">englue</span>(<span class="st">"Mean of {{ col }}"</span>)</span>
@@ -1815,8 +1815,8 @@ env:  0x830684e08</code></pre>
 <h2 data-number="75.8" class="anchored" data-anchor-id="learn-more"><span class="header-section-number">75.8</span> Learn more</h2>
 <ul>
 <li><a href="functions-r.html#sec-tidyverse-learn-more" class="quarto-xref"><span>Section 74.3.7</span></a> in the <a href="../lectures/functions-r.html">Defining functions in R</a> appendix lists the <code>tidyverse</code> documentation for each pattern and deprecation.</li>
-<li>The <code>rlang</code> documentation: <a href="https://rlang.r-lib.org/reference/topic-data-mask.html">What is data-masking and why do I need <code>{{</code>?</a>, <a href="https://rlang.r-lib.org/reference/topic-defuse.html">Defusing R expressions</a>, <a href="https://rlang.r-lib.org/reference/topic-inject.html">Injecting with <code>!!</code>, <code>!!!</code>, and glue syntax</a>, <a href="https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a> and <a href="https://rlang.r-lib.org/reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>.</li>
-<li>The Metaprogramming chapters of Advanced R: <a href="https://adv-r.hadley.nz/expressions.html">Expressions</a>, <a href="https://adv-r.hadley.nz/quasiquotation.html">Quasiquotation</a> and <a href="https://adv-r.hadley.nz/evaluation.html">Evaluation</a>.</li>
+<li>The <code>rlang</code> documentation: <a href="https://rlang.r-lib.org/reference/topic-data-mask.html">What is data-masking and why do I need <code>{{</code>?</a>, <a href="https://rlang.r-lib.org/reference/topic-defuse.html">Defusing R expressions</a>, <a href="https://rlang.r-lib.org/reference/topic-inject.html">Injecting with <code>!!</code>, <code>!!!</code>, and glue syntax</a>, <a href="https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html">The data mask ambiguity</a>, and <a href="https://rlang.r-lib.org/reference/topic-inject-out-of-context.html">What happens if I use injection operators out of context?</a>.</li>
+<li>The Metaprogramming chapters of Advanced R: <a href="https://adv-r.hadley.nz/expressions.html">Expressions</a>, <a href="https://adv-r.hadley.nz/quasiquotation.html">Quasiquotation</a>, and <a href="https://adv-r.hadley.nz/evaluation.html">Evaluation</a>.</li>
 <li><a href="https://www.youtube.com/watch?v=WoBbQ5gsbgU">Learning Tidy Evaluation by Reimplementing <code>dplyr</code></a> (<a href="https://github.com/chendaniely/rstatsdc-2020-tidyeval">slides and code</a>), the talk this chapter is based on.</li>
 </ul>
 

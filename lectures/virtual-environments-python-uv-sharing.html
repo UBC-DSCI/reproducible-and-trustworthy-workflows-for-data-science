@@ -1153,7 +1153,7 @@ Installed 5 packages in 55ms
 <p><code>uv sync</code> is the command you will run most often when working with others. Run it any time you clone a repository with a lockfile in it, and after every <code>git pull</code> that touched <code>uv.lock</code>.</p>
 <section id="one-download-many-environments" class="level3" data-number="20.1.1">
 <h3 data-number="20.1.1" class="anchored" data-anchor-id="one-download-many-environments"><span class="header-section-number">20.1.1</span> One download, many environments</h3>
-<p>When we ran <code>uv sync</code> it showed five packages installed in 55 milliseconds, and nothing was downloaded. That computer had already downloaded those versions for another project. Your collaborator’s first <code>uv sync</code> downloads them once, and their later projects reuse that download the same way.</p>
+<p>When we ran <code>uv sync</code>, it showed five packages installed in 55 milliseconds, and nothing was downloaded. That computer had already downloaded those versions for another project. Your collaborator’s first <code>uv sync</code> downloads them once, and their later projects reuse that download the same way.</p>
 <p>Over time you will have a <code>.venv</code> in every project and every bit of scratch work you keep, and a good number of them will contain the same <code>pandas</code>. Those are not separate copies of it.</p>
 <p><code>uv</code> keeps one cache of every version of every package it has ever downloaded for you:</p>
 <div class="code-with-filename">
@@ -1170,7 +1170,7 @@ Installed 5 packages in 55ms
 <li>a <strong>hard link</strong> on Windows</li>
 </ul>
 <p>That choice is uv’s <a href="https://docs.astral.sh/uv/reference/settings/#link-mode"><code>link-mode</code></a> setting, and you will almost certainly never need to change it.</p>
-<p>Either way the file appears inside the <code>.venv</code> while sharing its blocks on disk with the cached original, so the second environment costs close to nothing.</p>
+<p>Either way, the file appears inside the <code>.venv</code> while sharing its blocks on disk with the cached original, so the second environment costs close to nothing.</p>
 <p>The effect is easy to measure. A freshly synced environment with JupyterLab in it reports as 164 MB:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
@@ -1192,7 +1192,7 @@ Installed 5 packages in 55ms
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> cache size <span class="at">--human</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> cache prune</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>uv cache prune</code> removes entries nothing points at any more. <code>uv cache clean</code> empties the cache completely, after which the next <code>uv sync</code> downloads everything again.</p>
+<p><code>uv cache prune</code> removes entries nothing points at anymore. <code>uv cache clean</code> empties the cache completely, after which the next <code>uv sync</code> downloads everything again.</p>
 </section>
 <section id="sync-makes-the-environment-match-in-both-directions" class="level3" data-number="20.1.2">
 <h3 data-number="20.1.2" class="anchored" data-anchor-id="sync-makes-the-environment-match-in-both-directions"><span class="header-section-number">20.1.2</span> Sync makes the environment <em>match</em>, in both directions</h3>
@@ -1207,7 +1207,7 @@ Installed 5 packages in 55ms
 Installed 1 package in 3ms
  + cowsay==6.1</code></pre>
 </div>
-<p><code>cowsay</code> is now in the environment but it is not in <code>pyproject.toml</code> and not in <code>uv.lock</code>. The environment and the lockfile disagree. The next <code>uv sync</code> resolves that disagreement in favor of the lockfile:</p>
+<p><code>cowsay</code> is now in the environment, but it is not in <code>pyproject.toml</code> and not in <code>uv.lock</code>. The environment and the lockfile disagree. The next <code>uv sync</code> resolves that disagreement in favor of the lockfile:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> sync</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1230,7 +1230,7 @@ Uninstalled 1 package in 2ms
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Your collaborator pulls your latest changes and gets an <code>ModuleNotFoundError: No module named 'matplotlib'</code> when running your script. You added <code>matplotlib</code> to the project yesterday. What should they run?</p>
+<p>Your collaborator pulls your latest changes and gets a <code>ModuleNotFoundError: No module named 'matplotlib'</code> when running your script. You added <code>matplotlib</code> to the project yesterday. What should they run?</p>
 <ol type="A">
 <li><code>pip install matplotlib</code></li>
 <li><code>uv sync</code></li>
@@ -1293,7 +1293,7 @@ tzdata          2026.6</code></pre>
 Checked 5 packages in 0.74ms</code></pre>
 </div>
 <p>This drops the line from <code>pyproject.toml</code> and updates <code>uv.lock</code>. Notice that nothing was uninstalled. <code>palmerpenguins</code> still needs <code>pandas</code>, so <code>pandas</code> stays in the environment as one of its dependencies. The tree above shows why.</p>
-<p>Remove the package that needed it, and <code>uv</code> uninstalls everything that nothing else needs any more:</p>
+<p>Remove the package that needed it, and <code>uv</code> uninstalls everything that nothing else needs anymore:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> remove palmerpenguins</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1332,7 +1332,7 @@ Installed 5 packages in 34ms
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> lock <span class="at">--upgrade-package</span> pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This re-resolves just that package, leaving everything else pinned where it is, and writes the change into <code>uv.lock</code>. Then <code>uv sync</code> to apply it.</p>
+<p>This re-resolves just that package, leaving everything else pinned where it is, and writes the change into <code>uv.lock</code>. Then run <code>uv sync</code> to apply it.</p>
 <p>Commit the resulting change to <code>uv.lock</code>. A diff on a lockfile is a record of exactly what changed in your environment and when, which is a useful thing to have when a project that worked last month stops working today.</p>
 </section>
 <section id="dependency-groups" class="level3" data-number="20.2.4">

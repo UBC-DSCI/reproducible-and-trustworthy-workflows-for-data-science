@@ -117,6 +117,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-relevance-project.callout {
+  border-left-color: #0077C8;
+}
+div.callout-relevance-project.callout-style-default .callout-header {
+  background-color: rgba(0, 119, 200, 0.13);
+}
+div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f542' !important;
+  background-image: none;
+}
 div.callout-activity.callout {
   border-left-color: #0055B7;
 }
@@ -157,20 +171,6 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   font-weight: 900;
   font-style: normal;
   content: '\f518' !important;
-  background-image: none;
-}
-div.callout-relevance-project.callout {
-  border-left-color: #0077C8;
-}
-div.callout-relevance-project.callout-style-default .callout-header {
-  background-color: rgba(0, 119, 200, 0.13);
-}
-div.callout-relevance-project .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-relevance-project.callout-style-default .callout-icon::before, div.callout-relevance-project.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f542' !important;
   background-image: none;
 }
 </style>
@@ -1105,17 +1105,17 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <h2 class="unnumbered anchored" data-anchor-id="learning-objectives">Learning Objectives</h2>
 <ol type="1">
 <li>Describe what a conda lock file is and how it differs from a conda <code>environment.yml</code> file</li>
-<li>Create a conda lock file from a conda environment for any of the major operating systems (Windows, linux, Mac) and processor chips (intel vs arm)</li>
+<li>Create a conda lock file from a conda environment for any of the major operating systems (Windows, Linux, Mac) and processor chips (Intel vs.&nbsp;ARM)</li>
 <li>Create a conda environment from a lock file</li>
 </ol>
 </section>
 <section id="what-is-conda-lock" class="level2" data-number="27.1">
 <h2 data-number="27.1" class="anchored" data-anchor-id="what-is-conda-lock"><span class="header-section-number">27.1</span> What is conda lock?</h2>
-<p>Conda lock is a tool that is able to resolve all the dependencies for an environment and save them into a fully reproducible lock file for conda environments. It’s similar to an <code>environment.yml</code> file in that both files will specify packages in an environment, but the conda lock file specifically tells the installer everything specified in the file is exactly what the platform needs to install the environment.</p>
+<p><code>conda-lock</code> is a tool that is able to resolve all the dependencies for an environment and save them into a fully reproducible lock file for conda environments. It’s similar to an <code>environment.yml</code> file in that both files will specify packages in an environment, but the conda-lock file specifically tells the installer that everything specified in the file is exactly what the platform needs to install the environment.</p>
 </section>
 <section id="downsides-of-environment.yml" class="level2" data-number="27.2">
 <h2 data-number="27.2" class="anchored" data-anchor-id="downsides-of-environment.yml"><span class="header-section-number">27.2</span> Downsides of <code>environment.yml</code></h2>
-<p>First let’s review the <code>environment.yml</code> and point out some of its problems. Conda’s <code>environment.yml</code> file is one way to create a reproducible conda environment.</p>
+<p>First, let’s review the <code>environment.yml</code> file and point out some of its problems. The <code>environment.yml</code> file is one way to create a reproducible conda environment.</p>
 <p>This file can be created with the <code>conda env export</code> command.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
@@ -1131,7 +1131,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You can read more on managing conda environments in the conda documentation: &lt;<a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html" class="uri">https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html</a></p>
+<p>You can read more on managing conda environments in the conda documentation: <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html" class="uri">https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html</a></p>
 </div>
 </div>
 <p>One of the issues with this method is that it will capture all the installed packages and dependencies in the current conda environment into an <code>environment.yml</code>. That sounds great! Until you realize that it also captures any needed OS-specific dependencies, and also writes a <code>prefix</code> line in the file. Both of these prevent a fully reproducible file across multiple machines and collaborators.</p>
@@ -1140,15 +1140,15 @@ Note
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>This will only include packages that were explicitly installed, without the dependencies. If you manually go remove the <code>prefix</code> line, this is a good way to create an <code>environment.yml</code> file that is also compatible across platforms.</p>
-<p>Finally, even if you manually curate an <code>environment.yml</code>, you still have to go through the conda (or mamba) solver to make sure all listed package versions are compatible with each other, and install any missing dependencies. The main issue is, the solver still takes time.</p>
+<p>This will only include packages that were explicitly installed, without the dependencies. If you manually remove the <code>prefix</code> line, this is a good way to create an <code>environment.yml</code> file that is also compatible across platforms.</p>
+<p>Finally, even if you manually curate an <code>environment.yml</code>, you still have to go through the conda (or mamba) solver to make sure all listed package versions are compatible with each other, and install any missing dependencies. The main issue is that the solver still takes time.</p>
 </section>
 <section id="what-conda-lock-aims-to-solve" class="level2" data-number="27.3">
 <h2 data-number="27.3" class="anchored" data-anchor-id="what-conda-lock-aims-to-solve"><span class="header-section-number">27.3</span> What conda lock aims to solve</h2>
-<p>When we use <code>conda install</code> to install a package, the solver will look up the version of the package you are installing and make sure any currently installed package version are compatible with the package. In this way using <code>conda env export</code> will report the same result of a reproducible environment.</p>
-<p>But, when we ran <code>conda install</code>, we have already spent the time for the solver to do its work. The main problem conda lock solves is specifying an environment file similar to <code>environment.yml</code>, but it also signals to the installer that the solver has already been run and does not need to run again. This creates an environment file that can also be used to speed up subsequent environment setups.</p>
-<p>When we try to install from an <code>environment.yml</code> file, there’s no guarantee that the packages listed include the versions full dependency tree. Conda lock does provide that guarantee that all the packages listed in the file will have a version and full dependency tree. That’s why the solver does not need to run again.</p>
-<p>Finally, you can tell conda lock to do the solving for other platforms. So the solver can be run for operating systems other than the one you are working in. This is useful when you are collaborating with people using different platforms and also creating environment files (i.e., lock files) for docker containers.</p>
+<p>When we use <code>conda install</code> to install a package, the solver will look up the version of the package you are installing and make sure any currently installed package versions are compatible with the package. In this way, using <code>conda env export</code> will report the same result of a reproducible environment.</p>
+<p>But, when we ran <code>conda install</code>, we already spent the time for the solver to do its work. The main problem conda-lock solves is specifying an environment file similar to <code>environment.yml</code> that also signals to the installer that the solver has already been run and does not need to run again. This creates an environment file that can also be used to speed up subsequent environment setups.</p>
+<p>When we try to install from an <code>environment.yml</code> file, there’s no guarantee that the packages listed include their versions and full dependency tree. A conda-lock file does guarantee that all the packages listed in the file will have a version and full dependency tree. That’s why the solver does not need to run again.</p>
+<p>Finally, you can tell conda-lock to do the solving for other platforms. So the solver can be run for operating systems other than the one you are working in. This is useful when you are collaborating with people using different platforms and also creating environment files (i.e., lock files) for Docker containers.</p>
 <div class="callout callout-style-default callout-definition callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1159,14 +1159,14 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A <code>conda-lock.yml</code> file is a file that specifies all the packages, its versions, and the full dependency tree to recreate a conda environment. It’s main benefit is that when using the conda-lock file, the solver no longer needs to be run, and can be created to target specific operating system platforms.</p>
+<p>A <code>conda-lock.yml</code> file is a file that specifies all the packages, their versions, and the full dependency tree to recreate a conda environment. Its main benefit is that when using the conda-lock file, the solver no longer needs to be run, and the file can be created to target specific operating system platforms.</p>
 </div>
 </div>
 <p>You can learn more about conda-lock in the documentation: <a href="https://conda.github.io/conda-lock/" class="uri">https://conda.github.io/conda-lock/</a></p>
 </section>
 <section id="create-conda-lock-files" class="level2" data-number="27.4">
 <h2 data-number="27.4" class="anchored" data-anchor-id="create-conda-lock-files"><span class="header-section-number">27.4</span> Create conda lock files</h2>
-<p>Conda lock is a separate tool that needs to be installed first, it’s not installed by default in the base conda environment. Conda-lock also relies on a source file, we’ll be using <code>environment.yml</code>.</p>
+<p><code>conda-lock</code> is a separate tool that needs to be installed first, because it’s not installed by default in the base conda environment. It also relies on a source file, and we’ll be using <code>environment.yml</code>.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge conda-lock</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1186,15 +1186,15 @@ Note
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> condalock conda-lock</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Since you are using a <code>conda install</code>, this will take some time for the solver to resolve. Note, we are just installing <code>conda-lock</code> in the environment, we are not installing python yet.</p>
-<p>Don’t forget to activate your environment</p>
+<p>Since you are using a <code>conda install</code>, this will take some time for the solver to resolve. Note that we are just installing <code>conda-lock</code> in the environment; we are not installing Python yet.</p>
+<p>Don’t forget to activate your environment:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate condalock</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p>When creating conda-lock files there are 2 different types of files that can be created, <code>conda-lock.yml</code> or <code>conda-&lt;platform&gt;.lock</code> file. The <code>conda-lock.yml</code> is the newer unified multi-platform lockfile that is the default generated from conda-lock &gt; 1.0. The <code>conda-&lt;platform&gt;.lock</code> is the older platform specific lock files you can create, e.g., <code>conda-linux-64.lock</code>.</p>
+<p>When creating conda-lock files, there are 2 different types of files that can be created, <code>conda-lock.yml</code> or <code>conda-&lt;platform&gt;.lock</code> file. The <code>conda-lock.yml</code> is the newer unified multi-platform lockfile that is the default generated from conda-lock &gt; 1.0. The <code>conda-&lt;platform&gt;.lock</code> is the older platform-specific lock file you can create, e.g., <code>conda-linux-64.lock</code>.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1205,21 +1205,21 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s create our first <code>conda-lock.yml</code> file</p>
+<p>Let’s create our first <code>conda-lock.yml</code> file.</p>
 <section id="step-1-environment-setup" class="level4">
-<h4 class="anchored" data-anchor-id="step-1-environment-setup">Step 1: Environment Setup</h4>
+<h4 class="anchored" data-anchor-id="step-1-environment-setup">Step 1: Environment setup</h4>
 <p>Let’s populate our current environment by installing pandas, and create an <code>environment.yml</code> file.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install pandas</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We’ll take a note here on how long this took to install. It may take about 14 seconds depending on your system and computer specs.</p>
-<p>Let’s save our current environment into a file</p>
+<p>Let’s save our current environment into a file:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="op">&gt;</span> environment.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You should see something like this</p>
+<p>You should see something like this:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> condalock</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">channels</span><span class="kw">:</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> conda-forge</span></span>
@@ -1238,10 +1238,10 @@ Important
 </div>
 <div class="callout-body-container callout-body">
 <p>When creating an <code>environment.yml</code> file, make sure you <strong>only</strong> have the <code>conda-forge</code> channel. <strong>DO NOT</strong> mix the conda-forge channel with defaults. It will sometimes cause the solver to look for packages in the wrong location and the solver will either fail or take an even longer time to solve.</p>
-<p>Also, if you are using <code>conda env</code> to create the <code>environment.yml</code> file, remember to remove the <code>prefix</code> line on the bottome of the file. This helps with environment file portability.</p>
+<p>Also, if you are using <code>conda env</code> to create the <code>environment.yml</code> file, remember to remove the <code>prefix</code> line at the bottom of the file. This helps with environment file portability.</p>
 </div>
 </div>
-<p>You’ll notice that <code>python</code> is not listed in the <code>environment.yml</code> file. That’s because we only explicitly installed <code>pandas</code>, <code>python</code> is installed as part of the dependency resolution.</p>
+<p>You’ll notice that <code>python</code> is not listed in the <code>environment.yml</code> file. That’s because we only explicitly installed <code>pandas</code>, and <code>python</code> is installed as part of the dependency resolution.</p>
 <p>You’ll see <code>python</code> in the environment if you search for it in the environment.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
@@ -1262,7 +1262,7 @@ Important
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> lock <span class="at">--file</span> environment.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>You’ll see that it will create a multi-platform lock file. We can look into only creating platform specific lock files next.</p>
+<p>You’ll see that it will create a multi-platform lock file. We can look into only creating platform-specific lock files next.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> conda-lock lock <span class="at">--file</span> environment.yml</span>
@@ -1274,7 +1274,7 @@ Important
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">-</span> Install lock using: conda-lock install <span class="at">--name</span> YOURENV conda-lock.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>You will now see a <code>conda-lock.yml</code> file for all the platforms.</p>
-<p>This particular file (on this specific machine) has almost 5000 lines</p>
+<p>This particular file (on this specific machine) has almost 5000 lines:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> conda-lock.yml</span>
@@ -1290,7 +1290,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If you run into an error, try manually deleting any exiting <code>conda-lock.yml</code> file in your directory and try again.</p>
+<p>If you run into an error, try manually deleting any existing <code>conda-lock.yml</code> file in your directory and try again.</p>
 </div>
 </div>
 </section>
@@ -1301,8 +1301,8 @@ Tip
 </section>
 <section id="specifying-the-platform" class="level2" data-number="27.5">
 <h2 data-number="27.5" class="anchored" data-anchor-id="specifying-the-platform"><span class="header-section-number">27.5</span> Specifying the platform</h2>
-<p>By default you’ll see <code>conda-lock</code> solve for multiple dependencies: <code>['linux-64', 'osx-64', 'osx-arm64', 'win-64']</code>. Depending on the size of your environment, this may take a long time, especially if you only need to target a single platform (or a subset of platforms). we can use the <code>-p</code> or <code>--platform</code> for the <code>lock</code> command.</p>
-<p>If you are on a ARM-based M-Chip Mac, you will need to generate the <code>linux-aarch64</code> platform, if you want to use <code>conda-lock</code> with Docker. Typically you will end up running this command to generate a lock file for all platforms:</p>
+<p>By default, you’ll see <code>conda-lock</code> solve for multiple platforms: <code>['linux-64', 'osx-64', 'osx-arm64', 'win-64']</code>. Depending on the size of your environment, this may take a long time, especially if you only need to target a single platform (or a subset of platforms). We can use the <code>-p</code> or <code>--platform</code> flag for the <code>lock</code> command.</p>
+<p>If you are on an ARM-based M-chip Mac, you will need to generate the <code>linux-aarch64</code> platform if you want to use <code>conda-lock</code> with Docker. Typically you will end up running this command to generate a lock file for all platforms:</p>
 <pre class="shell"><code>conda-lock lock \
   --file environment.yml \
   -p linux-64 \
@@ -1320,7 +1320,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Generating platform specific lock files</strong></p>
+<p><strong>Generating platform-specific lock files</strong></p>
 <p>We can generate a subset of platforms with the <code>-p</code> or <code>--platform</code> flag. If you are doing this example after the previous example, remember to delete the existing <code>conda-lock.yml</code> file.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1332,14 +1332,14 @@ Caution
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Be careful, the <code>-p</code> flag does not mean the same for all the <code>conda-lock</code> commands.</p>
+<p>Be careful. The <code>-p</code> flag does not mean the same thing for all the <code>conda-lock</code> commands.</p>
 </div>
 </div>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> lock <span class="at">--file</span> environment.yml <span class="at">-p</span> linux-64</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Our new files has much fewer lines, because it contains packages for fewer platforms.</p>
+<p>Our new file has far fewer lines, because it contains packages for fewer platforms.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> wc <span class="at">-l</span> conda-lock.yml</span>
@@ -1350,7 +1350,7 @@ Caution
 </section>
 <section id="create-environments-from-conda-lock-files" class="level2" data-number="27.6">
 <h2 data-number="27.6" class="anchored" data-anchor-id="create-environments-from-conda-lock-files"><span class="header-section-number">27.6</span> Create environments from conda lock files</h2>
-<p>Now that we have a <code>conda-lock.yml</code> file, we can use it to create a new environment with the <code>install</code> command</p>
+<p>Now that we have a <code>conda-lock.yml</code> file, we can use it to create a new environment with the <code>install</code> command.</p>
 <div class="callout callout-style-default callout-exercise callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1367,15 +1367,15 @@ Caution
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda-lock</span> install <span class="at">--name</span> condalock-new conda-lock.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>When we timed this install, the new environment was created in 6 seconds. This much faster than using <code>conda install</code> and relying on the solver.</p>
-<p>We can now activate this environment with <code>conda activate condalock-new</code></p>
+<p>When we timed this install, the new environment was created in 6 seconds. This is much faster than using <code>conda install</code> and relying on the solver.</p>
+<p>We can now activate this environment with <code>conda activate condalock-new</code>.</p>
 </div>
 </div>
 </section>
 <section id="conclusion" class="level2" data-number="27.7">
 <h2 data-number="27.7" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">27.7</span> Conclusion</h2>
-<p>There are many ways of creating a reproducible compute environment. <code>conda</code> comes with a mechanism to create an <code>environment.yml</code> file, but there are a few downsides with using <code>environment.yml</code> with <code>conda</code>, mainly sharing environments causes everyone to go through the same solving process. <code>conda-lock</code> uses the <code>environment.yml</code> file to create a different kind of environment file, <code>conda-lock.yml</code>, and provides a way where only one person needs to compute the dependency solver, everyone else who uses this new file to create or update an environment will have a much faster environment setup.</p>
-<p>See this repository as a reference of <code>conda-lock.yml</code> being used in a data anslysis project: <a href="https://github.com/chendaniely/docker-condalock-jupyterlab" class="uri">https://github.com/chendaniely/docker-condalock-jupyterlab</a></p>
+<p>There are many ways of creating a reproducible compute environment. <code>conda</code> comes with a mechanism to create an <code>environment.yml</code> file, but there are a few downsides with using <code>environment.yml</code> with <code>conda</code>, mainly that sharing environments causes everyone to go through the same solving process. <code>conda-lock</code> uses the <code>environment.yml</code> file to create a different kind of environment file, <code>conda-lock.yml</code>, and provides a way where only one person needs to run the dependency solver. Everyone else who uses this new file to create or update an environment will have a much faster environment setup.</p>
+<p>See this repository as a reference of <code>conda-lock.yml</code> being used in a data analysis project: <a href="https://github.com/chendaniely/docker-condalock-jupyterlab" class="uri">https://github.com/chendaniely/docker-condalock-jupyterlab</a></p>
 
 
 </section>

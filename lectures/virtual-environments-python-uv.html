@@ -117,6 +117,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
+div.callout-exercise.callout {
+  border-left-color: #1C5F2E;
+}
+div.callout-exercise.callout-style-default .callout-header {
+  background-color: rgba(28, 95, 46, 0.13);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f44b' !important;
+  background-image: none;
+}
 div.callout-definition.callout {
   border-left-color: #8A6D2B;
 }
@@ -143,20 +157,6 @@ div.callout-activity.callout-style-default .callout-icon::before, div.callout-ac
   font-weight: 900;
   font-style: normal;
   content: '\e53d' !important;
-  background-image: none;
-}
-div.callout-exercise.callout {
-  border-left-color: #1C5F2E;
-}
-div.callout-exercise.callout-style-default .callout-header {
-  background-color: rgba(28, 95, 46, 0.13);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f44b' !important;
   background-image: none;
 }
 div.callout-relevance-project.callout {
@@ -1131,7 +1131,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Imagine you’re working on a project with a colleague, and you’ve created a reproducible report to share your analysis. You want them to replicate your work on their own machine. To demonstrate this, try running the following code on your system (doesn’t matter how/where you write it)</p>
+<p>Imagine you’re working on a project with a colleague, and you’ve created a reproducible report to share your analysis. You want them to replicate your work on their own machine. To demonstrate this, try running the following code on your system (it doesn’t matter how or where you write it):</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>Python</strong></pre>
@@ -1181,7 +1181,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li>You can guarantee that someone else can reproduce your project by specifying which package versions you used and making it easy for others to install the same versions.</li>
 <li>If two of your projects rely on different versions of the same package, you can install these in different environments.</li>
 <li>If you want to play around with a new package, you don’t have to change the packages you use for your data analysis and risk messing something up.</li>
-<li>When you develop your own packages, you need to know exactly which packages yours depend on, so that it runs on other systems than your own.</li>
+<li>When you develop your own packages, you need to know exactly which packages yours depends on, so that it runs on systems other than your own.</li>
 </ul>
 </section>
 <section id="the-python-packaging-ecosystem" class="level2" data-number="16.3">
@@ -1193,7 +1193,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li><strong><code>pip</code></strong> is the package installer that comes with Python. It downloads packages from <strong>PyPI</strong> (the <a href="https://pypi.org/">Python Package Index</a>), the central repository for Python packages.</li>
 <li><strong><code>requirements.txt</code></strong> is a list of packages to install, one per line, sometimes with a version attached.
 <ul>
-<li>It is input for <code>pip</code>, and needs no other tool: <code>pip install -r requirements.txt</code>. There is nothing else in the file. It is an instruction to install some things, not a description of a project. Historically it is also what people reached for when they wanted a lockfile, which is where the trouble starts.</li>
+<li>It is input for <code>pip</code>, and needs no other tool: <code>pip install -r requirements.txt</code>. There is nothing else in the file. It is an instruction to install some things, not a description of a project. Historically, it was also what people reached for when they wanted a lockfile, which is where the trouble starts.</li>
 <li>You will still see it around because it works with Python without any additional tools or packages.</li>
 </ul></li>
 <li><strong><code>pyproject.toml</code></strong> describes the project itself. It holds a lot of metadata about a Python project, including the version of Python and the packages that need to be installed.
@@ -1225,7 +1225,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>🤖 A mini research from Claude Opus 5:</p>
+<p>🤖 A mini research note from Claude Opus 5:</p>
 <p><code>pyproject.toml</code> was not designed all at once. It was assembled one piece at a time through a series of Python Enhancement Proposals (PEPs), the documents the Python community uses to propose, debate, and ratify changes to the language and the tools around it. Each PEP below added one part of the file you now write in a single sitting:</p>
 <ul>
 <li><a href="https://peps.python.org/pep-0517/">PEP 517</a> (proposed September 2015, accepted September 2017) separated <em>what</em> a project is from <em>how</em> it gets built, which is what the <code>build-backend</code> setting names. Before this, building a Python package meant <code>setuptools</code>.</li>
@@ -1249,7 +1249,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </div>
 <section id="what-a-requirements.txt-does-not-tell-you" class="level3" data-number="16.3.1">
 <h3 data-number="16.3.1" class="anchored" data-anchor-id="what-a-requirements.txt-does-not-tell-you"><span class="header-section-number">16.3.1</span> What a <code>requirements.txt</code> does not tell you</h3>
-<p>The problem with a <code>requirements.txt</code> is that it can document projects in different ways, and it is not obvious how it is documented.</p>
+<p>The problem with a <code>requirements.txt</code> is that it can document a project in different ways, and it is not obvious which way a given file uses.</p>
 <p>Someone might write it by hand, listing only the packages they asked for:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
@@ -1333,14 +1333,14 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li>install packages with <code>pip</code></li>
 <li>keep a <code>requirements.txt</code> up to date yourself</li>
 </ol>
-<p>Nothing keeps those steps in sync, and forgetting the activation step is how packages end up installed somewhere you did not intend. <code>venv</code> and <code>pip</code> are still heavily used together, because they come with Python without installing anything else.</p>
+<p>Nothing keeps those steps in sync, and forgetting the activation step is how packages end up installed somewhere you did not intend. <code>venv</code> and <code>pip</code> are still heavily used together, because they come with Python, so you do not have to install anything else.</p>
 <p><a href="https://docs.astral.sh/uv/"><strong>uv</strong></a> is a <strong>project and package manager</strong> for Python that does all of those jobs with one program. It is written in Rust, which is why it resolves and installs packages noticeably faster than the tools it replaces.</p>
 <p>Things <code>uv</code> can do for you:</p>
 <ul>
-<li>creates the environment</li>
-<li>resolves and installs the packages</li>
-<li>manages your Python interpreter versions</li>
-<li>writes a lockfile recording exactly what it installed</li>
+<li>create the environment</li>
+<li>resolve and install the packages</li>
+<li>manage your Python interpreter versions</li>
+<li>write a lockfile recording exactly what it installed</li>
 </ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1368,10 +1368,10 @@ Note
 <div class="callout-body-container callout-body">
 <p>Which of the following items is NOT a benefit of using virtual environments?</p>
 <ol type="A">
-<li>Increase code performance</li>
+<li>Increasing code performance</li>
 <li>Helping with reproducibility</li>
 <li>Using different versions of the same package</li>
-<li>Creating isolated computational environment for testing new packages</li>
+<li>Creating an isolated computational environment for testing new packages</li>
 </ol>
 </div>
 </div>

@@ -117,20 +117,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-exercise.callout {
-  border-left-color: #1C5F2E;
-}
-div.callout-exercise.callout-style-default .callout-header {
-  background-color: rgba(28, 95, 46, 0.13);
-}
-div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f44b' !important;
-  background-image: none;
-}
 div.callout-activity.callout {
   border-left-color: #0055B7;
 }
@@ -171,6 +157,20 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   font-weight: 900;
   font-style: normal;
   content: '\f518' !important;
+  background-image: none;
+}
+div.callout-exercise.callout {
+  border-left-color: #1C5F2E;
+}
+div.callout-exercise.callout-style-default .callout-header {
+  background-color: rgba(28, 95, 46, 0.13);
+}
+div.callout-exercise .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-exercise.callout-style-default .callout-icon::before, div.callout-exercise.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f44b' !important;
   background-image: none;
 }
 </style>
@@ -1107,10 +1107,10 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 
 <section id="example-of-workflow-for-writing-functions-and-tests-for-data-science" class="level2" data-number="43.1">
 <h2 data-number="43.1" class="anchored" data-anchor-id="example-of-workflow-for-writing-functions-and-tests-for-data-science"><span class="header-section-number">43.1</span> Example of workflow for writing functions and tests for data science</h2>
-<p>Let’s say we want to write a function for a task we repeatedly are performing in our data analysis. For example, summarizing the number of observations in each class. This is a common task performed for almost every classification problem to examine how many classes there are to understand if we are facing a binary or multi-class classification problem, as well as to examine whether there are any class imbalances that we may need to deal with before tuning our models.</p>
+<p>Let’s say we want to write a function for a task we are repeatedly performing in our data analysis, for example, summarizing the number of observations in each class. This is a common task performed for almost every classification problem to examine how many classes there are to understand if we are facing a binary or multi-class classification problem, as well as to examine whether there are any class imbalances that we may need to deal with before tuning our models.</p>
 <section id="write-the-function-specifications-and-documentation---but-do-not-implement-the-function" class="level3" data-number="43.1.1">
 <h3 data-number="43.1.1" class="anchored" data-anchor-id="write-the-function-specifications-and-documentation---but-do-not-implement-the-function"><span class="header-section-number">43.1.1</span> 1. Write the function specifications and documentation - but do not implement the function</h3>
-<p>The first thing we should do is write the function specifications and documentation. This can effectively represented by an empty function and <code>roxygen2</code>-styled documentation in R as shown below:</p>
+<p>The first thing we should do is write the function specifications and documentation. This can effectively be represented by an empty function and <code>roxygen2</code>-styled documentation in R as shown below:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Count class observations</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#'</span></span>
@@ -1137,15 +1137,15 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </section>
 <section id="plan-the-test-cases-and-document-them" class="level3" data-number="43.1.2">
 <h3 data-number="43.1.2" class="anchored" data-anchor-id="plan-the-test-cases-and-document-them"><span class="header-section-number">43.1.2</span> 2. Plan the test cases and document them</h3>
-<p>Next, we should plan out our test cases and start to document them. At this point we can sketch out a skeleton for our test cases with code, but we are not yet ready to write them, as we first will need to reproducibly create test data that is useful for assessing whether your function works as expected. So considering our function specifications, some kinds of input we might anticipate our function may receive, and correspondingly what it should return is listed below:</p>
+<p>Next, we should plan out our test cases and start to document them. At this point we can sketch out a skeleton for our test cases with code, but we are not yet ready to write them, as we first will need to reproducibly create test data that is useful for assessing whether your function works as expected. So, considering our function specifications, some kinds of input we might anticipate our function may receive, and correspondingly what it should return, are listed below:</p>
 <section id="simple-expected-use-test-case-1" class="level4">
 <h4 class="anchored" data-anchor-id="simple-expected-use-test-case-1">Simple expected use test case #1</h4>
 <ul>
-<li>Dataframe with 2 classes, with 2 observations per class</li>
+<li>Data frame with 2 classes, with 2 observations per class</li>
 </ul>
 <p><em>Function input:</em></p>
 <ol type="1">
-<li>dataframe</li>
+<li>data frame</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
@@ -1167,7 +1167,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>class_labels</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Expected function output:</em></p>
-<p>Dataframe (or tibble)</p>
+<p>Data frame (or tibble)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class =</span> <span class="fu">c</span>(<span class="st">"class1"</span>, <span class="st">"class2"</span>),</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">count =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1183,11 +1183,11 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <section id="simple-expected-use-test-case-2" class="level4">
 <h4 class="anchored" data-anchor-id="simple-expected-use-test-case-2">Simple expected use test case #2</h4>
 <ul>
-<li>Dataframe with 2 classes, with 2 observations for one class, and only one observation in the other</li>
+<li>Data frame with 2 classes, with 2 observations for one class, and only one observation in the other</li>
 </ul>
 <p><em>Function input:</em></p>
 <ol type="1">
-<li>dataframe</li>
+<li>data frame</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class_labels =</span> <span class="fu">c</span>(<span class="st">"class1"</span>, <span class="st">"class1"</span>, <span class="st">"class2"</span>),</span>
@@ -1206,7 +1206,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>class_labels</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Expected function output:</em></p>
-<p>Dataframe (or tibble)</p>
+<p>Data frame (or tibble)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class =</span> <span class="fu">c</span>(<span class="st">"class1"</span>, <span class="st">"class2"</span>),</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">count =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1222,11 +1222,11 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <section id="edge-test-case-1" class="level4">
 <h4 class="anchored" data-anchor-id="edge-test-case-1">Edge test case #1</h4>
 <ul>
-<li>Dataframe with 1 class, with 2 observations for that class</li>
+<li>Data frame with 1 class, with 2 observations for that class</li>
 </ul>
 <p><em>Function input:</em></p>
 <ol type="1">
-<li>dataframe</li>
+<li>data frame</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class_labels =</span> <span class="fu">c</span>(<span class="st">"class1"</span>, <span class="st">"class1"</span>),</span>
@@ -1244,7 +1244,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>class_labels</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Expected function output:</em></p>
-<p>Dataframe (or tibble)</p>
+<p>Data frame (or tibble)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class =</span> <span class="st">"class1"</span>,</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">count =</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1259,11 +1259,11 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 <section id="edge-test-case-2" class="level4">
 <h4 class="anchored" data-anchor-id="edge-test-case-2">Edge test case #2</h4>
 <ul>
-<li>Dataframe with no class observations</li>
+<li>Data frame with no class observations</li>
 </ul>
 <p><em>Function input:</em></p>
 <ol type="1">
-<li>dataframe</li>
+<li>data frame</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class_labels =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
@@ -1278,7 +1278,7 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>class_labels</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><em>Expected function output:</em></p>
-<p>Dataframe (or tibble)</p>
+<p>Data frame (or tibble)</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">class =</span> <span class="fu">character</span>(<span class="dv">0</span>),</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">count =</span> <span class="fu">numeric</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1368,8 +1368,12 @@ $values
 </tr>
 </tbody>
 </table>
-<p>Next, I sketch out a skeleton for the unit tests. For R, we will use the well maintained and popular <code>testthat</code> R package for writing our tests. For extra resources on <code>testthat</code> beyond what is demonstrated here, we recommend reading: - <a href="https://testthat.r-lib.org/"><code>testthat</code> documentation</a> - <a href="https://r-pkgs.org/tests.html">Testing chapter of the R packages book</a></p>
-<p>With <code>testthat</code> we create a <code>test_that</code> statement for each related group of tests for a function. For our example, we will create the three <code>test_that</code> statements shown below:</p>
+<p>Next, I sketch out a skeleton for the unit tests. For R, we will use the well-maintained and popular <code>testthat</code> R package for writing our tests. For extra resources on <code>testthat</code> beyond what is demonstrated here, we recommend reading:</p>
+<ul>
+<li><a href="https://testthat.r-lib.org/"><code>testthat</code> documentation</a></li>
+<li><a href="https://r-pkgs.org/tests.html">Testing chapter of the R packages book</a></li>
+</ul>
+<p>With <code>testthat</code>, we create a <code>test_that</code> statement for each related group of tests for a function. For our example, we will create the three <code>test_that</code> statements shown below:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(testthat)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1430,7 +1434,7 @@ $values
 </section>
 <section id="write-the-tests-to-evaluate-your-function-based-on-the-planned-test-cases-and-test-data" class="level3" data-number="43.1.4">
 <h3 data-number="43.1.4" class="anchored" data-anchor-id="write-the-tests-to-evaluate-your-function-based-on-the-planned-test-cases-and-test-data"><span class="header-section-number">43.1.4</span> 4. Write the tests to evaluate your function based on the planned test cases and test data</h3>
-<p>Now that we have the skeletons for our tests, and our reproducible test data, we can actually write the internals for our tests! We will do this by using <code>expect_*</code> functions from the <code>testthat</code> package. The table below shows some of the most commonly used <code>expect_*</code> functions. However, there are many more that can be found in the <a href="https://testthat.r-lib.org/reference/index.html#expectations"><code>testthat</code> expectations reference documentation</a>.</p>
+<p>Now that we have the skeletons for our tests, and our reproducible test data, we can actually write the internals for our tests! We will do this by using <code>expect_*</code> functions from the <code>testthat</code> package. The lists below show some of the most commonly used <code>expect_*</code> functions. However, there are many more that can be found in the <a href="https://testthat.r-lib.org/reference/index.html#expectations"><code>testthat</code> expectations reference documentation</a>.</p>
 <section id="testthat-test-structure" class="level4">
 <h4 class="anchored" data-anchor-id="testthat-test-structure"><code>testthat</code> test structure</h4>
 <pre><code>test_that("Message to print if test fails", expect_*(...))</code></pre>
@@ -1547,8 +1551,8 @@ Expected `count_classes(two_classes_two_obs_as_list, class_labels)` to throw a e
 ! Test failed with 1 failure and 0 successes.</code></pre>
 </div>
 </div>
-<p>Wait what??? Most of our tests fail…</p>
-<p>Yes, we expect that, we haven’t written our function body yet!</p>
+<p>Wait, what??? Most of our tests fail…</p>
+<p>Yes, we expect that; we haven’t written our function body yet!</p>
 </section>
 </section>
 </section>
@@ -1595,8 +1599,8 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>we recommending using the syntax <code>PACKAGE_NAME::FUNCTION()</code> when writing functions that will be sourced into other files in R to make it explicitly clear what external packages they depend on. This becomes even more important when we create R packages from our functions later.</p></li>
-<li><p><code>group_by</code> will throw a fairly useful error message of <code>class_col</code> is not found in <code>data_frame</code>, and we we can let <code>group_by</code> handle that error case instead of writing our own exception to throw an error on.</p></li>
+<li><p>We recommend using the syntax <code>PACKAGE_NAME::FUNCTION()</code> when writing functions that will be sourced into other files in R to make it explicitly clear what external packages they depend on. This becomes even more important when we create R packages from our functions later.</p></li>
+<li><p><code>group_by</code> will throw a fairly useful error message if <code>class_col</code> is not found in <code>data_frame</code>, and we can let <code>group_by</code> handle that error case instead of writing our own exception to throw an error on.</p></li>
 </ul>
 </div>
 </div>
@@ -1638,17 +1642,17 @@ Note
 </div>
 <p>The tests passed!</p>
 <p><img src="https://media.giphy.com/media/EXFAJtutz5Ig8/giphy.gif"></p>
-<p>Are we done? For the purposes of this demo, yes! <strong>However in practice you would usually cycle through steps 2-5 two-three more times to further improve our tests and and function!</strong></p>
-<p><strong>Discussion:</strong> Does test-driven development afford testability? How might it do so? Let’s discuss controllability, observability, isolateablilty, and automatability in our case study of test-driven development of <code>count_classes</code>.</p>
+<p>Are we done? For the purposes of this demo, yes! <strong>However, in practice you would usually cycle through steps 2-5 two or three more times to further improve our tests and function!</strong></p>
+<p><strong>Discussion:</strong> Does test-driven development afford testability? How might it do so? Let’s discuss controllability, observability, isolateability, and automatability in our case study of test-driven development of <code>count_classes</code>.</p>
 </section>
 <section id="where-do-the-function-and-test-files-go" class="level3" data-number="43.1.6">
 <h3 data-number="43.1.6" class="anchored" data-anchor-id="where-do-the-function-and-test-files-go"><span class="header-section-number">43.1.6</span> Where do the function and test files go?</h3>
 <p>In the workflow above, we skipped over where we should put our functions we will use in our data analyses, as well as where we put the tests for our function, and how we call those tests!</p>
-<p>We summarize the answer to these questions below, but <strong>highly recommend you explore and test out our demonstration GitHub repository that has a minimal working example of this: <a href="https://github.com/ttimbers/demo-tests-ds-analysis" class="uri">https://github.com/ttimbers/demo-tests-ds-analysis</a></strong></p>
+<p>We summarize the answers to these questions below, but <strong>highly recommend you explore and test out our demonstration GitHub repository that has a minimal working example of this: <a href="https://github.com/ttimbers/demo-tests-ds-analysis" class="uri">https://github.com/ttimbers/demo-tests-ds-analysis</a></strong></p>
 <section id="where-does-the-function-go" class="level4">
 <h4 class="anchored" data-anchor-id="where-does-the-function-go">Where does the function go?</h4>
-<p>In R, functions should be abstracted to R scripts (plain text files that end in <code>.R</code>) which live in the project’s <code>R</code> directory. Commonly we name the R script with the same name as the function (however, we might choose a more general name if the R script contains many functions).</p>
-<p>In the analysis file where we call the function (e.g.&nbsp;<code>eda.ipynb</code>) we need to call <code>source("PATH_TO_FILE_CONTAINING_FUNCTION")</code> before we are able to use the function(s) contained in that R script inside our analysis file.</p>
+<p>In R, functions should be abstracted to R scripts (plain-text files that end in <code>.R</code>) which live in the project’s <code>R</code> directory. Commonly we name the R script with the same name as the function (however, we might choose a more general name if the R script contains many functions).</p>
+<p>In the analysis file where we call the function (e.g., <code>eda.ipynb</code>), we need to call <code>source("PATH_TO_FILE_CONTAINING_FUNCTION")</code> before we are able to use the function(s) contained in that R script inside our analysis file.</p>
 </section>
 <section id="where-do-the-tests-go" class="level4">
 <h4 class="anchored" data-anchor-id="where-do-the-tests-go">Where do the tests go?</h4>
@@ -1656,7 +1660,12 @@ Note
 </section>
 <section id="convenience-functions-for-setting-this-up" class="level4">
 <h4 class="anchored" data-anchor-id="convenience-functions-for-setting-this-up">Convenience functions for setting this up</h4>
-<p>Several <a href="https://usethis.r-lib.org/index.html"><code>usethis</code> R package</a> functions can be used to setup the file and directory structure needed for this: - <code>usethis::use_r("FUNCTION_NAME")</code> can be used to create the R script file the function should live in, inside the R directory - <code>usethis::use_testthat()</code> can be used to create the necessary test directories to use <code>testthat</code>’s automated test suite execution function (<code>testthat::test_dir("tests/testthat")</code>) - <code>usethis::use_test("FUNCTION_NAME")</code> can be used to create the test file for each function</p>
+<p>Several <a href="https://usethis.r-lib.org/index.html"><code>usethis</code> R package</a> functions can be used to set up the file and directory structure needed for this:</p>
+<ul>
+<li><code>usethis::use_r("FUNCTION_NAME")</code> can be used to create the R script file the function should live in, inside the R directory</li>
+<li><code>usethis::use_testthat()</code> can be used to create the necessary test directories to use <code>testthat</code>’s automated test suite execution function (<code>testthat::test_dir("tests/testthat")</code>)</li>
+<li><code>usethis::use_test("FUNCTION_NAME")</code> can be used to create the test file for each function</li>
+</ul>
 <p><em>Note: <code>tests/testthat/helper-FUNCTION_NAME.R</code> needs to be created manually, as there is no <code>usethis</code> function to automate this.</em></p>
 </section>
 </section>
@@ -1668,8 +1677,8 @@ Note
 <section id="common-types-of-test-levels-in-data-science" class="level2" data-number="43.3">
 <h2 data-number="43.3" class="anchored" data-anchor-id="common-types-of-test-levels-in-data-science"><span class="header-section-number">43.3</span> Common types of test levels in data science</h2>
 <ol type="1">
-<li><p>Unit tests - exercise individual components, usually methods or functions, in isolation. This kind of testing is usually quick to write and the tests incur low maintenance effort since they touch such small parts of the system. They typically ensure that the unit fulfills its contract making test failures more straightforward to understand. <em>This is the kind of tests we wrote for our example for <code>count_classes</code> above.</em></p></li>
-<li><p>Integration tests - exercise groups of components to ensure that their contained units interact correctly together. Integration tests touch much larger pieces of the system and are more prone to spurious failure. Since these tests validate many different units in concert, identifying the root-cause of a specific failure can be difficult. <em>In data science, this might be testing whether several functions that call each other, or run in sequence, work as expected (e.g., tests for a <code>tidymodel</code>’s <code>workflow</code> function)</em></p></li>
+<li><p>Unit tests - exercise individual components, usually methods or functions, in isolation. This kind of testing is usually quick to write and the tests incur low maintenance effort since they touch such small parts of the system. They typically ensure that the unit fulfills its contract, making test failures more straightforward to understand. <em>This is the kind of tests we wrote for our example for <code>count_classes</code> above.</em></p></li>
+<li><p>Integration tests - exercise groups of components to ensure that their contained units interact correctly together. Integration tests touch much larger pieces of the system and are more prone to spurious failure. Since these tests validate many different units in concert, identifying the root cause of a specific failure can be difficult. <em>In data science, this might be testing whether several functions that call each other, or run in sequence, work as expected (e.g., tests for a <code>tidymodel</code>’s <code>workflow</code> function).</em></p></li>
 </ol>
 <p><em>Source: <a href="https://github.com/ubccpsc/310/blob/master/resources/readings/Testing.md">CPSC 310 class notes from Reid Holmes, UBC</a></em></p>
 </section>

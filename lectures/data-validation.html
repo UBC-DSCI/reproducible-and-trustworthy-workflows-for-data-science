@@ -110,20 +110,6 @@ div.callout-definition.callout-style-default .callout-icon::before, div.callout-
   content: '\f518' !important;
   background-image: none;
 }
-div.callout-activity.callout {
-  border-left-color: #0055B7;
-}
-div.callout-activity.callout-style-default .callout-header {
-  background-color: rgba(0, 85, 183, 0.13);
-}
-div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\e53d' !important;
-  background-image: none;
-}
 div.callout-relevance-project.callout {
   border-left-color: #0077C8;
 }
@@ -136,6 +122,20 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
   font-weight: 900;
   font-style: normal;
   content: '\f542' !important;
+  background-image: none;
+}
+div.callout-activity.callout {
+  border-left-color: #0055B7;
+}
+div.callout-activity.callout-style-default .callout-header {
+  background-color: rgba(0, 85, 183, 0.13);
+}
+div.callout-activity .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-activity.callout-style-default .callout-icon::before, div.callout-activity.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\e53d' !important;
   background-image: none;
 }
 </style>
@@ -1071,31 +1071,31 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <ol type="1">
 <li>Explain why it is important to validate data used in a data analysis project, and give examples of consequences that might occur with invalid data.</li>
 <li>Discuss where data validation should happen in a data analysis project.</li>
-<li>List the major checks that should be performed when validating data for data analysis, and justiy why they should be used.</li>
-<li>Use the Python Pandera package to create data schema for checking and to validate data.</li>
+<li>List the major checks that should be performed when validating data for data analysis, and justify why they should be used.</li>
+<li>Use the Python Pandera package to create a data schema for checking and to validate data.</li>
 <li>Use the Python Pandera package to drop invalid rows.</li>
 <li>List other commonly used data validation packages for Python and R.</li>
 </ol>
 </section>
 <section id="the-role-of-data-validation-in-data-analysis" class="level2" data-number="32.1">
 <h2 data-number="32.1" class="anchored" data-anchor-id="the-role-of-data-validation-in-data-analysis"><span class="header-section-number">32.1</span> The role of data validation in data analysis</h2>
-<p>Regardless of the statistical question you are asking in your data analysis project, you will be reading in data to Python or R to visualize and/or model. If there are data quality issues, these issues will be propagated and will become data visualization and/or data model issues. This may remind you of an old saying from the mid 20th century:</p>
+<p>Regardless of the statistical question you are asking in your data analysis project, you will be reading in data to Python or R to visualize and/or model. If there are data quality issues, these issues will be propagated and will become data visualization and/or data model issues. This may remind you of an old saying from the mid-20th century:</p>
 <p><em>“Garbage in, garbage out.”</em></p>
-<p>Thus, to ensure that our data visualization and/or modeling results are correct, robust and of high quality, it is important that we validate, or check, the quality of the data before we perform such analyses. It is important to note that data validation is not sufficient for a correct, robust and of high quality analysis, but it is necessary.</p>
+<p>Thus, to ensure that our data visualization and/or modeling results are correct, robust, and of high quality, it is important that we validate, or check, the quality of the data before we perform such analyses. It is important to note that data validation is not sufficient for a correct, robust, and high-quality analysis, but it is necessary.</p>
 </section>
 <section id="where-does-data-validation-fit-in-data-analysis" class="level2" data-number="32.2">
 <h2 data-number="32.2" class="anchored" data-anchor-id="where-does-data-validation-fit-in-data-analysis"><span class="header-section-number">32.2</span> Where does data validation fit in data analysis?</h2>
 <p>If we are going to validate, or check, our data for our data analysis, at what stage in our analysis should we do this? At a minimum, this should be done after data sourcing or extraction, but before data is used in any analysis. In the context of a project where data splitting is needed (e.g., predictive questions using supervised machine learning), this should be done before the data is split.</p>
 <!-- add figure of a data analysis pipeline and an arrow pointing to where this should be done -->
-<p>If there are larger, more severe consequences of the data analysis being incorrect (e.g., autonomous driving), and the data undergoes file input/output as it is passed through a series of scripts, it may be advisable for data validation, checking to be done each time the data is read. This can be made more efficient by modularizing the data validation/checking into functions. This likely should be done however, regardless of the application of the data analysis, as modularizing the data validation/checking into functions also allows this code to be tested to ensure it is correct, and that invalid data is handled as intended (more on this in the testing chapter later in this book).</p>
-<p>One note of caution for where to perform data validation checks in data analysis where data splitting is needed (e.g., splitting data into a training and test set for answering predictive questions) is that you want to be sure that the data validation checks do not cause any data leakage between the split data sets. For example, when checking for anomalous correlations between the target/response variable and features/explanatory variables, when attempting to answer a predictive question, it would be important to not use the entire data set. This is because using the entire dataset for such checks could inadvertently reveal patterns, distributions, or relationships from the test set – which may impact the analyst’s decisions/choices when performing feature and model selection. Given that, data validation checks like this should initially only be done on the training set. It may make sense to apply this data validation check also to the test set, but only after finalizing the feature and model selection.</p>
+<p>If there are larger, more severe consequences of the data analysis being incorrect (e.g., autonomous driving), and the data undergoes file input/output as it is passed through a series of scripts, it may be advisable for data validation, or checking, to be done each time the data is read. This can be made more efficient by modularizing the data validation/checking into functions. This likely should be done, however, regardless of the application of the data analysis, as modularizing the data validation/checking into functions also allows this code to be tested to ensure it is correct, and that invalid data is handled as intended (more on this in the testing chapter later in this book).</p>
+<p>One note of caution for where to perform data validation checks in data analysis where data splitting is needed (e.g., splitting data into a training and test set for answering predictive questions) is that you want to be sure that the data validation checks do not cause any data leakage between the split data sets. For example, when checking for anomalous correlations between the target/response variable and features/explanatory variables, when attempting to answer a predictive question, it would be important to not use the entire data set. This is because using the entire data set for such checks could inadvertently reveal patterns, distributions, or relationships from the test set – which may impact the analyst’s decisions/choices when performing feature and model selection. Given that, data validation checks like this should initially only be done on the training set. It may make sense to apply this data validation check also to the test set, but only after finalizing the feature and model selection.</p>
 </section>
 <section id="data-validation-checks" class="level2" data-number="32.3">
 <h2 data-number="32.3" class="anchored" data-anchor-id="data-validation-checks"><span class="header-section-number">32.3</span> Data validation checks</h2>
-<p>What kind of data validation, or checks, should be done to ensure the data is of high quality? This does somewhat depend on the type of data being used (e.g., tabular, images, language). Here we will list validations, or checks, that should be done on tabular data. If the reader is interested in validations, or checks, that should be done for more complex data types (e.g., images, language) we refer them to the deepchecks checks gallery for data integrity:</p>
+<p>What kind of data validation, or checks, should be done to ensure the data is of high quality? This does somewhat depend on the type of data being used (e.g., tabular, images, language). Here we will list validations, or checks, that should be done on tabular data. If the reader is interested in validations, or checks, that should be done for more complex data types (e.g., images, language), we refer them to the Deepchecks checks gallery for data integrity:</p>
 <ul>
-<li><a href="https://docs.deepchecks.com/stable/vision/auto_checks/data_integrity/index.html">deepchecks image/vision data integrity checks</a></li>
-<li><a href="https://docs.deepchecks.com/stable/nlp/auto_checks/data_integrity/index.html">deepchecks language/NLP data integrity checks</a></li>
+<li><a href="https://docs.deepchecks.com/stable/vision/auto_checks/data_integrity/index.html">Deepchecks image/vision data integrity checks</a></li>
+<li><a href="https://docs.deepchecks.com/stable/nlp/auto_checks/data_integrity/index.html">Deepchecks language/NLP data integrity checks</a></li>
 </ul>
 <section id="data-validation-checklist" class="level3" data-number="32.3.1">
 <h3 data-number="32.3.1" class="anchored" data-anchor-id="data-validation-checklist"><span class="header-section-number">32.3.1</span> Data validation checklist</h3>
@@ -1115,10 +1115,10 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <section id="checklist-references" class="level4">
 <h4 class="anchored" data-anchor-id="checklist-references">Checklist references</h4>
 <ol type="1">
-<li><a href="https://www.jmlr.org/papers/volume23/22-0281/22-0281.pdf">Chorev et al (2022). Deepchecks: A Library for Testing and Validating Machine Learning Models and Data. Journal of Machine Learning Research 23 1-6</a></li>
+<li><a href="https://www.jmlr.org/papers/volume23/22-0281/22-0281.pdf">Chorev et al.&nbsp;(2022). Deepchecks: A Library for Testing and Validating Machine Learning Models and Data. Journal of Machine Learning Research 23 1-6</a></li>
 <li><a href="https://microsoft.github.io/code-with-engineering-playbook/ml-and-ai-projects/testing-data-science-and-mlops-code/">Microsoft Industry Solutions Engineering Team (2024). Engineering Fundamentals Playbook: Testing Data Science and MLOps Code Chapter</a></li>
-<li><a href="https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/">Breck et al (2017). The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction. Proceedings of IEEE Big Data 1123-1132</a></li>
-<li><a href="https://research.google/pubs/the-data-linter-lightweight-automated-sanity-checking-for-ml-data-sets/">Hynes et al (2017). The data linter: Lightweight, automated sanity checking for ml data sets. In NIPS MLSys Workshop 1(2017) 5</a></li>
+<li><a href="https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/">Breck et al.&nbsp;(2017). The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction. Proceedings of IEEE Big Data 1123-1132</a></li>
+<li><a href="https://research.google/pubs/the-data-linter-lightweight-automated-sanity-checking-for-ml-data-sets/">Hynes et al.&nbsp;(2017). The data linter: Lightweight, automated sanity checking for ml data sets. In NIPS MLSys Workshop 1(2017) 5</a></li>
 </ol>
 </section>
 </section>
@@ -1128,12 +1128,12 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <p>There are a few data validation packages. We list the others below:</p>
 <p><strong>Python:</strong></p>
 <ul>
-<li>Deep Checks: <a href="https://docs.deepchecks.com" class="uri">https://docs.deepchecks.com</a></li>
-<li>Great Expectation: <a href="https://docs.greatexpectations.io" class="uri">https://docs.greatexpectations.io</a></li>
+<li>Deepchecks: <a href="https://docs.deepchecks.com" class="uri">https://docs.deepchecks.com</a></li>
+<li>Great Expectations: <a href="https://docs.greatexpectations.io" class="uri">https://docs.greatexpectations.io</a></li>
 <li>Pandera: <a href="https://pandera.readthedocs.io" class="uri">https://pandera.readthedocs.io</a></li>
 <li>Pydantic: <a href="https://docs.pydantic.dev/latest/" class="uri">https://docs.pydantic.dev/latest/</a></li>
 </ul>
-<p><strong>R</strong></p>
+<p><strong>R:</strong></p>
 <ul>
 <li>pointblank: <a href="https://rstudio.github.io/pointblank" class="uri">https://rstudio.github.io/pointblank</a></li>
 </ul>

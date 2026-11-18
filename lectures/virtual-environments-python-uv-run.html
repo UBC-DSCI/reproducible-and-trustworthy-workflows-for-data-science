@@ -117,20 +117,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>
-div.callout-definition.callout {
-  border-left-color: #8A6D2B;
-}
-div.callout-definition.callout-style-default .callout-header {
-  background-color: rgba(138, 109, 43, 0.13);
-}
-div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
-div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
-  font-family: 'Font Awesome 7 Free';
-  font-weight: 900;
-  font-style: normal;
-  content: '\f518' !important;
-  background-image: none;
-}
 div.callout-exercise.callout {
   border-left-color: #1C5F2E;
 }
@@ -143,6 +129,20 @@ div.callout-exercise.callout-style-default .callout-icon::before, div.callout-ex
   font-weight: 900;
   font-style: normal;
   content: '\f44b' !important;
+  background-image: none;
+}
+div.callout-definition.callout {
+  border-left-color: #8A6D2B;
+}
+div.callout-definition.callout-style-default .callout-header {
+  background-color: rgba(138, 109, 43, 0.13);
+}
+div.callout-definition .callout-toggle::before {  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgb(33, 37, 41)" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');}
+div.callout-definition.callout-style-default .callout-icon::before, div.callout-definition.callout-titled .callout-icon::before {
+  font-family: 'Font Awesome 7 Free';
+  font-weight: 900;
+  font-style: normal;
+  content: '\f518' !important;
   background-image: none;
 }
 div.callout-activity.callout {
@@ -1162,7 +1162,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <pre class="out"><code>/Users/dan/penguin_analysis/.venv/bin/python3
 /Users/dan/penguin_analysis/.venv</code></pre>
 </div>
-<p>Activating did two things. It put <code>.venv/bin</code> first on your <code>PATH</code> (<code>.venv\Scripts</code> on Windows), and it set the <code>VIRTUAL_ENV</code> environment variable to the environment’s folder. Python’s own documentation describes these two changes in <a href="https://docs.python.org/3/library/venv.html#how-venvs-work">How venvs work</a>. Now <code>python penguins.py</code>, <code>jupyter lab</code> and <code>quarto render</code> all use the project’s packages:</p>
+<p>Activating did two things. It put <code>.venv/bin</code> first on your <code>PATH</code> (<code>.venv\Scripts</code> on Windows), and it set the <code>VIRTUAL_ENV</code> environment variable to the environment’s folder. Python’s own documentation describes these two changes in <a href="https://docs.python.org/3/library/venv.html#how-venvs-work">How venvs work</a>. Now <code>python penguins.py</code>, <code>jupyter lab</code>, and <code>quarto render</code> all use the project’s packages:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> penguins.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1187,7 +1187,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 </section>
 <section id="a-good-way-to-think-about-uv-run" class="level2" data-number="19.3">
 <h2 data-number="19.3" class="anchored" data-anchor-id="a-good-way-to-think-about-uv-run"><span class="header-section-number">19.3</span> A good way to think about <code>uv run</code></h2>
-<p>uv’s documentation says that <code>uv run</code> runs a command in the project environment, and that before every <code>uv run</code>, uv checks that <code>uv.lock</code> matches <code>pyproject.toml</code> and that <code>.venv</code> matches <code>uv.lock</code> (<a href="https://docs.astral.sh/uv/guides/projects/#running-commands">Running commands</a>). The same guide gives the alternative to <code>uv run</code>. You run <code>uv sync</code>, then activate the environment, then run your command.</p>
+<p>The uv documentation says that <code>uv run</code> runs a command in the project environment, and that before every <code>uv run</code>, uv checks that <code>uv.lock</code> matches <code>pyproject.toml</code> and that <code>.venv</code> matches <code>uv.lock</code> (<a href="https://docs.astral.sh/uv/guides/projects/#running-commands">Running commands</a>). The same guide gives the alternative to <code>uv run</code>. You run <code>uv sync</code>, then activate the environment, then run your command.</p>
 <p>So a good way to think about <code>uv run &lt;command&gt;</code> is as a shortcut for four steps:</p>
 <ol type="1">
 <li><code>uv sync</code>, so <code>.venv</code> matches <code>uv.lock</code></li>
@@ -1195,7 +1195,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <li>run the command</li>
 <li>deactivate the environment</li>
 </ol>
-<p>uv’s documentation does not describe how <code>uv run</code> sets up the environment internally. You can see, though, that for the command it runs, it changes the same two things activating does:</p>
+<p>The uv documentation does not describe how <code>uv run</code> sets up the environment internally. You can see, though, that for the command it runs, it changes the same two things activating does:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run python <span class="at">-c</span> <span class="st">"import os, sys; print(sys.executable); print(os.environ['VIRTUAL_ENV'])"</span></span>
@@ -1246,7 +1246,7 @@ div.callout-relevance-project.callout-style-default .callout-icon::before, div.c
 <section id="what-uv-run-does-that-activating-does-not" class="level2" data-number="19.4">
 <h2 data-number="19.4" class="anchored" data-anchor-id="what-uv-run-does-that-activating-does-not"><span class="header-section-number">19.4</span> What <code>uv run</code> does that activating does not</h2>
 <p>Before it runs your command, <code>uv run</code> makes sure <code>.venv</code> matches <code>uv.lock</code>, and creates <code>.venv</code> if it does not exist yet (uv’s <a href="https://docs.astral.sh/uv/reference/cli/#uv-run"><code>uv run</code> reference</a> says “the project environment will be created and updated before invoking the command”). Activating only switches to whatever <code>.venv</code> already holds.</p>
-<p>The difference shows in a fresh clone of the project, which has <code>pyproject.toml</code>, <code>uv.lock</code> and the code, but no <code>.venv</code>:</p>
+<p>The difference shows in a fresh clone of the project, which has <code>pyproject.toml</code>, <code>uv.lock</code>, and the code, but no <code>.venv</code>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file"><pre><strong>Terminal</strong></pre></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1312,7 +1312,7 @@ Installed 5 packages in 72ms
 </section>
 <section id="which-to-use" class="level2" data-number="19.5">
 <h2 data-number="19.5" class="anchored" data-anchor-id="which-to-use"><span class="header-section-number">19.5</span> Which to use</h2>
-<p>Use <code>uv run</code> for scripts, JupyterLab, Quarto and tests, and put those commands in your Makefile targets. You never have to remember which environment is active, and the environment always matches the lockfile.</p>
+<p>Use <code>uv run</code> for scripts, JupyterLab, Quarto, and tests, and put those commands in your Makefile targets. You never have to remember which environment is active, and the environment always matches the lockfile.</p>
 <p>Activating is fine when a tool expects an active environment, or when you want to type many commands in a row. If you do activate:</p>
 <ul>
 <li>run <code>uv sync</code> first, so <code>.venv</code> matches <code>uv.lock</code></li>
