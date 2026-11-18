@@ -1,0 +1,96 @@
+name: ci-cd
+
+on: [push, pull_request]
+
+jobs:
+  ci:
+    # Set up operating system
+    runs-on: ubuntu-latest
+
+    # Define job steps
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v7
+
+      # uv installs the Python version named in .python-version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install package
+        run: uv sync --locked
+
+      - name: Test with pytest
+        run: uv run pytest tests/ --cov=pycounts --cov-report=xml
+
+      - name: Use Codecov to track coverage
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml   # coverage report
+
+  cd:
+    permissions:
+      id-token: write
+      contents: write
+
+    # Only run this job if the "ci" job passes
+    needs: ci
+
+    # Only run this job if new work is pushed to "main"
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    # Set up operating system
+    runs-on: ubuntu-latest
+
+    # Define job steps
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Set the Git user for the release commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Bumps the version in pyproject.toml, updates CHANGELOG.md and uv.lock,
+      # builds the package (build_command in pyproject.toml),
+      # then commits, tags, pushes and creates a GitHub release
+      - name: Use Python Semantic Release to prepare release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uvx --from python-semantic-release==10.7.0 semantic-release version
+
+      - name: Publish to TestPyPI
+        if: steps.release.outputs.released == 'true'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        run: uv publish --publish-url https://test.pypi.org/legacy/
+
+      - name: Test install from TestPyPI
+        if: steps.release.outputs.released == 'true'
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          uv run --isolated --no-project \
+            --index https://test.pypi.org/simple/ \
+            --index-strategy unsafe-best-match \
+            --with "pycounts==$VERSION" \
+            python -c "import pycounts; print(pycounts.__version__)"
+
+      - name: Publish to PyPI
+        if: steps.release.outputs.released == 'true'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: uv publish
+
+      - name: Publish package distributions to GitHub Releases
+        if: steps.release.outputs.released == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uvx --from python-semantic-release==10.7.0 semantic-release publish

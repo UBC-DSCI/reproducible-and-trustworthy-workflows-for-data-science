@@ -1,0 +1,20 @@
+# Run this by hand (Actions tab > .github/workflows/main.yml > Run workflow).
+# It plays a collaborator who pushes a different fix to the same line of cube.r,
+# so that your own fix conflicts with it.
+on:
+  workflow_dispatch:
+
+jobs:
+  createConflict:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Commit a different fix to cube.r and push it
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          sed -i 's/x\^2/x * x * x/' cube.r
+          git commit -m "Here's a fix to the file!" -a
+          git push

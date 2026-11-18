@@ -1,0 +1,65 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+**NOTE: This is a toy package created for expository purposes, for the Whole Game chapter of a draft of the second edition of [R Packages](https://r-pkgs.org) (the published chapter now builds a package called regexcite). It is not meant to actually be useful. If you want a package for factor handling, please see [forcats](https://forcats.tidyverse.org).**
+
+### foofactors
+
+Factors are a very useful type of variable in R, but they can also be very aggravating. This package provides some helper functions for the care and feeding of factors.
+
+### Installation
+
+```{r installation, eval = FALSE}
+devtools::install_github(
+  "UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science",
+  subdir = "demos/foofactors/end"
+)
+```
+  
+### Quick demo
+
+Binding two factors via `fbind()`:
+
+```{r}
+library(foofactors)
+a <- factor(c("character", "hits", "your", "eyeballs"))
+b <- factor(c("but", "integer", "where it", "counts"))
+```
+
+Before R 4.1.0, simply catenating two factors returned their integer codes, a result most people didn't expect.
+Since R 4.1.0, `c()` returns a factor, with the levels of `a` followed by the levels of `b`:
+
+```{r}
+c(a, b)
+```
+
+The `fbind()` function glues two factors together and returns a factor whose levels are sorted.
+
+```{r}
+fbind(a, b)
+```
+
+Often we want a table of frequencies for the levels of a factor. The base `table()` function returns an object of class `table`, which can be inconvenient for downstream work.
+
+```{r}
+set.seed(1234)
+x <- factor(sample(letters[1:5], size = 100, replace = TRUE))
+table(x)
+```
+
+The `fcount()` function returns a frequency table as a tibble with a column of factor levels and another of frequencies:
+
+```{r}
+fcount(x)
+```
