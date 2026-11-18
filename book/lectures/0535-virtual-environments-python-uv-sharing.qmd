@@ -56,7 +56,7 @@ and after every `git pull` that touched `uv.lock`.
 
 ### One download, many environments
 
-When we ran `uv sync` it showed
+When we ran `uv sync`, it showed
 five packages installed in 55 milliseconds,
 and nothing was downloaded.
 That computer had already downloaded those versions for another project.
@@ -91,7 +91,7 @@ That choice is uv's
 [`link-mode`](https://docs.astral.sh/uv/reference/settings/#link-mode)
 setting, and you will almost certainly never need to change it.
 
-Either way the file appears inside the `.venv`
+Either way, the file appears inside the `.venv`
 while sharing its blocks on disk with the cached original,
 so the second environment costs close to nothing.
 
@@ -131,7 +131,7 @@ uv cache size --human
 uv cache prune
 ```
 
-`uv cache prune` removes entries nothing points at any more.
+`uv cache prune` removes entries nothing points at anymore.
 `uv cache clean` empties the cache completely,
 after which the next `uv sync` downloads everything again.
 
@@ -152,7 +152,7 @@ Installed 1 package in 3ms
  + cowsay==6.1
 ```
 
-`cowsay` is now in the environment
+`cowsay` is now in the environment,
 but it is not in `pyproject.toml` and not in `uv.lock`.
 The environment and the lockfile disagree.
 The next `uv sync` resolves that disagreement
@@ -180,7 +180,7 @@ but anything installed that way is invisible to your project files.
 
 :::{.activity}
 Your collaborator pulls your latest changes and gets
-an `ModuleNotFoundError: No module named 'matplotlib'`
+a `ModuleNotFoundError: No module named 'matplotlib'`
 when running your script.
 You added `matplotlib` to the project yesterday.
 What should they run?
@@ -261,7 +261,7 @@ so `pandas` stays in the environment as one of its dependencies.
 The tree above shows why.
 
 Remove the package that needed it,
-and `uv` uninstalls everything that nothing else needs any more:
+and `uv` uninstalls everything that nothing else needs anymore:
 
 ```bash
 uv remove palmerpenguins
@@ -309,7 +309,7 @@ uv lock --upgrade-package pandas
 This re-resolves just that package,
 leaving everything else pinned where it is,
 and writes the change into `uv.lock`.
-Then `uv sync` to apply it.
+Then run `uv sync` to apply it.
 
 Commit the resulting change to `uv.lock`.
 A diff on a lockfile is a record of exactly what changed in your environment
