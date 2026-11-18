@@ -39,7 +39,9 @@ There are a few ways you can always check if a terminal program exists and can b
   `which` will tell you which one is _actually_ going to be used.
   If the path returned is not what you expect,
   then it typically means you need to adjust your `$PATH` variable.
-  If the program cannot be found, you will get a `which: no quarto in ....` message.
+  If the program cannot be found,
+  `which` prints nothing or a short error, depending on your shell and system.
+  In Git Bash, for example, you will get a `which: no quarto in ....` message.
   The `....` will list all the locations (paths) that your `$PATH` variable defines.
   This is the order in which your computer looks for programs.
 
@@ -181,8 +183,7 @@ and prompts you to open the directory in a text editor:
    (don't open)
 ```
 
-::: {.note}
-Note
+::: {.callout-note}
 If you already created a new folder and used `cd` to move into it,
 you can use `.` to have the files created in the current location.
 Otherwise, you can specify a new folder name, and it will create a new folder
@@ -207,7 +208,7 @@ USERNAME.github.io/
 The most important file is the `_quarto.yml` file.
 This is how Quarto knows you are using a Quarto project.
 Some Quarto commands and options may need to run in a Quarto project.
-The contents of the `_qquarto.yml` (in this example) file
+The contents of the `_quarto.yml` (in this example) file
 tell Quarto that we are going to be creating a website.
 
 ```yml
@@ -269,12 +270,12 @@ in either the IDE, the `_quarto.yml` file, or the individual `.qmd` document:
 <https://quarto.org/docs/tools/vscode.html#render-on-save>
 :::
 
-::: {.tip}
+::: {.callout-tip}
 ## Tip
 If you are using VS Code
 and use the `Quarto: Preview` command from the Command Palette
 (you will need the VS Code Quarto extension),
-this will run `quarto preview ` with the `--no-watch-inputs` flag by default.
+this will run `quarto preview` with the `--no-watch-inputs` flag by default.
 This will prevent saving the file from auto-compiling the project.
 
 If you still want to have `preview` auto-render on save,
@@ -308,8 +309,9 @@ The URL essentially says to look at port `4463` on our local machine (i.e., `loc
 Your port number may differ and change,
 so always pay attention to what port your current site is running on.
 If something is not updating after you make a change,
-try exiting out of `preview` with <kbd>CTRL</kbd> + <kbd>c</kbd> (Windows/Linux)
-or <kbd>⌘</kbd> + <kbd>c</kbd> (Mac) and re-`preview`-ing.
+try exiting out of `preview` with <kbd>CTRL</kbd> + <kbd>c</kbd>
+(on Mac too, where <kbd>⌘</kbd> + <kbd>c</kbd> copies text)
+and re-`preview`-ing.
 
 
 
@@ -346,7 +348,7 @@ D. `quarto serve`
 GitHub (public and enterprise) has mechanisms
 that can take static website content and render it into an actual website.
 If you're reading these words from a web URL
-and not directly in the raw source (i.e., the Jupyter notebook),
+and not directly in the raw source (i.e., the Quarto `.qmd` file),
 then you are experiencing GitHub Pages.
 
 GitHub uses [Jekyll](https://jekyllrb.com/) by default to render its GitHub Pages.
@@ -621,12 +623,14 @@ Quarto works with a few IDEs and text editors.
 
 - VS Code extension: <https://marketplace.visualstudio.com/items?itemName=quarto.quarto>
 - RStudio: Comes with RStudio (you can also manually install it as a terminal application)
-- JupyterLab: there is no official Jupyter Quarto extension,
-  but Quarto can work with Jupyter notebooks in the command-line tool
+- JupyterLab: the [`jupyterlab-quarto`](https://quarto.org/docs/tools/jupyter-lab-extension.html) extension
+  displays Quarto Markdown in notebook cells,
+  and Quarto can work with Jupyter notebooks in the command-line tool
 
 ## Publishing to the gh-pages branch
 
-See this section in the Quarto documentation on how to publish to the `gh-pages` branch.
+See [this section in the Quarto documentation](https://quarto.org/docs/publishing/github-pages.html#publish-command)
+on how to publish to the `gh-pages` branch.
 
 In short, `quarto publish gh-pages` creates a gh-pages branch for your website
 the first time you run it.
