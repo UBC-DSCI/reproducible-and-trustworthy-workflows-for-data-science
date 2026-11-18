@@ -173,19 +173,9 @@ using `usethis::use_testthat()` and `usethis::use_test("FUNCTION_NAME")` to do t
 Finally, add an expectation with `vdiffr::expect_doppelganger`
 to your `test_that` statement:
 
-```r
-library(palmerpenguins)
-library(ggplot2)
-library(vdiffr)
-source("../../R/pretty_scatter.R")
-
-penguins_scatter <- pretty_scatter(penguins, bill_length_mm, bill_depth_mm) +
-    labs(x = "Bill length (mm)", y = "Bill depth (mm)")
-penguins_scatter
-
-test_that("refactoring our code should not change our plot", {
-    expect_doppelganger("pretty scatter", penguins_scatter)
-})
+```{r}
+#| file: ../../demos/vdiffr-pretty-scatter/end/tests/testthat/test-pretty_scatter.R
+#| eval: false
 ```
 
 Then when you run `testthat::test_dir("tests/testthat")` to run your test suite
@@ -205,6 +195,17 @@ as part of your code revision and refactoring) or stop the app
 and revert/fix some of your code changes
 so that the data visualization is not unintentionally changed.
 
+Here is the test above running in the `vdiffr` demo (see below),
+against the snapshot the demo has already saved.
+It passes, because the plot has not changed:
+
+```{r}
+# testthat skips snapshot tests when R is not interactive,
+# as when this book is rendered, unless NOT_CRAN is "true"
+Sys.setenv(NOT_CRAN = "true")
+testthat::test_dir("../../demos/vdiffr-pretty-scatter/end/tests/testthat")
+```
+
 Below we show an example of running `testthat::snapshot_review()` after
 we made our tests fail by removing `alpha = 0.8` from our `pretty_scatter` function source:
 
@@ -212,17 +213,21 @@ we made our tests fail by removing `alpha = 0.8` from our `pretty_scatter` funct
 
 #### `vdiffr` demo
 
-In this GitHub repository,
-we have created a `vdiffr` demo based on the case above: <https://github.com/ttimbers/vdiffr-demo>
+The [`vdiffr-pretty-scatter` demo](https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/tree/main/demos/vdiffr-pretty-scatter) is based on the case above.
+Its `start/` folder has only the function,
+and its `end/` folder adds the test and its saved snapshot.
 
-To get experience and practice using this, we recommend forking this,
-and then cloning it so that you can try using this,
-and building off it locally.
+To get experience and practice using this, we recommend copying its `end/` folder
+to your computer and opening it as its own project
+(see [how to use the demos](https://github.com/UBC-DSCI/reproducible-and-trustworthy-workflows-for-data-science/tree/main/demos)),
+so that you can try it and build off it locally.
 
 :::{.exercise}
 
-1. Inside RStudio, run `testthat::test_dir("tests/testthat")`
+1. In the RStudio or Positron console, run `testthat::test_dir("tests/testthat")`
    to ensure you can get the tests to pass as they exist in the demo.
+   (From a terminal, testthat skips snapshot tests
+   unless the `NOT_CRAN` environment variable is `true`.)
 
 2. Change something about the code in `R/pretty_scatter.R`
    that will change what the plot looks like (text size, point color, type of geom used, etc.).
@@ -230,7 +235,7 @@ and building off it locally.
 3. Run `testthat::test_dir("tests/testthat")` and see if the tests fail.
    If they do, run `testthat::snapshot_review()` to explore the differences
    in the two image snapshots.
-   You may be prompted to install a couple of R packages to get this working.
+   It needs the shiny and diffviewer packages, so you may be asked to install them.
 
 4. Add another plot function to the project
    and create a test for it using `testthat` and `vdiffr`.
