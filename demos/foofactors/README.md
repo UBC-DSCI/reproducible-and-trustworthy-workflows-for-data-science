@@ -55,7 +55,8 @@ The code to paste is in `start/README.md`.
 7. `usethis::use_testthat()`, `usethis::use_test("fbind")`, paste the test, `devtools::test()`.
 8. `usethis::use_package("forcats")` adds forcats to `Imports`.
    `usethis::use_r("fcount")`, paste `fcount()` and its roxygen comment, `devtools::document()`.
-9. `usethis::use_readme_rmd()`, write the README, `devtools::build_readme()`.
+9. `usethis::use_readme_qmd()`, write the README, `devtools::build_readme()`
+   (see [Run `end/`](#run-end) for running it inside renv).
 10. `devtools::check()` one last time.
 
 Steps 1 to 8 were replayed non-interactively on a copy of `start/`,
@@ -81,15 +82,27 @@ Rscript -e 'devtools::check()'
 
 `devtools::check()` ends with `0 errors ✔ | 0 warnings ✔ | 0 notes ✔`.
 
-To re-render the package's `README.md` from `README.Rmd`,
-run `Rscript -e 'devtools::build_readme()'`.
-It needs pandoc, which RStudio and Quarto include;
-from a terminal, point `RSTUDIO_PANDOC` at the folder that holds Quarto's `pandoc`.
+To re-render the package's `README.md` from `README.qmd`,
+which needs the Quarto CLI:
+
+```bash
+Rscript -e 'renv::install("quarto")'
+Rscript -e 'Sys.setenv(RENV_CONFIG_AUTOLOADER_ENABLED = "FALSE"); devtools::build_readme()'
+```
+
+`devtools::build_readme()` renders a `README.qmd` with the quarto R package,
+which renv does not record because no code in the package calls it.
+It installs foofactors into a temporary library
+and starts Quarto with that library on `R_LIBS_USER`.
+Quarto then starts a new R session in this folder,
+where `.Rprofile` would activate renv and drop the temporary library,
+so `library(foofactors)` would fail.
+Turning off renv's autoloader for that session keeps the temporary library.
 
 The renv settings are `snapshot.type: implicit` and `snapshot.dev: true`,
 so `renv::snapshot()` keeps the development tools.
 renv finds devtools and roxygen2 through `foofactors-end.Rproj`
 (`PackageUseDevtools`, `PackageRoxygenize`),
 testthat and covr through `Suggests`,
-and rmarkdown and knitr through `README.Rmd`.
+and rmarkdown and knitr through `README.qmd`.
 An explicit snapshot reads only `DESCRIPTION` and would drop devtools.

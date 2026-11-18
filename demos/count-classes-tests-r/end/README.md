@@ -4,7 +4,7 @@ This repository shows how to set up unit tests
 for functions that are used in a data analysis.
 This is one step away from making an R package.
 
-The demo data analysis is in `notebooks/eda.Rmd`.
+The demo data analysis is in `notebooks/eda.qmd`.
 It calls a function, `count_classes()`,
 which lives in `R/count_classes.R`
 and calculates the number of observations in each class of a data set.
@@ -26,13 +26,14 @@ Rscript -e 'renv::restore(prompt = FALSE)'
 Rscript -e 'testthat::test_dir("tests/testthat")'
 ```
 
-To render the notebook
-(it needs Pandoc, which comes with RStudio, Positron and Quarto,
-and internet access to download the data):
+To render the analysis
+(it needs the Quarto CLI, and internet access to download the data):
 
 ```bash
-Rscript -e 'rmarkdown::render("notebooks/eda.Rmd")'
+quarto render notebooks/eda.qmd
 ```
+
+This writes `notebooks/eda.html`.
 
 ## How the files were set up
 
@@ -50,5 +51,6 @@ as there is no `usethis` function for it.
 ## Dependencies
 
 R and the packages in `DESCRIPTION`
-(dplyr, rmarkdown, testthat and tidyverse),
+(dplyr, rmarkdown, testthat and tidyverse;
+Quarto renders R code through knitr and rmarkdown),
 locked in `renv.lock`.

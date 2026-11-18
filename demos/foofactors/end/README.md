@@ -1,5 +1,6 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 **NOTE: This is a toy package created for expository purposes, for the
 Whole Game chapter of a draft of the second edition of [R

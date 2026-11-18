@@ -1,26 +1,25 @@
 ---
 title: "Counting the observations in each class"
-output: github_document
+format: html
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r load-packages}
+```{r}
+#| label: load-packages
 library(tidyverse)
 ```
 
 Here's some data (the Wisconsin Breast Cancer data set, originally from the [UCI machine learning repository](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)) where we would like to calculate the number of observations in each class:
 
-```{r load-data}
+```{r}
+#| label: load-data
 cancer <- read_csv("https://raw.githubusercontent.com/UBC-DSCI/introduction-to-datascience/main/data/wdbc.csv")
 cancer
 ```
 
 To calculate the number of observations of each class, we group the rows by class and count them:
 
-```{r count-classes}
+```{r}
+#| label: count-classes
 cancer |>
   group_by(Class) |>
   summarize(count = n()) |>

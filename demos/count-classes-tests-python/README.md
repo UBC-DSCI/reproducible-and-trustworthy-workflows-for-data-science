@@ -9,7 +9,7 @@ The function, `count_classes()`, counts the observations in each class of a pand
 It lives in `src/`,
 its tests and their test data live in `tests/test_count_classes.py`,
 `pytest` runs the tests,
-and the analysis notebook imports the function.
+and the analysis document imports the function.
 
 It is used by
 [Testing: Python (pytest)](../../book/lectures/1030-testing-python-pytest.qmd),
@@ -22,12 +22,12 @@ which has moved on from that repository.
 
 ## What is in it
 
-- `start/` is a uv project with the analysis notebook `notebooks/eda.ipynb`,
+- `start/` is a uv project with the Quarto analysis document `notebooks/eda.qmd`,
   which counts the classes inline with pandas.
   It has no `src/` or `tests/` folder and no pytest yet.
 - `end/` adds the function in `src/count_classes.py`
   and the test data and tests in `tests/test_count_classes.py`.
-  The notebook imports the function instead of counting inline.
+  The document imports the function instead of counting inline.
 
 ## Live coding from `start/` to `end/`
 
@@ -52,7 +52,7 @@ The numbered steps match the chapter's five steps.
    All three tests fail.
 5. Write the function body and run `uv run pytest` again.
    All three pass.
-6. In `notebooks/eda.ipynb`, import the function
+6. In `notebooks/eda.qmd`, import the function
    (`sys.path.append('..')`, then `from src.count_classes import count_classes`)
    and replace the inline counting with `count_classes(cancer, 'Class')`.
 
@@ -68,6 +68,13 @@ uv run pytest
 
 The last line of the output is `3 passed`.
 
-To run the notebook (it needs internet access to download the data),
-open `notebooks/eda.ipynb` in VS Code or Positron with the project's `.venv` as the kernel,
-or start JupyterLab with `uv run --with jupyterlab jupyter lab`.
+To render the analysis
+(it needs the Quarto CLI, and internet access to download the data):
+
+```bash
+uv run quarto render notebooks/eda.qmd
+```
+
+This writes `notebooks/eda.html`.
+To run it chunk by chunk instead,
+open `notebooks/eda.qmd` in VS Code or Positron with the project's `.venv` as the Python interpreter.

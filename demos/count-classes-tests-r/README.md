@@ -9,7 +9,7 @@ The function, `count_classes()`, counts the observations in each class of a data
 It lives in `R/`,
 its tests and their helper data live in `tests/testthat/`,
 `testthat::test_dir("tests/testthat")` runs the tests,
-and the analysis notebook calls the function with `source()`.
+and the analysis document calls the function with `source()`.
 
 It is used by
 [Testing: R (testthat)](../../book/lectures/1020-testing-r-testthat.qmd),
@@ -23,13 +23,13 @@ which has moved on from that repository.
 
 ## What is in it
 
-- `start/` is an renv project with the analysis notebook `notebooks/eda.Rmd`,
+- `start/` is an renv project with the Quarto analysis document `notebooks/eda.qmd`,
   which counts the classes inline with dplyr.
   It has no `R/` or `tests/` folder yet.
 - `end/` adds the function in `R/count_classes.R`,
   the test data in `tests/testthat/helper-count_classes.R`,
   and the tests in `tests/testthat/test-count_classes.R`.
-  The notebook sources the function instead of counting inline.
+  The document sources the function instead of counting inline.
 
 ## Live coding from `start/` to `end/`
 
@@ -57,7 +57,7 @@ The numbered steps match the chapter's five steps.
    All six expectations fail.
 5. Write the function body and run the tests again.
    All six pass.
-6. In `notebooks/eda.Rmd`, add `source("../R/count_classes.R")`
+6. In `notebooks/eda.qmd`, add `source("../R/count_classes.R")`
    and replace the inline counting with `count_classes(cancer, Class)`.
 7. Add `dplyr` and `testthat` to `Imports:` in `DESCRIPTION`
    and run `renv::snapshot()`.
@@ -76,10 +76,11 @@ Rscript -e 'testthat::test_dir("tests/testthat")'
 
 The last line of the test output is `[ FAIL 0 | WARN 0 | SKIP 0 | PASS 6 ]`.
 
-To render the notebook
-(it needs Pandoc, which comes with RStudio, Positron and Quarto,
-and internet access to download the data):
+To render the analysis
+(it needs the Quarto CLI, and internet access to download the data):
 
 ```bash
-Rscript -e 'rmarkdown::render("notebooks/eda.Rmd")'
+quarto render notebooks/eda.qmd
 ```
+
+This writes `notebooks/eda.html`.
