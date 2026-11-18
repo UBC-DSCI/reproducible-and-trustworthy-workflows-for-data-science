@@ -106,7 +106,20 @@ using the `fetch` command with the `--all` flag:
 git fetch --all
 ```
 
-### Useful command line Git branching commands
+Then switch to it as usual.
+Git sees that the branch exists on GitHub (`origin`)
+and makes a local branch that tracks it:
+
+```bash
+git switch new-feature
+```
+
+```sh
+Switched to a new branch 'new-feature'
+branch 'new-feature' set up to track 'origin/new-feature'.
+```
+
+### Useful command-line Git branching commands
 
 Below is a table of the most commonly used Git commands for branching.
 This table includes the commands we presented above as well as the a few other useful ones.
@@ -114,13 +127,25 @@ This table includes the commands we presented above as well as the a few other u
 | Description | Command |
 |---------|-------------|
 | list all local branches | `git branch -v` |
-| create a new branch & immediately switch to it | `git switch -c <branch_name>` or `git checkout -b <branch_name>` |
-| switch to a branch | `git switch <branch_name>` or `git checkout  <branch_name>` |
-| fetches all changes to all branches | `git fetch --all` |
-| retrieve a branch you don't have locally on your laptop from GitHub| `git checkout --track origin/<branch_name` |
+| create a new branch & immediately switch to it | `git switch -c <branch_name>` |
+| switch to a branch | `git switch <branch_name>` |
+| fetch all changes to all branches | `git fetch --all` |
+| retrieve a branch you don't have locally on your laptop from GitHub (after fetching) | `git switch <branch_name>` |
 | merge changes from another branch | `git merge <branch_name>` |
 | delete a local branch | `git branch -d <branch_name>` |
 | push changes to a remote branch | `git push origin <branch_name>` |
+
+:::{.callout-note title="The older `git checkout` command"}
+Before Git 2.23 (2019), you switched branches with `git checkout`,
+and you will still see it in older tutorials and answers online.
+`git checkout <branch_name>` is `git switch <branch_name>`,
+`git checkout -b <branch_name>` is `git switch -c <branch_name>`,
+and `git checkout --track origin/<branch_name>` retrieves a branch from GitHub.
+For how `git checkout` also restored files,
+see [Going back in time with Git](0250-git-history.qmd#older-git-checkout),
+and its [glossary](0250-git-history.qmd#which-command-does-what)
+of `restore`, `revert`, `reset`, `switch` and `checkout`.
+:::
 
 :::{.exercise}
 
@@ -135,8 +160,8 @@ This table includes the commands we presented above as well as the a few other u
    Fix to add to `sqrt.py`:
 
 ```python
-if number < 0:
-  raise Exception("n should not a positive number")
+if n < 0:
+  raise Exception("n should not be a negative number")
 ```
 
 4. Add and commit those changes.
@@ -191,6 +216,7 @@ There are a few ways you can fix this problem.
 
 > How to catch up a branch that has fallen behind the `main` branch using the command line:
 >
+> - run `git switch main` to move to the main branch
 > - run `git pull origin main` to pull any changes from the remote version of main that we might not have
 > - run `git switch <branch>` to make sure we are on the branch we want to catch up
 > - run `git merge main` to merge the changes

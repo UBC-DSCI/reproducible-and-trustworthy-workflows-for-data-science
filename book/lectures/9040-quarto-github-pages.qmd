@@ -618,14 +618,22 @@ Quarto works with a few IDEs and text editors.
 
 See this section in the quarto documentation on how to publish to the `gh-pages` branch.
 
-In short, you will first need to create a gh-pages branch for your website:
+In short, `quarto publish gh-pages` creates a gh-pages branch for your website
+the first time you run it.
+If you prefer to create the branch yourself first,
+commit all your changes, then run:
 
 ```bash
-git checkout --orphan gh-pages
-git reset --hard # make sure all changes are committed before running this!
+git switch --orphan gh-pages
 git commit --allow-empty -m "Initialising gh-pages branch"
 git push origin gh-pages
+git switch main
 ```
+
+`git switch --orphan` makes a new branch with no history and no tracked files,
+and the last line takes you back to your `main` branch.
+Quarto's documentation uses the older `git checkout --orphan gh-pages`
+followed by `git reset --hard`, which does the same.
 
 You can then use the `quarto publish` command to publish to the gh-pages branch
 <https://quarto.org/docs/publishing/github-pages.html#publishing>
