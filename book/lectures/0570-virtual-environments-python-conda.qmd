@@ -5,7 +5,7 @@ aliases:
   - 085-virtual_env-python-conda.html
 ---
 
-[**conda**](http://conda.pydata.org/docs/) is an **open source `package` and `environment` management system for any programming language**;
+[**conda**](http://conda.pydata.org/docs/) is an **open-source `package` and `environment` management system for any programming language**,
 though it is most popular in the Python community.
 `conda` was originally developed by [Anaconda Inc.](https://www.anaconda.com/products/individual)
 and bundled with their Anaconda distribution of Python.
@@ -13,29 +13,31 @@ However, `conda`'s widespread popularity
 and utility led to its decoupling into its own package.
 
 It is now available for installation via:
+
 - Anaconda Python distribution
 - Miniconda Python distribution (this is what we recommended most of you install for this course)
 - Miniforge (this is what we recommended folks with Mac ARM machines install for this course)
 
-Conda builds of R and Python packages,
-are in fact R and Python packages
-and built from R and Python source code,
+The conda builds of R and Python packages
+are in fact R and Python packages,
+built from R and Python source code,
 but they are packaged up and built differently,
 and with a different tool chain.
 How to create `conda` packages from R and Python source code
 is beyond the scope of this course.
 However, we direct keen learners of this topic to the documentation on how to do this:
-- [Conda-build documentation](https://docs.conda.io/projects/conda-build/en/latest/)
+
+- [conda-build documentation](https://docs.conda.io/projects/conda-build/en/latest/)
 
 What we will focus on learning is how to use `conda`
 to create virtual environments,
-record the components of the virtual environment
+record the components of the virtual environment,
 and share the virtual environment with collaborators
 in a way that they can recreate it on their computer.
 
-### Managing Conda
+### Managing conda
 
-Let's first start by checking if conda is installed
+Let's start by checking if conda is installed
 (it should be if we followed the recommended course computer setup instructions)
 by running:
 
@@ -45,7 +47,7 @@ conda --version
 
 To see which conda commands are available,
 type `conda --help`.
-To see the full documentation for any command of these commands,
+To see the full documentation for any of these commands,
 type the command followed by `--help`.
 For example,
 to learn about the conda update command:
@@ -114,8 +116,8 @@ In this case,
 conda itself needed to be updated,
 and along with this update some dependencies also needed to be updated.
 There is also a NEW package that was INSTALLED in order to update conda.
-You don't need to worry about remembering to update conda,
-it will let you know if it is out of date when you are installing new packages.
+You don't need to worry about remembering to update conda.
+It will let you know if it is out of date when you are installing new packages.
 
 ### Managing `conda` environments
 
@@ -137,9 +139,9 @@ In the computer setup guide,
 we asked you to follow instructions so that this environment
 will be activated by default every time you open your terminal.
 
-To create another environment on your computer,
-that is isolated from the `(base)` environment
-you can either do this through:
+To create another environment on your computer
+that is isolated from the `(base)` environment,
+you can do this through either:
 
 1. Manual specifications of packages.
 2. An environment file in YAML format (`environment.yml`).
@@ -150,27 +152,27 @@ I typically use the manual specifications of packages
 when I am creating a new data science project.
 From that I generate an environment file in YAML format
 that I can share with collaborators (or anyone else who wants to reproduce my work).
-Thus, I use an environment file in YAML format when I join a project as a collaborator
+I use an environment file in YAML format when I join a project as a collaborator
 and I need to use the same environment that has been previously used for that project,
 or when I want to reproduce someone else's work.
 
 ### Creating environment by manually specifying packages
 
-We can create `test_env` conda environment by typing `conda -n <name-of-env>`.
+We can create the `test_env` conda environment by typing `conda -n <name-of-env>`.
 However,
 it is often useful to specify more than just the name of the environment,
-e.g. the channel from which to install packages,
+e.g., the channel from which to install packages,
 the Python version,
 and a list of packages to install into the new env.
 In the example below,
 I am creating the `test_env` environment
-that uses python 3.12 and a list of libraries: `jupyterlab` and `pandas`.
+that uses Python 3.12 and a list of libraries: `jupyterlab` and `pandas`.
 
 ```bash
 conda create -n test_env -c conda-forge python=3.12 jupyterlab pandas=2.2.3
 ```
 
-conda will solve any dependencies between the packages like before
+`conda` will solve any dependencies between the packages as before
 and create a new environment with those packages.
 Usually,
 we don't need to specify the channel,
@@ -184,9 +186,9 @@ you can type `conda activate test_env`
 Since you will do this often,
 we created an alias shortcut `ca`
 that you can use to activate environments.
-To know the current environment that you're
-in you can look at the prefix of the prompt string in your shell
-which now changed to (`test_env`).
+To know the current environment that you're in,
+you can look at the prefix of the prompt string in your shell,
+which has now changed to (`test_env`).
 And to see all your environments,
 you can type `conda env list`.
 
@@ -219,17 +221,17 @@ libgfortran               3.0.0                         0    conda-forge
 
 ### Installing conda package
 
-Under the name column of the result in the terminal
+The name column of the result in the terminal,
 or the package column in the Anaconda Cloud listing,
-shows the necessary information to install the package.
-e.g. conda-forge/rasterio.
-The first word list the channel that this package
-is from and the second part shows the name of the package.
+shows the necessary information to install the package,
+e.g., conda-forge/rasterio.
+The first word lists the channel that this package is from,
+and the second part shows the name of the package.
 
 To install the latest version available within the channel,
-do not specify in the install command.
+do not specify a version in the install command.
 We will install version 0.35 of `rasterio` from conda-forge into `test_env` in this example.
-Conda will also automatically install the dependencies for this package.
+`conda` will also automatically install the dependencies for this package.
 
 ```bash
 conda install -c conda-forge rasterio=0.35
@@ -237,7 +239,7 @@ conda install -c conda-forge rasterio=0.35
 
 If you have a few trusted channels that you prefer to use,
 you can pre-configure these
-so that everytime you are creating an environment,
+so that every time you are creating an environment,
 you won't need to explicitly declare the channel.
 
 ```bash
@@ -250,7 +252,7 @@ We decided that rasterio is not needed in this tutorial,
 so we will remove it from `test_env`.
 Note that this will remove the main package rasterio and its dependencies
 (unless a dependency was installed explicitly at an earlier point in time
-or is required be another package).
+or is required by another package).
 
 ```bash
 conda remove -n test_env rasterio
@@ -273,16 +275,16 @@ Unlinking packages ...
 [      COMPLETE      ]|#######################################################################################################| 100%
 ```
 
-### Sharing Environments with others
+### Sharing environments with others
 
 To share an environment, you can export your conda environment to an environment file,
 which will list each package and its version
 in the format `package=version=build`.
 
 Exporting your environment to a file called `environment.yaml`
-(it could be called anything, but this is the conventional name
+(it could be called anything, but this is the conventional name,
 and using it makes it easy for others
-to recognize that this is a conda env file,
+to recognize that this is a conda env file;
 the extension can be either `.yaml` or `.yml`):
 
 ```bash
@@ -296,16 +298,16 @@ you will realize that this environment file has A LOT more packages
 than `jupyterlab` and `pandas`.
 This is because the default behavior is to also list the dependencies
 that were installed together with these packages,
-e.g. `numpy`.
+e.g., `numpy`.
 This is good in the sense that it gives an exact copy of *everything*
 in your environment.
 
 We use the `--from-history` flag/option above
 as some dependencies might differ between operating systems,
-so this file *might* not work with someone from a different OS.
-The `--from-history` flag,
+so this file *might* not work for someone on a different OS.
+The `--from-history` flag
 looks at the history of the packages you explicitly told `conda` to install
-and only list those in the export.
+and only lists those in the export.
 The required dependencies will then be handled
 in an OS-specific manner during the installation,
 which guarantees that they will work across OSes.
@@ -332,7 +334,7 @@ you **NEED** to add the version string manually.
 
 ### Creating environment from an environment file
 
-Now, let's install `environment.yml` environment file above
+Now, let's install the `environment.yml` environment file above
 so that we can create a conda environment called `test_env`.
 
 ```bash
@@ -351,10 +353,10 @@ Create an environment on your laptop with an older version of Python!
 
 3. In the terminal, navigate to the root of the repository and run:
    `conda env create --file environment.yml`
-   (note: If you have a M1/M2 Mac, please run this command instead:
+   (note: if you have an M1/M2 Mac, please run this command instead:
    CONDA_SUBDIR=osx-64 conda env create --file environment.yml).
 
-4. Activate the environment by typing `conda activate oldie_but_a_goodie`
+4. Activate the environment by typing `conda activate oldie_but_a_goodie`.
 
 5. Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code,
    such as `python -c "print 'Back from the Future'"`.
@@ -365,7 +367,7 @@ Create an environment on your laptop with an older version of Python!
 ### Copying an environment
 
 We can make an exact copy of an environment to an environment with a different name.
-This maybe useful for any testing versus live environments
+This may be useful for any testing versus live environments
 or different Python 3.7 versions for the same packages.
 In this example, `test_env` is cloned to create `live_env`.
 
@@ -381,7 +383,7 @@ or you want to do some cleanup
 and delete old environments (next topic),
 and so you want to see which exist on your computer
 and remove the ones you are no longer using.
-To do this we will use the `info` command
+To do this, we will use the `info` command
 along with the `--envs` flag/option.
 
 
@@ -415,9 +417,9 @@ conda env remove -n live_env
 ### Making environments work well with JupyterLab
 
 In brief,
-you need to install a kernel in the new conda environment
-in any new environment your create (`ipykernel` for Python
-and the `r-irkernel` package for R),
+you need to install a kernel
+in any new conda environment you create
+(`ipykernel` for Python and the `r-irkernel` package for R),
 and the `nb_conda_kernels` package needs to be installed
 in the environment where JupyterLab is installed.
 
@@ -433,8 +435,8 @@ we did that in the `base` environment,
 so that is where you would need to install `nb_conda_kernels` to make this work.
 
 
-*More details are available in the [nb_conda_kernels README](https://github.com/Anaconda-Platform/nb_conda_kernels#installation)).*
+*More details are available in the [nb_conda_kernels README](https://github.com/Anaconda-Platform/nb_conda_kernels#installation).*
 
-Remember that when you forget a specific command
-you can type in the help command we have created `mds-help`
-in you terminal to see a list of all commands we use in MDS.
+Remember that when you forget a specific command,
+you can type in the help command we have created, `mds-help`,
+in your terminal to see a list of all commands we use in MDS.
