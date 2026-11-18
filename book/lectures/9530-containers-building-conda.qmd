@@ -1,0 +1,355 @@
+---
+title: "Building images with conda"
+output-file: containers-building-conda.html
+---
+
+:::{.callout-note title="Archived"}
+The course no longer builds images with conda.
+Images install Python packages with uv and R packages with renv.
+See [Customizing and building containers](0640-containers-building.qmd).
+This walkthrough is kept for reference, for projects that still use conda.
+:::
+
+### Demo workflow for creating a `Dockerfile` locally
+
+The example in this section is based on this repository:
+<https://github.com/chendaniely/docker-condalock-jupyterlab>
+
+We will demo this workflow together to build a Docker image locally on our machines
+that has Jupyter,
+Python, and the Python packages `pandas`, `pandera`, and `deepcheck` installed.
+When we do this,
+we will leverage a `conda` environment that we have for these packages already:
+
+```yaml
+# environment.yml
+name: dockerlock
+channels:
+  - conda-forge
+dependencies:
+  - altair-all
+  - conda-lock=>3.0.4
+  - jupyterlab
+  - pandas
+  - pandera
+  - pip
+  - pointblank
+  - python
+  - pip:
+    - deepchecks
+    - vegafusion
+
+```
+
+:::{.callout-note}
+The `environment.yml` file should only have the `conda-forge` channel.
+**Do not** mix `conda-forge` with `defaults` channels;
+sometimes this will cause the package dependency solver to fail.
+
+Also, when you have a set of packages that do solve and install,
+you should go back and make sure all the packages are locked to a particular version,
+using `=`.
+:::
+
+To efficiently use this environment to build a Docker image,
+we need a `conda-lock` file.
+We can generate this lock file from the `environment.yml` file via:
+
+```bash
+
+conda-lock lock \
+  --file environment.yml \
+  -p linux-64 \      # x86-64 Linux
+  -p osx-64 \        # x86-64 macOS
+  -p osx-arm64 \     # ARM64 macOS
+  -p win-64 \        # x86-64 Windows
+  -p linux-aarch64   # ARM64 Linux and ARM macOS running docker
+```
+
+:::{.callout-important}
+If you only use the `conda-lock lock --file environment.yml` command,
+it **does not** solve for the `linux-aarch64` architecture by default.
+You need this architecture to run a Linux container on an ARM M-chip Mac.
+:::
+
+From that, we get a file named `conda-lock.yml`.
+The `conda-lock.yml` file will contain all the solved package dependencies
+for all the platforms specified.
+We can copy this file into a [Jupyter container](https://jupyter-docker-stacks.readthedocs.io/en/latest/)
+to either update an existing environment,
+or to create a new environment.
+
+OK, now we are ready to start writing our `Dockerfile`!
+Let's start with the `condaforge/miniforge3:25.9.1-0` image,
+so the first line of our `Dockerfile` should be as such:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+```
+
+Next, since we will be wanting the container to have access to a file at build time,
+we need to `COPY` it in so we can have access to it in the container.
+Our Dockerfile should now look like this:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+COPY conda-lock.yml /tmp/conda-lock.yml
+```
+
+This copies the `conda-lock.yml` from our current local computer's working directory
+into the Docker container's `/tmp` directory.
+
+Now let's build an image from our `Dockerfile` so we can test out
+and find install commands that work for what we need to do!
+To build an image, we use `docker build`.
+We'll want to tag/name the image so we can reference it after it's built,
+so we can run it.
+Here we named it `testing_cmds`.
+Finally, we say where to look for the `Dockerfile`.
+Here we say `.`, meaning the current working directory:
+
+```bash
+docker build --tag testing_cmds .
+```
+
+Now we will run our image (named `testing_cmds`).
+This "turns on" our Docker container
+and gives us a terminal prompt inside the container we just built and ran.
+We can now run commands in there to test commands to see if they work.
+If commands work, we can incrementally add them to our `Dockerfile`.
+If we mess something up, all we need to do is exit the container and start it again;
+nothing we do inside the container will persist.
+This gives us a great way to explore
+and test commands without worrying about messing up our main computer.
+
+```bash
+docker run --rm -it testing_cmds bin/bash
+```
+
+At the time of writing this section,
+miniforge3 and `conda 25.11.0` do not have `conda-lock` installed by default,
+so in order to create/update an environment, we will have to first install `conda-lock`.
+
+Inside your currently running Docker container terminal,
+you can install `conda-lock`:
+
+```bash
+(base) root@45c7f31e47a8:/# conda install -n base -c conda-forge conda-lock -y
+```
+
+:::{.callout-note}
+We are passing in the `-y` yes flag because we want the `Dockerfile`
+to run these commands non-interactively,
+meaning we do not want (or have the ability for) the user to confirm
+and answer installation prompts.
+In this `conda install` command,
+this will automatically answer "yes" to confirm the installation.
+:::
+
+Next, we can use `conda-lock` to install the environment specified
+in the `conda-lock.yml` file.
+Here we are creating a new environment named `dockerlock` in the container.
+Currently,
+`conda-lock` and the `libmamba` solver will not overwrite the root environment.
+
+```bash
+(base) root@45c7f31e47a8:/# conda-lock install -n dockerlock conda-lock.yml
+```
+
+Awesome!
+This seemed to have worked!
+Let's exit the Docker container (via `exit`).
+Then we can add these commands to the `Dockerfile`,
+preceding them with `RUN`, and try to build our image to ensure this works.
+
+Our `Dockerfile` so far:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+```
+
+Let's try building an image named `testimage` locally:
+
+```bash
+$ docker build --tag testimage .
+```
+
+Looks like a success!
+Let's be sure we can use the `pandera` package as a test.
+Remember to activate the environment first.
+
+```bash
+$ docker run --rm -it testimage bash
+
+(base) root@45c7f31e47a8:/# conda activate dockerlock # activate the environment
+
+(dockerlock) root@45c7f31e47a8:/tmp# python
+Python 3.13.9 | packaged by conda-forge | (main, Oct 22 2025, 23:33:35) [GCC 14.3.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pandera
+```
+
+The main parts of the image are now done!
+A few more cleanup steps and we're all ready to go.
+
+Since `conda-lock` doesn't let us overwrite the base environment,
+we needed to install all our packages into a new environment;
+we used `dockerlock` in this example so far.
+Now we want to make sure the `dockerlock` environment gets activated automatically
+whenever we run and start the container.
+This saves us an extra set of steps so we do not need
+to constantly activate the environment.
+
+We'll update our `Dockerfile` with these 2 lines:
+
+```dockerfile
+# make dockerlock the default environment
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+```
+
+This makes absolutely sure that we have conda working,
+and then activates the `dockerlock` environment.
+We then take this set of commands and put it in the `~/.bashrc` file.
+This is a special file that runs from top to bottom anytime a new terminal is opened.
+This way, we can guarantee that we have conda loaded,
+and it activates the environment.
+
+
+```dockerfile
+# set the default shell to use bash with login to pick up bashrc
+# this ensures that we are starting from an activated dockerlock environment
+SHELL ["/bin/bash", "-l", "-c"]
+```
+
+This step makes sure that we are using Bash as the default shell and terminal,
+so the `~/.bashrc` file that activates the conda environment will run.
+
+Our Dockerfile should now look like this:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+```
+
+Finally,
+let's make a small quality improvement so we do not see the root system files
+when we run the image.
+
+We'll use the Docker `WORKDIR` instruction to set the default working directory
+when the container starts,
+so we are automatically put into a specific folder,
+away from all the root system files.
+You can still access those;
+we are only setting a new folder to make things cleaner.
+
+We will add this to our Dockerfile:
+
+```dockerfile
+# sets the default working directory
+WORKDIR /workplace
+```
+
+So now we have a fully functioning Dockerfile.
+Don't forget to build it so you can use your new container.
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+
+WORKDIR /workplace
+```
+
+
+### Run jupyter lab in a conainer
+
+If we only needed the container we just created to run code,
+and did not need any web application to run, we could stop here.
+However, the `environment.yml` file we created installed `jupyterlab`,
+and it would also be nice for the container
+to run JupyterLab just like our first example in an earlier Docker chapter
+when we used the `quay.io/jupyter/datascience-notebook:2025-03-14` container.
+
+In order for us to run `jupyter lab` inside the container,
+we essentially need to have the container run `jupyter lab`.
+The default port that JupyterLab runs on is port 8888,
+so we must first tell the container to `EXPOSE` or open this port so we can connect
+to it later when we run the container.
+We use the `EXPOSE 8888` Docker instruction to accomplish this.
+
+```dockerfile
+EXPOSE 8888
+```
+
+Finally,
+we will use the `CMD` instruction to tell the container the default command to run
+when the Docker container runs.
+In this example, we will have the Docker container run JupyterLab on startup.
+When we run JupyterLab, we will have it run on the container local host,
+on port 8888,
+and disable the token/password generation that JupyterLab typically creates to run.
+We specify the `CMD` command as a terminal command,
+with each term separated as a list of strings.
+
+```dockerfile
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
+```
+
+Yes, it is a bit strange that we `EXPOSE` the port before we know it
+from the `CMD` instruction.
+In general, the best practice for ordering `Dockerfile` structure is:
+
+1. `FROM` - base image
+2. `RUN`, `COPY`, `ADD` - build steps
+3. `EXPOSE`, `ENV`, `WORKDIR` - configuration
+4. `CMD` or `ENTRYPOINT` - startup command (end)
+
+Our full `Dockerfile` now looks like this:
+
+```dockerfile
+FROM condaforge/miniforge3:25.9.1-0
+
+COPY conda-lock.yml /tmp/conda-lock.yml
+
+RUN conda install -n dockerlock -c conda-forge conda-lock -y
+RUN conda-lock install -n dockerlock conda-lock.yml
+
+RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
+
+SHELL ["/bin/bash", "-l", "-c"]
+
+WORKDIR /workplace
+
+EXPOSE 8888
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
+```
+
+Hurray!
+We did it!
+Now we can automate this build on GitHub,
+push it to Docker Hub and share this Docker image with the world!
+
+<img src="https://media.giphy.com/media/ZcKASxMYMKA9SQnhIl/giphy-downsized.gif">
+
+Source: <https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl>
