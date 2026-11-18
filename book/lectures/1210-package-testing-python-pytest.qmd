@@ -6,15 +6,15 @@ aliases:
 ---
 
 We've seen Python testing before and used `pytest` to run all our function tests.
-But now let's see how we can use `pytest` when we are working with a python package.
+But now let's see how we can use `pytest` when we are working with a Python package.
 
-## Simple Example Package with `pytest` testing
+## Simple example package with `pytest` testing
 
-We'll be using the `pytest` and `cookiecutter` package
-to set up an example python package and write tests to be run by `pytest`.
+We'll be using the `pytest` and `cookiecutter` packages
+to set up an example Python package and write tests to be run by `pytest`.
 But first, remember to create a new environment for the packages.
 
-Also remember you need to have `poetry` installed as well.
+Also remember that you need to have `poetry` installed.
 
 ```bash
 # create and install packages
@@ -24,7 +24,7 @@ conda create -n countchar -c conda-forge python pytest cookiecutter
 conda activate countchar
 ```
 
-Next use `cookiecutter` to create a package template
+Next, use `cookiecutter` to create a package template.
 
 ```bash
 # create the cookiecutter package example
@@ -57,11 +57,11 @@ Choose from 1, 2, 3 [1]:
 
 In your `src` folder, we will create a `count_letters` function
 that will take a string and return the number of characters in the string.
-We will be following a test-driven development workflow
+We will be following a test-driven development workflow,
 so we'll create a function skeleton first,
 and then write the tests for the function.
 
-Let's create a `count_char.py` file in the `src` directory
+Let's create a `count_char.py` file in the `src` directory.
 
 ```bash
 countchar
@@ -102,13 +102,13 @@ def count_char(input_string):
 
 :::{.callout-note}
 We are using `pass` in the function body so the function has something in it.
-You cannot define a python function with an empty function body.
+You cannot define a Python function with an empty function body.
 :::
 
 ### Create tests in the `test` directory
 
 Next, we will create our tests in the `test` directory.
-Remember, that `pytest` will look for tests in the `test` directory,
+Remember that `pytest` will look for tests in the `test` directory,
 look for files that either begin or end with `test`,
 and run all the functions that begin or end with `test` in that file.
 
@@ -124,7 +124,7 @@ countchar
     └── test_count_char.py
 ```
 
-We will create our test that match the examples we created.
+We will create tests that match the examples we created.
 
 ```python
 from countchar.count_char import count_char
@@ -160,13 +160,13 @@ And don't forget to "install" our package.
 poetry install
 ```
 
-Next, we can go and run `pytest`
+Next, we can go and run `pytest`.
 
 ```bash
 pytest tests/
 ```
 
-Since we have not implemented our function all these tests will fail.
+Since we have not implemented our function, all these tests will fail.
 
 ```bash
 $ pytest
@@ -205,7 +205,7 @@ def count_char(input_string):
     return len(input_string)
 ```
 
-and then run `pytest` again.
+Then run `pytest` again.
 
 ```bash
 pytest tests/
@@ -228,10 +228,10 @@ tests/test_countchar.py .                                                       
 
 ### Change the implementation logic
 
-The benefit of setting up unit tests,
+The benefit of setting up unit tests
 is that if we change something with the implementation,
 we can still be sure the functional unit behaves as we expected.
-For example, we can re-write the counting implementation to use a `for` loop,
+For example, we can rewrite the counting implementation to use a `for` loop,
 and then still expect all our tests to pass.
 
 ```python
@@ -247,7 +247,7 @@ def count_char(input_string):
 
 Now that we have the basis for our `pytest` unit testing working,
 we may want to add additional input checks into our function,
-and `raise` an error if we can can catch any issues early.
+and `raise` an error so we can catch any issues early.
 
 ```{python}
 # add an input type check to our function
@@ -257,7 +257,7 @@ def count_char(input_string):
     len(input_string)
 ```
 
-Next we can add another test for `pytest` that checks the exception.
+Next, we can add another test for `pytest` that checks the exception.
 
 ```python
 import pytest
@@ -272,18 +272,18 @@ def test_count_char_wrong_input():
 
 ## Reduce repeated test code
 
-There are a few techniques you can use if you find yourself re-using code in your tests.
+There are a few techniques you can use if you find yourself reusing code in your tests.
 
 - Fixtures: provide a mechanism to share setup code between individual tests.
   For example, if you need to create, load,
   or connect to the same data source over and over without wanting to copy
-  and paste the same setup code
+  and paste the same setup code.
 - Parameterizations: when the actual test code logic is the same,
-  but the only part that is changing are a few parameters between individual tests.
+  but only a few parameters change between individual tests.
   This is useful to consolidate all the same testing logic together,
-  without having to create totally separate test functions that are mostly the same
-- `conftest.py`: this file allows you to re-use
-  and share the same text fixtures across multiple test modules.
+  without having to create totally separate test functions that are mostly the same.
+- `conftest.py`: this file allows you to reuse
+  and share the same test fixtures across multiple test modules.
   For example, you have different functions
   but need the same example data set and fixture setup.
 
@@ -291,7 +291,7 @@ There are a few techniques you can use if you find yourself re-using code in you
 ### Fixtures
 
 Fixtures are useful if you know you will be reusing code
-that will be be used across multiple tests.
+that will be used across multiple tests.
 
 Let's create a new file that contains multiple lines of text.
 We will then write tests for each line of the file.
@@ -350,10 +350,10 @@ def test_line_3():
 ```
 
 :::{.callout-note}
-We need the `.strip()` to remove the trailing new line break
+We need the `.strip()` to remove the trailing line break.
 :::
 
-You can see here in the testing code above we are repeatedly running the same code
+You can see in the testing code above that we are repeatedly running the same code
 that reads in the text file.
 
 ```python
@@ -429,16 +429,16 @@ def test_line_n(text_data, test_data_line_number, expected_count):
 
 :::{.callout-note}
 When you are passing in multiple `argnames` into `@pytest.mark.parametrize`,
-they are all listed as a single comma separated string.
+they are all listed as a single comma-separated string.
 :::
 
 
 
-### Setup: Add another package module
+### Setup: add another package module
 
 Let's make another module named `count_letters.py` that will take any string
 and return the number of letters in the string without symbols or spaces.
-Ideally the code will work for any arbitrary language.
+Ideally, the code will work for any arbitrary language.
 
 ```{python}
 # code adapted from a ChatGPT answer
@@ -527,7 +527,7 @@ countchar
     └── text.txt
 ```
 
-The contests of the files in our `tests` directory are as follows:
+The contents of the files in our `tests` directory are as follows:
 
 `conftest.py`:
 
@@ -579,5 +579,5 @@ def test_line_n(text_data, test_data_line_number, expected_count):
 
 ## More `pytest` features
 
-See the [py-pkgs testing chatper](https://py-pkgs.org/05-testing)
-to learn more about testing and`pytest` features (e.g., regression testing, and parameterization)
+See the [py-pkgs testing chapter](https://py-pkgs.org/05-testing)
+to learn more about testing and `pytest` features (e.g., regression testing and parameterization).

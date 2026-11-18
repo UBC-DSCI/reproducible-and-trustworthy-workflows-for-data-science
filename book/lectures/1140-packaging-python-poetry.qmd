@@ -11,9 +11,9 @@ aliases:
 
 ## Python Packages Book
 
-This chapter goes in tamdem with the [Python Packages book](https://py-pkgs.org/welcome)
+This chapter goes in tandem with the [Python Packages book](https://py-pkgs.org/welcome).
 
-The main build tool used is: `poetry`:<https://python-poetry.org/>
+The main build tool used is `poetry`: <https://python-poetry.org/>.
 
 
 ## Getting to know a `pyproject.toml` file's contents
@@ -50,16 +50,17 @@ build-backend = "poetry.core.masonry.api"             ┘
 
 Almost everything inside this file is customizable based on your package.
 Even the build system!
-`pyproject.toml` can also be used with other build tools such as setuptools and flit!
+`pyproject.toml` can also be used with other build tools such as setuptools and Flit!
 If you are interested in learning more,
-checkout the [Python Packaging Tools guide](https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html) from PyOpenSci.
+check out the [Python Packaging Tools guide](https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-build-tools.html)
+from pyOpenSci.
 
 ## Getting to know a `__init__.py` file's contents
 
-As mentioned earlier, this file can serve it's essential package function of telling Python
+As mentioned earlier, this file can serve its essential package function of telling Python
 that this directory is a package by just existing and being empty.
-It can however serve other purposes.
-Let's discuss the code that exists in the `py-pkgs-cookiecutter` template:
+It can, however, serve other purposes.
+Let's discuss the code that exists in the `py-pkgs-cookiecutter` template.
 
 The `py-pkgs-cookiecutter` we used to create our `pycounts` package
 ([Section 3.2.2](https://py-pkgs.org/03-how-to-package-a-python#creating-a-package-structure)) already populated our `__init__.py` file with this code for us:
@@ -70,9 +71,10 @@ from importlib.metadata import version
 __version__ = version("pycounts")
 ```
 
-Because this code is in `__init__.py` is executed
+Because this code in `__init__.py` is executed
 when the package is imported
-(this is the case for all `__init__.py` files, we can ask for the package version with Python code like this:
+(this is the case for all `__init__.py` files),
+we can ask for the package version with Python code like this:
 
 ```python
 import pycounts
@@ -83,13 +85,13 @@ pycounts.__version__
 0.1.0
 ```
 
-In the code in `__init__.py` we get the version from the package metadata,
-that is derived from `pyproject.toml`.
+In the code in `__init__.py`, we get the version from the package metadata,
+which is derived from `pyproject.toml`.
 This allows us to only have to update the version of our package in one place
 when we bump to a new version.
 
 What other kinds of interesting things can we do with `__init__.py`?
-Well we can use it to control the import behavior of a package.
+Well, we can use it to control the import behavior of a package.
 For example, there are currently only two main functions
 that users will commonly use from our `pycounts` package: `pycounts.count_words()`
 and `plotting.plot_words()`.
@@ -102,7 +104,7 @@ from pycounts.plotting import plot_words
 
 If we import those core functions in `pycounts`’s `__init__.py` file,
 which would bind them to the package namespace,
-we can make our user's experience of loading them easier!
+we can make our users' experience of loading them easier!
 
 ```python
 # read version from installed package
@@ -137,12 +139,12 @@ We will cover both these topics in greater detail later
 (`docs/*` in the documentation chapter/lecture
 and `.github/workflows/ci-cd.yml` in the continuous integration
 and deployment chapter/lecture),
-but for now it's helpful to get a bit better of an idea of these files and what they are doing.
+but for now, it's helpful to get a slightly better idea of these files and what they are doing.
 
 ### `docs/*`
 
 To keep things organized,
-to and to make the package documentation easier to automate,
+and to make the package documentation easier to automate,
 we keep the documentation files in the `docs` directory
 and use a `Makefile` (or `make.bat` on Windows) therein to automate their rendering.
 
@@ -158,7 +160,7 @@ docs
    └── requirements.txt (deprecated)
 ```
 
-Note that many of these files also commonly exist in the root of projects
+Note that many of these files also commonly exist in the root of projects,
 and people expect to find them there!!!
 These include:
 
@@ -166,10 +168,10 @@ These include:
 - conduct.md
 - contributing.md
 
-So what we have done is pointed the `doc/*.md`'s of these files
-to the contents these files in the project root.
+So what we have done is point the `doc/*.md` versions of these files
+to the contents of these files in the project root.
 And at rendering, their content will be used instead!
-If you look at the raw source of one of these files (e.g., conduct.md) you will see:
+If you look at the raw source of one of these files (e.g., conduct.md), you will see:
 
 <img src="../img/python-docs-md-content.png" width=500>
 
@@ -177,8 +179,8 @@ This helps keep our docs up to date by not having two places to update them!
 
 `conf.py` is a configuration file that specifies style
 and formatting for the documentation.
-In this course we will not be modifying it,
-but if you wanted you can!
+In this course, we will not be modifying it,
+but if you want to, you can!
 To do this, please first read the docs for [Sphinx configuration here](https://www.sphinx-doc.org/en/master/usage/configuration.html).
 
 The `requirements.txt` file in the `pypkgs-cookiecutter` template is now deprecated
@@ -188,8 +190,8 @@ All dependencies are now managed by `pyproject.toml`.
 ### `.github/workflows/ci-cd.yml`
 
 This file contains automation code for continuous integration
-and delivery of our Python software package,
-reading the steps in this file you will see that it does the following:
+and delivery of our Python software package.
+Reading the steps in this file, you will see that it does the following:
 
 1. Continuous integration tasks:
   - installs your package
@@ -205,8 +207,8 @@ When we first start building our packages,
 the GitHub Actions workflows for most of these things will fail.
 That is to be expected!
 As you complete the tasks for setting each of these up
-(e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets,
-etc) then the GitHub Actions workflows should start passing.
+(e.g., writing tests and package code, setting up authentication to PyPI using GitHub secrets),
+the GitHub Actions workflows should start passing.
 This is a consequence of the philosophy of the `pypkgs-cookiecutter` template tool.
 
 
@@ -215,8 +217,10 @@ This is a consequence of the philosophy of the `pypkgs-cookiecutter` template to
 [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#)
 is a general Python tool for repeatedly generating a desired file and directory structure.
 
-Many many many Python [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) templates already exist, this search on GitHub (linked
-to from the [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) documentation) identifies 9000 repositories!!!
+Many, many, many Python [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) templates already exist.
+This search on GitHub
+(linked to from the [`Cookiecutter`](https://cookiecutter.readthedocs.io/en/stable/#) documentation)
+identifies 9000 repositories!!!
 
 - <https://github.com/search?q=cookiecutter&amp%3Btype=Repositories&type=repositories>
 
@@ -235,6 +239,6 @@ Let's explore the `pypkgs-cookiecutter` to get to know
 how the Cookiecutter project template tool works in the case of `pypkgs-cookiecutter`, and in general!
 
 - Go to: <https://github.com/py-pkgs/py-pkgs-cookiecutter>
-- Looks at: <https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json>
+- Look at: <https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/cookiecutter.json>
 - Look for all the places you see `{{ cookiecutter.__SOMETHING }}`
 :::
