@@ -18,8 +18,9 @@ we are using bash highlighting for the terminal commands and sh highlighting for
 
 {{< include ../learning_objectives/0250-git-history.qmd >}}
 
-Now let's see how we can use the commits we've made to look at files in the past
-or reverting a file to a version from the past.
+Now let's see how we can use the commits we've made to look at files in the past,
+restore a file to a version from the past,
+or undo a commit.
 
 ## Just going for a look:
 
@@ -140,29 +141,52 @@ Which would be more useful for testing out your code?
 
 :::
 
-If you wanted to move your project's file and directories (so entire state) back
-to this point in time you can do that by running `git checkout <commit-id> .`.
+If you wanted to move your project's files and directories (so its entire state) back
+to this point in time, you can do that by running `git restore --source=<commit-id> .`.
 The last `.` is really important, so don't forget it!
+It tells Git to restore every file in the project,
+not just one.
 
 Let's do this now to go back to the point just before the changes we explored above:
 
 ```bash
-git checkout 9b4af1d .
+git restore --source=9b4af1d .
 ```
 
 When we look at the `Dockerfile` (the file
-that was changed in the commit after this) we see it does not have the changes we viewed in the `238dbcb`!
-Also, if you run `git log` you will see the more recent commits in your history are GONE!
+that was changed in the commit after this), we see it does not have the changes we viewed in `238dbcb`!
+`git status` shows what changed.
+Files that existed then are back to how they were,
+and `docker-compose.yml`, which was added in a later commit, is gone:
+
+```bash
+git status --short
+```
+
+```sh
+ M Dockerfile
+ M README.md
+ D docker-compose.yml
+```
+
+If you run `git log`, though,
+you will see that the more recent commits are all still in your history.
+`git restore` only changes your files;
+it does not move `HEAD`.
+Files that Git does not track are left alone.
 
 Don't panic!
 We can go back to the future!
-To get there (where we were before we started time travelling, we can use `git checkout` the `HEAD` commit nickname:
+To get there (where we were before we started time traveling),
+we can use `git restore` with the `HEAD` commit nickname:
 
 ```bash
-git checkout HEAD .
+git restore --source=HEAD .
 ```
 
-> Note: `HEAD` is the nickname for the most recent commit in a GitHub repository.
+> Note: `HEAD` is the nickname for the commit
+> you have checked out in your local repository
+> (usually the most recent commit on your current branch).
 
 Now, let's check our `git log` to make sure we returned safely!
 
@@ -202,6 +226,18 @@ Date:   Tue Feb 4 13:04:39 2020 -0300
 :
 ```
 
+:::{#older-git-checkout .callout-note title="The older `git checkout` command"}
+Before Git 2.23 (2019), `git checkout` restored files and switched branches.
+You will still see it in older tutorials and answers online:
+`git checkout <commit-id> .` and `git checkout <commit-id> <file>` restore files,
+much like `git restore --source=<commit-id>`.
+Git split the `git checkout` command into `git restore` for files and `git switch` for branches.
+
+`git restore` differs in two small ways.
+It does not stage the files it changes,
+and with `.` it also removes tracked files that did not exist in that commit.
+:::
+
 :::{.exercise}
 
 1. Clone [this GitHub repository](https://github.com/ttimbers/data_analysis_pipeline_eg) to your computer.
@@ -209,7 +245,7 @@ Date:   Tue Feb 4 13:04:39 2020 -0300
 2. View the names of the files that were changed in commit `44c17be`,
    and the specific changes made to the file `doc/count_report.Rmd`.
 
-3. Checkout the `44c17be` commit and explore it locally.
+3. Restore the project's files to the `44c17be` commit and explore them locally.
 
 4. Then go back to where you started (remember to use the nickname `HEAD`).
 
@@ -230,19 +266,61 @@ To do this, I resort to the Git command line tool in the terminal.
 The general command is:
 
 ```bash
-git checkout <HASH> <FILE>
+git restore --source=<HASH> <FILE>
 ```
 
-For example, to checkout the version of the `doc/count_report.Rmd` from the commit whose hash starts with `5837143`, we would type:
+For example, to restore the version of the `doc/count_report.Rmd`
+from the commit whose hash starts with `5837143`, we would type:
 
 ```bash
-git checkout 5837143 doc/count_report.Rmd
+git restore --source=5837143 doc/count_report.Rmd
 ```
 
 That will bring that version of the `doc/count_report.Rmd` into our working directory.
 We can view it, run it or use it, et cetera.
 If we want to keep that version going forward for our project, we would have
 to then add and commit that version of the file to do so.
+
+## Undoing a commit
+
+To undo everything one commit changed,
+use `git revert` with that commit's hash.
+For example, to undo the commit "added conda to path of Dockerfile":
+
+```bash
+git revert 238dbcb
+```
+
+Git opens your text editor with the message `Revert "added conda to path of Dockerfile"`.
+Save and close it to make the commit.
+
+```bash
+git log --oneline -3
+```
+
+```sh
+4e5d9cf Revert "added conda to path of Dockerfile"
+cab2e6a added example using docker-compose.yml
+b9c1bdc Merge pull request #1 from kguidonimartins/master
+```
+
+`git revert` does not delete the old commit.
+It adds a new commit that does the opposite,
+so your history keeps both.
+That makes it safe to use on commits you have already pushed to GitHub.
+
+## Which command does what?
+
+These five commands sound alike and overlap a little,
+so here is a short glossary.
+
+| Command | What it does | Changes the commit history? |
+|---|---|---|
+| `git restore` | Puts files back the way they were in a commit (`--source=<commit>`), or unstages them (`--staged`). | No |
+| `git revert` | Makes a new commit that undoes an earlier commit. | Adds a commit |
+| `git reset` | Moves your current branch back to an earlier commit, so the commits after it leave the branch. With `--hard`, it also throws away your uncommitted changes. | Yes, so avoid it on commits you have pushed |
+| `git switch` | Moves you to another branch, or makes a new one with `-c` (see [Git branches](0260-git-branches.qmd)). | No |
+| `git checkout` | The older command that does the jobs of both `git switch` and `git restore`. | No |
 
 ## What Git tool to use?
 
