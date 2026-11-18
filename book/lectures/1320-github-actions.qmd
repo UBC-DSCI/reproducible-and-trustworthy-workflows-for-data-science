@@ -134,16 +134,16 @@ The commands listed after `run` are run in the runner's shell:
 
 ```yaml
 - name: Run a one-line script
-      run: echo Hello, world!
+  run: echo Hello, world!
 ```
 
 As shown in the file above, we can run multiple commands in a step using the `|` character:
 
 ```yaml
 - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+  run: |
+    echo Add other actions to build,
+    echo test, and deploy your project.
 ```
 
 ### Actions
@@ -152,23 +152,28 @@ Steps that use actions look like the one shown below (which builds and publishes
 They always have a `uses` parameter, and often also have `name` and `with` parameters.
 The `uses` parameter specifies which action to use,
 and the `with` parameters provide arguments to those actions.
-The `@master` at the end of the `uses` line
-specifies whether to use the version at the head of the action's default branch
-or a specific version (*e.g.,* `@v2`).
+The `@v5` at the end of the `uses` line
+specifies which version of the action to use,
+either a specific version, as here,
+or the head of a branch (*e.g.,* `@master`).
 
 ```yaml
 - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@v5
-      with:
-        name: myDocker/repository
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+  uses: elgohr/Publish-Docker-Github-Action@v5
+  with:
+    name: myDocker/repository
+    username: ${{ secrets.DOCKER_USERNAME }}
+    password: ${{ secrets.DOCKER_PASSWORD }}
 ```
 
 Actions commonly perform one task in a workflow.
-There are two ways to build actions,
-either using JavaScript or by creating a Docker container that runs a shell script.
-For the latter, such actions are defined by:
+There are three ways to build actions:
+
+- using JavaScript
+- by creating a Docker container that runs a shell script
+- by combining several steps into a composite action
+
+Docker container actions are defined by:
 
 - a Dockerfile
 - a shell script to run inside the Docker container

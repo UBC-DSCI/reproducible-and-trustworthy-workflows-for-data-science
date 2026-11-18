@@ -62,7 +62,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
@@ -147,17 +147,11 @@ jobs:
 :::{.answer}
 1. Check out the files of the repository to the runner (last commit)
 
-2. Set up and install Python on the runner
+2. Set up and install R on the runner
 
-3. Use Poetry to install dependencies and the package
+3. Install the package's R dependencies, plus the `rcmdcheck` package
 
-4. Install the package and its dependencies
-
-5. Run tests, check coverage, and generate a coverage report
-
-6. Send the coverage report to codecov.io
-
-7. Render the documentation (to check there are no errors in this process)
+4. Run `R CMD check` to check that the package builds, installs, and passes its tests
 :::
 
 #### *How many jobs are run? What does each do?*
@@ -172,7 +166,7 @@ The reason for this is that the [`snok/install-poetry@v1`](https://github.com/sn
 to set up correctly on Windows,
 and the purpose of the example above was to focus on demonstrating
 how to use matrices in general using GitHub Actions.
-If you are interested in setting up a runner using `window-latest`,
+If you are interested in setting up a runner using `windows-latest`,
 please follow the additional configuration instructions here
 to make it work: <https://github.com/snok/install-poetry?tab=readme-ov-file#running-on-windows>
 :::
