@@ -34,7 +34,7 @@ We then serve the website up on some platform, such as [Read the Docs](https://r
 
 - To have `sphinx` correctly render the docstrings as package-level documentation,
   we need to either write our docstrings in the correct format for reStructuredText (RST)
-  or use the `sphinx` extension `napolean`,
+  or use the `sphinx` extension `napoleon`,
   which can render NumPy- or Google-style docstrings
   (these are much easier for you to write and read).
 
@@ -49,7 +49,7 @@ We then serve the website up on some platform, such as [Read the Docs](https://r
 :type temporary: bool
 :returns: A buffered writable file descriptor
 :rtype: BufferedFileStorage
-:example: my_funtion(4)
+:example: my_function(4)
 """
 ```
 
@@ -74,7 +74,7 @@ We then serve the website up on some platform, such as [Read the Docs](https://r
 
     Examples
     --------
-    >>> my_funtion(4)
+    >>> my_function(4)
     """
 ```
 
@@ -89,9 +89,9 @@ and therefore editing and proofreading are more efficient when done locally.
 ## Adding new page to your package-level documentation
 
 How do we add new pages to our Python package-level documentation?
-The pages that show up in the rendered document on Read the Docs are controlled by [`docs/index.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md).
+The pages that show up in the rendered document on Read the Docs are controlled by [`docs/index.md`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md).
 
-Let's take a look at the [raw version of that file from our `pypkgs-cookiecutter`](https://raw.githubusercontent.com/py-pkgs/py-pkgs-cookiecutter/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md):
+Let's take a look at the [raw version of that file from our `py-pkgs-cookiecutter`](https://raw.githubusercontent.com/py-pkgs/py-pkgs-cookiecutter/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/docs/index.md):
 
 <img src="../img/index-raw.png" width=300>
 
@@ -118,7 +118,7 @@ This will result in the following rendering:
 It is common for packages to have vignettes/tutorials (think demos with narratives) showing how
 to use the package in a more real-world scenario than the documentation examples show.
 In your Python package, this ideally might go in an "Examples" section of the docs.
-The `pypkgs-cookiecutter` gives a template file for you to use as a starting place (`docs/example.ipynb`).
+The `py-pkgs-cookiecutter` gives a template file for you to use as a starting place (`docs/example.ipynb`).
 As indicated in the section above,
 you can rename this file and add others;
 just make sure you update the `toctree` in `docs/index.md`.
@@ -142,7 +142,7 @@ The standard practice for hosting and sharing docs in the Python community is to
   and uses their remote machines to render and serve your documentation.
 
 - To do this, Read the Docs needs access to the package's `pyproject.toml` file.
-  This is done via the creation of a `.readthedocs.yml` file in the root of your project that looks like this:
+  This is done via the creation of a `.readthedocs.yaml` file in the root of your project that looks like this:
 
 ```yaml
 # .readthedocs.yaml
@@ -165,7 +165,7 @@ build:
       # Tell poetry to not use a virtual environment
       - poetry config virtualenvs.create false
     post_install:
-      # Install dependencies with 'docs' dependency group
+      # Install dependencies, including the 'dev' dependency group
       # https://python-poetry.org/docs/managing-dependencies/#dependency-groups
       - poetry install
 
@@ -182,7 +182,7 @@ to be in `pyproject.toml` for Read the Docs to be able to successfully render yo
 ### Sphinx themes
 
 Sometimes you want to have a different theme for your project's docs.
-This is possible by changing `html_theme` in `doc.conf.py`.
+This is possible by changing `html_theme` in `docs/conf.py`.
 See the link below to view and read the docs for other Sphinx themes:
 
 - Sphinx themes gallery: <https://sphinx-themes.org/>
