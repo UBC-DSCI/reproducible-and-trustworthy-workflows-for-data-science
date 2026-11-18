@@ -237,48 +237,8 @@ and building off it locally.
 
 :::
 
-### Example tests for Altair plots (using object attributes, not visual regression testing)
+### Testing Altair plots in Python {#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing}
 
-Here's a function that creates a line chart:
-
-```python
-def scatter(df, x_axis, y_axis):
-    chart = alt.Chart(df).mark_line().encode(
-        alt.X(x_axis + ':Q',
-            scale=alt.Scale(zero=False),
-              axis=alt.Axis(tickMinStep=1)
-        ),
-        y=y_axis
-    )
-    return chart
-```
-
-Here's some small data to test it on:
-
-```python
-small_data = pd.DataFrame({
-        'year': np.array([1901, 1902, 1903, 1904, 1905]),
-        'measure' : np.array([25, 25, 50, 50, 100])
-    })
-small_data
-```
-
-Here's the plot:
-
-```python
-small_scatter = scatter(small_data, 'year', 'measure')
-small_scatter
-```
-
-![](../img/alt_chart.png)
-
-Here's a unit test for the `scatter` function:
-
-```python
-def test_scatter():
-    assert small_scatter.encoding.x.field == 'year', 'x_axis should be mapped to the x axis'
-    assert small_scatter.encoding.y.field == 'measure', 'y_axis should be mapped to the y axis'
-    assert small_scatter.mark == 'line', 'mark should be a line'
-    assert small_scatter.encoding.x.scale.zero == False, "x-axis should not start at 0"
-    assert small_scatter.encoding.x.axis.tickMinStep == 1, "x-axis small tick step should be 1"
-```
+For plots made in Python with Altair,
+see [Testing images: Python (Altair)](1045-testing-images-python-altair.qmd),
+which tests a chart by checking its specification.
