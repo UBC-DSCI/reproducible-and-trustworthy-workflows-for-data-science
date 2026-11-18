@@ -76,12 +76,28 @@ jobs:
         if: steps.release.outputs.released == 'true'
         env:
           VERSION: ${{ steps.release.outputs.version }}
+        # Only pycounts comes from TestPyPI; every dependency comes from PyPI.
+        # Anyone can upload to TestPyPI, so it must not supply other packages
+        # to a job that holds publishing permissions.
         run: |
-          uv run --isolated --no-project \
-            --index https://test.pypi.org/simple/ \
-            --index-strategy unsafe-best-match \
-            --with "pycounts==$VERSION" \
-            python -c "import pycounts; print(pycounts.__version__)"
+          mkdir "$RUNNER_TEMP/test-install"
+          cd "$RUNNER_TEMP/test-install"
+          cat > pyproject.toml <<EOF
+          [project]
+          name = "test-install"
+          version = "0.0.0"
+          requires-python = ">=3.14"
+          dependencies = ["pycounts==$VERSION"]
+
+          [tool.uv.sources]
+          pycounts = { index = "testpypi" }
+
+          [[tool.uv.index]]
+          name = "testpypi"
+          url = "https://test.pypi.org/simple/"
+          explicit = true
+          EOF
+          uv run python -c "import pycounts; print(pycounts.__version__)"
 
       - name: Publish to PyPI
         if: steps.release.outputs.released == 'true'
