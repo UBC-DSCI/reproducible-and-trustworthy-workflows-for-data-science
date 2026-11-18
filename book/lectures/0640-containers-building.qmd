@@ -12,28 +12,29 @@ aliases:
 
 ## Building container images from `Dockerfile`'s
 
-- A `Dockerfile` is a plain text file
+- A `Dockerfile` is a plain-text file
   that contains commands primarily about what software to install
   in the Docker image.
   This is the more trusted and transparent way to build Docker images.
 
-- Once we have created a `Dockerfile` we can build it into a Docker image.
+- Once we have created a `Dockerfile`, we can build it into a Docker image.
 
 - Docker images are built in layers, and as such,
   `Dockerfile`s always start by specifying a base Docker image that the new image
-  is to be built on top off.
+  is to be built on top of.
 
 - Docker containers are all Linux containers and thus use Linux commands
-  to install software,
-  however there are different flavours of Linux
-  (e.g., Ubuntu, Debian, CentOs, RedHat, etc) and thus you need to use the right Linux install commands
-  to match your flavour of container.
-  For this course we will focus on Ubuntu- or Debian-based images (and that means
+  to install software.
+  However, there are different flavors of Linux
+  (e.g., Ubuntu, Debian, CentOS, Red Hat),
+  and thus you need to use the right Linux install commands
+  to match your flavor of container.
+  For this course, we will focus on Ubuntu- or Debian-based images (and that means
   if we need to install software outside of R and Python packages,
   we will use `apt` as our installation program).
   However, most of what we'll be doing for installation is R,
-  Python and their packages.
-  For that we can really use tools we're already familiar with (`conda`
+  Python, and their packages.
+  For that, we can really use tools we're already familiar with (`conda`
   and `conda-lock`,
   for example).
 
@@ -56,9 +57,9 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
    Edit and try again until the install command works.
 
 4. Write working install commands in the `Dockerfile`,
-   preceding them with `RUN` and save the `Dockerfile`.
+   preceding them with `RUN`, and save the `Dockerfile`.
 
-5. After adding every 2-3 commands to your `Dockerfile`,
+5. After adding every 2–3 commands to your `Dockerfile`,
    try building the Docker image via `docker build --tag <TEMP_IMAGE_NAME> <PATH_TO_DOCKERFILE_DIRECTORY>`.
 
 6. Once the entire `Dockerfile` works from beginning to end on your laptop,
@@ -72,7 +73,7 @@ The example in this section is based on this repository:
 
 We will demo this workflow together to build a Docker image locally on our machines
 that has Jupyter,
-Python and the python packages `pandas`, `pandera` and `deepcheck` installed.
+Python, and the Python packages `pandas`, `pandera`, and `deepcheck` installed.
 When we do this,
 we will leverage a `conda` environment that we have for these packages already:
 
@@ -124,7 +125,7 @@ conda-lock lock \
 :::{.callout-important}
 If you only use the `conda-lock lock --file environment.yml` command,
 it **does not** solve for the `linux-aarch64` architecture by default.
-You need this architectue to run a linux container on an ARM M-Chip Mac.
+You need this architecture to run a Linux container on an ARM M-chip Mac.
 :::
 
 From that, we get a file named `conda-lock.yml`.
@@ -135,7 +136,7 @@ to either update an existing environment,
 or to create a new environment.
 
 OK, now we are ready to start writing our `Dockerfile`!
-Let's start with the `condaforge/miniforge3:25.9.1-0` image.
+Let's start with the `condaforge/miniforge3:25.9.1-0` image,
 so the first line of our `Dockerfile` should be as such:
 
 ```dockerfile
@@ -151,16 +152,16 @@ FROM condaforge/miniforge3:25.9.1-0
 COPY conda-lock.yml /tmp/conda-lock.yml
 ```
 
-This copies the `conda-lock.yml` from our current local computer's working directory,
+This copies the `conda-lock.yml` from our current local computer's working directory
 into the Docker container's `/tmp` directory.
 
 Now let's build an image from our `Dockerfile` so we can test out
 and find install commands that work for what we need to do!
 To build an image, we use `docker build`.
-We'll want to tag/name the image so we can reference it after its built,
+We'll want to tag/name the image so we can reference it after it's built,
 so we can run it.
 Here we named it `testing_cmds`.
-Finally we say where to look for the `Dockerfile`.
+Finally, we say where to look for the `Dockerfile`.
 Here we say `.`, meaning the current working directory:
 
 ```bash
@@ -168,11 +169,11 @@ docker build --tag testing_cmds .
 ```
 
 Now we will run our image (named `testing_cmds`).
-This "turns' on" our docker container
+This "turns on" our Docker container
 and gives us a terminal prompt inside the container we just built and ran.
 We can now run commands in there to test commands to see if they work.
 If commands work, we can incrementally add them to our `Dockerfile`.
-If we mess something up, all we need to do is exit the container and start it again,
+If we mess something up, all we need to do is exit the container and start it again;
 nothing we do inside the container will persist.
 This gives us a great way to explore
 and test commands without worrying about messing up our main computer.
@@ -182,10 +183,10 @@ docker run --rm -it testing_cmds bin/bash
 ```
 
 At the time of writing this section,
-miniforge3 and `conda 25.11.0` does not have `conda-lock` installed by default,
-so in order to create/update an environment, we will have first install `conda-lock`.
+miniforge3 and `conda 25.11.0` do not have `conda-lock` installed by default,
+so in order to create/update an environment, we will have to first install `conda-lock`.
 
-Inside your currently running docker container terminal,
+Inside your currently running Docker container terminal,
 you can install `conda-lock`:
 
 ```bash
@@ -195,17 +196,17 @@ you can install `conda-lock`:
 :::{.callout-note}
 We are passing in the `-y` yes flag because we want the `Dockerfile`
 to run these commands non-interactively,
-meaning we do not want to (or have the ability) for the user to confirm
-and answer isntallation prompts.
+meaning we do not want (or have the ability for) the user to confirm
+and answer installation prompts.
 In this `conda install` command,
 this will automatically answer "yes" to confirm the installation.
 :::
 
-Next we can use `conda-lock` to install the environment specified
+Next, we can use `conda-lock` to install the environment specified
 in the `conda-lock.yml` file.
 Here we are creating a new environment named `dockerlock` in the container.
 Currently,
-`conda-lock` and the `libmamba` solver will not overrite the root environment.
+`conda-lock` and the `libmamba` solver will not overwrite the root environment.
 
 ```bash
 (base) root@45c7f31e47a8:/# conda-lock install -n dockerlock conda-lock.yml
@@ -215,7 +216,7 @@ Awesome!
 This seemed to have worked!
 Let's exit the Docker container (via `exit`).
 Then we can add these commands to the `Dockerfile`,
-proceeding them with `RUN` and try to build our image to ensure this works.
+preceding them with `RUN`, and try to build our image to ensure this works.
 
 Our `Dockerfile` so far:
 
@@ -234,8 +235,9 @@ Let's try building an image named `testimage` locally:
 $ docker build --tag testimage .
 ```
 
-Looks like a success, let's be sure we can use the `pandera` package as a test.
-Remember to activate the invironment first.
+Looks like a success!
+Let's be sure we can use the `pandera` package as a test.
+Remember to activate the environment first.
 
 ```bash
 $ docker run --rm -it testimage bash
@@ -249,14 +251,15 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 The main parts of the image are now done!
-A few more clean up steps and we're all ready to go.
+A few more cleanup steps and we're all ready to go.
 
-Since `conda-lock` doesn't let us overrite the base environment,
-we needed to install all our packages into a new environment,
+Since `conda-lock` doesn't let us overwrite the base environment,
+we needed to install all our packages into a new environment;
 we used `dockerlock` in this example so far.
-Now we want to make sure the `dockerlock` environment gets activated automatically whenever we run and start the container.
-This saves us an exatra set of steps so we do no need
-to constanly activate the environment.
+Now we want to make sure the `dockerlock` environment gets activated automatically
+whenever we run and start the container.
+This saves us an extra set of steps so we do not need
+to constantly activate the environment.
 
 We'll update our `Dockerfile` with these 2 lines:
 
@@ -265,12 +268,12 @@ We'll update our `Dockerfile` with these 2 lines:
 RUN echo "source /opt/conda/etc/profile.d/conda.sh && conda activate dockerlock" >> ~/.bashrc
 ```
 
-This makes absulutely sure the we have conda working,
+This makes absolutely sure that we have conda working,
 and then activates the `dockerlock` environment.
 We then take this set of commands and put it in the `~/.bashrc` file.
-This is a special that runs from top to bottom anytime a new terminal is opened.
-This way we can guarentee that we have conda loaded,
-and it activates the envrionment.
+This is a special file that runs from top to bottom anytime a new terminal is opened.
+This way, we can guarantee that we have conda loaded,
+and it activates the environment.
 
 
 ```dockerfile
@@ -279,10 +282,10 @@ and it activates the envrionment.
 SHELL ["/bin/bash", "-l", "-c"]
 ```
 
-This stop makes sure that we are using bash as the default shell and terminal,
-so the `~/.bashrc` file that activates the conda envionment will run.
+This step makes sure that we are using Bash as the default shell and terminal,
+so the `~/.bashrc` file that activates the conda environment will run.
 
-Our dockerfile should now llook like this:
+Our Dockerfile should now look like this:
 
 ```dockerfile
 FROM condaforge/miniforge3:25.9.1-0
@@ -298,24 +301,25 @@ SHELL ["/bin/bash", "-l", "-c"]
 ```
 
 Finally,
-let's make a small quality improvement so we do not see the root systm files
+let's make a small quality improvement so we do not see the root system files
 when we run the image.
 
-We'll use the docker `WORKDIR` instruction to set the default working directory
+We'll use the Docker `WORKDIR` instruction to set the default working directory
 when the container starts,
-so we are automatilly put into a specific folder,
+so we are automatically put into a specific folder,
 away from all the root system files.
-You can still access those, we are only setting a new folder to make things cleaner.
+You can still access those;
+we are only setting a new folder to make things cleaner.
 
-We will add this to our docker file
+We will add this to our Dockerfile:
 
 ```dockerfile
 # sets the default working directory
 WORKDIR /workplace
 ```
 
-So now we have a fully-functioning docker file.
-Dont' forget to build it so you can use your new container.
+So now we have a fully functioning Dockerfile.
+Don't forget to build it so you can use your new container.
 
 ```dockerfile
 FROM condaforge/miniforge3:25.9.1-0
@@ -335,19 +339,19 @@ WORKDIR /workplace
 
 ### Run jupyter lab in a conainer
 
-If only needed the container we just created to run code,
-and did not need any web application to run, we can stop here.
+If we only needed the container we just created to run code,
+and did not need any web application to run, we could stop here.
 However, the `environment.yml` file we created installed `jupyterlab`,
 and it would also be nice for the container
-to run jupyter lab just like our fist example in an earlier docker chapter
+to run JupyterLab just like our first example in an earlier Docker chapter
 when we used the `quay.io/jupyter/datascience-notebook:2025-03-14` container.
 
 In order for us to run `jupyter lab` inside the container,
 we essentially need to have the container run `jupyter lab`.
-The default port that jupyter lab runs on is port 8888,
+The default port that JupyterLab runs on is port 8888,
 so we must first tell the container to `EXPOSE` or open this port so we can connect
 to it later when we run the container.
-We use the `EXPOSE 8888` docker instruction to accomplish this.
+We use the `EXPOSE 8888` Docker instruction to accomplish this.
 
 ```dockerfile
 EXPOSE 8888
@@ -355,19 +359,19 @@ EXPOSE 8888
 
 Finally,
 we will use the `CMD` instruction to tell the container the default command to run
-when the docker container runs.
-In this example we will have the docker container run jupyter lab on startup.
-When we run jupyter lab, we will have it run on the container local host,
+when the Docker container runs.
+In this example, we will have the Docker container run JupyterLab on startup.
+When we run JupyterLab, we will have it run on the container local host,
 on port 8888,
-and disable the token/password generation that jupyter lab typically creates to run.
-We specify the `CMD` command as terminal command,
-with each term sepearted as a list of strings.
+and disable the token/password generation that JupyterLab typically creates to run.
+We specify the `CMD` command as a terminal command,
+with each term separated as a list of strings.
 
 ```dockerfile
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
 ```
 
-Yes it is a bit strange where we `EXPOSE` the port before we know
+Yes, it is a bit strange that we `EXPOSE` the port before we know it
 from the `CMD` instruction.
 In general, the best practice for ordering `Dockerfile` structure is:
 
@@ -407,28 +411,30 @@ push it to Docker Hub and share this Docker image with the world!
 Source: <https://giphy.com/gifs/memecandy-ZcKASxMYMKA9SQnhIl>
 
 
-### Guidelines for `RUN` Commands
+### Guidelines for `RUN` commands
 
 Each `RUN` command creates a new layer in the Docker image.
-Each layer in a Docker image takes more disc space.
+Each layer in a Docker image takes more disk space.
 As a consequence, we want to minimize the number of layers where reasonably possible.
 How can we do this?
 
 Install everything that can be installed by a tool
-(e.g., `conda`, `mamba`, `pip`, `apt`, etc) at once (i.e., when installing 5 programs via `apt`,
-do not call `apt` five times, instead do: `apt tool1 tool2 tool3 tool4 tool5`).
+(e.g., `conda`, `mamba`, `pip`, `apt`) at once
+(i.e., when installing 5 programs via `apt`,
+do not call `apt` five times;
+instead do: `apt tool1 tool2 tool3 tool4 tool5`).
 However, doing this can lead to long lines.
 In response,
 we can break a single command across lines in the shell by using the `\` character.
 For example,
-to reduce the long line below which uses `apt` to install the programs Git,
+to reduce the long line below, which uses `apt` to install the programs Git,
 Tiny Nano, Less, and wget:
 
 ```bash
 apt install --yes git nano-tiny less wget
 ```
 
-We can use `\` after each program,
+We can use `\` after each program
 to break the long command across lines and make the command more readable (especially
 if there were even more programs to install).
 Similarly, we indent the lines after `\` to increase readability:
@@ -442,7 +448,7 @@ apt install --yes \
 ```
 
 We can also group together related commands that depend upon each other.
-Whe doing this we need to be careful though,
+When doing this, we need to be careful, though,
 as sometimes we don't want to run a command if the command that was run immediately
 before it failed.
 We can specify this in the shell using `&&`.
@@ -457,7 +463,7 @@ apt update && \
 
 ## `Dockerfile` command summary
 
-Most common `Dockerfile` commands I use:
+The most common `Dockerfile` commands I use:
 
 | Command | Description |
 |---------|-------------|
@@ -465,9 +471,9 @@ Most common `Dockerfile` commands I use:
 | RUN     | Specifies that a command should be run in a shell |
 | ENV | Sets environment variables |
 | EXPOSE | Specifies the port the container should listen to at runtime |
-| COPY or ADD | adds files (or URL's in the case of ADD) to a container's filesystem |
-| ENTRYPOINT | Configure a container that will run as an executable |
-| WORKDIR | sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, COPY and ADD instructions that follow it in the `Dockerfile` |
+| COPY or ADD | Adds files (or URLs in the case of ADD) to a container's filesystem |
+| ENTRYPOINT | Configures a container that will run as an executable |
+| WORKDIR | Sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, COPY and ADD instructions that follow it in the `Dockerfile` |
 
 And more here in the [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
 
@@ -483,11 +489,11 @@ Source:
 | Image | Software installed |
 |-------|--------------------|
 | [quay.io/repository/jupyter/datascience-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-datascience-notebook) | Includes popular packages from the scientific Python ecosystem. |
-| [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) | R, R, RStudio |
-| [rocker/tidyverse](https://hub.docker.com/r/rocker/tidyverse/) | R, R packages (including the tidyverse), RStudio, make, do not use for ARM based computers |
+| [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) | R, RStudio |
+| [rocker/tidyverse](https://hub.docker.com/r/rocker/tidyverse/) | R, R packages (including the tidyverse), RStudio, Make, do not use for ARM-based computers |
 | [condaforge/miniforge3](https://hub.docker.com/r/condaforge/miniforge3) | Miniforge3 base installation |
 
-## Dockerfile FAQ:
+## Dockerfile FAQ
 
 #### 1. Where does the `Dockerfile` live?
 
@@ -502,9 +508,9 @@ on [Docker Hub](https://hub.docker.com/).
 
 1. Build a Docker image locally on your laptop
 
-2. Build a Docker image and push it to DockerHub using GitHub Actions,
+2. Build a Docker image and push it to Docker Hub using GitHub Actions
 
-#### 3. How do I build an image locally on my laptop
+#### 3. How do I build an image locally on my laptop?
 
 From the directory that contains your `Dockerfile` (usually your project root):
 
@@ -513,36 +519,36 @@ docker build --tag IMAGE_NAME:VERSION .
 ```
 
 :::{.callout-note}
-`--tag` let's you name and version the Docker image.
+`--tag` lets you name and version the Docker image.
 You can call this anything you want.
-The version number/name comes after the colon
+The version number/name comes after the colon.
 :::
 
-After I build, I think try to `docker run ...` to test the image locally.
+After I build, I then try to `docker run ...` to test the image locally.
 If I don't like it, or it doesn't work,
 I delete the image with `docker rmi {IMAGE_NAME}`,
-edit my Dockerfile and try to build and run it again.
+edit my Dockerfile, and try to build and run it again.
 
 ## Build a Docker image from a Dockerfile on GitHub Actions
 
-Building a Docker image from a `Dockerfile` using an automated tool (e.g., DockerHub
+Building a Docker image from a `Dockerfile` using an automated tool (e.g., Docker Hub
 or GitHub Actions) lets others trust your image as they can clearly see
 which `Dockerfile` was used to build which image.
 
 We will do this in this course by using GitHub Actions
 (a continuous integration tool)
-because is provides a great deal of nuanced control over
+because it provides a great deal of nuanced control over
 when to trigger the automated builds of the Docker image,
 and how to tag them.
 
 An example GitHub repository that uses GitHub Actions to build a Docker image
-from a `Dockerfile` and publish it on DockerHub is available here:
+from a `Dockerfile` and publish it on Docker Hub is available here:
 <https://github.com/ttimbers/dsci522-dockerfile-practice>
 
 What is there that we haven't already seen here?
 It's the GitHub Actions workflow file `.github/workflows/docker-publish.yml` shown below.
 This workflow can be triggered manually,
-or automatically when a push to GitHub is made that changes `Dockerfile`
+or automatically when a push to GitHub is made that changes the `Dockerfile`
 or `conda-linux-64.lock`.
 When that happens,
 a computer on GitHub will copy the contents of the GitHub repository and build
@@ -550,9 +556,9 @@ and version/tag a Docker image using the `Dockerfile` contained therein.
 The image will get two tags:
 `latest` and the short GitHub SHA corresponding
 to the Git commit SHA at the HEAD of `main`.
-It will also push the Docker image to DockerHub.
+It will also push the Docker image to Docker Hub.
 For that last step to happen,
-the code owner's DockerHub credentials must be stored in the GitHub repository
+the code owner's Docker Hub credentials must be stored in the GitHub repository
 as [GitHub repository secrets](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
 
 Example `.github/workflows/docker-publish.yml` file:
