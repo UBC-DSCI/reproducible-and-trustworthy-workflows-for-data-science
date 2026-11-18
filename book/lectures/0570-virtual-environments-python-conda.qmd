@@ -158,7 +158,7 @@ or when I want to reproduce someone else's work.
 
 ### Creating environment by manually specifying packages
 
-We can create the `test_env` conda environment by typing `conda -n <name-of-env>`.
+We can create the `test_env` conda environment by typing `conda create -n <name-of-env>`.
 However,
 it is often useful to specify more than just the name of the environment,
 e.g., the channel from which to install packages,
@@ -281,7 +281,7 @@ To share an environment, you can export your conda environment to an environment
 which will list each package and its version
 in the format `package=version=build`.
 
-Exporting your environment to a file called `environment.yaml`
+Exporting your environment to a file called `environment.yml`
 (it could be called anything, but this is the conventional name,
 and using it makes it easy for others
 to recognize that this is a conda env file;
@@ -310,8 +310,8 @@ looks at the history of the packages you explicitly told `conda` to install
 and only lists those in the export.
 The required dependencies will then be handled
 in an OS-specific manner during the installation,
-which guarantees that they will work across OSes.
-This `environment.yaml` file would be much shorter and look something like this:
+which makes it more likely that they will work across OSes.
+This `environment.yml` file would be much shorter and look something like this:
 
 ```yaml
 name: test_env
@@ -347,7 +347,7 @@ Create an environment on your laptop with an older version of Python!
 
 1. Clone [this GitHub repository](https://github.com/ttimbers/conda_env_practice/blob/main/README.md).
 
-2. Try to run some antiquated (Python 3.0.0 and higher compatible) Python code,
+2. Try to run some antiquated (Python 2, not Python 3 compatible) Python code,
    such as `python -c "print 'Back from the Future'"`.
    This should fail.
 
@@ -358,7 +358,7 @@ Create an environment on your laptop with an older version of Python!
 
 4. Activate the environment by typing `conda activate oldie_but_a_goodie`.
 
-5. Try again to run some antiquated (Python 3.0.0 and higher compatible) Python code,
+5. Try again to run some antiquated (Python 2, not Python 3 compatible) Python code,
    such as `python -c "print 'Back from the Future'"`.
    If you activated your environment correctly,
    this should succeed!
@@ -395,8 +395,9 @@ conda info --envs
 Listing all the `conda` environments on your laptop with this command
 also shows you where `conda` stores these environments.
 Typically `conda` environments are stored in `/Users/<USERNAME>/opt/miniconda3/envs`.
-This means that `conda` environments are typically in your terminal's path,
-resulting in the environments being accessible from any directory on your computer,
+This means that `conda` environments are stored in one central place,
+not in your project,
+so you can activate them by name from any directory on your computer,
 regardless of where they were created.
 However, despite this flexibility,
 commonly one environment is created per project,

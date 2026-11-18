@@ -55,7 +55,7 @@ Choose from 1, 2, 3 [1]:
 
 ### Create a package module
 
-In your `src` folder, we will create a `count_letters` function
+In your `src` folder, we will create a `count_char` function
 that will take a string and return the number of characters in the string.
 We will be following a test-driven development workflow,
 so we'll create a function skeleton first,
@@ -107,10 +107,10 @@ You cannot define a Python function with an empty function body.
 
 ### Create tests in the `test` directory
 
-Next, we will create our tests in the `test` directory.
-Remember that `pytest` will look for tests in the `test` directory,
-look for files that either begin or end with `test`,
-and run all the functions that begin or end with `test` in that file.
+Next, we will create our tests in the `tests` directory.
+Remember that `pytest` will look for tests in the `tests` directory,
+look for files named `test_*.py` or `*_test.py`,
+and run all the functions that begin with `test` in those files.
 
 ```bash
 countchar
@@ -177,7 +177,7 @@ configfile: pyproject.toml
 plugins: anyio-4.4.0
 collected 1 item
 
-tests/test_countchar.py F                                                                                            [100%]
+tests/test_count_char.py F                                                                                           [100%]
 
 ========================================================= FAILURES =========================================================
 _____________________________________________________ test_count_char ______________________________________________________
@@ -190,9 +190,9 @@ _____________________________________________________ test_count_char __________
 >       assert actual == expected
 E       assert None == 5
 
-tests/test_countchar.py:8: AssertionError
+tests/test_count_char.py:8: AssertionError
 ================================================= short test summary info ==================================================
-FAILED tests/test_countchar.py::test_count_char - assert None == 5
+FAILED tests/test_count_char.py::test_count_char - assert None == 5
 ==================================================== 1 failed in 0.13s =====================================================
 
 ```
@@ -220,7 +220,7 @@ configfile: pyproject.toml
 plugins: anyio-4.4.0
 collected 1 item
 
-tests/test_countchar.py .                                                                                            [100%]
+tests/test_count_char.py .                                                                                           [100%]
 
 ==================================================== 1 passed in 0.02s =====================================================
 
@@ -254,7 +254,7 @@ and `raise` an error so we can catch any issues early.
 def count_char(input_string):
     if not isinstance(input_string, str):
         raise TypeError(f"Expected input to be str, got {type(input_string)}")
-    len(input_string)
+    return len(input_string)
 ```
 
 Next, we can add another test for `pytest` that checks the exception.
@@ -505,7 +505,7 @@ Now that we have 2 separate testing modules,
 we may want to share the same file reading fixture across both modules.
 We can use `conftest.py` to share fixtures across different testing modules.
 
-We will move the current text fixture from `count_char.py`
+We will move the current text fixture from `test_count_char.py`
 and paste it into a `conftest.py` file.
 
 

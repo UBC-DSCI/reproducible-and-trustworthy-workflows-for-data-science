@@ -1,0 +1,83 @@
+---
+title: "Testing images: Python (Altair)"
+output-file: testing-images-python-altair.html
+---
+
+[Testing images](1040-testing-images.qmd) tested `ggplot2` plots in R
+by comparing them with saved snapshots (visual regression testing).
+This chapter tests plots made in Python with [Altair](https://altair-viz.github.io/) another way,
+by checking the chart's specification instead of how it looks.
+
+## Example tests for Altair plots (using the chart's specification, not visual regression testing)
+
+Here's a function that creates a line chart:
+
+```{python}
+import altair as alt
+import numpy as np
+import pandas as pd
+
+
+def line_chart(df, x_axis, y_axis):
+    chart = alt.Chart(df).mark_line().encode(
+        alt.X(x_axis + ':Q',
+              scale=alt.Scale(zero=False),
+              axis=alt.Axis(tickMinStep=1)
+        ),
+        y=y_axis
+    )
+    return chart
+```
+
+Here's some small data to test it on:
+
+```{python}
+small_data = pd.DataFrame({
+        'year': np.array([1901, 1902, 1903, 1904, 1905]),
+        'measure' : np.array([25, 25, 50, 50, 100])
+    })
+small_data
+```
+
+Here's the plot:
+
+```{python}
+small_line_chart = line_chart(small_data, 'year', 'measure')
+small_line_chart
+```
+
+An Altair chart is a Vega-Lite specification,
+and its `to_dict()` method returns that specification as a dictionary.
+Here is the part that says how the data maps onto the chart:
+
+```{python}
+small_line_chart.to_dict()['encoding']
+```
+
+Test the dictionary, not the chart's attributes.
+In Altair 5 and later, attributes such as `small_line_chart.encoding.x.field`
+are methods for setting a value,
+so comparing them with a value is never true.
+
+Here's a unit test for the `line_chart` function:
+
+```{python}
+def test_line_chart():
+    spec = small_line_chart.to_dict()
+    assert spec['mark']['type'] == 'line', 'mark should be a line'
+    assert spec['encoding']['x']['field'] == 'year', 'x_axis should be mapped to the x axis'
+    assert spec['encoding']['y']['field'] == 'measure', 'y_axis should be mapped to the y axis'
+    assert spec['encoding']['x']['scale']['zero'] == False, 'x-axis should not start at 0'
+    assert spec['encoding']['x']['axis']['tickMinStep'] == 1, 'x-axis small tick step should be 1'
+```
+
+In a project, the function would live in your package
+and the test in a file such as `tests/test_line_chart.py`,
+and `pytest` would run it
+(see [Testing: Python (pytest)](1030-testing-python-pytest.qmd)).
+Here we call it directly.
+It prints nothing, which means every assertion passed:
+
+```{python}
+test_line_chart()
+```

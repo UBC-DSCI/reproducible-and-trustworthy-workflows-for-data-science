@@ -28,7 +28,7 @@ For reference, this was our function
 def count_char(input_string):
     if not isinstance(input_string, str):
         raise TypeError(f"Expected input to be str, got {type(input_string)}")
-    len(input_string)
+    return len(input_string)
 ```
 
 and the tests we wrote
@@ -48,16 +48,16 @@ def text_data():
 
 
 def test_line_1(text_data):
-    string = text_data[0]
+    string = text_data[0].strip()
     assert count_char(string) == 34
 
 def test_line_2(text_data):
-    string = text_data[1]
+    string = text_data[1].strip()
     assert count_char(string) == 10
 
 def test_line_3(text_data):
-    string = text_data[2]
-    assert count_char(string) == 8
+    string = text_data[2].strip()
+    assert count_char(string) == 7
 ```
 
 We can now look at the line and branch coverage of our current package files
@@ -87,7 +87,7 @@ General steps:
 
 - log in to <https://codecov.io/> with your GitHub account
 - install the Codecov GitHub app
-  (if you're using a personal account, your organization may have it already installed)
+  (if your repository belongs to an organization, the organization may have it installed already)
     - make sure the application can see your repository in the app settings
 - find the repo on Codecov
 - click configure

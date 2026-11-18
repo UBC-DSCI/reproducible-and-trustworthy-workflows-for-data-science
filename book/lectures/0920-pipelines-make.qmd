@@ -75,7 +75,7 @@ Create a file, called `Makefile`, with the following content:
 
 ```makefile
 # Count words.
-results/isles.dat : data/isles.txt src/wordcount.py
+results/isles.dat : data/isles.txt scripts/wordcount.py
 	python scripts/wordcount.py \
 		--input_file=data/isles.txt \
 		--output_file=results/isles.dat
@@ -161,8 +161,8 @@ then we see that `results/isles.dat`, the target,
 is now older than `data/isles.txt`, its dependency:
 
 ```sh
--rw-r--r--    1 mjj      Administ   323972 Jun 12 10:35 books/isles.txt
--rw-r--r--    1 mjj      Administ   182273 Jun 12 09:58 isles.dat
+-rw-r--r--    1 mjj      Administ   323972 Jun 12 10:35 data/isles.txt
+-rw-r--r--    1 mjj      Administ   182273 Jun 12 09:58 results/isles.dat
 ```
 
 If we run Make again,
@@ -174,7 +174,7 @@ $ make results/isles.dat
 then it recreates `results/isles.dat`:
 
 ```bash
-python src/wordcount.py data/isles.txt results/isles.dat
+python scripts/wordcount.py --input_file=data/isles.txt --output_file=results/isles.dat
 ```
 
 When it is asked to build a target,
@@ -188,7 +188,7 @@ and an associated rule, `clean`:
 
 ```makefile
 # Count words.
-results/isles.dat : data/isles.txt src/wordcount.py
+results/isles.dat : data/isles.txt scripts/wordcount.py
 	python scripts/wordcount.py \
         --input_file=data/isles.txt \
         --output_file=results/isles.dat
@@ -203,14 +203,14 @@ to create these just to remove them.
 We just want to remove the data files whether or not they exist.
 If we run Make and specify this target,
 
-```makefile
+```bash
 $ make clean
 ```
 
 then we get:
 
 ```bash
-rm -f *.dat
+rm -f results/isles.dat
 ```
 
 There is no actual thing built called `clean`.
@@ -251,9 +251,9 @@ results/isles.dat : data/isles.txt scripts/wordcount.py
         --output_file=results/isles.dat
 
 results/abyss.dat : data/abyss.txt scripts/wordcount.py
-python scripts/wordcount.py \
-    --input_file=data/abyss.txt \
-    --output_file=results/abyss.dat
+	python scripts/wordcount.py \
+        --input_file=data/abyss.txt \
+        --output_file=results/abyss.dat
 
 results/figure/isles.png : results/isles.dat scripts/plotcount.py
 	python scripts/plotcount.py \
@@ -261,7 +261,7 @@ results/figure/isles.png : results/isles.dat scripts/plotcount.py
         --output_file=results/figure/isles.png
 
 results/figure/abyss.png : results/abyss.dat scripts/plotcount.py
-    python scripts/plotcount.py \
+	python scripts/plotcount.py \
         --input_file=results/abyss.dat \
         --output_file=results/figure/abyss.png
 
@@ -280,7 +280,7 @@ $ make results/figure/abyss.png
 ```
 
 OR we can add a target `all` to the very top of the `Makefile`
-which will build the last of the dependencies.
+which will build all of its dependencies.
 
 ```makefile
 all: results/figure/isles.png results/figure/abyss.png
@@ -314,17 +314,17 @@ results/isles.dat : data/isles.txt scripts/wordcount.py
         --output_file=results/isles.dat
 
 results/abyss.dat : data/abyss.txt scripts/wordcount.py
-python scripts/wordcount.py \
-    --input_file=data/abyss.txt \
-    --output_file=results/abyss.dat
+	python scripts/wordcount.py \
+        --input_file=data/abyss.txt \
+        --output_file=results/abyss.dat
 
 results/last.dat : data/last.txt scripts/wordcount.py
-    python scripts/wordcount.py \
+	python scripts/wordcount.py \
         --input_file=data/last.txt \
         --output_file=results/last.dat
 
 results/sierra.dat : data/sierra.txt scripts/wordcount.py
-    python scripts/wordcount.py \
+	python scripts/wordcount.py \
         --input_file=data/sierra.txt \
         --output_file=results/sierra.dat
 
@@ -335,17 +335,17 @@ results/figure/isles.png : results/isles.dat scripts/plotcount.py
         --output_file=results/figure/isles.png
 
 results/figure/abyss.png : results/abyss.dat scripts/plotcount.py
-    python scripts/plotcount.py \
+	python scripts/plotcount.py \
         --input_file=results/abyss.dat \
         --output_file=results/figure/abyss.png
 
 results/figure/last.png : results/last.dat scripts/plotcount.py
-    python scripts/plotcount.py \
+	python scripts/plotcount.py \
         --input_file=results/last.dat \
         --output_file=results/figure/last.png
 
 results/figure/sierra.png : results/sierra.dat scripts/plotcount.py
-    python scripts/plotcount.py \
+	python scripts/plotcount.py \
         --input_file=results/sierra.dat \
         --output_file=results/figure/sierra.png
 
@@ -355,7 +355,7 @@ results/figure/isles.png \
 results/figure/abyss.png \
 results/figure/last.png \
 results/figure/sierra.png
-    quarto render report/count_report.qmd
+	quarto render report/count_report.qmd
 
 clean :
 	rm -f results/isles.dat \

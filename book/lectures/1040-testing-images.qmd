@@ -20,7 +20,9 @@ Questions we should ask when trying to understand how observable our tests are:
 
 These questions are easier to answer and address for code
 that creates simpler data science objects such as data frames,
-as in the example above.
+as in the `count_classes` examples in
+[Testing: R (testthat)](1020-testing-r-testthat.qmd)
+and [Testing: Python (pytest)](1030-testing-python-pytest.qmd).
 However, when our code under test does something more complex,
 such as create a plot object, these questions are harder to answer,
 or can be answered less fully...
@@ -123,7 +125,7 @@ that recent changes to the code base do not break already implemented features.
 
 Thus, once a desired plot is generated from the plotting function,
 visual regression tests can be used to ensure
-that further code refactoring does not change the plot function.
+that further code refactoring does not change the plot.
 Tools for this exist for R in the [`vdiffr`](https://vdiffr.r-lib.org/) package.
 Matplotlib uses visual regression testing as well;
 you can see the docs for examples of this [here](https://matplotlib.org/3.3.4/devel/testing.html#writing-an-image-comparison-test).
@@ -188,7 +190,9 @@ test_that("refactoring our code should not change our plot", {
 
 Then when you run `testthat::test_dir("tests/testthat")` to run your test suite
 for the first time, it will take a snapshot of the figure created in your test
-for that visualization and save it to `tests/testthat/_snaps/EXPECT_DOPPELGANGER_TITLE.svg`.
+for that visualization and save it to `tests/testthat/_snaps/TEST_FILE_NAME/EXPECT_DOPPELGANGER_TITLE.svg`
+(in the `vdiffr` demo below, the test in `tests/testthat/test-pretty_scatter.R`
+saves `tests/testthat/_snaps/pretty_scatter/pretty-scatter.svg`).
 Then, as you refactor your code
 and run `testthat::test_dir("tests/testthat")`,
 it will compare a new snapshot of the figure with the existing one.
@@ -233,48 +237,8 @@ and building off it locally.
 
 :::
 
-### Example tests for Altair plots (using object attributes, not visual regression testing)
+### Testing Altair plots in Python {#example-tests-for-altair-plots-using-object-attributes-not-visual-regression-testing}
 
-Here's a function that creates a scatter plot:
-
-```python
-def scatter(df, x_axis, y_axis):
-    chart = alt.Chart(df).mark_line().encode(
-        alt.X(x_axis + ':Q',
-            scale=alt.Scale(zero=False),
-              axis=alt.Axis(tickMinStep=1)
-        ),
-        y=y_axis
-    )
-    return chart
-```
-
-Here's some small data to test it on:
-
-```python
-small_data = pd.DataFrame({
-        'year': np.array([1901, 1902, 1903, 1904, 1905]),
-        'measure' : np.array([25, 25, 50, 50, 100])
-    })
-small_data
-```
-
-Here's the plot:
-
-```python
-small_scatter = scatter(small_data, 'year', 'measure')
-small_scatter
-```
-
-![](../img/alt_chart.png)
-
-Here's a unit test for the `scatter` function:
-
-```python
-def test_scatter():
-    assert small_scatter.encoding.x.field == 'year', 'x_axis should be mapped to the x axis'
-    assert small_scatter.encoding.y.field == 'measure', 'y_axis should be mapped to the y axis'
-    assert small_scatter.mark == 'line', 'mark should be a line'
-    assert small_scatter.encoding.x.scale.zero == False, "x-axis should not start at 0"
-    assert small_scatter.encoding.x.axis.tickMinStep == 1, "x-axis small tick step should be 1"
-```
+For plots made in Python with Altair,
+see [Testing images: Python (Altair)](1045-testing-images-python-altair.qmd),
+which tests a chart by checking its specification.

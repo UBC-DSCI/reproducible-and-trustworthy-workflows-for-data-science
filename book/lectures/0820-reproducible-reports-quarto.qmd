@@ -128,7 +128,7 @@ the **"Render"** button, which looks like this:
 Try clicking that button and see what happens!
 
 Another way you can do this is through code!
-Try running this in the terminal (replacing `"FILEPATH/FILE.qmd"` with the file path
+Try running this in the terminal (replacing `your_report.qmd` with the file path
 to where you saved this Quarto document):
 
 ```bash
@@ -143,7 +143,7 @@ RStudio has implemented a new feature for working with Quarto
 to make it more similar to working with Jupyter,
 and it is called the visual Markdown editor.
 Check out this feature by clicking the visual Markdown editor button
-when you have an R Markdown file open in the editor.
+when you have a Quarto document open in the editor.
 The button looks like this:
 
 <img src="../img/viz-md-button.png" width=125>
@@ -187,13 +187,13 @@ Below is an example YAML front matter which sets the:
 - Document render format to HTML
 - Document to have a references section and the source file for the references
 - Source code to be hidden in the rendered report
-- RStudio editor to show the source code view instead of the visual Markdown view
+- RStudio editor to show the visual Markdown view instead of the source code view
 
 ```yaml
 ---
 title: "Historical Horse Population in Canada"
 author: "Tiffany Timbers"
-date: Sys.Date()
+date: today
 format: html
 bibliography: references.bib
 execute:
@@ -229,7 +229,7 @@ Just like Jupyter notebooks, Quarto has code cells,
 although they're more commonly referred to as code "chunks" or "blocks".
 These are based on fenced Markdown code blocks and always start
 and end with three backticks (\`\`\`), just like in Markdown.
-Unique to Quarto is that the leading three backticks are followed by curly braces
+Unlike in plain Markdown, the leading three backticks are followed by curly braces
 containing the language engine you want to run,
 which for R looks like this, `{r}`.
 For Python, they would look like `{python}`.
@@ -258,7 +258,7 @@ Markdown headers are specified by starting the line with one or more `#` charact
 
 A single `#` results in a first-level header,
 two `#`'s result in a second-level header,
-three `#'s` result in a third-level header, and so on.
+three `#`'s result in a third-level header, and so on.
 
 For example:
 
@@ -320,14 +320,14 @@ and PDF and sets the table of contents depth to 2 for both of these:
 ---
 title: "Historical Horse Population in Canada"
 author: "Tiffany Timbers"
-date: Sys.Date()
+date: today
 format:
-    html:
-        toc: true
-        toc-depth: 2
-    pdf:
-        toc: true
-        toc-depth: 2
+  html:
+    toc: true
+    toc-depth: 2
+  pdf:
+    toc: true
+    toc-depth: 2
 editor: visual
 ---
 ```
@@ -339,7 +339,7 @@ You will drive yourself nuts,
 especially the more references you collect!
 Instead, use Quarto's bibliography/citation functionality.
 Below is a brief introduction,
-with the full docs [here](https://quarto.org/docs/manuscripts/authoring/jupyterlab.html#citations).
+with the full docs [here](https://quarto.org/docs/authoring/citations.html).
 
 #### Steps to citing in Quarto
 1. Add `bibliography: FILENAME.bib` to the YAML front matter.
@@ -360,7 +360,7 @@ with the full docs [here](https://quarto.org/docs/manuscripts/authoring/jupyterl
 BibTeX citations for code (R & Python programming languages
 and their respective packages) can be obtained from the following sources:
 
-- `citatation()` function in R
+- `citation()` function in R
   (no argument will give you the citation for R;
   adding a package name as a string to the function call
   will give you the citation for that package)
@@ -466,6 +466,7 @@ knitr::kable( table_to_display)
 Python example:
 
 ```{{python}}
+from IPython.display import Markdown
 import pandas as pd
 table_to_display = pd.read_csv("my_data.csv")
 Markdown(table_to_display.to_markdown(index = False))
@@ -489,7 +490,7 @@ Since we loaded the table data into the report using R
 or Python code in a code chunk,
 we will this time use code chunk formatting options to add the table descriptions
 and to give them a label so that Quarto will do automated numbering of the tables
-and allow us to cross-reference them in the text (via `#tab-some_name`).
+and allow us to cross-reference them in the text (via `#| label: tbl-some-name`).
 
 R example:
 
@@ -528,7 +529,7 @@ to embed the sample mean inside the report:
 sample_mean = 5
 ```
 
-The radius of the circle is `{r} sample_mean`
+The sample mean is `{r} sample_mean`
 ````
 
 In Python, you would replace the `r` with `python`:
@@ -538,7 +539,7 @@ In Python, you would replace the `r` with `python`:
 sample_mean = 5
 ```
 
-The radius of the circle is `{python} sample_mean`
+The sample mean is `{python} sample_mean`
 ````
 
 :::{.callout-note}
@@ -579,7 +580,7 @@ execute:
 
 Local chunk options are set by adding the options at the top of the code chunk.
 To not display warnings in a single code chunk,
-we would use the `warning: FALSE` code chunk option as follows:
+we would use the `warning: false` code chunk option as follows:
 
 ```{{r}}
 #| warning: false
@@ -664,14 +665,14 @@ to incorporate a child document into a parent document in Quarto.
 Below we show an example parent document (`breast_cancer_predictor_report.qmd`)
 which uses child documents to split the sections of the report into separate documents.
 
-```r
+```markdown
 ---
 title: "Predicting breast cancer from digitized images of breast mass"
 author: "Tiffany A. Timbers, Joel Ostblom & Melissa Lee"
 format:
-    pdf
-        toc: true
-        toc-depth: 2
+  pdf:
+    toc: true
+    toc-depth: 2
 bibliography: references.bib
 execute:
   echo: false
@@ -716,7 +717,7 @@ project/
 ```
 
 And when rendered
-(by running `quarto render reports/breast_cancer_predicotr_report.qmd`),
+(by running `quarto render reports/breast_cancer_predictor_report.qmd`),
 a single PDF document would be rendered from the 5 separate `.qmd` files.
 
 ### Smoothing

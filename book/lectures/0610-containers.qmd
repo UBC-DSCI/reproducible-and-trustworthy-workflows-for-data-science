@@ -118,7 +118,7 @@ by the container should look something like this:
 
 <img src="../img/rstudio-container-web-app.png" width=100%>
 
-Type `Cntrl` + `C` in the terminal where you launched the container to quit R
+Type `Ctrl` + `C` in the terminal where you launched the container to quit R
 and RStudio and exit the container.
 :::
 
@@ -134,7 +134,7 @@ docker run --rm -p 8787:8787 -e PASSWORD="apassword" -e DISABLE_AUTH=true rocker
 
 Each container will have its own set of environment variables
 to control its behavior.
-For the `rocker/rsutdio` project,
+For the `rocker/rstudio` project,
 you can find the environment variable documentation here:
 <https://rocker-project.org/images/versioned/rstudio.html#environment-variables>.
 
@@ -183,7 +183,7 @@ that sits between the computer's hardware and the operating system(s).
 This software is called a hypervisor.
 For example, on a Mac laptop,
 you could install a program called [Oracle VirtualBox](https://www.virtualbox.org/)
-to run a virtual machine whose operating system was Windows 10,
+to run a virtual machine whose operating system was Windows 8.1,
 as the screenshot below shows:
 
 <img src="https://www.virtualbox.org/raw-attachment/wiki/Screenshots/Windows_8.1_on_OSX.png">
@@ -202,7 +202,7 @@ and also less isolated.
 
 <img src="../img/container_v_vm.png" width=600>
 
-*Source: https://www.docker.com/resources/what-container*
+*Source: <https://www.docker.com/resources/what-container>*
 
 
 **Key take-home:** Containerization software shares the host's operating system,
@@ -360,7 +360,9 @@ We were just prompted to type `docker run...`
 
 Answer: `docker run ...` will first look for images you have locally,
 and run those if they exist.
-If they do not exist, it then attempts to pull the image from Docker Hub.
+If they do not exist, it then attempts to pull the image
+from the registry named in the image
+(Docker Hub, if the image name does not name a registry).
 :::
 
 ## How do we specify a container image?
@@ -374,10 +376,10 @@ Example `Dockerfile`:
 
 
 ```dockerfile
-# use the miniforge base, make sure you specify a verion
+# use the miniforge base, make sure you specify a version
 FROM condaforge/miniforge3:latest
 
-# Install Jupyter, JupterLab, R & the IRkernel
+# Install Jupyter, JupyterLab, R & the IRkernel
 RUN conda install -y --quiet \
     jupyter \
     jupyterlab=3.* \
@@ -402,7 +404,7 @@ Docker images are built in layers - this helps make them more lightweight.
 The `FROM` command is usually followed by `RUN` commands
 that usually install new software,
 or execute configuration commands.
-Other commands in this example copy in needed configuration files, expose ports,
+Other commands in this example expose ports,
 specify the working directory, and specify programs to execute at startup.
 
 :::{.exercise}

@@ -77,7 +77,9 @@ math_two_numbers (1, 4, "subtract")
 ##### Extra arguments via `...`
 
 If we want our function to be able to take extra arguments that we don't specify,
-we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):
+we must explicitly convert `...` to a list
+(passing `...` straight to `print()`, for example,
+would print only the first object passed to `...`):
 
 ```{r}
 #| slideshow: {slide_type: skip}
@@ -212,9 +214,10 @@ def add_one(x, y):
 Why will the above `add_one` function work in R,
 but the equivalent version of the function in Python break?
 
-- Python evaluates the function arguments before it evaluates the function,
-  and because it doesn't know what `y` is,
-  it will break even though it is not used in the function.
+- Python checks that every argument without a default value is given one
+  when the function is called,
+  so it will break because `y` is missing,
+  even though it is not used in the function.
 - R performs lazy evaluation,
   meaning it delays the evaluation of the function arguments
   until their values are needed within/inside the function.
@@ -256,7 +259,7 @@ add_one(2)
 ```
 def add_one(x, y):
     x = x + 1
-    return x`
+    return x
 ```
 
 This works:
@@ -835,7 +838,7 @@ saving future you some work!
 #' @return a vector of temperatures in Celsius
 #'
 #' @examples
-#' fahr_to_celcius(-20)
+#' fahr_to_celsius(-20)
 fahr_to_celsius <- function(temp) {
     (temp - 32) * 5/9
 }
@@ -853,84 +856,3 @@ To practice writing functions in R, you can attempt this worksheet: https://gith
 
 *Note: to access the automated software tests for feedback on your answers,
 you will want to clone or download [this GitHub repo](https://github.com/UBC-DSCI/dsci-310-student) and navigate to the `practice` directory.*
-
-## Defining functions in Python
-
-In this course, we will get to practice writing functions (and then testing them) in the Python programming language.
-We will only cover it here briefly.
-To learn more about functions in Python,
-we refer you to the [Module 6: Functions Fundamentals and Best Practices](https://prog-learn.mds.ubc.ca/en/module6) from the Programming in Python for Data Science course.
-
-Functions in Python are defined using the reserved word `def`.
-A colon follows the function arguments to indicate where the function body should start.
-White space, in particular indentation,
-is used to indicate which code belongs in the function body and which does not.
-A general form for a function definition is shown below:
-
-```
-def function_name(…function arguments…):
-    …function body…
-```
-
-Here's a working example:
-
-```{r}
-#| slideshow: {slide_type: fragment}
-add_two_numbers <- function(x, y) {
-  x + y
-}
-
-add_two_numbers(1, 4)
-```
-
-- Functions in R are objects.
-  This is referred to as “first-class functions”.
-- The last line of the function returns the object created, or listed there.
-  To return a value early, use the special word `return` (as shown below).
-
-```{r}
-#| slideshow: {slide_type: slide}
-math_two_numbers <- function(x, y, operation) {
-  if (operation == "add") {
-    return(x + y)
-  }
-  x - y
-}
-```
-
-```{r}
-math_two_numbers (1, 4, "add")
-```
-
-```{r}
-math_two_numbers (1, 4, "subtract")
-```
-
-### Default function arguments
-
-Default values can be specified in the function definition:
-
-```{r}
-#| slideshow: {slide_type: fragment}
-math_two_numbers <- function(x, y, operation = "add") {
-  if (operation == "add") {
-    return(x + y)
-  }
-  x - y
-}
-```
-
-```{r}
-math_two_numbers (1, 4)
-```
-
-```{r}
-math_two_numbers (1, 4, "subtract")
-```
-
-#### Optional - Advanced
-
-##### Extra arguments via `...`
-
-If we want our function to be able to take extra arguments that we don't specify,
-we must explicitly convert `...` to a list (otherwise `...` will just return the first object passed to `...`):

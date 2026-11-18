@@ -47,12 +47,12 @@ Add a secret to your `pycounts*` GitHub repository
 
 Let's learn how to add secrets to a GitHub repository.
 We'll do this by adding our `TEST_PYPI_API_TOKEN` and `PYPI_API_TOKEN` as secrets
-to our `pypkgs` GitHub repository
+to our `pycounts*` GitHub repository
 so that we can automate the publishing of our package repositories.
 
 #### Steps
 
-1. Under **"Secrets"**, click on **"Settings and variables"** > **"Actions"**.
+1. Under **"Settings"**, click on **"Secrets and variables"** > **"Actions"**.
 
 2. Under **"Repository secrets"**, click **"New repository secret"**.
 
@@ -89,7 +89,7 @@ In addition to the tokens above, the `cd` job needs to have write permissions to
 To do this, we will use the `permissions` keyword in `ci-cd.yml` at the beginning of the `cd` job,
 setting both `id-token` and `contents` to `write`:
 
-```toml
+```yaml
  cd:
     permissions:
       id-token: write
@@ -210,7 +210,7 @@ Some changes in the new release included:
 - Fix the interactive interpreter looping endlessly when no memory.
 - Fixed an assertion failure in Python parser in case of a bad `unicodedata.normalize()`
 
-**Case 3:** In Feb 2008, Python bumped versions from 2.7.17.
+**Case 3:** In Dec 2008, Python bumped versions from 2.6.0.
 Some changes in the new release included:
 
 - `print` became a function
@@ -242,12 +242,13 @@ How to affect semantic versioning with conventional commit messages:
 
 - a commit with the type `fix` leads to a patch version bump
 - a commit with the type `feat` leads to a minor version bump
-- a commit with a body or footer that starts with `BREAKING CHANGE:` - these can be of any type (Note:
+- a commit with a body or footer that starts with `BREAKING CHANGE:` leads to a major version bump,
+  and can be of any type (Note:
   currently Python Semantic Release is broken for detecting these
   on commits with Windows line endings,
   which the GitHub pen tool commits also use.
   The workaround fix is to use `!` after `feat`, for example:
-  `feat!: This describes the new feature and breaking changes` in addition to `BREAKING CHANGES: ...` in the footer.)
+  `feat!: This describes the new feature and breaking changes` in addition to `BREAKING CHANGE: ...` in the footer.)
 
 :::{.callout-note}
 Commit types other than `fix` and `feat` are allowed.
@@ -265,10 +266,10 @@ What kind of version bump would this result in?
 
 ### Another example of a conventional commit message
 
-```
-git commit -m "feat!: change to use of `%>%` to add new layers to ggplot objects
+```bash
+git commit -m 'feat!: change to use of `%>%` to add new layers to ggplot objects
 
-BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release"
+BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplot objects after this release'
 ```
 
 What kind of version bump would this result in?
@@ -276,7 +277,7 @@ What kind of version bump would this result in?
 ### Some practical notes for usage in your packages
 
 1. You must add the following to the tool section of your `pyproject.toml` file for this to work (note:
-   the `pypkgs-cookiecutter` adds this table if you choose to add `ci-cd` when you set it up):
+   the `py-pkgs-cookiecutter` adds this table if you choose to add `ci-cd` when you set it up):
 
     ```
     [tool.semantic_release]
@@ -299,7 +300,7 @@ What kind of version bump would this result in?
    in the `[tool.semantic_release]` table in `pyproject.toml`.
 
 2. If you have been working with main branch protection,
-   you will need to change something to make `ci.yml` work for continuous deployment.
+   you will need to change something to make `ci-cd.yml` work for continuous deployment.
    The reason for this is that this workflow (which bumps versions
    and deploys the package) is triggered to run **after** the pull request is merged to main.
    Therefore, when we bump the versions in the `pyproject.toml` file,
@@ -323,7 +324,7 @@ see an example here: <https://github.com/ttimbers/pycounts_tt_2024/blob/main/.gi
 
 1. Create a new GitHub PAT (see [these docs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)) with the [repo](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes) scope.
 
-2. Under **"Secrets"**, click on **"Settings and variables"** > **"Actions"**,
+2. Under **"Settings"**, click on **"Secrets and variables"** > **"Actions"**,
    and then under **"Repository secrets"** click **"New repository secret"**
    to create a new repository secret named `RELEASE_TOKEN`,
    with the new GitHub PAT with repo scope as its value.
@@ -435,7 +436,7 @@ but QC is lower than it is for CRAN.
 
 ### Semantic versioning case study - answers
 
-In 2008, Python bumped versions from 2.7.17 to 3.0.0.
+In 2008, Python bumped versions from 2.6.0 to 3.0.0.
 Some changes in the 3.0.0 release included:
 
 - `print` became a function
@@ -452,7 +453,7 @@ Some changes in the 3.1.0 release included:
 - A pure Python reference implementation of the import statement
 - New syntax for nested with statements
 
-[*Source*](https://www.python.org/download/releases/3.1/)
+[*Source*](https://docs.python.org/3/whatsnew/3.1.html)
 
 In 2017, Python bumped versions from 3.6.3 to 3.6.4.
 Some changes in the 3.6.4 release included:
@@ -461,4 +462,4 @@ Some changes in the 3.6.4 release included:
 - Fix the interactive interpreter looping endlessly when no memory.
 - Fixed an assertion failure in Python parser in case of a bad `unicodedata.normalize()`
 
-[*Source*](https://docs.python.org/3.6/whatsnew/changelog.html#python-3-6-4-final)
+[*Source*](https://docs.python.org/3.6/whatsnew/changelog.html#python-3-6-4-release-candidate-1)
