@@ -19,7 +19,7 @@ If you took DSCI 521, it is review.
 
 In R,
 environments are managed by `renv`,
-which works with similar principles as `uv`
+which works on similar principles to `uv`
 and other virtual environment managers,
 but the commands are different.
 To see which commands are used in `renv`,
@@ -59,10 +59,11 @@ so on any given calendar day the packages on CRAN are meant to install together.
 
 Here we'll go through an example of using `renv` in the context of an RStudio project.
 As with `uv`, you don't "activate" and "deactivate" it manually.
-One of the nice things is `renv` works naturally within an RStudio project.
+One of the nice things is that `renv` works naturally within an RStudio project.
 
-The New Project creation wizard in RStudio has an option to enable
-the folder as a git repository, and also to set it up with `renv`.
+The New Project creation wizard in RStudio has an option
+to make the folder a Git repository,
+and also to set it up with `renv`.
 This does the same thing as running `renv::init()` in the current project.
 
 ![](../img/rstudio-project-renv.png){fig-alt="RStudio's New Project Wizard, creating my_r_project in ~/Desktop, with the Create a git repository and Use renv with this project checkboxes outlined in red."}
@@ -142,8 +143,8 @@ a few new files will be created:
 3. `renv.lock` file
 
 Before we talk about what each file and directory does,
-now when you start a new R session or re-open your RStudio project,
-you will see a line that will read something like:
+note that when you start a new R session or reopen your RStudio project,
+you will see a line that reads something like:
 
 ```out
 - Project '~/Desktop/my_r_project' loaded. [renv 1.3.1]
@@ -167,7 +168,7 @@ and R looks for it in the same two places, in the same order.
 You can read more about these initialization files
 in R's own documentation, [`?Startup`](https://search.r-project.org/R/refmans/base/html/Startup.html).
 
-The `renv` `.Rprofile` will add a single line:
+`renv` adds a single line to `.Rprofile`:
 
 ```{.r filename=".Rprofile"}
 source("renv/activate.R")
@@ -265,7 +266,7 @@ your collaborators will not get the package.
 
 As you work on a project with other people and packages get updated,
 you will occasionally run `renv::restore()`
-to install any missing packages on your local R environment.
+to install any missing packages in your local R environment.
 Occasionally `renv` may tell you things are out of sync and will
 prompt you to run `renv::status()` or `renv::restore()`.
 
@@ -339,6 +340,6 @@ What would be the main files committed to the repository by default when using `
 - C. `renv/library` and `renv/staging` directories,
   because `renv`, in contrast to `conda`,
   needs to have binary packages in the repository.
-- D. Only the source code of the packages in `renv/library`
-  because we want our environment to be identical
+- D. Only the source code of the packages in `renv/library`,
+  because we want our environment to be identical.
 :::

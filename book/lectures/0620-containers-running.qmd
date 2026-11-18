@@ -12,12 +12,13 @@ aliases:
 
 ## Launching containers using Docker at the command line
 
-Docker has many ways we can run containers (GUI, command line, Docker compose configuration files).
-Here we will learn how to use the command line interface
+Docker has many ways we can run containers
+(GUI, command line, Docker Compose configuration files).
+Here we will learn how to use the command-line interface
 for running container instances from container images.
 We will then build on this knowledge to move
-to using Docker compose configuration files for increased efficiency.
-We are opting to use command line and configuration file tools
+to using Docker Compose configuration files for increased efficiency.
+We are opting to use command-line and configuration file tools
 so that we can automate and scale the running of containers.
 It is also more reproducible.
 
@@ -25,15 +26,16 @@ It is also more reproducible.
 
 Below we demonstrate how to launch and run containers
 using the [`condaforge/miniforge3` image](https://hub.docker.com/r/condaforge/miniforge3) as an example.
-We will slowly walk through the 4 basic steps need to run a container:
+We will slowly walk through the 4 basic steps needed to run a container:
 
 #### Step 1 - launch the Docker app (for OSX & Windows only)
 
 On Mac and Windows, Docker runs in a virtual machine (called Docker Desktop).
 To run a Docker container, you must have this running.
-To do this, use launchpad/Finder/Start menu/etc to find and launch Docker Desktop.
+To do this, use Launchpad/Finder/Start menu/etc. to find and launch Docker Desktop.
 
-> Note: Docker might already be running, if so great, but if its not,
+> Note: Docker might already be running.
+> If so, great, but if it's not,
 > the commands below will not work.
 > So it is always good to check!
 
@@ -46,21 +48,24 @@ To do this we use the `docker pull <CONTAINER>` command.
 You will commonly see the container to pull written as:
 `container_registry/container_user/container_image:container_image_version_tag`.
 
-If you only see `container_user/container_image:container_image_version_tag` Docker will assume you are using Docker Hub as the container registry (this is the default).
-In the previous chapter we ran the `quay.io/jupyter/datascience-notebook:2025-03-14` container from the `quay.io` registry,
+If you only see `container_user/container_image:container_image_version_tag`,
+Docker will assume you are using Docker Hub as the container registry
+(this is the default).
+In the previous chapter,
+we ran the `quay.io/jupyter/datascience-notebook:2025-03-14` container from the `quay.io` registry,
 and `rocker/rstudio:4.4.2` from Docker Hub.
 
-Sometimes the `container_image_version_tag` is ommitted,
-when this happens the most recent container is pulled,
-and has the version tag `latest`.
-In data analysis projects we try to avoid using this strategy because Docker is lazy
+Sometimes the `container_image_version_tag` is omitted.
+When this happens, the most recent container is pulled,
+and it has the version tag `latest`.
+In data analysis projects, we try to avoid using this strategy because Docker is lazy,
 and if you already have the `latest` version on your local host machine,
 it will not update it when you re-run `docker pull container_user/container_image` even
 if there is a newer version of the container image on the remote container registry.
 
-We will now pull the `miniconda3` docker image, container image verion `23.9.0-0`,
+We will now pull the `miniconda3` Docker image, container image version `23.9.0-0`,
 made and shared by `continuumio`,
-and hosted on Docker Hub by runnig the following in the terminal:
+and hosted on Docker Hub, by running the following in the terminal:
 
 ```bash
 docker pull continuumio/miniconda3:23.9.0-0
@@ -75,7 +80,7 @@ condaforge/miniforge3:25.3.1-0   322e23c921ba        447MB             0B
 ```
 
 :::{.callout-note}
-- You can skip this step and just got onto `docker run ...`
+- You can skip this step and just go on to `docker run ...`
   as that command will pull the image if you do not have it locally.
 
 - If you ever need to delete a container image from your computer,
@@ -85,7 +90,7 @@ condaforge/miniforge3:25.3.1-0   322e23c921ba        447MB             0B
 #### Step 3 - launch a container from the image and poke around!
 
 We use `docker run` to launch a container instance from a container image.
-By default the container instance will execute it's programmed launch behaviour
+By default, the container instance will execute its programmed launch behavior
 and immediately stop.
 Thus, if we want to use the container in a more interactive way,
 we need to tell Docker that by adding the `-it` flag to our `docker run` command.
@@ -100,33 +105,34 @@ If it worked, then your command line prompt should now look something like this:
 (base) root@f0af2c1fb3af:/#
 ```
 
-You can standard bash shell commands like `ls`, `cd`, `pwd` to explore the container.
+You can use standard Bash shell commands like `ls`, `cd`, and `pwd`
+to explore the container.
 You can type `exit` to leave when you are done (your prompt will look normal again)!
 
 #### Step 4 - clean up your container!
 
-After you close a container it still "hangs" around...
-It has stopped running but the container instance still exists in memory
-(reminder - you can view any existing containers using `docker ps -a`).
+After you close a container, it still "hangs" around...
+It has stopped running, but the container instance still exists in memory
+(as a reminder, you can view any existing containers using `docker ps -a`).
 You can remove the container by typing `docker rm <container_id>`.
-After you remove the container you can prove to yourself
+After you remove the container, you can prove to yourself
 that the container is no longer "hanging around" via `docker ps -a`,
 but that you still have the image installed (which you can see via `docker images`).
 
 > Note: to remove running containers,
-> you will need to first stop them via `docker stop <container_id>`
+> you will need to first stop them via `docker stop <container_id>`.
 
 #### That's a lot of work...
 
 We walked through those steps slowly
-to that you understand how everything is working.
-It is not the most efficient way to work with Docker container instances however
+so that you understand how everything is working.
+However, it is not the most efficient way to work with Docker container instances
 when using `docker run`.
 What we typically do is tell Docker to delete the container upon exit
 using the `--rm` flag in the run command.
 
 The command below runs a new container instance from the same image.
-This one command is equivalent to steps 2-4 above!
+This one command is equivalent to steps 2–4 above!
 
 ```bash
 docker run \
@@ -136,28 +142,29 @@ docker run \
 ```
 
 :::{.callout-note}
-we are using `\` above to split a bash command across lines to make it more readable.
+We are using `\` above to split a Bash command across lines to make it more readable.
 You will see that throughout this chapter.
 :::
 
 ### Mounting volumes to containers
 
-Often times we want to use the software made available to us in containers on files
+Oftentimes, we want to use the software made available to us in containers on files
 on our computers.
 To do this, we need to explicitly tell Docker to mount a volume to the container.
 We can do this via:
-`-v <path_to_local_computer_directory>:<absolute_path_to_container_directory>`
+`-v <path_to_local_computer_directory>:<absolute_path_to_container_directory>`.
 
 Often,
-we want to mount the volume from our current directory (where we are working)
-and we can do that with a short-form of `/$(pwd)` in place of the path
+we want to mount the volume from our current directory (where we are working),
+and we can do that with a short form of `/$(pwd)` in place of the path
 to our computer's directory.
-This is a useful shorthand command when you work with mutliple people,
+This is a useful shorthand command when you work with multiple people,
 so the same command will work on different computers
-since you are not hard specifying the local computer path.
+since you are not hard-coding the local computer path.
 
 To mount our current directory to a container
-from the `condaforge/miniforge3:25.3.1-0` image we type the following on your laptop:
+from the `condaforge/miniforge3:25.3.1-0` image,
+we type the following on our laptop:
 
 ```bash
 docker run \
@@ -167,33 +174,34 @@ docker run \
     condaforge/miniforge3:25.3.1-0
 ```
 
-Navigate to the directory where you mounted your files via:
-`cd /home/my_mounted_volume` and type `ls` to ensure you can see them.
+Navigate to the directory where you mounted your files via
+`cd /home/my_mounted_volume`, and type `ls` to ensure you can see them.
 
 :::{.callout-note}
-if you are mounting volumes to a container from a Docker image that runs a web app,
+If you are mounting volumes to a container from a Docker image that runs a web app,
 be sure to read the documentation to see where you should mount that volume.
-Usually the web apps are only exposed to certain directories
+Usually, the web apps are only exposed to certain directories,
 and you will only be able to access the files in the mounted volume if you mount them
 to the correct place.
 For example, in the `rocker/rstudio` image that we loaded earlier,
 volumes need to be mounted within `/home/rstudio/` to be able
-to access them via the RStudio server web app.
+to access them via the RStudio Server web app.
 :::
 
 <!-- TODO: dan: 202526w1 i don't know if we still need this section -->
-#### Windows notes for mounting volumes:
+#### Windows notes for mounting volumes
 - Windows machines need to explicitly share drives
-  with Docker - this should be part of your computer setup!
-- On Windows, the laptop path depends what shell you are using,
-  here are some details:
+  with Docker.
+  This should be part of your computer setup!
+- On Windows, the laptop path depends on what shell you are using.
+  Here are some details:
     - If you are going to run it in Windows terminal,
       then the command to share the current directory should be:
     ```bash
     docker run --rm -it -v /$(pwd):<PATH_ON_CONTAINER> <IMAGE_NAME>
     ```
 
-    - If you are going to run it in Power Shell, then the command should be:
+    - If you are going to run it in PowerShell, then the command should be:
     ```bash
     docker run --rm -it -v <ABSOLUTE_PATH_ON_YOUR_COMPUTER>:<PATH_ON_CONTAINER> <IMAGE_NAME>
     ```
@@ -212,7 +220,7 @@ then we need to map the correct port from the container to a port on our compute
 
 :::{.callout-note}
 In computer science, ports are points where network connections start and end.
-They can be physical (e.g., USB ports, Ethernet ports, etc) or virtual.
+They can be physical (e.g., USB ports, Ethernet ports) or virtual.
 In the case of virtual ports,
 they are really a software-based addressing mechanism that identifies points
 to connect specific processes or types of network services.
@@ -237,9 +245,9 @@ docker run \
 ```
 
 Then to access the web app,
-we need to navigate a browser url to `http://localhost:<CONTAINER_PORT>`.
-In this case we would navigate to <http://localhost:8787>
-to use the RStudio server web app from the container.
+we need to navigate a browser URL to `http://localhost:<CONTAINER_PORT>`.
+In this case, we would navigate to <http://localhost:8787>
+to use the RStudio Server web app from the container.
 
 Note that we can only map one port on our computer (the container/Docker host)
 to a container at any given time.
@@ -264,8 +272,8 @@ to access this container as we mapped it to the `8788` port on our computer
 
 Another important note is that the container port is specific to the container,
 and the web app installed therein.
-So we cannot change that without changing the container image,
-and/or application installed therein.
+So we cannot change that without changing the container image
+and/or the application installed therein.
 Where do you learn what port is exposed in a container image?
 The image documentation should specify this.
 For example, in the [`rocker/rstudio` container image documentation](https://hub.docker.com/r/rocker/rstudio) it states:
@@ -278,17 +286,17 @@ For example, in the [`rocker/rstudio` container image documentation](https://hub
 
 When we launch containers,
 they execute the command at runtime that was specified in their `Dockerfile`.
-For example, in the case of the Rocker and Juypter images,
-this default behaviour is to run a web app.
-Sometimes the default container behaviour is not what we want to do.
-Instead we want to do something different,
-like run the container as a Bash shell to test out some installation commands (common
-when we are building and customizing our own containers) or using the container
-to run a script non-interactively (like executing a data analysis pipeline
-from beginning to end).
+For example, in the case of the Rocker and Jupyter images,
+this default behavior is to run a web app.
+Sometimes the default container behavior is not what we want to do.
+Instead, we want to do something different,
+like run the container as a Bash shell to test out some installation commands
+(common when we are building and customizing our own containers)
+or use the container to run a script non-interactively
+(like executing a data analysis pipeline from beginning to end).
 
 To do this, we can append a new command to the end of our `docker run` commands.
-For example to open the `rocker/rstudio:4.3.2` image in an interactive bash shell,
+For example, to open the `rocker/rstudio:4.3.2` image in an interactive Bash shell,
 we would run:
 
 ```bash
@@ -300,11 +308,11 @@ docker run \
 ```
 
 Notice the command above does not specify the ports, nor does it set the password.
-This is because in this instance,
-we are not using this container to run it as a web app,
-we are just running it as a bash shell (which needs no ports, nor authentication).
+This is because, in this instance,
+we are not using this container to run it as a web app;
+we are just running it as a Bash shell (which needs no ports or authentication).
 
-The general form for for running things non-interactively is this:
+The general form for running things non-interactively is this:
 
 ```bash
 docker run \
@@ -315,9 +323,9 @@ docker run \
 
 ### Use a container to execute a script
 
-What of instead running the container interactively, we wanted to run a script?
+What if, instead of running the container interactively, we wanted to run a script?
 Let's take this R script, named `snowman.R`, shown below,
-which uses the `cowsay::say` function to print some asci art with a cute message!
+which uses the `cowsay::say` function to print some ASCII art with a cute message!
 
 ```r
 # snowman.R
@@ -338,7 +346,7 @@ $ docker run \
     Rscript /home/rstudio/snowman.R
 ```
 
-Which should result in:
+This should result in:
 
 ```sh
 -----
@@ -352,9 +360,9 @@ Snow again this week?
     (__:__) [nosig]
 ```
 
-Now that was a silly example,
+Now, that was a silly example,
 but this can be made powerful so that we can run an analysis pipeline,
-such as a `Makefile` non-interactively using Docker!
+such as a `Makefile`, non-interactively using Docker!
 
 Let's do this exercise to demonstrate:
 
@@ -362,7 +370,7 @@ Let's do this exercise to demonstrate:
    <https://github.com/ttimbers/breast_cancer_predictor_py>
 
 2. Navigate into the root of the `breast_cancer_predictor_py` project
-   on your computer using the command line and enter the following command
+   on your computer using the command line, and enter the following command
    to reset the project to a clean state (i.e., remove all files generated
    by previous runs of the analysis):
 
@@ -385,7 +393,7 @@ docker run \
     make all
 ```
 
-## Docker command line commands
+## Docker command-line commands
 
 The table below summarizes the Docker commands we have learned so far and can serve
 as a useful reference when we are using Docker:

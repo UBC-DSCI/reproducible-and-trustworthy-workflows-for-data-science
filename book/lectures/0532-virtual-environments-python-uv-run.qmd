@@ -76,7 +76,8 @@ It put `.venv/bin` first on your `PATH`
 and it set the `VIRTUAL_ENV` environment variable to the environment's folder.
 Python's own documentation describes these two changes
 in [How venvs work](https://docs.python.org/3/library/venv.html#how-venvs-work).
-Now `python penguins.py`, `jupyter lab` and `quarto render` all use the project's packages:
+Now `python penguins.py`, `jupyter lab`, and `quarto render`
+all use the project's packages:
 
 ```bash
 python penguins.py
@@ -103,7 +104,7 @@ which python3
 
 ## A good way to think about `uv run`
 
-uv's documentation says that `uv run` runs a command in the project environment,
+The uv documentation says that `uv run` runs a command in the project environment,
 and that before every `uv run`,
 uv checks that `uv.lock` matches `pyproject.toml`
 and that `.venv` matches `uv.lock`
@@ -120,7 +121,7 @@ So a good way to think about `uv run <command>` is as a shortcut for four steps:
 3. run the command
 4. deactivate the environment
 
-uv's documentation does not describe how `uv run` sets up the environment internally.
+The uv documentation does not describe how `uv run` sets up the environment internally.
 You can see, though, that for the command it runs,
 it changes the same two things activating does:
 
@@ -186,7 +187,7 @@ and creates `.venv` if it does not exist yet
 Activating only switches to whatever `.venv` already holds.
 
 The difference shows in a fresh clone of the project,
-which has `pyproject.toml`, `uv.lock` and the code,
+which has `pyproject.toml`, `uv.lock`, and the code,
 but no `.venv`:
 
 ```bash
@@ -224,7 +225,7 @@ Installed 5 packages in 72ms
 
 ## Which to use
 
-Use `uv run` for scripts, JupyterLab, Quarto and tests,
+Use `uv run` for scripts, JupyterLab, Quarto, and tests,
 and put those commands in your Makefile targets.
 You never have to remember which environment is active,
 and the environment always matches the lockfile.

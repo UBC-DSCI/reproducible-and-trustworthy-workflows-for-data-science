@@ -12,7 +12,7 @@ aliases:
 ## What is a minimal viable software package?
 
 In this course, we are learning to build software packages in R
-and Python to a high standard, with regards to:
+and Python to a high standard, with regard to:
 
 - code robustness
 - documentation
@@ -79,13 +79,13 @@ and Python package key files and directories):
 | Directory for tests for user-facing package functions |        |   |
 | Directory for documentation                           |        |   |
 | Package metadata                                      |        |   |
-| File(s) that define the Namespace                     |        |   |
+| File(s) that define the namespace                     |        |   |
 | Templating tools                                      |        |   |
 | Documentation building tools                          |        |   |
 | Package build tools                                   |        |   |
 
 
-> Note: at the end of lecture I will review the answers to this table.
+> Note: at the end of the lecture, I will review the answers to this table.
 
 ## Tour de R packages
 
@@ -100,22 +100,23 @@ Some R packages you may want to explore:
 
 1. [`broom`](https://github.com/tidymodels/broom) - a tidyverse R package
 
-1. [`tidyhydat`](https://github.com/ropensci/tidyhydat) - a reviewed ROpenSci R package
+1. [`tidyhydat`](https://github.com/ropensci/tidyhydat) - a reviewed rOpenSci R package
 
 ### `usethis` and the evolution of R packaging
 
-What constitutes an R package or its configuration files, has not changed in a long time.
-However the tools commonly used to build them have.
-Currently, the most straight forward,
-and easy way to build R packages now involves the use of two developer packages called `usethis` and `devtools`.
+What constitutes an R package or its configuration files has not changed in a long time.
+However, the tools commonly used to build them have.
+Currently, the most straightforward
+and easy way to build R packages
+involves the use of two developer packages called `usethis` and `devtools`.
 
 <img src="../img/usethis-devtools.png" width=400>
 
 These packages automate repetitive tasks that arise during project setup and development.
-It prevents you from having to do things like manually create boiler plate file
+They prevent you from having to do things like manually create boilerplate file
 and directory structures needed for building your R package structure,
-as well as simplifies the checking,
-installation and building of your package from source code.
+and they simplify the checking,
+installation, and building of your package from source code.
 
 Packages created via `usethis` and `devtools` can be shared
 so that they can be installed via source from GitHub,
@@ -125,13 +126,14 @@ there is a check and gatekeeping system (in contrast to PyPI).
 We will learn more about this in later parts of the course.
 
 > Fun fact!
-> Jenny Bryan, a past UBC Statistics Professor UBC MDS founder,
+> Jenny Bryan, a past UBC Statistics professor and UBC MDS founder,
 > is the maintainer for the `usethis` R package!
 
 ### Learn more by building a toy R package
 
 For individual assignment 5,
-you will build a toy R package using a tutorial Jenny Bryan put together: [The Whole Game](https://r-pkgs.org/whole-game.html)
+you will build a toy R package using a tutorial Jenny Bryan put together:
+[The Whole Game](https://r-pkgs.org/whole-game.html).
 
 After building the toy package,
 read [Package structure and state](https://r-pkgs.org/package-structure-state.html)
@@ -142,7 +144,8 @@ to deepen your understanding of what packaging means in R and what packages actu
 Some Python packages you may want to explore:
 
 1. [`pycounts_tt25`](https://github.com/ttimbers/pycounts_tt25) -
-   the end product of [How to Package a Python](https://py-pkgs.org/03-how-to-package-a-python) from the Python Packages book
+   the end product of [How to package a Python](https://py-pkgs.org/03-how-to-package-a-python)
+   from the Python Packages book
 
 1. [`PyWebCAT`](https://github.com/UNCG-DAISY/PyWebCAT) -
    a Pythonic way to interface with the NOAA National Ocean Service Web Camera Applications Testbed (WebCAT)
@@ -151,17 +154,17 @@ Some Python packages you may want to explore:
    (uses the Poetry approach to creating Python packages)
 
 3. [`pandera`](https://github.com/pandera-dev/pandera) -
-   a reviewed PyOpenSci Python package (uses more traditional approach
+   a reviewed pyOpenSci Python package (uses a more traditional approach
    to creating Python packages)
 
 
 ### Poetry, Hatch, and the evolution of Python packaging
 
-If you want to package your Python code and distribute for ease of use by others
-on the Python Packaging Index (PyPI) you need to convert
-it to a standard format called Wheel.
+If you want to package your Python code and distribute it for ease of use by others
+on the Python Package Index (PyPI),
+you need to convert it to a standard format called a wheel.
 
-Previously, to do this it was standard to have 4 configuration files
+Previously, to do this, it was standard to have four configuration files
 in your package repository:
 
 - `setup.py`
@@ -183,32 +186,32 @@ One of the most recent and simplest to use is Poetry (created in 2018).
 When used to build packages, Poetry roughly does two things:
 
 1. Uses the `pyproject.toml` to manage
-   and solve package configurations via the Poetry commands `init`, `add`, `config`, etc
+   and solve package configurations via the Poetry commands `init`, `add`, `config`, etc.
 
 2. Creates a lock file (`poetry.lock`) which automatically creates
    and activates a virtual environment (if none are activated)
-   where the Poetry commands such as `install`, `build`, `run`, etc are executed.
+   where the Poetry commands such as `install`, `build`, and `run` are executed.
 
-Cookiecutter templates are also useful to help setup the biolerplate project
+Cookiecutter templates are also useful to help set up the boilerplate project
 and directory structure needed for packages.
 And conda environments are useful to isolate your package development environment.
 We will use these in this course as well.
 
-#### PyOpenSci + Hatch
+#### pyOpenSci + Hatch
 
-[Hatch](https://hatch.pypa.io/latest/) is a newer python package manger
+[Hatch](https://hatch.pypa.io/latest/) is a newer Python package manager
 (first 1.0 release in 2022).
-It is [PEP-517](https://peps.python.org/pep-0517/)
-and [PEP-518](https://peps.python.org/pep-0518/) compliant
-and can do all the environment management that poetry does.
-To avoid convusion, this textbook will not use the environment features of `hatch`,
+It is [PEP 517](https://peps.python.org/pep-0517/)
+and [PEP 518](https://peps.python.org/pep-0518/) compliant
+and can do all the environment management that Poetry does.
+To avoid confusion, this textbook will not use the environment features of `hatch`,
 only the package build backend, `hatchling`.
-It assumes you are using `conda` for the main python verison
-and environment management,
-all package dependencies will not be placed in the `environment.yml` file,
+It assumes you are using `conda` for the main Python version
+and environment management.
+No package dependencies will be placed in the `environment.yml` file;
 these will all go into the `pyproject.toml` file.
 
-Your python `environment.yml` file will be very minimal,
+Your Python `environment.yml` file will be very minimal;
 all other packages will be specified in the `pyproject.toml`.
 
 ```yaml
@@ -222,17 +225,20 @@ dependencies:
 ```
 
 :::{.callout-note}
-This book and resources is slowly migrating towards the PyOpenSci + Hatch + Hatchling way of building packages.
-We will migrate to the official PyOpenSci packaging guide: <https://www.pyopensci.org/python-package-guide/index.html>
+This book and its resources are slowly migrating
+toward the pyOpenSci + Hatch + Hatchling way of building packages.
+We will migrate to the official pyOpenSci packaging guide:
+<https://www.pyopensci.org/python-package-guide/index.html>.
 
-All references to `cookiecutter` and `poetry` should look
-for the corresponding reference in the PyOpenSci tutorial on `copier` and `hatch`.
-For documentation references to `sphinx` would go do the `quartodoc` site: <https://machow.github.io/quartodoc>
+For all references to `cookiecutter` and `poetry`,
+look for the corresponding reference in the pyOpenSci tutorial on `copier` and `hatch`.
+For documentation,
+references to `sphinx` would go to the `quartodoc` site: <https://machow.github.io/quartodoc>.
 :::
 
 ### Learn more by building a toy Python package
 
-You can learn more about building Python packages,
+You can learn more about building Python packages
 by first building a toy package using a tutorial we have put together
 for you: [How to package a Python](https://py-pkgs.org/03-how-to-package-a-python).
 
@@ -250,7 +256,7 @@ and what packages actually are.
 | Directory for tests for user-facing package functions | `tests`               | `tests/testthat`      |
 | Directory for documentation                           | `docs`                | `man` and `vignettes` |
 | Package metadata                                      | `pyproject.toml`      | `DESCRIPTION`         |
-| File(s) that define the Namespace                     | `__init__.py`         | `NAMESPACE`           |
+| File(s) that define the namespace                     | `__init__.py`         | `NAMESPACE`           |
 | Templating tools                                      | Cookiecutter / Copier | `usethis`             |
-| Documentation building tools                          | sphinx / quartodoc    | pkgdown               |
+| Documentation building tools                          | Sphinx / quartodoc    | pkgdown               |
 | Package build tools                                   | Poetry / Hatch        | `devtools`            |

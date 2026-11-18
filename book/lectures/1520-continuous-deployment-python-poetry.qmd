@@ -7,15 +7,16 @@ aliases:
 
 ## Using GitHub Actions to perform CD for your Python package
 
-We will be building off what we learned last class about continuous integration with GitHub actions for Python.
-What we need to change to make a continuous deployment work for our package?
+We will be building off what we learned last class
+about continuous integration with GitHub Actions for Python.
+What do we need to change to make continuous deployment work for our package?
 
-- setup correct permissions for `cd` job steps
+- set up correct permissions for `cd` job steps
 
 - add a conditional for when to run the job
   (only if `ci` passes, and only if this is a commit to the `main` branch)
 
-- ensure the runner uses only one machine - ubuntu
+- ensure the runner uses only one machine - Ubuntu
 
 - bump the version
 
@@ -36,7 +37,7 @@ GitHub Secrets is the solution to this!
 
 GitHub Secrets are encrypted environment variables that are used only with GitHub Actions,
 and specified on a repository-by-repository basis.
-They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`
+They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`.
 
 See GitHub's help docs for how to do this: <https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets>
 
@@ -45,29 +46,32 @@ Add a secret to your `pycounts*` GitHub repository
 
 
 Let's learn how to add secrets to a GitHub repository.
-We'll do this by adding our `TEST_PYPI_API_TOKEN` and `PYPI_API_TOKEN` as a secret
-to our `pypkgs` GitHub repository so that we can automate the publishing of our package repositories.
+We'll do this by adding our `TEST_PYPI_API_TOKEN` and `PYPI_API_TOKEN` as secrets
+to our `pypkgs` GitHub repository
+so that we can automate the publishing of our package repositories.
 
-#### Steps:
+#### Steps
 
-1. Under **"Secrets"**, click on **"Settings and variables"** > **"Actions"**
+1. Under **"Secrets"**, click on **"Settings and variables"** > **"Actions"**.
 
-2. Under **"Repository secrets"** click **"New repository secret"**
+2. Under **"Repository secrets"**, click **"New repository secret"**.
 
 3. Add `TEST_PYPI_API_TOKEN` as the secret name,
-   and paste your token (which you previously saved from TestPyPI to a password manager) as the value.
+   and paste your token
+   (which you previously saved from TestPyPI to a password manager) as the value.
 
-4. Repeat the steps above to add `PYPI_API_TOKEN` as a secret
+4. Repeat the steps above to add `PYPI_API_TOKEN` as a secret.
 :::
 
 ## Authenticating with the `GITHUB_TOKEN`
 
 What if you need to do Git/GitHub things in your workflow?
-Like checkout your files to run the tests?
+Like check out your files to run the tests?
 Create a release?
 Open an issue?
-To help with this GitHub automatically (i.e., you do not need
-to create this secret) creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow.
+To help with this, GitHub automatically
+(i.e., you do not need to create this secret)
+creates a secret named `GITHUB_TOKEN` that you can access and use in your workflow.
 You access this token in your workflow file via:
 
 ```yaml
@@ -82,8 +86,8 @@ In addition to the tokens above, the `cd` job needs to have write permissions to
 2. Edit the version number in `pyproject.toml`
 3. Create a new software release on GitHub
 
-To do this we will use the `permissions` keyword in `ci-cd.yml` at the beginning of the `cd` job,
-setting both `id-token` and contents` to `write`:
+To do this, we will use the `permissions` keyword in `ci-cd.yml` at the beginning of the `cd` job,
+setting both `id-token` and `contents` to `write`:
 
 ```toml
  cd:
@@ -94,13 +98,14 @@ setting both `id-token` and contents` to `write`:
 
 ## Conditionals for when to run the job
 
-We only want our `cd` job to run if certain conditions are true, these are:
+We only want our `cd` job to run if certain conditions are true.
+These are:
 
 1. if the `ci` job passes
 
 2. if this is a commit to the `main` branch
 
-We can accomplish this in our `cd` job be writing a conditional using the `needs`
+We can accomplish this in our `cd` job by writing a conditional using the `needs`
 and `if` keywords at the top of the job,
 right after we set the permissions:
 
@@ -119,14 +124,14 @@ cd:
 
 :::{.exercise}
 
-read the `cd` job of [`ci-cd.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci-cd.yml)
+Read the `cd` job of [`ci-cd.yml`](https://github.com/py-pkgs/py-pkgs-cookiecutter/blob/main/%7B%7B%20cookiecutter.__package_slug%20%7D%7D/.github/workflows/ci-cd.yml)
 
 To make sure we understand what is happening in our workflow that performs CD,
 let's convert each **step** to a human-readable explanation:
 
 1. Sets up Python on the runner
 
-2. Checkout our repository files from GitHub and put them on the runner
+2. Checks out our repository files from GitHub and puts them on the runner
 
 3. ...
 
@@ -139,7 +144,7 @@ let's convert each **step** to a human-readable explanation:
 7. ...
 
 > Note: I filled in the steps we went over last class,
-> so you can just fill in the new stuff
+> so you can just fill in the new stuff.
 
 :::
 
@@ -155,7 +160,7 @@ Let's look at the first step that works towards accomplishing this:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-[Python semantic-release](https://python-semantic-release.readthedocs.io/en/latest/) is a Python tool
+[Python Semantic Release](https://python-semantic-release.readthedocs.io/en/latest/) is a Python tool
 which parses commit messages looking for keywords to indicate how to bump the version.
 It bumps the version in the `pyproject.toml` file.
 
@@ -172,7 +177,8 @@ Let's unpack each of these on its own.
 
 - These version numbers should also communicate something about how the underlying code has changed from one version to the next.
 
-- Semantic versioning is an agreed upon "code" by developers that gives meaning to version number changes,
+- Semantic versioning is an agreed-upon "code" by developers
+  that gives meaning to version number changes,
   so developers and users can make meaningful predictions about how code changes between versions from looking solely at the version numbers.
 
 - Semantic versioning assumes version 1.0.0 defines the API,
@@ -190,18 +196,23 @@ Given a version number `MAJOR.MINOR.PATCH` (e.g., `2.3.1`), increment the:
 
 ### Semantic versioning case study
 
-**Case 1:** In June 2009, Python bumped versions from 3.0.1, some changes in the new release included:
+**Case 1:** In June 2009, Python bumped versions from 3.0.1.
+Some changes in the new release included:
+
 - Addition of an ordered dictionary type
 - A pure Python reference implementation of the import statement
 - New syntax for nested with statements
 
-**Case 2:** In Dec 2017, Python bumped versions from 3.6.3, some changes in the new release included:
+**Case 2:** In Dec 2017, Python bumped versions from 3.6.3.
+Some changes in the new release included:
 
 - Fixed several issues in printing tracebacks (`PyTraceBack_Print()`).
 - Fix the interactive interpreter looping endlessly when no memory.
 - Fixed an assertion failure in Python parser in case of a bad `unicodedata.normalize()`
 
-**Case 3:** In Feb 2008, Python bumped versions from 2.7.17, some changes in the new release included:
+**Case 3:** In Feb 2008, Python bumped versions from 2.7.17.
+Some changes in the new release included:
+
 - `print` became a function
 - integer division resulted in creation of a float, instead of an integer
 - Some well-known APIs no longer returned lists (e.g., `dict.keys`, `dict.values`, `map`)
@@ -209,7 +220,8 @@ Given a version number `MAJOR.MINOR.PATCH` (e.g., `2.3.1`), increment the:
 :::{.exercise}
 Name that semantic version release
 
-Reading the three cases posted above, think about whether each should be a major, minor or patch version bump.
+Reading the three cases posted above,
+think about whether each should be a major, minor, or patch version bump.
 Answer the chat when prompted.
 :::
 
@@ -227,17 +239,19 @@ that works on the conventional (or Angular) commit message style, which is:
 ```
 
 How to affect semantic versioning with conventional commit messages:
+
 - a commit with the type `fix` leads to a patch version bump
 - a commit with the type `feat` leads to a minor version bump
 - a commit with a body or footer that starts with `BREAKING CHANGE:` - these can be of any type (Note:
-  currently Python Semantic release is broken for detecting these on commits with Windows line endings,
-  wich the GitHub pen tool commits also use.
+  currently Python Semantic Release is broken for detecting these
+  on commits with Windows line endings,
+  which the GitHub pen tool commits also use.
   The workaround fix is to use `!` after `feat`, for example:
   `feat!: This describes the new feature and breaking changes` in addition to `BREAKING CHANGES: ...` in the footer.)
 
 :::{.callout-note}
-commit types other than `fix` and `feat` are allowed.
-Recommeneded ones include `docs`, `style`, `refactor`, `test`, `ci` and [others](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type).
+Commit types other than `fix` and `feat` are allowed.
+Recommended ones include `docs`, `style`, `refactor`, `test`, `ci`, and [others](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#type).
 However, only `fix` and `feat` result in version bumps using Python Semantic Release.
 :::
 
@@ -259,7 +273,7 @@ BREAKING CHANGE: `+` operator will no longer work for adding new layers to ggplo
 
 What kind of version bump would this result in?
 
-### Some practical notes for usage in your packages:
+### Some practical notes for usage in your packages
 
 1. You must add the following to the tool section of your `pyproject.toml` file for this to work (note:
    the `pypkgs-cookiecutter` adds this table if you choose to add `ci-cd` when you set it up):
@@ -276,40 +290,45 @@ What kind of version bump would this result in?
 
 2. Versions will **not** be bumped if conventional commits are not used.
 
-### Some practical notes for usage in your packages:
+### Some practical notes for usage in your packages
 
 
 1. Automated version bumping can only work (as currently implemented in our cookiecutter) with versions in the `pyproject.toml` metadata (line 3).
    If you add a version elsewhere,
-   it will not get bumped unless you specify the location the the `[tool.semantic_release]` table in `pyproject.toml`.
+   it will not get bumped unless you specify the location
+   in the `[tool.semantic_release]` table in `pyproject.toml`.
 
 2. If you have been working with main branch protection,
-   you will need to change something to use `ci.yml` work for continuous deployment.
-   The reason for this, is that this workflow (which bumps versions
-   and deploy the package) is triggered to run **after** the pull request is merged to main.
-   Therefore, when we bump the versions in the `pyproject.toml` file we need to push these changes
-   to the main branch - however this is problematic given that we have set-up main branch protection!
+   you will need to change something to make `ci.yml` work for continuous deployment.
+   The reason for this is that this workflow (which bumps versions
+   and deploys the package) is triggered to run **after** the pull request is merged to main.
+   Therefore, when we bump the versions in the `pyproject.toml` file,
+   we need to push these changes to the main branch;
+   however, this is problematic given that we have set up main branch protection!
 
 What are we to do about #2?
 
-#### Solution 1:
+#### Solution 1
 
 Remove main branch protection.
-This is not the most idealistic solution, however it is a simple and practical one.
+This is not the most ideal solution;
+however, it is a simple and practical one.
 
-#### Possible solution 2:
+#### Possible solution 2
 
 (I say possible because this has yet to be formally documented by PSR,
 and is still just reported in an issue: <https://github.com/python-semantic-release/python-semantic-release/issues/311>.
-I have tested it and it works for me, see example here: <https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml>)
+I have tested it and it works for me;
+see an example here: <https://github.com/ttimbers/pycounts_tt_2024/blob/main/.github/workflows/ci-cd.yml>)
 
 1. Create a new GitHub PAT (see [these docs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)) with the [repo](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes) scope.
 
 2. Under **"Secrets"**, click on **"Settings and variables"** > **"Actions"**,
    and then under **"Repository secrets"** click **"New repository secret"**
-   to create a new repository secret named `RELEASE_TOKEN` and the new GitHub PAT with repo scope as its value.
+   to create a new repository secret named `RELEASE_TOKEN`,
+   with the new GitHub PAT with repo scope as its value.
 
-3. Edit the to `cd` job steps shown below (from `ci-cd.yml`) use this token:
+3. Edit the `cd` job steps shown below (from `ci-cd.yml`) to use this token:
 
 ```yaml
 ...
@@ -327,7 +346,7 @@ I have tested it and it works for me, see example here: <https://github.com/ttim
 ...
 ```
 
-### Demo of Continuous Deployment!
+### Demo of continuous deployment!
 
 - <https://github.com/ttimbers/pycounts_tt_2024>
 
@@ -362,15 +381,16 @@ YouTubeVideo('zB8pbUW5n1g')
 
 Don't get the joke?
 I didn't either without historical context.
-When PyPI was first launched it didn't have many Python packages on it - similar to a cheese shop with no cheese 😆
+When PyPI was first launched,
+it didn't have many Python packages on it - similar to a cheese shop with no cheese 😆
 
-### the Cheese Shop (er, PyPI)
+### The Cheese Shop (er, PyPI)
 
 - PyPI (founded in 2002) stands for the "Python Package Index"
 
 -  hosts Python packages of two different forms:
     - sdists (source distributions)
-    - precompiled "wheels (binaries)
+    - precompiled "wheels" (binaries)
 - heavily cached and distributed
 - currently contains > 9000 projects
 
@@ -378,19 +398,22 @@ When PyPI was first launched it didn't have many Python packages on it - similar
 
 <img src="https://www.researchgate.net/profile/Marat_Valiev2/publication/328595587/figure/fig1/AS:687258193633280@1540866530197/Number-of-new-PyPI-packages-per-month.png" width=800>
 
-*Source: ["Ecosystem-level determinants of sustained activity in open-source projects: a case study of the PyPI ecosystem"](https://dl.acm.org/doi/10.1145/3236024.3236062) by  Marat Valiev, Bogdan Vasilescu & James Herbsleb*
+*Source: ["Ecosystem-level determinants of sustained activity in open-source projects: a case study of the PyPI ecosystem"](https://dl.acm.org/doi/10.1145/3236024.3236062) by Marat Valiev, Bogdan Vasilescu, and James Herbsleb*
 
-### What does it mean to be a PyPI package:
+### What does it mean to be a PyPI package?
 
 **Ease of installation:**
+
 - can be installed by users via `pip install` (it's actually the default!)
 - universal binaries available for packages that are written solely in Python
 
 **Discoverability:**
+
 - listed as a package on PyPI
 
-HOWEVER, there is no required check for your package is required to pass...
-As long as you can bundle it as something that PyPI recognizes as an sdist or wheels then it can go on PyPI...
+HOWEVER, there is no check your package is required to pass...
+As long as you can bundle it as something that PyPI recognizes as an sdist or wheel,
+then it can go on PyPI...
 This allows the process to be fully automated,
 but QC is lower than it is for CRAN.
 
@@ -398,21 +421,23 @@ but QC is lower than it is for CRAN.
 
 - See above, or the ["How to package a Python"](https://py-pkgs.org/03-how-to-package-a-python#) chapter of the *Python Packages* book.
 
-### How to submit a package to Conda
+### How to submit a package to conda
 
-- See the ["Publish your Python package that is on PyPI to conda-forge"](https://www.pyopensci.org/python-package-guide/tutorials/publish-conda-forge.html) chapter of the Python packaging 101 documentation from PyOpenSci.
+- See the ["Publish your Python package that is on PyPI to conda-forge"](https://www.pyopensci.org/python-package-guide/tutorials/publish-conda-forge.html) chapter of the Python packaging 101 documentation from pyOpenSci.
 
 ### Points for discussion
 
 - Is one model better or worse?
 
-- Importance & complementarity of organizations like rOpenSci & pyOpenSci with CRAN and PyPI, respectively
+- Importance and complementarity of organizations like rOpenSci and pyOpenSci
+  with CRAN and PyPI, respectively
 
 
 ### Semantic versioning case study - answers
 
 In 2008, Python bumped versions from 2.7.17 to 3.0.0.
 Some changes in the 3.0.0 release included:
+
 - `print` became a function
 - integer division resulted in creation of a float, instead of an integer
 - Some well-known APIs no longer returned lists (e.g., `dict.keys`, `dict.values`, `map`)
@@ -422,6 +447,7 @@ Some changes in the 3.0.0 release included:
 
 In 2009, Python bumped versions from 3.0.1 to 3.1.0.
 Some changes in the 3.1.0 release included:
+
 - Addition of an ordered dictionary type
 - A pure Python reference implementation of the import statement
 - New syntax for nested with statements

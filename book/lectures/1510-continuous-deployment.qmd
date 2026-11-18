@@ -14,27 +14,29 @@ By the end of this topic, students should be able to:
 1. Define continuous deployment and argue the costs and benefits of continuous deployment
 2. Explain why continuous deployment is superior to manually deploying software
 3. Store and use GitHub Actions credentials safely via GitHub Secrets
-4. Use GitHub Actions to set-up automated deployment of Python packages upon push to the main branch
+4. Use GitHub Actions to set up automated deployment of Python packages upon push to the main branch
 5. Explain semantic versioning,
-   and define what constitutes patch, minor, major and breaking changes
+   and define what constitutes patch, minor, major, and breaking changes
 6. Write conventional commit messages that are useful for semantic release
-3. Publish Python packages to test PyPI
-4. Publish R packages to GitHub, document how to install them via `devtools::install_github`
+7. Publish Python packages to TestPyPI
+8. Publish R packages to GitHub and document how to install them via `devtools::install_github`
 
-## Continuous Deployment (CD)
+## Continuous deployment (CD)
 
-Defined as the practice of automating the deployment of software that has successfully run through your test-suite.
+Continuous deployment is defined as the practice of automating the deployment of software
+that has successfully run through your test suite.
 
 For example, upon merging a pull request to master,
-an automation process builds the Python package and publishes to PyPI without further human intervention.
+an automation process builds the Python package
+and publishes it to PyPI without further human intervention.
 
 ### Why use CD?
 
-- little to no effort in deploying new version of the software allows new features
+- little to no effort in deploying a new version of the software allows new features
   to be rolled out quickly and frequently
 - also allows for quick implementation and release of bug fixes
 - deployment can be done by many contributors,
-  not just one or two people with a high level of Software Engineering expertise
+  not just one or two people with a high level of software engineering expertise
 
 ### Why use CD?
 
@@ -56,35 +58,35 @@ This deployment process was done once every two weeks.*
 
 [*Source*](https://levelup.gitconnected.com/heres-why-continuous-integration-and-deployment-is-so-important-to-the-software-development-c0caeead5881)*: Tylor Borgeson*
 
-Infrequent & manual deployment makes me feel like this when it comes time to do it:
+Infrequent and manual deployment makes me feel like this when it comes time to do it:
 
 ![](https://media.giphy.com/media/bEVKYB487Lqxy/giphy.gif)
 
-*and so it can become a viscious cycle of delaying deployment because its hard,
-and then making it harder to do deployment because a lot of changes have been made since the last deployment...*
+*and so it can become a vicious cycle of delaying deployment because it's hard,
+and then making it harder to do deployment
+because a lot of changes have been made since the last deployment...*
 
 So to avoid this, we are going to do continuous deployment when we can!
 And where we can't, we will automate as much as we can up until the point where we need to manually step in.
 
 ## Examples of CD being used for data science
 
-- [Python packages](https://py-pkgs.org/08-ci-cd#setting-up-continuous-deployment) (but not R, more on this later...)
+- [Python packages](https://py-pkgs.org/08-ci-cd#setting-up-continuous-deployment) (but not R; more on this later...)
 
-- Package documentation (e.g., [`pkgdown` websites](https://pkgdown.r-lib.org/) for R, [ReadtheDocs](https://py-pkgs.org/06-documentation#hosting-documentation-online) websites for Python)
+- Package documentation (e.g., [`pkgdown` websites](https://pkgdown.r-lib.org/) for R, [Read the Docs](https://py-pkgs.org/06-documentation#hosting-documentation-online) websites for Python)
 
-- Books and websites (e.g., [`jupyter-book`](https://jupyterbook.org/intro.html), [`bookdown`](https://bookdown.org/), [`distill` websites](https://pkgs.rstudio.com/distill/index.html), etc)
+- Books and websites (e.g., [`jupyter-book`](https://jupyterbook.org/intro.html), [`bookdown`](https://bookdown.org/), [`distill` websites](https://pkgs.rstudio.com/distill/index.html))
 
 ## Conditionals for when to run the job
 
-We only want our `cd` job to run if certain conditions are true, these are:
-Documentation for Python packages
-
+We only want our `cd` job to run if certain conditions are true.
+These are:
 
 1. if the `ci` job passes
 
 2. if this is a commit to the `main` branch
 
-We can accomplish this in our `cd` job be writing a conditional using the `needs`
+We can accomplish this in our `cd` job by writing a conditional using the `needs`
 and `if` keywords at the top of the job,
 right after we set the permissions:
 
@@ -108,7 +110,7 @@ let's convert each **step** to a human-readable explanation:
 
 1. Sets up Python on the runner
 
-2. Checkout our repository files from GitHub and put them on the runner
+2. Checks out our repository files from GitHub and puts them on the runner
 
 3. ...
 
@@ -121,8 +123,8 @@ let's convert each **step** to a human-readable explanation:
 7. ...
 
 > Note: I filled in the steps we went over last class,
-> so you can just fill in the new stuff
+> so you can just fill in the new stuff.
 
-### Demo of Continuous Deployment!
+### Demo of continuous deployment!
 
 - <https://github.com/ttimbers/pycounts_tt_2024>

@@ -7,8 +7,8 @@ error: true
 When we write `select(penguins, species)`,
 `species` is not an object in our environment,
 yet the code works.
-Normally, R evaluates every argument we give a function:
-it looks up `species`, and stops with an error if it cannot find it.
+Normally, R evaluates every argument we give a function.
+It looks up `species` and stops with an error if it cannot find it.
 Functions like `select()` instead capture the code we typed and evaluate it somewhere else, such as inside a data frame.
 This is called **non-standard evaluation** (NSE).
 The `tidyverse` way of doing it is called **tidy evaluation**,
@@ -69,8 +69,8 @@ subset(penguins, select = species)
 select(penguins, species)
 ```
 
-So non-standard evaluation is not just a `tidyverse` thing:
-base R's `subset()` uses it too.
+So non-standard evaluation is not just a `tidyverse` thing.
+Base R's `subset()` uses it too.
 But if we try to use a bare column name with `[`,
 R evaluates `species` as an object in our environment,
 and there is no such object:
@@ -120,8 +120,8 @@ str(quote(species))
 str(quote(3 + 3))
 ```
 
-The `rlang` documentation calls quoting **defusing**:
-the code is captured like a defused bomb,
+The `rlang` documentation calls quoting **defusing**.
+The code is captured like a defused bomb,
 so that it does not go off until we decide.
 
 ## Rebuilding `select()`
@@ -154,7 +154,7 @@ So we need to quote what the user typed, instead of evaluating it.
 ### Try 2: quoting inside the function
 
 `expr()` quotes exactly what we type, so inside a function,
-`expr(col)` gives us the symbol `col`: the name of the argument,
+`expr(col)` gives us the symbol `col`, the name of the argument,
 not what the user passed to it:
 
 ```{r}
@@ -220,8 +220,8 @@ my_select(penguins, col_name, island)
 Our function quoted `col_name` as the symbol `col_name`,
 and there is no column with that name.
 We need a way to tell a quoting function "use the *value* of this variable, not its name".
-That is what `!!` (pronounced "bang-bang") does:
-it **unquotes** (`rlang` calls it **injects**) a value into the code before the function captures it:
+That is what `!!` (pronounced "bang-bang") does.
+It **unquotes** (`rlang` calls it **injects**) a value into the code before the function captures it:
 
 ```{r}
 my_select(penguins, !!col_name, island)
@@ -308,15 +308,16 @@ times_two_expr(x * 2)
 times_two_quo(x * 2)
 ```
 
-Formulas (`~`) work the same way:
-a formula is an expression plus the environment it was created in,
+Formulas (`~`) work the same way.
+A formula is an expression plus the environment it was created in,
 which is why model formulas can find the variables you use in them.
 
 ## The data mask
 
 `eval_tidy()` can also take a data frame (or a list) as its `data` argument.
 The columns of the data are then found *before* the objects in the quosure's environment.
-This is the **data mask**: the data "masks" the environment.
+This is the **data mask**.
+The data "masks" the environment.
 
 ```{r}
 q1 <- new_quosure(expr(x * y), env(x = 100))
@@ -330,8 +331,8 @@ This is how `filter(penguins, species == "Gentoo")` finds the `species` column.
 
 ### Try 4: quosures and a data mask
 
-Now we can make `my_select()` work like `select()` does:
-we evaluate each argument in a data mask where every column name stands for its position.
+Now we can make `my_select()` work like `select()` does.
+We evaluate each argument in a data mask where every column name stands for its position.
 A bare column name evaluates to its position,
 a number stays a number,
 and anything else (like a variable holding a string)
@@ -369,8 +370,8 @@ my_select(penguins_extra, col_name, island)
 ```
 
 The column wins, and we get the wrong column, with no error.
-This is called the [data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html):
-when a column and an object in our environment have the same name,
+This is called the [data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html).
+When a column and an object in our environment have the same name,
 the data mask picks the column.
 
 This is exactly the quirk of `pull(all_of(col))` described in @sec-tidyverse-pull.
@@ -457,7 +458,7 @@ Here they are with today's recommended tools:
 | a bare name     | a string           | `as_name(enquo(col))`, or `englue("{{ col }}")` to build a longer string |
 | a bare name     | a bare name        | `{{ col }}`                                                         |
 
-For example, a bare name can be turned into a string for a title or a file name:
+For example, a bare name can be turned into a string for a title or a filename:
 
 ```{r}
 mean_label <- function(col) {
@@ -488,9 +489,11 @@ Some patterns from 2020 are no longer recommended:
   [What is data-masking and why do I need `{{`?](https://rlang.r-lib.org/reference/topic-data-mask.html),
   [Defusing R expressions](https://rlang.r-lib.org/reference/topic-defuse.html),
   [Injecting with `!!`, `!!!`, and glue syntax](https://rlang.r-lib.org/reference/topic-inject.html),
-  [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html) and [What happens if I use injection operators out of context?](https://rlang.r-lib.org/reference/topic-inject-out-of-context.html).
+  [The data mask ambiguity](https://rlang.r-lib.org/reference/topic-data-mask-ambiguity.html),
+  and [What happens if I use injection operators out of context?](https://rlang.r-lib.org/reference/topic-inject-out-of-context.html).
 - The Metaprogramming chapters of Advanced R:
   [Expressions](https://adv-r.hadley.nz/expressions.html),
-  [Quasiquotation](https://adv-r.hadley.nz/quasiquotation.html) and [Evaluation](https://adv-r.hadley.nz/evaluation.html).
+  [Quasiquotation](https://adv-r.hadley.nz/quasiquotation.html),
+  and [Evaluation](https://adv-r.hadley.nz/evaluation.html).
 - [Learning Tidy Evaluation by Reimplementing `dplyr`](https://www.youtube.com/watch?v=WoBbQ5gsbgU) ([slides and code](https://github.com/chendaniely/rstatsdc-2020-tidyeval)),
   the talk this chapter is based on.

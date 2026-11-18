@@ -7,7 +7,7 @@ aliases:
 
 - See this workshop repo for reference:
   <https://github.com/posit-conf-2024/ds-workflows-r>
-- Specifically this slide deck:
+- Specifically, this slide deck:
   <https://posit-conf-2024.github.io/ds-workflows-r/slides/03_data_validation_and_alerting.html#/>
 
 
@@ -17,13 +17,13 @@ data(small_table)
 small_table
 ```
 
-## Validation Rules
+## Validation rules
 
 All the validation rule functions begin with `col_*()`:
 <https://rstudio.github.io/pointblank/reference/index.html#validation-expectation-and-test-functions>
 
 Here we want to check that all values in the `a` column are less than `10`.
-We can use the `col_vals_lt()`
+We can use the `col_vals_lt()` function.
 
 
 ```{r}
@@ -32,7 +32,7 @@ small_table |>
 ```
 
 If the table passes the rule, you get a table back.
-Otherwise you will get an error:
+Otherwise, you will get an error:
 
 ```{r}
 #| error: true
@@ -55,7 +55,7 @@ small_table |>
   col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
 ```
 
-We can fix this by either fixing the data, or the actual test.
+We can fix this by fixing either the data or the actual test.
 
 ```{r}
 small_table |>
@@ -65,7 +65,7 @@ small_table |>
   col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
 ```
 
-## Validation Table
+## Validation table
 
 From the docs:
 
@@ -90,7 +90,7 @@ agent <- small_table |>
   col_vals_regex(b, regex = "^[0-9]-[a-z]{3}-[0-9]{3}$")
 ```
 
-Running the `interrogate()` on the `agent`, will print out the validation table,
+Running `interrogate()` on the `agent` will print out the validation table,
 but also
 
 ```{r}
@@ -104,8 +104,8 @@ There are a few [post-interrogation](https://rstudio.github.io/pointblank/refere
 One of the more useful ones may be separately looking at the passing
 and failing data.
 
-The `get_sundered_data()` and `get_data_extracts()` are a few useful functions
-to accomplish this goal.
+The `get_sundered_data()` and `get_data_extracts()` functions are useful
+for accomplishing this goal.
 
 Here is our agent that has failing validation checks.
 
@@ -149,13 +149,13 @@ You can also use the `get_data_extracts()` function to get the values in a list.
 get_data_extracts(agent)
 ```
 
-## Pipeline Data Validation
+## Pipeline data validation
 
 When you want to run your validation checks non-interactively,
 you may want to use `{pointblank}` in the [Pipeline Data Validation Workflow](https://rstudio.github.io/pointblank/articles/VALID-II.html).
 
-In this workflow we do not need to create an `agent` object,
-and rely on the actual warning or failures from the validation checks.
+In this workflow, we do not need to create an `agent` object,
+and we rely on the actual warnings or failures from the validation checks.
 
 ```{r}
 #| error: true
