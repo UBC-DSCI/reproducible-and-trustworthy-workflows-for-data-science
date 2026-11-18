@@ -30,7 +30,8 @@ We will slowly walk through the 4 basic steps needed to run a container:
 
 #### Step 1 - launch the Docker app (for OSX & Windows only)
 
-On Mac and Windows, Docker runs in a virtual machine (called Docker Desktop).
+On Mac and Windows,
+Docker runs in a virtual machine managed by the Docker Desktop app.
 To run a Docker container, you must have this running.
 To do this, use Launchpad/Finder/Start menu/etc. to find and launch Docker Desktop.
 
@@ -59,16 +60,17 @@ Sometimes the `container_image_version_tag` is omitted.
 When this happens, the most recent container is pulled,
 and it has the version tag `latest`.
 In data analysis projects, we try to avoid using this strategy because Docker is lazy,
-and if you already have the `latest` version on your local host machine,
-it will not update it when you re-run `docker pull container_user/container_image` even
-if there is a newer version of the container image on the remote container registry.
+and if you already have a `latest` image on your local host machine,
+`docker run container_user/container_image` will use it without checking
+whether there is a newer version of the container image
+on the remote container registry.
 
-We will now pull the `miniconda3` Docker image, container image version `23.9.0-0`,
-made and shared by `continuumio`,
+We will now pull the `miniforge3` Docker image, container image version `25.3.1-0`,
+made and shared by `condaforge`,
 and hosted on Docker Hub, by running the following in the terminal:
 
 ```bash
-docker pull continuumio/miniconda3:23.9.0-0
+docker pull condaforge/miniforge3:25.3.1-0
 ```
 
 We can verify that it successfully pulled by typing: `docker images`.
@@ -112,7 +114,7 @@ You can type `exit` to leave when you are done (your prompt will look normal aga
 #### Step 4 - clean up your container!
 
 After you close a container, it still "hangs" around...
-It has stopped running, but the container instance still exists in memory
+It has stopped running, but the container instance still exists on your computer
 (as a reminder, you can view any existing containers using `docker ps -a`).
 You can remove the container by typing `docker rm <container_id>`.
 After you remove the container, you can prove to yourself
@@ -137,7 +139,7 @@ This one command is equivalent to steps 2–4 above!
 ```bash
 docker run \
     --rm \
-    --it \
+    -it \
     condaforge/miniforge3:25.3.1-0
 ```
 
@@ -230,7 +232,7 @@ we are referring to virtual ports.
 
 To do this, we use the `-p` flag with `docker run`,
 specifying the port in the host (your computer) on the left-hand side,
-and the port on the container/Docker host on the right-hand side of `:`.
+and the port in the container on the right-hand side of `:`.
 For example,
 to run the `rocker/rstudio` container image we would type `-p 8787:8787`
 to map the ports as shown in the `docker run` command below:
@@ -245,7 +247,7 @@ docker run \
 ```
 
 Then to access the web app,
-we need to navigate a browser URL to `http://localhost:<CONTAINER_PORT>`.
+we need to navigate a browser URL to `http://localhost:<HOST_PORT>`.
 In this case, we would navigate to <http://localhost:8787>
 to use the RStudio Server web app from the container.
 
@@ -296,7 +298,7 @@ or use the container to run a script non-interactively
 (like executing a data analysis pipeline from beginning to end).
 
 To do this, we can append a new command to the end of our `docker run` commands.
-For example, to open the `rocker/rstudio:4.3.2` image in an interactive Bash shell,
+For example, to open the `rocker/rstudio:4.4.2` image in an interactive Bash shell,
 we would run:
 
 ```bash
@@ -405,7 +407,7 @@ as a useful reference when we are using Docker:
 | `pull`       | Downloads a Docker image from Docker Hub |
 | `images`     | Tells you what container images are installed on your machine |
 | `rmi`        | Deletes a specified container image from your machine |
-| `ps -a`      | Tells you what containers are running on your machine |
+| `ps -a`      | Tells you what containers are on your machine, including stopped ones |
 | `stop`       | Stops a specified running container |
 | `rm`         | Removes a specified stopped container |
 | `run`        | Launches a container from an image |
