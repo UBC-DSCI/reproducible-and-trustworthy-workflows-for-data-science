@@ -7,37 +7,41 @@ aliases:
 
 ## Learning objectives
 
-- Generate well formatted function and package-level documentation for Python packages using Sphinx & Read the Docs
+- Generate well-formatted function and package-level documentation
+  for Python packages using Sphinx & Read the Docs
 
-## Quartodoc
+## quartodoc
 
 <https://machow.github.io/quartodoc>
 
-## Documentation Preview
+## Documentation preview
 
-We use `quartodoc build` and `quarto render` to create our documentation site,
-however reviewing documentation is easier if it's already presented in the rendered web format.
+We use `quartodoc build` and `quarto render` to create our documentation site.
+However, reviewing documentation is easier if it's already presented in the rendered web format.
 You can set up CI such that it will render the documentation page on every pull request,
-so each PR will have an updated docs website and any formatting
-and rendering issues can be seen without having to pull the branch and manually rendering the page locally.
+so each PR will have an updated docs website,
+and any formatting and rendering issues can be seen
+without having to pull the branch and manually render the page locally.
 
-We will use netlify to host all these different PR websites since github pages can only host a single webpage.
+We will use Netlify to host all these different PR websites,
+since GitHub Pages can only host a single website.
 We can set up the CI workflow such that each PR will have a website with the PR number in the URL.
 
-Genearl steps:
+General steps:
 
 - https://www.netlify.com/
-- you may be asked to install app after you connect with github
-- deploy new project from github (may trigger app install here)
+- you may be asked to install the app after you connect with GitHub
+- deploy a new project from GitHub (may trigger the app install here)
   - leave the project name empty
-    so it uses a random project name for now (it's a deployment preview, don't clutter the namespace if you don't need to)
-  - leave everything else blank, we will push from github actions
-- Github Secrets
+    so it uses a random project name for now
+    (it's a deployment preview; don't clutter the namespace if you don't need to)
+  - leave everything else blank; we will push from GitHub Actions
+- GitHub Secrets
   - `NETLIFY_AUTH_TOKEN`: this is the Netlify PAT
-  - `NETLIFY_SITE_ID`: you can find tihs in the Netlify website configuration page
-- use the example yaml file, note that it's PR only (why does this make sense?)
-- workflow needs read+right permissions
-  - set in the YAML file and also in the repo actions setting
+  - `NETLIFY_SITE_ID`: you can find this in the Netlify website configuration page
+- use the example YAML file; note that it's PR only (why does this make sense?)
+- the workflow needs read+write permissions
+  - set in the YAML file and also in the repo's Actions settings
 
 ```yaml
 on:

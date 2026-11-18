@@ -10,39 +10,40 @@ we still need to manage the metadata in the `pyproject.toml` file to make sure t
 
 ## Package versioning
 
-Semantic versioning uses the `major.minor.patch` numbering scheme for package versions
+Semantic versioning uses the `major.minor.patch` numbering scheme for package versions.
 
-- See these resources about semantic versioning -<https://py-pkgs.org/07-releasing-versioning#version-numbering>
+- See these resources about semantic versioning: <https://py-pkgs.org/07-releasing-versioning#version-numbering>
 - <https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-versions.html#semver-rules>
 - <https://semver.org/>
 
-Calenar versioning (calver) is another way to version package,
-it uses part of the date of publishing in the package version number
+Calendar versioning (CalVer) is another way to version packages;
+it uses part of the date of publishing in the package version number.
 
 - <https://calver.org/index.html>
 
 ## Auto version bumping
 
-PyOpenSci discusses the pros and cons of different version bumping tools:
+pyOpenSci discusses the pros and cons of different version bumping tools:
 <https://www.pyopensci.org/python-package-guide/package-structure-code/python-package-versions.html#tools-for-bumping-python-package-versions>
 
-## python semantic-release
+## Python semantic-release
 
 The Python Semantic Release (PSR) package can be used to help automatically bump your package versions:
 <https://python-semantic-release.readthedocs.io/en/latest/>
 
-It will auto bump the respective major/minor/patch value based on specific keywords in your commit messages.
-These commit messages follow the conventional commits pattern <https://www.conventionalcommits.org/en/v1.0.0/>
+It will auto-bump the respective major/minor/patch value
+based on specific keywords in your commit messages.
+These commit messages follow the conventional commits pattern: <https://www.conventionalcommits.org/en/v1.0.0/>
 
 Resources:
 
 - <https://py-pkgs.org/07-releasing-versioning#automatic-version-bumping>
 
-## hatch-vcs + git tags
+## hatch-vcs + Git tags
 
-We will make our auto version bumping a bit more flexiable by allowing us
-to create the version bump on a git tag trigger.
-We will be using hatch-vcs for this:<https://github.com/ofek/hatch-vcs>
+We will make our auto version bumping a bit more flexible by allowing us
+to create the version bump on a Git tag trigger.
+We will be using hatch-vcs for this: <https://github.com/ofek/hatch-vcs>
 
 ### Prepare the `pyproject.toml` file
 
@@ -54,8 +55,9 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 ```
 
-Next we do not need to manually provide the `version` variable in the `[project]` table anymore,
-instead we will use `dynamic = ["version"]` to set the package version.
+Next, we do not need to manually provide
+the `version` variable in the `[project]` table anymore;
+instead, we will use `dynamic = ["version"]` to set the package version.
 
 ```toml
 [project]
@@ -65,8 +67,9 @@ dynamic = ["version"]
 ```
 
 We will need to install `hatch-vcs` to test the behavior locally,
-but also when we use GitHub actions it needs to be installed in the workflow.
-Best now to add `hatch-vcs` to the optional dependencies table where we have `hatch` installed for building the package.
+but also, when we use GitHub Actions, it needs to be installed in the workflow.
+It's best to add `hatch-vcs` now to the optional dependencies table
+where we have `hatch` installed for building the package.
 
 ```toml
 [project.optional-dependencies]
@@ -76,11 +79,12 @@ dev = [
 ]
 ```
 
-Then we need to configure the hatch tool so it knows to use `hatch-vcs`,
-If you need to configure more `hatch-vcs` options you cand find it in the documentation:
+Then we need to configure the Hatch tool so it knows to use `hatch-vcs`.
+If you need to configure more `hatch-vcs` options,
+you can find them in the documentation:
 <https://github.com/ofek/hatch-vcs?tab=readme-ov-file#version-source-options>
 
-For example "to prevent incrementing version numbers on non-release commits,
+For example, "to prevent incrementing version numbers on non-release commits,
 you can adjust the version_scheme parameter".
 
 ```toml
@@ -89,8 +93,8 @@ source = "vcs"
 raw-options = { version_scheme = "no-guess-dev", local_scheme = "no-local-version" }
 ```
 
-Finally we want to make sure the version information is saved into a file,
-this is usally named `_version.py` or `__version__.py`
+Finally, we want to make sure the version information is saved into a file,
+which is usually named `_version.py` or `__version__.py`.
 
 Here it will save it to our `src/pytest1/__version__.py` file (it will create it for us).
 Note the `src/pytest` name will differ based on your package import name and directory.
@@ -100,24 +104,25 @@ Note the `src/pytest` name will differ based on your package import name and dir
 version-file = "src/pytest1/__version__.py"
 ```
 
-Finally let's run `hatch build`, you may need to install your build dependencies:
+Finally, let's run `hatch build`.
+You may need to install your build dependencies:
 
 ```
 pip install -e .[dev]
 ```
 
-Then you can run hatch build, which will run `hatch-vcs`
+Then you can run hatch build, which will run `hatch-vcs`:
 
 ```bash
 $ hatch build
 ```
 
-Since we haven't set up a git tag yet,
-it may give us a version number that is a 0.0 with some `dev+` information.
+Since we haven't set up a Git tag yet,
+it may give us a version number of 0.0 with some `dev+` information.
 We'll deal with that in a bit.
 
-You will notice that the `src/pytest1/__version__.py` has been created with a lot of text.
-Including a message at the top:
+You will notice that the `src/pytest1/__version__.py` file has been created with a lot of text,
+including a message at the top:
 
 ```
 # file generated by setuptools-scm
@@ -127,14 +132,14 @@ Including a message at the top:
 :::{.callout-important}
 Follow those comments and ignore the `__version__.py` file in the `.gitignore` file!
 This will prevent all the `.post1.dev0` text that may show up after the version number.
-This is because when `hatch build` runs it will see a "dirty" git environment
-(something has been changed from the last git commmit/tag),
+This is because when `hatch build` runs, it will see a "dirty" Git environment
+(something has been changed since the last Git commit/tag),
 and this will cause `hatch-vcs` to create a dev version number of the package.
 :::
 
 ### Create the GitHub Action
 
-We will use git tags to trigger the version value and publishing,
+We will use Git tags to trigger the version value and publishing,
 so we can create a workflow that will only run when a new git tag is pushed.
 
 :::{.callout-caution}
@@ -189,18 +194,18 @@ It'll be a good time to run `hatch build` on your local computer and see
 if the `dist/` directory is properly creating the package and version in the bundle.
 If so, you can push and merge your changes into `main`/`master`.
 
-## Github Actions and PyPI/Test
+## GitHub Actions and PyPI/Test
 
-1. Make sure you have a PyPI token in your github actions secrets
-2. Make sure your package on PyPI / PyPI test is set to accept github as a publisher
-  - Go to your package page
-  - Open up the Manage Project setting
-  - Go to the Publisher setting
-  - Scroll down to Add a new publisher setting
-  - Fill in your corresponding Github information (owner, repo name, workflow file name)
+1. Make sure you have a PyPI token in your GitHub Actions secrets.
+2. Make sure your package on PyPI / TestPyPI is set to accept GitHub as a publisher:
+   - Go to your package page
+   - Open up the Manage Project setting
+   - Go to the Publisher setting
+   - Scroll down to Add a new publisher setting
+   - Fill in your corresponding GitHub information (owner, repo name, workflow file name)
 
-If your PyPi package is building and fails on the last step with a Bad Request,
-this may be the reason why
+If your PyPI package is building and fails on the last step with a Bad Request,
+this may be the reason why.
 
 ```
 ERROR    HTTPError: 400 Bad Request from https://test.pypi.org/legacy/
@@ -208,20 +213,22 @@ ERROR    HTTPError: 400 Bad Request from https://test.pypi.org/legacy/
 ```
 
 
-### Git Tags
+### Git tags
 
-Once you are on the commit that will represent your new release (usually this is the lastest commit on `main`),
-you'll be ready to trigger your release with a git tag.
+Once you are on the commit that will represent your new release
+(usually this is the latest commit on `main`),
+you'll be ready to trigger your release with a Git tag.
 
-To create a tag we will use the `git tag` command:
+To create a tag, we will use the `git tag` command:
 
 ```bash
 git tag v0.0.1
 ```
 
-Here you can use whatever number you'd like for your package,
-if your package is already published,
-make sure the tag version you are using is "newer" than the version already pusbliehd in PyPI / PyPI Test
+Here you can use whatever number you'd like for your package.
+If your package is already published,
+make sure the tag version you are using is "newer"
+than the version already published on PyPI / TestPyPI.
 
 Also, we are giving our tag name a `v` prefix.
 This is also there so our workflow trigger has something to search for,
@@ -234,7 +241,8 @@ on:
       - 'v*.*.*'
 ```
 
-Finally you can push your branch and tag (make sure there are no more newer commits from your tag)
+Finally, you can push your branch and tag
+(make sure there are no newer commits after your tag):
 
 ```bash
 git push origin main # push to the main branch
@@ -242,5 +250,5 @@ git push origin v0.0.1 # push your tag
 ```
 
 You can navigate to your repository,
-and you will see a new tag being listed by the release section.
+and you will see a new tag being listed in the release section.
 And your automation will start.
