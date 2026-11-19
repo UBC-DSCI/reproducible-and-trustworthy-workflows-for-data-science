@@ -1,0 +1,306 @@
+---
+title: R packages with renv in an image
+output-file: containers-renv.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0645-containers-renv.qmd >}}
+
+## Download the images before you start {.unnumbered}
+
+The examples in this chapter build on `rocker/r-ver:4.6.2`,
+which takes more than a gigabyte of disk space.
+Start Docker first (on macOS and Windows, open Docker Desktop),
+then download (pull) it before you start:
+
+```bash
+docker pull rocker/r-ver:4.6.2
+```
+
+## The project
+
+This chapter puts the R packages of a small renv project into a Docker image.
+It is an renv project like the ones in [Virtual environments: R (renv)](0560-virtual-environments-r-renv.qmd),
+and its files are in the book repository's `demos/docker-renv/end` folder.
+`hello.R` prints a message with the [cowsay](https://cran.r-project.org/package=cowsay) package:
+
+```{.r}
+cowsay::say("Hello from R in my image!")
+```
+
+`DESCRIPTION` lists the package with an exact version,
+and `renv/settings.json` makes snapshots explicit,
+so `renv::snapshot()` records only what `DESCRIPTION` lists, and what those packages need
+(see [renv: declaring packages in `DESCRIPTION`](0565-virtual-environments-r-renv-description.qmd)):
+
+```{.yaml}
+Type: project
+Version: 0.1.0
+Description: The R packages this project uses. renv.lock locks them.
+Depends:
+    cowsay (== 1.2.2)
+```
+
+`renv.lock` records R 4.6.2, the repository the packages came from
+([Posit Package Manager](https://p3m.dev/)),
+and cowsay and the packages it needs.
+`.Rprofile` runs `renv/activate.R`, which turns on the project's library when R starts.
+On your computer, restore the packages and run the script:
+
+```bash
+Rscript -e 'renv::restore(prompt = FALSE)'
+Rscript hello.R
+```
+
+`renv::restore()` installs the three packages in `renv.lock`, and `hello.R` prints:
+
+```out
+ ___________________________ 
+< Hello from R in my image! >
+ --------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+## A `Dockerfile` for an renv project
+
+Here is the project's `Dockerfile`.
+Its renv lines are the same as in [docker-uv-renv](https://github.com/chendaniely/docker-uv-renv),
+the example project that [Docker Compose](0650-containers-docker-compose.qmd) uses:
+
+```{.dockerfile}
+# Ubuntu with R. Other versions:
+# https://rocker-project.org/images/versioned/r-ver.html
+FROM rocker/r-ver:4.6.2
+
+# curl: renv downloads packages with it
+RUN apt-get update && apt-get install --yes \
+    curl
+
+# The project is mounted over /workspace, so the packages go in /opt
+WORKDIR /workspace
+
+# R packages in /opt/renv/library
+RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/Renviron.site
+COPY renv.lock .Rprofile ./
+COPY renv/activate.R renv/
+RUN Rscript -e "renv::restore()"
+```
+
+- `FROM rocker/r-ver:4.6.2` starts from Ubuntu Linux with R 4.6.2,
+  the version `renv.lock` records
+  (see [the `rocker/r-ver` images](https://rocker-project.org/images/versioned/r-ver.html)).
+- The `apt-get` line installs `curl`, which renv downloads packages with.
+  Without it, the build still works,
+  but renv warns `curl does not appear to be installed; downloads will fail.`
+- `WORKDIR /workspace` makes `/workspace` the working directory,
+  for the rest of the build and for containers that run from the image.
+  You will mount your project folder there.
+- The `RENV_PATHS_LIBRARY` line tells renv to keep the project's packages
+  in `/opt/renv/library`, instead of in `renv/library` inside the project folder
+  (see [renv's paths](https://rstudio.github.io/renv/reference/paths.html)).
+  It adds the setting to `Renviron.site`,
+  a file that [every R session reads when it starts](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Startup.html),
+  so it applies to the build, to `Rscript`, and to R in a running container.
+  The section after next shows why the packages go in `/opt`.
+- The two `COPY` lines copy the files `renv::restore()` needs, and not the code:
+  `renv.lock`, `.Rprofile`, and the `renv/activate.R` that `.Rprofile` runs.
+  Editing `hello.R` then never reinstalls the packages
+  (see [Building images](0630-containers-building.qmd)).
+- `RUN Rscript -e "renv::restore()"` installs the packages in `renv.lock`.
+  Starting R in `/workspace` runs `.Rprofile`, which turns on renv first.
+
+## Build the image
+
+From the project folder:
+
+```bash
+docker build --tag docker-renv .
+```
+
+```out
+[+] Building 39.9s (12/12) FINISHED                                            docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 547B                                                           0.0s
+ => [internal] load metadata for docker.io/rocker/r-ver:4.6.2                                  0.0s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => CACHED [1/7] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e822  0.0s
+ => => resolve docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => [internal] load build context                                                              0.0s
+ => => transferring context: 119B                                                              0.0s
+ => [2/7] RUN apt-get update && apt-get install --yes     curl                                 8.4s
+ => [3/7] WORKDIR /workspace                                                                   0.0s
+ => [4/7] RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/Renviron.si  0.2s
+ => [5/7] COPY renv.lock .Rprofile ./                                                          0.0s
+ => [6/7] COPY renv/activate.R renv/                                                           0.1s
+ => [7/7] RUN Rscript -e "renv::restore()"                                                    28.5s
+ => exporting to image                                                                         2.5s
+ => => exporting layers                                                                        1.9s
+ => => exporting manifest sha256:30dce9d5e613b07153a70ad77088f35678c0d360fdad46745606eb1fe6ec  0.0s
+ => => exporting config sha256:5e7261a77b7df6d2f2188169ba92e1537c2fe59306861a7f23792cbe54134c  0.0s
+ => => exporting attestation manifest sha256:a36c4b484191b43680c7e3cc036c741ff7e72d6f7aa891e5  0.0s
+ => => exporting manifest list sha256:ab18e6e01f24d0b1d4481e96f7a04111c382975b7a814aff54a6c16  0.0s
+ => => naming to docker.io/library/docker-renv:latest                                          0.0s
+ => => unpacking to docker.io/library/docker-renv:latest                                       0.6s
+```
+
+To see what `renv::restore()` printed,
+build with `--progress=plain` and `--no-cache`
+(see [Python packages with uv in an image](0640-containers-uv.qmd)).
+Here is the `renv::restore()` step, without its download progress lines:
+
+```bash
+docker build --progress=plain --no-cache --tag docker-renv .
+```
+
+```out
+#11 [7/7] RUN Rscript -e "renv::restore()"
+#11 0.238 # Bootstrapping renv 1.3.1 ---------------------------------------------------
+#11 0.250 - Downloading renv ... OK
+#11 2.663 - Installing renv  ... OK
+#11 10.58
+#11 11.47 - None of the packages recorded in the lockfile are currently installed.
+#11 11.47 - Use `renv::restore()` to restore the project library.
+#11 11.61 The following package(s) will be updated:
+#11 11.61
+#11 11.61 # CRAN -----------------------------------------------------------------------
+#11 11.61 - cowsay   [* -> 1.2.2]
+#11 11.61
+#11 11.61 # https://packagemanager.posit.co/cran/__linux__/resolute/latest -------------
+#11 11.61 - crayon   [* -> 1.5.3]
+#11 11.61 - rlang    [* -> 1.3.0]
+#11 11.61
+#11 11.61 - Querying repositories for available source packages ... Done!
+#11 14.59 - Querying repositories for available source packages ... Done!
+#11 23.30 # Installing packages --------------------------------------------------------
+#11 23.35
+
+✔ crayon 1.5.3                             [installed binary]
+#11 23.54
+
+✔ rlang 1.3.0                              [installed binary]
+#11 23.77
+
+✔ cowsay 1.2.2                             [installed binary]
+#11 23.97 Successfully installed 3 packages in 0.68 seconds.
+```
+
+renv installed itself first (the "bootstrapping"),
+then installed the three packages from `renv.lock`,
+as prebuilt Linux binaries from Posit Package Manager.
+
+## Run the project in a container
+
+Mount the project folder at `/workspace`,
+and run the script with `Rscript` in place of the image's default command, `R`:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-renv Rscript hello.R
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-renv Rscript hello.R
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-renv Rscript hello.R
+```
+:::
+
+```out
+ ___________________________ 
+< Hello from R in my image! >
+ --------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+## Why the packages go in `/opt/renv/library`
+
+R in the container uses the library in `/opt/renv/library`.
+renv added the folders for the operating system and R version to the path:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-renv Rscript -e ".libPaths()"
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-renv Rscript -e ".libPaths()"
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-renv Rscript -e ".libPaths()"
+```
+:::
+
+```out
+[1] "/opt/renv/library/linux-ubuntu-resolute/R-4.6/aarch64-unknown-linux-gnu"                   
+[2] "/root/.cache/R/renv/sandbox/linux-ubuntu-resolute/R-4.6/aarch64-unknown-linux-gnu/25ebdc09"
+```
+
+The second path is renv's sandbox, which holds only R's own packages,
+so that packages installed in R's system library are not used in the project.
+
+As with uv's `.venv`, the mount hides whatever the image had in `/workspace`,
+including a `renv/library` folder.
+To see what happens, here is the same image built without the `RENV_PATHS_LIBRARY` line,
+run with the project folder mounted:
+
+```out
+# Bootstrapping renv 1.3.1 ---------------------------------------------------
+- Downloading renv ... OK
+- Installing renv  ... OK
+- None of the packages recorded in the lockfile are currently installed.
+- Use `renv::restore()` to restore the project library.
+Error in loadNamespace(x) : there is no package called ‘cowsay’
+Calls: loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+```
+
+renv found no packages in the mounted folder,
+installed itself there,
+and the script stopped because cowsay was missing.
+renv keeps a folder for each operating system in `renv/library`,
+so your computer's own packages were left alone,
+but a Linux folder appeared next to them on your computer:
+
+```bash
+ls renv/library
+```
+
+```out
+linux-ubuntu-resolute
+macos
+```
+
+With `RENV_PATHS_LIBRARY=/opt/renv/library`,
+the container uses the packages the image installed,
+and leaves your computer's `renv` folder alone.
