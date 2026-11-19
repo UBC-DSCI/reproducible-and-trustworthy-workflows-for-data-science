@@ -473,10 +473,89 @@ The most common `Dockerfile` commands I use:
 | ENV | Sets environment variables |
 | EXPOSE | Specifies the port the container should listen to at runtime |
 | COPY or ADD | Adds files (or URLs in the case of ADD) to a container's filesystem |
-| ENTRYPOINT | Configures a container that will run as an executable |
+| CMD | Sets the default command a container runs when it starts; a command after the image name in `docker run` replaces it |
+| ENTRYPOINT | Sets a command that always runs when a container starts; anything after the image name in `docker run` is passed to it as arguments |
 | WORKDIR | Sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, COPY and ADD instructions that follow it in the `Dockerfile` |
 
-And more here in the [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
+And more here in the [Dockerfile reference](https://docs.docker.com/reference/dockerfile/).
+
+### `CMD` or `ENTRYPOINT`?
+
+Both set what a container runs when it starts.
+They differ in what `docker run` can replace.
+A command after the image name in `docker run` replaces `CMD`.
+For example, this runs `R --version` in the `hello-cowsay` image
+in place of its cowsay message
+(`head -1` keeps the first line):
+
+```bash
+docker run --rm hello-cowsay R --version | head -1
+```
+
+```out
+R version 4.6.2 (2026-10-29) -- "Diversified Portfolio"
+```
+
+`ENTRYPOINT` is not replaced this way.
+Anything after the image name is passed to it as arguments,
+and replaces only `CMD`.
+With both, `ENTRYPOINT` holds the part that always runs,
+and `CMD` holds the default arguments.
+For example, this `Dockerfile`, in a folder of its own,
+always runs `Rscript -e`, with cowsay R code as the default:
+
+```{.dockerfile}
+FROM rocker/r-ver:4.6.2
+
+RUN Rscript -e "install.packages('cowsay')"
+
+ENTRYPOINT ["Rscript", "-e"]
+CMD ["cowsay::say('Hello from my first image!')"]
+```
+
+```bash
+docker build --tag cowsay-entrypoint .
+docker run --rm cowsay-entrypoint
+```
+
+```out
+ ____________________________ 
+< Hello from my first image! >
+ ---------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+Passing different R code replaces the default,
+but still runs it with `Rscript -e`:
+
+```bash
+docker run --rm cowsay-entrypoint "cowsay::say('Only the R code changed.')"
+```
+
+```out
+ __________________________ 
+< Only the R code changed. >
+ -------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+The images in this book, `rocker/r-ver` among them, set only `CMD`,
+so that a command such as `bash` after the image name replaces it,
+as in step 3 of the workflow.
 
 ## Choosing a base image for your Dockerfile
 
@@ -489,18 +568,42 @@ Source:
 
 | Image | Software installed |
 |-------|--------------------|
-| [quay.io/repository/jupyter/datascience-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-datascience-notebook) | Includes popular packages from the scientific Python ecosystem. |
+| [rocker/r-ver](https://hub.docker.com/r/rocker/r-ver) | Ubuntu Linux and R; the base of this book's R examples |
 | [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio/) | R, RStudio |
 | [rocker/tidyverse](https://hub.docker.com/r/rocker/tidyverse/) | R, R packages (including the tidyverse), RStudio, Make; ARM-based computers need tag `4.5.1` or later |
-| [condaforge/miniforge3](https://hub.docker.com/r/condaforge/miniforge3) | Miniforge3 base installation |
+| [ubuntu](https://hub.docker.com/_/ubuntu) | Ubuntu Linux only; add uv to install Python and its packages |
+| [python](https://hub.docker.com/_/python) | Debian Linux and Python; the `-slim` tags leave out software most projects do not need |
+| [quay.io/jupyter/datascience-notebook](https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#jupyter-datascience-notebook) | JupyterLab, with libraries for data analysis from the Python, R and Julia communities |
+
+:::{.callout-warning title="Use `rocker/tidyverse:4.5.1` or later"}
+`rocker/tidyverse` images before `4.5.1` were built only for Intel and AMD computers (`amd64`).
+From `4.5.1` on, they are also built for ARM computers (`arm64`),
+such as Macs with Apple silicon.
+On an ARM computer, pulling an older tag fails:
+
+```bash
+docker pull rocker/tidyverse:4.5.0
+```
+
+```out
+Error response from daemon: no matching manifest for linux/arm64/v8 in the manifest list entries: no match for platform in manifest: not found
+```
+
+So use `4.5.1` as the minimum version.
+The [`rocker/tidyverse` tags page](https://hub.docker.com/r/rocker/tidyverse/tags)
+lists each tag with the platforms it was built for (`linux/amd64`, `linux/arm64`),
+so you can check a tag before you use it.
+:::
 
 ## Dockerfile FAQ
 
-#### 1. Where does the `Dockerfile` live?
+These questions come up when you start writing your own `Dockerfile`.
+
+### 1. Where does the `Dockerfile` live?
 
 The `Dockerfile` should live in the root directory of your project.
 
-#### 2. How do I make an image from a `Dockerfile`?
+### 2. How do I make an image from a `Dockerfile`?
 
 There are 2 ways to do this!
 I use the first when developing my `Dockerfile` (to test quickly that it works),
@@ -511,7 +614,7 @@ on [Docker Hub](https://hub.docker.com/).
 
 2. Build a Docker image and push it to Docker Hub using GitHub Actions
 
-#### 3. How do I build an image locally on my laptop?
+### 3. How do I build an image locally on my laptop?
 
 From the directory that contains your `Dockerfile` (usually your project root):
 
