@@ -33,7 +33,7 @@ cowsay.cow("Hello from Python in my image!")
 
 `pyproject.toml` lists the package with an exact version,
 and `add-bounds = "exact"` makes `uv add` write exact versions too
-(see [Exact versions with uv](0545-virtual-environments-python-uv-exact-pins.qmd)):
+(see [uv: pinning exact versions](0545-virtual-environments-python-uv-exact-pins.qmd)):
 
 ```{.toml}
 [project]
@@ -328,3 +328,167 @@ docker run --rm -v "${PWD}:/workspace" docker-uv uv run python -c "import sys; p
 ```out
 /opt/venv
 ```
+
+## Add a package
+
+To add a package, use uv on your computer,
+as in [uv: projects](0530-virtual-environments-python-uv-projects.qmd),
+then build the image again.
+For example, to add pandas:
+
+```bash
+uv add pandas
+```
+
+```out
+Resolved 6 packages in 26ms
+Installed 4 packages in 100ms
+ + numpy==2.5.5
+ + pandas==3.1.1
+ + python-dateutil==4.0.0
+ + tzdata==2026.6
+```
+
+Because of `add-bounds = "exact"`,
+`uv add` wrote pandas into `pyproject.toml` with its exact version:
+
+```{.toml}
+dependencies = [
+    "cowsay==6.1",
+    "pandas==3.1.1",
+]
+```
+
+It also updated `uv.lock` with pandas and the packages pandas needs.
+Build the image again:
+
+```bash
+docker build --tag docker-uv .
+```
+
+Here are the steps from the output:
+
+```out
+[+] Building 16.5s (12/12) FINISHED                                            docker:desktop-linux
+ => [stage-0 1/5] FROM docker.io/library/ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a  0.0s
+ => CACHED [stage-0 2/5] COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/      0.0s
+ => CACHED [stage-0 3/5] WORKDIR /workspace                                                    0.0s
+ => [stage-0 4/5] COPY pyproject.toml uv.lock .python-version ./                               0.0s
+ => [stage-0 5/5] RUN uv sync --locked                                                         7.4s
+```
+
+Docker reused the layers with uv in them,
+and ran the `COPY` and `uv sync` steps again,
+because `pyproject.toml` and `uv.lock` changed.
+pandas is now in the image:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv uv run python -c "import pandas; print(pandas.__version__)"
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv uv run python -c "import pandas; print(pandas.__version__)"
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv uv run python -c "import pandas; print(pandas.__version__)"
+```
+:::
+
+```out
+3.1.1
+```
+
+Commit `pyproject.toml` and `uv.lock` together,
+so that the lockfile in your repository always matches `pyproject.toml`.
+
+## When `uv.lock` does not match `pyproject.toml`
+
+If you edit `pyproject.toml` by hand, without `uv add` or `uv lock`,
+`uv.lock` no longer matches it.
+For example, typing the pandas line into `pyproject.toml` yourself
+gives the same `dependencies` as `uv add pandas` did,
+but leaves `uv.lock` without pandas:
+
+```{.toml}
+dependencies = [
+    "cowsay==6.1",
+    "pandas==3.1.1",
+]
+```
+
+The build then stops at `uv sync --locked`:
+
+```bash
+docker build --tag docker-uv .
+```
+
+```out
+[+] Building 5.2s (11/11) FINISHED                                             docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 553B                                                           0.0s
+ => [internal] load metadata for ghcr.io/astral-sh/uv:0.13.7                                   0.8s
+ => [internal] load metadata for docker.io/library/ubuntu:24.04                                0.1s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => FROM ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471  0.0s
+ => => resolve ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1  0.0s
+ => [stage-0 1/5] FROM docker.io/library/ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a  0.0s
+ => => resolve docker.io/library/ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a  0.0s
+ => [internal] load build context                                                              0.0s
+ => => transferring context: 985B                                                              0.0s
+ => CACHED [stage-0 2/5] COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/      0.0s
+ => CACHED [stage-0 3/5] WORKDIR /workspace                                                    0.0s
+ => [stage-0 4/5] COPY pyproject.toml uv.lock .python-version ./                               0.0s
+ => ERROR [stage-0 5/5] RUN uv sync --locked                                                   4.3s
+------
+ > [stage-0 5/5] RUN uv sync --locked:
+0.287 Downloading cpython-3.14.10-linux-aarch64-gnu (download) (29.2MiB)
+3.631  Downloaded cpython-3.14.10-linux-aarch64-gnu (download)
+3.817 Using CPython 3.14.10
+3.817 Creating virtual environment at: /opt/venv
+4.141 Resolved 6 packages in 319ms
+4.143 error: The lockfile at `uv.lock` needs to be updated, but `--locked` was provided.
+4.143
+4.143 hint: To update the lockfile, run `uv lock`.
+------
+Dockerfile:15
+--------------------
+  13 |     COPY pyproject.toml uv.lock .python-version ./
+  14 |     # --locked: stop if uv.lock doesn't match pyproject.toml
+  15 | >>> RUN uv sync --locked
+  16 |
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c uv sync --locked" did not complete successfully: exit code: 1
+What's next:
+    Debug this build failure with Gordon → docker ai "help me fix this build failure"
+```
+
+This is what `--locked` is for.
+Without it, `uv sync` would quietly update `uv.lock` inside the image,
+and the image would no longer match the `uv.lock` in your repository.
+With it, a forgotten `uv lock` stops the build,
+and the error says how to fix it:
+
+```bash
+uv lock
+```
+
+```out
+Using CPython 3.14.3
+Resolved 6 packages in 49ms
+Added numpy v2.5.5
+Added pandas v3.1.1
+Added python-dateutil v4.0.0
+Added tzdata v2026.6
+```
+
+After `uv lock`, `docker build --tag docker-uv .` finishes,
+and `pyproject.toml` and `uv.lock` are ready to commit together.
