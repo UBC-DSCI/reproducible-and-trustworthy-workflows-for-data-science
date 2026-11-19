@@ -69,6 +69,7 @@ From inside `end/`:
 | [`foofactors`](foofactors/) | Packaging, R packages | R |
 | [`pycounts`](pycounts/) | Packaging, package testing, continuous deployment | Python |
 | [`docker-uv`](docker-uv/) | Python packages with uv in an image | Python |
+| [`docker-renv`](docker-renv/) | R packages with renv in an image | R |
 
 Most demos are adapted from Tiffany Timbers' course repositories;
 each demo's `README.md` says where it came from.
