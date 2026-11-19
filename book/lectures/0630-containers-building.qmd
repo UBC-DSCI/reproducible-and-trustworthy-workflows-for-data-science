@@ -10,6 +10,17 @@ aliases:
 
 {{< include ../learning_objectives/0630-containers-building.qmd >}}
 
+## Download the images before you start {.unnumbered}
+
+The examples in this chapter build on `rocker/r-ver:4.6.2`,
+which takes more than a gigabyte of disk space.
+Start Docker first (on macOS and Windows, open Docker Desktop),
+then download (pull) it before you start:
+
+```bash
+docker pull rocker/r-ver:4.6.2
+```
+
 ## Building container images from `Dockerfile`'s
 
 - A `Dockerfile` is a plain-text file
@@ -31,12 +42,32 @@ aliases:
   to match your flavor of container.
   For this course, we will focus on Ubuntu- or Debian-based images (and that means
   if we need to install software outside of R and Python packages,
-  we will use `apt` as our installation program).
+  we will use `apt-get` as our installation program).
   However, most of what we'll be doing for installation is R,
   Python, and their packages.
-  For that, we can really use tools we're already familiar with (`conda`
-  and `conda-lock`,
-  for example).
+  For those, an image uses the same tools as your laptop,
+  uv for Python and renv for R,
+  which the next chapters put into an image.
+
+:::{.callout-note title="`apt` or `apt-get`?"}
+Ubuntu has two commands for its package manager.
+`apt` is designed for people typing at a terminal,
+and its behavior may change between versions.
+`apt-get` is the older command, which keeps working the same way,
+so Ubuntu's [`apt` manual page](https://manpages.ubuntu.com/manpages/noble/man8/apt.8.html)
+recommends `apt-get` for scripts.
+The `RUN` lines in a `Dockerfile` are a script,
+so this book uses `apt-get` in them.
+`apt` even prints a warning when a script runs it:
+
+```out
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+```
+
+At a container's prompt either command works,
+but using `apt-get` there too
+means you can copy the command that worked straight into the `Dockerfile`.
+:::
 
 
 ### Workflow for building a Dockerfile
@@ -52,9 +83,11 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
    Add any files that need to be accessed at build time via the `COPY` command.
 
 3. In a terminal,
-   type `docker run --rm -it <IMAGE_NAME>`
+   type `docker run --rm -it <BASE_IMAGE> bash`
    and interactively try the install commands you think will work.
    Edit and try again until the install command works.
+   The `bash` at the end starts a Bash shell
+   in place of the image's default command.
 
 4. Write working install commands in the `Dockerfile`,
    preceding them with `RUN`, and save the `Dockerfile`.
@@ -66,6 +99,318 @@ Thus, to speed things up and be more efficient, we suggest the workflow below:
    then you can finally move to building remotely (e.g., creating a trusted build
    on GitHub Actions).
 
+### Build your first image
+
+Let's follow the workflow to build a small image with R
+and the R package [cowsay](https://cran.r-project.org/package=cowsay),
+which draws an animal saying whatever you give it.
+
+For step 1, the base image is `rocker/r-ver:4.6.2`, Ubuntu Linux with R 4.6.2 installed.
+For step 2, make a folder for the project and move into it:
+
+```bash
+mkdir hello-cowsay
+cd hello-cowsay
+```
+
+In a text editor, create a file in that folder named `Dockerfile`,
+with no file extension,
+that has one line:
+
+```{.dockerfile}
+FROM rocker/r-ver:4.6.2
+```
+
+For step 3, start a container from the base image with a Bash shell:
+
+```bash
+docker run --rm -it rocker/r-ver:4.6.2 bash
+```
+
+Inside R, you would install the package with `install.packages("cowsay")`.
+At the container's Bash prompt,
+`Rscript -e` runs a line of R code instead,
+which is the form a `RUN` line needs:
+
+```bash
+Rscript -e "install.packages('cowsay')"
+```
+
+```out
+Installing package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+also installing the dependencies ‘crayon’, ‘rlang’
+
+trying URL 'https://p3m.dev/cran/__linux__/resolute/latest/src/contrib/crayon_1.5.3.tar.gz'
+trying URL 'https://p3m.dev/cran/__linux__/resolute/latest/src/contrib/rlang_1.3.0.tar.gz'
+trying URL 'https://p3m.dev/cran/__linux__/resolute/latest/src/contrib/cowsay_1.2.2.tar.gz'
+* installing *binary* package ‘crayon’ ...
+* package ‘crayon’ successfully unpacked and SHA256 sums checked
+* DONE (crayon)
+* installing *binary* package ‘rlang’ ...
+* package ‘rlang’ successfully unpacked and SHA256 sums checked
+* DONE (rlang)
+* installing *binary* package ‘cowsay’ ...
+* package ‘cowsay’ successfully unpacked and SHA256 sums checked
+* DONE (cowsay)
+
+The downloaded source packages are in
+	‘/tmp/RtmpAypckK/downloaded_packages’
+```
+
+Then try it:
+
+```bash
+Rscript -e "cowsay::say('Hello')"
+```
+
+```out
+ _______ 
+< Hello >
+ ------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+Type `exit` to leave the container.
+
+For step 4, write the commands that worked into the `Dockerfile`:
+
+```{.dockerfile}
+FROM rocker/r-ver:4.6.2
+
+RUN Rscript -e "install.packages('cowsay')"
+
+CMD ["Rscript", "-e", "cowsay::say('Hello from my first image!')"]
+```
+
+`RUN` runs the install while the image is built.
+It is the same command you typed at the container's Bash prompt,
+which is one reason this book works at the command line
+(see [Introduction to the Bash Shell](0120-bash-shell.qmd)).
+`CMD` sets the command a container from this image runs when it starts.
+It replaces the base image's own `CMD ["R"]`
+(see [Introduction to containerization](0610-containers.qmd)),
+so a container runs our line of R code instead of starting R.
+
+:::{.callout-warning title="A misspelled package does not stop the build"}
+`install.packages()` only warns when it cannot find a package,
+and `Rscript` still finishes with exit status `0`,
+which tells the shell that the command worked.
+`echo $?` prints the exit status of the last command:
+
+```bash
+Rscript -e "install.packages('cowsya')"
+echo $?
+```
+
+```out
+Installing package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+Warning message:
+package ‘cowsya’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages 
+0
+```
+
+So a `RUN` line with a misspelled package builds without an error,
+into an image without the package.
+Adding `library()` after the install makes R stop with an error,
+which stops the build at that step:
+
+```bash
+Rscript -e "install.packages('cowsya'); library(cowsya)"
+echo $?
+```
+
+```out
+Installing package into ‘/usr/local/lib/R/site-library’
+(as ‘lib’ is unspecified)
+Warning message:
+package ‘cowsya’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages 
+Error in library(cowsya) : there is no package called ‘cowsya’
+Execution halted
+1
+```
+:::
+
+For step 5, build the image from the folder that has the `Dockerfile`:
+
+```bash
+docker build --tag hello-cowsay .
+```
+
+- `--tag hello-cowsay` names the image.
+  You can add a version after a colon, such as `hello-cowsay:0.1`;
+  without one, Docker uses the tag `latest`.
+- `.` is the build context,
+  the folder Docker reads the `Dockerfile` and any copied files from,
+  here the current folder.
+
+```out
+[+] Building 4.0s (6/6) FINISHED                                               docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 176B                                                           0.0s
+ => [internal] load metadata for docker.io/rocker/r-ver:4.6.2                                  0.0s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => CACHED [1/2] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e822  0.0s
+ => => resolve docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => [2/2] RUN Rscript -e "install.packages('cowsay')"                                          3.6s
+ => exporting to image                                                                         0.2s
+ => => exporting layers                                                                        0.1s
+ => => exporting manifest sha256:3194becb32301ec3fcd846472866f8501aa5035f582f5149e2714b6d4903  0.0s
+ => => exporting config sha256:c6f87af4eb6e98b553b3ee935b571ec906888a174f9322e359e9b96e2b15c1  0.0s
+ => => exporting attestation manifest sha256:8b4f5f3c8233fa3a54471ca2fe6f7471a873845c8477c3c6  0.0s
+ => => exporting manifest list sha256:9f2606d682dc224d8df0cdb02909dabdbfd7e4218aa98cd8cace121  0.0s
+ => => naming to docker.io/library/hello-cowsay:latest                                         0.0s
+ => => unpacking to docker.io/library/hello-cowsay:latest                                      0.1s
+```
+
+Each `[1/2]` and `[2/2]` is a step of the `Dockerfile`.
+If you have not pulled `rocker/r-ver:4.6.2` before,
+the `FROM` step downloads it first.
+
+Run a container from the new image.
+It needs no `-it`,
+because our R code prints its message and exits:
+
+```bash
+docker run --rm hello-cowsay
+```
+
+```out
+ ____________________________ 
+< Hello from my first image! >
+ ---------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+### Layer caching
+
+Docker saves each step's result as a layer,
+and reuses a layer when nothing in its step, or in the steps above it, has changed.
+To see this, change only the message on the `CMD` line of the `Dockerfile`:
+
+```{.dockerfile}
+CMD ["Rscript", "-e", "cowsay::say('Moo! Only my message changed.')"]
+```
+
+Then build again:
+
+```bash
+docker build --tag hello-cowsay .
+```
+
+```out
+[+] Building 0.2s (6/6) FINISHED                                               docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 179B                                                           0.0s
+ => [internal] load metadata for docker.io/rocker/r-ver:4.6.2                                  0.0s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => [1/2] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => => resolve docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => CACHED [2/2] RUN Rscript -e "install.packages('cowsay')"                                   0.0s
+ => exporting to image                                                                         0.1s
+ => => exporting layers                                                                        0.0s
+ => => exporting manifest sha256:f2d1c5ab15c8048a1863f62aa572f3bc2c971015fe8a2c04c5a4f1123137  0.0s
+ => => exporting config sha256:0146dc6311dfcf1595b66373383e7f7bc1b4f0deae336219d9487b03da6d38  0.0s
+ => => exporting attestation manifest sha256:bc8aca2ce37900fcdcd01fda5fed9286c997df019e23c971  0.0s
+ => => exporting manifest list sha256:168f3c35f574628804baaf63e71be4164a7d1534ca35229a6827c7c  0.0s
+ => => naming to docker.io/library/hello-cowsay:latest                                         0.0s
+ => => unpacking to docker.io/library/hello-cowsay:latest                                      0.0s
+```
+
+The `RUN` step says `CACHED`.
+Docker reused the layer with cowsay installed
+and only changed the default command:
+
+```bash
+docker run --rm hello-cowsay
+```
+
+```out
+ _______________________________ 
+< Moo! Only my message changed. >
+ ------------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+Installing one package took a few seconds,
+but installing many packages, or packages that R compiles from source,
+can take many minutes, and the cache skips all of it.
+This is why a `Dockerfile` puts the steps that change least often,
+such as installing software, near the top,
+and the steps that change most often near the bottom.
+A change to one step rebuilds that step and every step below it.
+
+`docker image ls` lists the image,
+and `docker history` lists its layers, newest first
+(`head -5` keeps the first five lines):
+
+```bash
+docker image ls hello-cowsay
+```
+
+```out
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-cowsay:latest   168f3c35f574       1.45GB          390MB        
+```
+
+```bash
+docker history hello-cowsay | head -5
+```
+
+```out
+IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
+168f3c35f574   17 seconds ago   CMD ["Rscript" "-e" "cowsay::say('Moo! Only …   0B        buildkit.dockerfile.v0
+<missing>      17 seconds ago   RUN /bin/sh -c Rscript -e "install.packages(…   4.17MB    buildkit.dockerfile.v0
+<missing>      11 days ago      COPY scripts /rocker_scripts # buildkit         168kB     buildkit.dockerfile.v0
+<missing>      11 days ago      CMD ["R"]                                       0B        buildkit.dockerfile.v0
+```
+
+The top two rows are the layers our `Dockerfile` added.
+The `RUN` layer holds the 4.17MB of R packages,
+and it shows that Docker ran the command with `/bin/sh -c`.
+The `CMD` layer adds no files, only the default command, so its size is 0B.
+The rows below come from `rocker/r-ver:4.6.2`,
+including its `CMD ["R"]`, which our `CMD` replaces.
+
+:::{.callout-note title="More information"}
+Docker runs `RUN` commands with the shell `/bin/sh`, not Bash,
+unless the `Dockerfile` picks another shell with the `SHELL` instruction
+(see Docker's [`Dockerfile` reference](https://docs.docker.com/reference/dockerfile/)).
+For commands like these, the two shells behave the same.
+:::
+
 ### Guidelines for `RUN` commands
 
 Each `RUN` command creates a new layer in the Docker image.
@@ -74,19 +419,20 @@ As a consequence, we want to minimize the number of layers where reasonably poss
 How can we do this?
 
 Install everything that can be installed by a tool
-(e.g., `conda`, `mamba`, `pip`, `apt`) at once
-(i.e., when installing 5 programs via `apt`,
-do not call `apt` five times;
-instead do: `apt install tool1 tool2 tool3 tool4 tool5`).
+(e.g., `apt-get`, or `install.packages()` in R) at once
+(i.e., when installing 5 programs via `apt-get`,
+do not call `apt-get` five times;
+instead do: `apt-get install tool1 tool2 tool3 tool4 tool5`,
+and in R, `install.packages(c("pkg1", "pkg2"))`).
 However, doing this can lead to long lines.
 In response,
 we can break a single command across lines in the shell by using the `\` character.
 For example,
-to reduce the long line below, which uses `apt` to install the programs Git,
+to reduce the long line below, which uses `apt-get` to install the programs Git,
 Tiny Nano, Less, and wget:
 
 ```bash
-apt install --yes git nano-tiny less wget
+apt-get install --yes git nano-tiny less wget
 ```
 
 We can use `\` after each program
@@ -95,7 +441,7 @@ if there were even more programs to install).
 Similarly, we indent the lines after `\` to increase readability:
 
 ```bash
-apt install --yes \
+apt-get install --yes \
     git \
     nano-tiny \
     less \
@@ -108,12 +454,12 @@ as sometimes we don't want to run a command if the command that was run immediat
 before it failed.
 We can specify this in the shell using `&&`.
 For example,
-if we want to not run `apt` installation commands if `apt update` failed,
+if we want to not run `apt-get` installation commands if `apt-get update` failed,
 we can write:
 
 ```bash
-apt update && \
-    apt install --yes git
+apt-get update && \
+    apt-get install --yes git
 ```
 
 ## `Dockerfile` command summary
