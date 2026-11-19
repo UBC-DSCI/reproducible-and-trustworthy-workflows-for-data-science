@@ -1,0 +1,28 @@
+---
+title: "Counting the observations in each class"
+format: html
+jupyter: python3
+---
+
+```{python}
+import pandas as pd
+```
+
+Here's some data (the Wisconsin Breast Cancer data set, originally from the [UCI machine learning repository](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)) where we would like to calculate the number of observations in each class:
+
+```{python}
+cancer = pd.read_csv("https://raw.githubusercontent.com/UBC-DSCI/introduction-to-datascience/main/data/wdbc.csv")
+cancer
+```
+
+To calculate the number of observations of each class,
+we group the rows by class and count them:
+
+```{python}
+cancer.groupby("Class").size().reset_index(name="count").rename(columns={"Class": "class"})
+```
+
+We do this for almost every classification problem we work on.
+Next, we will move this code into a function, `count_classes`, in `../src/count_classes.py`,
+write tests for that function,
+and call the function here instead.

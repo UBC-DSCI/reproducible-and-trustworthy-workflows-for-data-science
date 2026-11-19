@@ -1,0 +1,31 @@
+[project]
+name = "pycounts"
+version = "0.1.0"
+description = "Calculate word counts in a text file!"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.11.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.semantic_release]
+# where the version number lives
+version_toml = ["pyproject.toml:project.version"]
+# release 0.x versions until we choose to release 1.0.0
+allow_zero_version = true
+# after bumping the version, update uv.lock to match, then build the package
+build_command = """
+    uv lock
+    git add uv.lock
+    uv build
+"""
