@@ -1,0 +1,330 @@
+---
+title: Python packages with uv in an image
+output-file: containers-uv.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0640-containers-uv.qmd >}}
+
+## Download the images before you start {.unnumbered}
+
+The examples in this chapter build on two images.
+Start Docker first (on macOS and Windows, open Docker Desktop),
+then download (pull) them before you start:
+
+```bash
+docker pull ubuntu:24.04
+docker pull ghcr.io/astral-sh/uv:0.13.7
+```
+
+## The project
+
+This chapter puts the Python packages of a small uv project into a Docker image.
+It is a uv project like the ones in [Virtual environments: Python (uv)](0520-virtual-environments-python-uv.qmd),
+and its files are in the book repository's `demos/docker-uv/end` folder.
+`hello.py` prints a message with the [cowsay](https://pypi.org/project/cowsay/) package:
+
+```{.python}
+import cowsay
+
+cowsay.cow("Hello from Python in my image!")
+```
+
+`pyproject.toml` lists the package with an exact version,
+and `add-bounds = "exact"` makes `uv add` write exact versions too
+(see [Exact versions with uv](0545-virtual-environments-python-uv-exact-pins.qmd)):
+
+```{.toml}
+[project]
+name = "docker-uv"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "cowsay==6.1",
+]
+
+[tool.uv]
+# `uv add` writes an exact version (==)
+add-bounds = "exact"
+```
+
+`.python-version` holds `3.14`,
+and `uv.lock` locks cowsay and everything it needs.
+On your computer, `uv run` creates the project's `.venv` folder and runs the script:
+
+```bash
+uv run hello.py
+```
+
+```out
+Using CPython 3.14.3
+Creating virtual environment at: .venv
+Installed 1 package in 9ms
+  ______________________________
+| Hello from Python in my image! |
+  ==============================
+                              \
+                               \
+                                 ^__^
+                                 (oo)\_______
+                                 (__)\       )\/\
+                                     ||----w |
+                                     ||     ||
+```
+
+## A `Dockerfile` for a uv project
+
+Here is the project's `Dockerfile`.
+Its uv lines are the same as in [docker-uv-renv](https://github.com/chendaniely/docker-uv-renv),
+the example project that [Docker Compose](0650-containers-docker-compose.qmd) uses:
+
+```{.dockerfile}
+# Ubuntu Linux, with no Python: uv installs Python itself
+FROM ubuntu:24.04
+
+# install python uv
+# https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
+COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/
+
+# The project is mounted over /workspace, so the packages go in /opt
+WORKDIR /workspace
+
+# python packages in /opt/venv
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+COPY pyproject.toml uv.lock .python-version ./
+# --locked: stop if uv.lock doesn't match pyproject.toml
+RUN uv sync --locked
+```
+
+- `FROM ubuntu:24.04` starts from Ubuntu Linux, which has no Python.
+  uv installs the Python version that `.python-version` asks for.
+- `COPY --from=ghcr.io/astral-sh/uv:0.13.7` copies the `uv` and `uvx` programs
+  out of the image that uv publishes,
+  as [uv's Docker guide](https://docs.astral.sh/uv/guides/integration/docker/#installing-uv) shows.
+  The tag pins uv's version, the same way a lockfile pins a package's.
+- `WORKDIR /workspace` makes `/workspace` the working directory,
+  for the rest of the build and for containers that run from the image.
+  You will mount your project folder there.
+- `ENV UV_PROJECT_ENVIRONMENT=/opt/venv` tells uv to put the project's virtual environment
+  in `/opt/venv`, instead of in `.venv` inside the project folder
+  (see [uv's environment variables](https://docs.astral.sh/uv/reference/environment/#uv_project_environment)).
+  The section after next shows why.
+- `COPY pyproject.toml uv.lock .python-version ./` copies only the files that list the packages,
+  not the code.
+  Editing `hello.py` then never reinstalls the packages,
+  because the `COPY` and `RUN` steps above it have not changed
+  (see [Building images](0630-containers-building.qmd)).
+- `RUN uv sync --locked` installs Python and the packages listed in `uv.lock`.
+  `--locked` stops the build if `uv.lock` does not match `pyproject.toml`.
+
+## Build the image
+
+From the project folder:
+
+```bash
+docker build --tag docker-uv .
+```
+
+```out
+[+] Building 8.8s (12/12) FINISHED                                             docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.1s
+ => => transferring dockerfile: 553B                                                           0.0s
+ => [internal] load metadata for ghcr.io/astral-sh/uv:0.13.7                                   0.6s
+ => [internal] load metadata for docker.io/library/ubuntu:24.04                                0.1s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => CACHED FROM ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e  0.2s
+ => => resolve ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1  0.1s
+ => CACHED [stage-0 1/5] FROM docker.io/library/ubuntu:24.04@sha256:008173c23f95b170204355c12  0.2s
+ => => resolve docker.io/library/ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a  0.2s
+ => [internal] load build context                                                              0.0s
+ => => transferring context: 964B                                                              0.0s
+ => [stage-0 2/5] COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/             0.1s
+ => [stage-0 3/5] WORKDIR /workspace                                                           0.0s
+ => [stage-0 4/5] COPY pyproject.toml uv.lock .python-version ./                               0.0s
+ => [stage-0 5/5] RUN uv sync --locked                                                         3.7s
+ => exporting to image                                                                         3.9s
+ => => exporting layers                                                                        2.8s
+ => => exporting manifest sha256:6e630dbe112a1dc156ddc9fd6ad3c7b8585f9c045fdb5c95546843ec6ca2  0.0s
+ => => exporting config sha256:bbae306c5d2d7852ecf4b128ed8508269a04e620187bc9e8a5fd9a5d68cfe3  0.0s
+ => => exporting attestation manifest sha256:6e9b8ca9f5749e9b646d18487a8066fbb2a7ac07ae4971d5  0.0s
+ => => exporting manifest list sha256:c7eced3c63cca5bff431f82a2ec381a1bc17a49a2839cd91ad1b5c0  0.0s
+ => => naming to docker.io/library/docker-uv:latest                                            0.0s
+ => => unpacking to docker.io/library/docker-uv:latest                                         1.0s
+```
+
+The first `FROM` line is uv's image, which `COPY --from` reads `uv` from.
+To see what `uv sync` printed,
+build with `--progress=plain`, which shows each step's own output,
+and `--no-cache`, which runs every step again instead of reusing its layer.
+Here is the `uv sync` step:
+
+```bash
+docker build --progress=plain --no-cache --tag docker-uv .
+```
+
+```out
+#11 [stage-0 5/5] RUN uv sync --locked
+#11 0.309 Downloading cpython-3.14.10-linux-aarch64-gnu (download) (29.2MiB)
+#11 3.201  Downloaded cpython-3.14.10-linux-aarch64-gnu (download)
+#11 3.352 Using CPython 3.14.10
+#11 3.352 Creating virtual environment at: /opt/venv
+#11 3.359 Resolved 2 packages in 2ms
+#11 3.434 Prepared 1 package in 74ms
+#11 3.451 Installed 1 package in 16ms
+```
+
+uv downloaded Python 3.14,
+created the virtual environment at `/opt/venv`,
+and installed cowsay into it.
+
+## Run the project in a container
+
+The image has the packages but not the code.
+Mount the project folder at `/workspace`,
+and run the script with `uv run` in place of the image's default command
+(see [Running containers](0620-containers-running.qmd)):
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv uv run hello.py
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv uv run hello.py
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv uv run hello.py
+```
+:::
+
+```out
+  ______________________________
+| Hello from Python in my image! |
+  ==============================
+                              \
+                               \
+                                 ^__^
+                                 (oo)\_______
+                                 (__)\       )\/\
+                                     ||----w |
+                                     ||     ||
+```
+
+:::{.callout-note title="Why `/$(pwd)` in Git Bash?"}
+Git Bash turns command-line arguments that start with `/` into Windows paths,
+so `/workspace` could reach Docker as `C:/Program Files/Git/workspace`.
+Doubling the first slash, which `/$(pwd)` does, stops that
+(see "Known issues" in the [Git for Windows release notes](https://github.com/git-for-windows/build-extra/blob/main/ReleaseNotes.md#known-issues)).
+:::
+
+## Why the packages go in `/opt/venv`
+
+Without a mount, `/workspace` holds the three files the `Dockerfile` copied:
+
+```bash
+docker run --rm docker-uv ls -a
+```
+
+```out
+.
+..
+.python-version
+pyproject.toml
+uv.lock
+```
+
+With the project folder mounted, `/workspace` shows your computer's folder instead,
+including the `.venv` folder that `uv run` created on your computer:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv ls -a
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv ls -a
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv ls -a
+```
+:::
+
+```out
+.
+..
+.gitignore
+.python-version
+.venv
+Dockerfile
+hello.py
+pyproject.toml
+uv.lock
+```
+
+A mount hides whatever the image had at that path.
+If the image kept its packages in `/workspace/.venv`,
+the mount would hide them.
+Worse, uv in the container would find your computer's `.venv` instead,
+which holds a program for your computer's operating system, not for Linux.
+On a Mac:
+
+```bash
+file .venv/bin/python3
+```
+
+```out
+.venv/bin/python3: Mach-O 64-bit executable arm64
+```
+
+With the `ENV` line left out of the `Dockerfile`,
+running `uv run hello.py` with the mount printed these lines, among others:
+
+```out
+Removed virtual environment at: .venv
+Creating virtual environment at: .venv
+```
+
+uv deleted your computer's `.venv` and made a Linux one in its place,
+which no longer works on your computer.
+With `UV_PROJECT_ENVIRONMENT=/opt/venv`, the container leaves `.venv` alone
+and uses the environment that the image built:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv uv run python -c "import sys; print(sys.prefix)"
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv uv run python -c "import sys; print(sys.prefix)"
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv uv run python -c "import sys; print(sys.prefix)"
+```
+:::
+
+```out
+/opt/venv
+```
