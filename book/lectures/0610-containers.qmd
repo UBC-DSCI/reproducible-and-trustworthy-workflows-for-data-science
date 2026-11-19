@@ -9,6 +9,24 @@ aliases:
 
 {{< include ../learning_objectives/0610-containers.qmd >}}
 
+## Download the images before you start {.unnumbered}
+
+The exercises in this chapter run three container images,
+which together take about 13 GB of disk space (about 3 GB to download).
+Downloading them takes a while,
+so download (pull) them before you start.
+Start Docker first (on macOS and Windows, open Docker Desktop),
+then run:
+
+```bash
+docker pull rocker/r-ver:4.3.2
+docker pull rocker/rstudio:4.4.2
+docker pull quay.io/jupyter/datascience-notebook:2025-03-14
+```
+
+`docker pull` downloads an image from a container registry without running it.
+The Jupyter image is the largest of the three, at about 9 GB.
+
 ## Documenting and loading dependencies
 
 You've made some beautiful data analysis pipeline/project
@@ -26,7 +44,7 @@ What does it depend on?
 2. Do you also document the version numbers of the programming languages
    and packages you used?
    This can have big consequences when it comes to reproducibility...
-   (*e.g.*, the [change to random number generation](https://blog.revolutionanalytics.com/2019/05/whats-new-in-r-360.html) in R in 2019?)
+   (*e.g.*, the [change to how `sample()` draws random numbers](https://cran.r-project.org/doc/manuals/r-release/NEWS.3.html) in R 3.6.0, in 2019?)
 
 3. Did you document what other software (beyond the programming languages
    and packages used) and operating system dependencies are needed
@@ -82,6 +100,31 @@ To run this, type:
 ```bash
 docker run --rm -it rocker/r-ver:4.3.2
 ```
+
+Here is what each part of the command does:
+
+- `docker run` starts a new container from an image.
+  If the image is not on your computer yet,
+  Docker first downloads (pulls) it from a container registry.
+- `--rm` deletes the container when it stops,
+  so that stopped containers do not pile up on your computer.
+- `-it` is two flags written together.
+  `-i` (`--interactive`) keeps the container's input open,
+  so that what you type reaches R.
+  `-t` (`--tty`) connects R to a terminal,
+  so that R runs as an interactive session.
+  Without `-t`, R stops with `Fatal error: you must specify '--save', '--no-save' or '--vanilla'`.
+- `rocker/r-ver:4.3.2` is the image to run,
+  `rocker/r-ver` from Docker Hub with the tag `4.3.2`, which picks R 4.3.2.
+
+:::{.callout-note title="More information"}
+R starts because the image's [`Dockerfile`](https://github.com/rocker-org/rocker-versioned2/blob/R4.3.2/dockerfiles/r-ver_4.3.2.Dockerfile)
+sets `CMD ["R"]`, the command a container runs when it starts.
+[Building images](0630-containers-building.qmd) explains `CMD`.
+
+[Running containers](0620-containers-running.qmd) covers these flags in more detail,
+and Docker's [`docker run` reference](https://docs.docker.com/reference/cli/docker/container/run/) lists them all.
+:::
 
 When you successfully launch the container, R should have started.
 Check the version of R - is it the same as your computer's version of R?
@@ -226,6 +269,9 @@ and disadvantages of each virtualization strategy in the context of reproducibil
 
 ### Virtual environment
 
+A virtual environment, such as a uv or renv project,
+isolates the packages for one programming language.
+
 #### Advantages
 - Extremely small size
 - Porous (less isolated) - makes it easy
@@ -239,6 +285,9 @@ and disadvantages of each virtualization strategy in the context of reproducibil
   and so missed dependencies can go unnoticed
 
 ### Containers
+
+A container isolates an operating system user space,
+with its programming languages, packages and other software.
 
 #### Advantages
 - Somewhat lightweight in size (manageable for easy sharing - there are tools
@@ -258,6 +307,9 @@ and disadvantages of each virtualization strategy in the context of reproducibil
 
 ### Virtual machine
 
+A virtual machine isolates a whole computer,
+including its operating system.
+
 #### Advantages
 - High security, because these are much more isolated (filesystem, ports, etc.)
 - Can share an entirely different operating system (might not be so useful
@@ -268,12 +320,12 @@ and disadvantages of each virtualization strategy in the context of reproducibil
 - Takes great effort to share volumes and ports - which makes it hard to give access
   to data on your computer
 
-## Container useage workflow
+## Container usage workflow
 
 Below is a schematic of a typical container usage workflow from a [blog post](https://blog.octo.com/en/docker-registry-first-steps/)
 by Arnaud Mazin.
 The source code for container images is stored in a file called a `Dockerfile`.
-Similar to an `environment.yml` file,
+Like a `pyproject.toml` or an `renv.lock` file,
 you would typically version control this with Git and store this
 in your GitHub repository with your analysis code.
 From the source `Dockerfile` we can build a Docker container image.
@@ -297,30 +349,37 @@ whereas a Chrome window is like a Docker container.
 <img src="../img/instance_analogy.png" width="600">
 
 You can list the container **images** on your computer that you pulled
-using Docker via:
-`docker images`.
-You should see a list like this when you do this:
+using Docker via `docker images`.
+After pulling the images for this chapter,
+the list includes these three, and any other images you have:
 
+```bash
+docker images
 ```
-$ docker images
+
+```out
 IMAGE                                             ID             DISK USAGE   CONTENT SIZE   EXTRA
-continuumio/miniconda3:23.9.0-0                   6fbaadd54391        536MB             0B    U
-hello-world:latest                                1b44b5a3e06a       10.1kB             0B
-postgres:15-alpine                                546a2cf48182        274MB             0B
-quay.io/jupyter/datascience-notebook:2025-03-14   1a211fc8a877       6.42GB             0B
-rocker/r-ver:4.3.2                                f0b4e058dcfa        849MB             0B
-rocker/rstudio:4.3.1                              c8bd7a718854          2GB             0B
-rocker/rstudio:4.4.2                              4503182694c4       2.36GB             0B
+quay.io/jupyter/datascience-notebook:2025-03-14   bf25d19758c0       9.06GB         2.17GB        
+rocker/r-ver:4.3.2                                4e32addfc4da       1.11GB          313MB        
+rocker/rstudio:4.4.2                              6bfc87fb66d0       3.16GB          734MB        
 ```
+
+`DISK USAGE` is how much space an image takes on your computer,
+and `CONTENT SIZE` is about how much was downloaded.
 
 You can list the states of containers that have been started by Docker
-on your computer (and not yet removed) via
-`docker ps -a`:
+on your computer (and not yet removed) via `docker ps -a`.
+Here, the R container from the first exercise
+and the RStudio container from the second are both running:
 
+```bash
+docker ps -a
 ```
-CONTAINER ID   IMAGE                  COMMAND   CREATED          STATUS          PORTS                                       NAMES
-9160100c7d4b   rocker/r-ver:4.3.2     "R"       5 seconds ago    Up 4 seconds                                                friendly_merkle
-0d0871c90313   rocker/rstudio:4.3.2   "/init"   33 minutes ago   Up 33 minutes   0.0.0.0:8787->8787/tcp, :::8787->8787/tcp   exciting_kepler
+
+```out
+CONTAINER ID   IMAGE                  COMMAND   CREATED        STATUS                  PORTS                                         NAMES
+adf3ea77f63f   rocker/rstudio:4.4.2   "/init"   1 second ago   Up Less than a second   0.0.0.0:8787->8787/tcp, [::]:8787->8787/tcp   objective_hoover
+adca5933388b   rocker/r-ver:4.3.2     "R"       1 second ago   Up Less than a second                                                 hardcore_swartz
 ```
 
 ## What is a container registry?
@@ -335,11 +394,9 @@ For this course we will focus on the widely used Docker Hub container registry:
 
 However, there are many container registries that can be used, including:
 
-- <https://github.com/> (yes!
-  GitHub now also hosts container images in addition to code!)
+- <https://github.com/>
 - <https://quay.io/>
-- <https://aws.amazon.com/ecr/> (yes!
-  Amazon now also hosts container images!)
+- <https://aws.amazon.com/ecr/>
 
 In the examples above, we have used the `rocker/rstudio` container,
 which comes from Docker Hub,
@@ -355,70 +412,12 @@ in the exercise earlier in class:
 - [rocker/rstudio](https://hub.docker.com/r/rocker/rstudio)
 - [quay.io/jupyter/datascience-notebook](https://quay.io/repository/jupyter/datascience-notebook?tab=tags)
 
-Question: how did we get the images for the exercise earlier in class?
-We were just prompted to type `docker run...`
+Question: you pulled these images with `docker pull` before you started.
+What would `docker run ...` have done if you had not?
 
 Answer: `docker run ...` will first look for images you have locally,
 and run those if they exist.
 If they do not exist, it then attempts to pull the image
 from the registry named in the image
 (Docker Hub, if the image name does not name a registry).
-:::
-
-## How do we specify a container image?
-
-Container images are specified from plain-text files!
-In the case of the Docker containerization software, we call these `Dockerfiles`.
-We will explain these in more detail later;
-however, for now it is useful to look at one to get a general idea of their structure:
-
-Example `Dockerfile`:
-
-
-```dockerfile
-# use the miniforge base, make sure you specify a version
-FROM condaforge/miniforge3:latest
-
-# Install Jupyter, JupyterLab, R & the IRkernel
-RUN conda install -y --quiet \
-    jupyter \
-    jupyterlab=3.* \
-    r-base=4.1.* \
-    r-irkernel
-
-# sets the default working directory
-WORKDIR /workplace
-
-# expose JupyterLab port
-EXPOSE 8888
-
-# run JupyterLab on container start
-# uses the jupyterlab from the base environment
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--IdentityProvider.token=''", "--ServerApp.password=''"]
-```
-
-The commands in all capitals are Docker commands.
-`Dockerfile`s typically start with a `FROM` command that specifies
-which base image the new image should be built off.
-Docker images are built in layers - this helps make them more lightweight.
-The `FROM` command is usually followed by `RUN` commands
-that usually install new software,
-or execute configuration commands.
-Other commands in this example expose ports,
-specify the working directory, and specify programs to execute at startup.
-
-:::{.exercise}
-
-**Demonstration of container images being built from layers**
-
-Let's take a look at the `Dockerfile`
-for the `jupyter/docker-stacks` `r-notebook` container image:
-
-- [Dockerfile](https://github.com/jupyter/docker-stacks/blob/main/images/r-notebook/Dockerfile)
-
-Questions:
-
-1. What image does it build off?
-2. What image does that build off?
-3. And then the next one?
 :::

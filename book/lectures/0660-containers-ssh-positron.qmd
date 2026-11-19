@@ -1,0 +1,80 @@
+---
+title: Working in a container over ssh with Positron
+output-file: containers-ssh-positron.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0660-containers-ssh-positron.qmd >}}
+
+## How it works
+
+With the docker-uv-renv container running,
+you can work inside it from Positron,
+as if it were a remote Linux computer.
+Positron's [Remote SSH](https://positron.posit.co/remote-ssh.html) documentation has the steps.
+Here is how the pieces from the earlier chapters fit together:
+
+- The image runs an ssh server when a container starts,
+  because of its `CMD ["/usr/sbin/sshd", "-D"]`
+  (see [Python and R in one image](0648-containers-uv-renv.qmd)).
+- `docker compose up --detach` starts the container in the background.
+  Docker Compose maps port 2222 on your computer to the container's port 22,
+  and mounts your ssh public key as the key that may log in as `root`
+  (see [Docker Compose](0650-containers-docker-compose.qmd), including how to make a key).
+- In Positron, run "Remote SSH: Show Remote Menu" from the Command Palette,
+  pick "Connect to Host", and type `root@localhost:2222`.
+  The first time, Positron installs its server inside the container,
+  which takes a minute.
+- Open the folder `/workspace`, which is your project folder.
+  Positron's terminals, and its Python and R sessions, now run in the container.
+- For Python, pick the interpreter `/opt/venv/bin/python`,
+  the environment the image built from `uv.lock`.
+  R uses the packages in `/opt/renv/library` without any setup,
+  because of the `RENV_PATHS_LIBRARY` line in R's `Renviron.site`.
+- An ssh login does not see the image's `ENV` settings,
+  only the ones in `/etc/environment`.
+  That is why the `Dockerfile` also writes `UV_PROJECT_ENVIRONMENT` there,
+  so that `uv` in a Positron terminal uses `/opt/venv` too.
+
+## When it does not connect
+
+These are the problems the docker-uv-renv README lists, and their fixes:
+
+- `~/.ssh/id_ed25519.pub` is a folder.
+  Docker made it because the key did not exist when the container started.
+  Run `docker compose down`, delete the folder, make the key,
+  and run `docker compose up --detach` again.
+- Your key has a different name.
+  Change the key's path in `docker-compose.yml`.
+- Positron or `ssh` says the remote host identification has changed.
+  The container's ssh server has its own keys,
+  which the image made when `apt-get` installed `openssh-server`.
+  Rebuilding that step makes new ones,
+  so your computer no longer recognizes the container.
+  Forget the old key, then connect again:
+
+  ```bash
+  ssh-keygen -R "[localhost]:2222"
+  ```
+- On a Linux computer, the ssh server refuses the mounted key,
+  because the file belongs to you, not to `root`.
+  Uncomment the `StrictModes no` line in the `Dockerfile` and run `docker compose build`.
+
+## An optional ssh shortcut
+
+To type `ssh docker-uv-renv` instead of `ssh -p 2222 root@localhost`,
+and to pick `docker-uv-renv` from a list in Positron,
+add this to `~/.ssh/config` on your computer:
+
+```
+Host docker-uv-renv
+  HostName localhost
+  Port 2222
+  User root
+  StrictHostKeyChecking no
+  UserKnownHostsFile /dev/null
+```
+
+The last two lines skip the host key check,
+so that a rebuilt image does not cause the host key error above.

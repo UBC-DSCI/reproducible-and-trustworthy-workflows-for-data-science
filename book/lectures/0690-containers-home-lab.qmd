@@ -1,0 +1,73 @@
+---
+title: Containers outside class
+output-file: containers-home-lab.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0690-containers-home-lab.qmd >}}
+
+## Running apps at home with containers
+
+Running containers is not only for data analysis.
+Many people run apps for their own home in containers,
+on an always-on computer such as an old laptop, a mini PC or a Raspberry Pi,
+which is often called a *home lab*.
+Each app below publishes a container image,
+so trying one uses the same `docker pull`, `docker run` and `docker compose` commands as the earlier chapters.
+Many of them give you a `docker-compose.yml` file to start from,
+and several (Firefly III, Wardrowbe, Immich, Paperless-ngx and TeslaMate)
+run as a few containers that work together,
+like the services in [Docker Compose](0650-containers-docker-compose.qmd).
+Each app's name links to its instructions for running it with Docker.
+
+| For | App | What it does | Image |
+|-----|-----|--------------|-------|
+| Money | [Firefly III](https://docs.firefly-iii.org/how-to/firefly-iii/installation/docker/) | Tracks your spending, budgets and bills | `fireflyiii/core` |
+| Money | [Actual Budget](https://actualbudget.org/docs/install/docker) | Envelope budgeting that syncs across your devices | `actualbudget/actual-server` |
+| Clothes | [Wardrowbe](https://github.com/Anyesh/wardrowbe) | Catalogs your wardrobe and suggests outfits with AI | `ghcr.io/anyesh/wardrowbe` |
+| AI | [Ollama](https://docs.ollama.com/docker) | Runs open large language models on your own computer | `ollama/ollama` |
+| AI | [Open WebUI](https://docs.openwebui.com/getting-started/quick-start/) | A chat web page for the models Ollama runs | `ghcr.io/open-webui/open-webui` |
+| AI | [n8n](https://docs.n8n.io/hosting/installation/docker/) | Automates workflows that connect apps and AI models | `n8nio/n8n` |
+| Media | [Jellyfin](https://jellyfin.org/docs/general/installation/container) | Streams your own movies, shows and music to your devices | `jellyfin/jellyfin` |
+| Media | [Plex Media Server](https://github.com/plexinc/pms-docker) | Streams your own media too; free to use, but not open source | `plexinc/pms-docker` |
+| Media | [Audiobookshelf](https://www.audiobookshelf.org/docs) | Serves your audiobooks and podcasts | `ghcr.io/advplyr/audiobookshelf` |
+| Home office | [Nextcloud](https://github.com/nextcloud/all-in-one) | Files, calendars, contacts and office documents, like Google Drive | `nextcloud/all-in-one` |
+| Home office | [Immich](https://docs.immich.app/install/docker-compose) | Backs up and organizes your photos and videos, like Google Photos | `ghcr.io/immich-app/immich-server` |
+| Home office | [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) | Scans your paper documents and makes them searchable | `ghcr.io/paperless-ngx/paperless-ngx` |
+| Home office | [Vaultwarden](https://github.com/dani-garcia/vaultwarden) | A password manager server that works with the Bitwarden apps | `vaultwarden/server` |
+| Home office | [Mealie](https://docs.mealie.io/documentation/getting-started/installation/installation-checklist/) | Stores your recipes and plans your meals | `ghcr.io/mealie-recipes/mealie` |
+| Home | [Home Assistant](https://www.home-assistant.io/installation/linux) | Controls and automates your smart-home devices | `ghcr.io/home-assistant/home-assistant` |
+| Home network | [Pi-hole](https://docs.pi-hole.net/docker/) | Blocks ads for every device on your home network | `pihole/pihole` |
+| Home network | [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome/wiki/Docker) | Also blocks ads network-wide | `adguard/adguardhome` |
+| Home network | [Uptime Kuma](https://github.com/louislam/uptime-kuma) | Checks that your apps and websites are up, and alerts you when they are not | `louislam/uptime-kuma` |
+| Home network | [Homepage](https://gethomepage.dev/installation/docker/) | A start page with links to all your apps | `ghcr.io/gethomepage/homepage` |
+| Data | [Metabase](https://www.metabase.com/docs/latest/installation-and-operation/running-metabase-on-docker) | Charts and dashboards over your own databases, without code | `metabase/metabase` |
+| Data | [Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/installation/docker/) | Dashboards for data over time, such as sensor readings | `grafana/grafana` |
+| Car | [TeslaMate](https://docs.teslamate.org/docs/installation/docker) | Logs your Tesla's drives, charging and battery data | `teslamate/teslamate` |
+
+## Managing many containers
+
+Once you run several apps,
+a web page that shows all of your containers helps.
+[Portainer](https://docs.portainer.io/start/install-ce/server/docker/linux) (`portainer/portainer-ce`)
+is the best known one,
+and its Community Edition is open source.
+[Dockhand](https://dockhand.pro) (`fnsys/dockhand`) is a newer alternative.
+Both start, stop and update containers and Compose stacks,
+and show their logs, from your browser.
+Dockhand is free for personal use, such as a home lab,
+and for schools and universities,
+but businesses pay to use it in production.
+
+Both run with Docker's socket (`/var/run/docker.sock`) mounted into their container,
+which lets them control every container on the computer.
+Only give that access to tools you trust.
+
+:::{.callout-warning}
+Keep home-lab apps on your home network.
+Opening a port on your router to reach them from outside
+puts them on the internet, where anyone can try to log in.
+To reach them when you are away, use a private network (VPN) instead,
+such as [Tailscale](https://tailscale.com/kb/1282/docker).
+:::

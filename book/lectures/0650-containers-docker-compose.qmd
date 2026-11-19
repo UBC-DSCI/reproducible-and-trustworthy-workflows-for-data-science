@@ -5,6 +5,9 @@ aliases:
   - 115-docker-compose.html
 ---
 
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0650-containers-docker-compose.qmd >}}
 
 ## Docker Compose to launch containers
 
@@ -24,7 +27,7 @@ Docker Compose uses a YAML file, specifically named `docker-compose.yml`,
 to record how the container should be launched.
 This file can include details such as:
 
-- the Docker image and version to use
+- the Docker image and version to use, or how to build it
 - how to mount volumes
 - what ports to map
 - what environment variables to set
@@ -35,80 +38,226 @@ the compose file makes it easier to manage all the `docker run` parameters.
 See this resource that can convert a run command to a compose file:
 <https://www.composerize.com/>
 
+Here is the `docker-compose.yml` file of [docker-uv-renv](https://github.com/chendaniely/docker-uv-renv),
+the project from [Python and R in one image](0648-containers-uv-renv.qmd):
 
-Here is an example comparing `docker run` with a `docker-compose.yml` file for use
-with the `rocker/rstudio:4.4.2` container image.
-
-The `docker run` command as a single line:
-`docker run --rm -it -p 8787:8787  -v /$(pwd):/home/rstudio/project -e PASSWORD="apassword" rocker/rstudio:4.4.2`
-
-as a multiline command:
-
-```bash
-docker run \
-    --rm \
-    -it \
-    -p 8787:8787 \
-    -v /$(pwd):/home/rstudio/project \
-    -e PASSWORD="apassword" \
-    rocker/rstudio:4.4.2
-```
-
-and within a `docker-compose.yml` file:
-
-```yaml
+```{.yaml}
 services:
-  analysis-env: # name of the service we are creating
-    image: rocker/rstudio:4.4.2
+  analysis-env:
+    build: .
+    image: docker-uv-renv
     ports:
-      - "8787:8787"
+      # 2222 on your computer, 22 in the container.
+      # "127.0.0.1:2222:22" stops others on the same Wi-Fi from reaching it.
+      - "2222:22"
     volumes:
-      - .:/home/rstudio/project
-    environment:
-      PASSWORD: apassword
+      - .:/workspace
+      # ro: read-only
+      - ~/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys:ro
 ```
 
-To launch the container interactively using this file,
-you use the `docker compose` command to run the container(s) and parameters specified
-in the YAML file.
+Without Docker Compose, building the image and starting the container
+takes these two commands, from the project folder:
 
 ```bash
-docker compose up
+docker build --tag docker-uv-renv .
+docker run --detach -p 2222:22 -v "$(pwd):/workspace" -v ~/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys:ro docker-uv-renv
 ```
 
-If you are using a web app,
-as in the case of the `rocker/rstudio`
-or `jupyter/minimal-notebook` container images,
-you still need to manually navigate to the web app in your browser
-and enter the correct URL to access it.
+Each part of the `docker run` command is a line of the file:
 
-To stop and clean up the container,
-you would use <kbd>Ctrl</kbd> + <kbd>c</kbd> in the terminal
-where you launched the container,
-and then type:
+- `services:` lists the containers the project runs.
+  This project has one, which it calls `analysis-env`.
+- `build: .` builds the image from the `Dockerfile` in this folder,
+  like `docker build .`.
+- `image: docker-uv-renv` names the image, like `--tag docker-uv-renv`.
+- `ports:` maps port 2222 on your computer to port 22 in the container,
+  like `-p 2222:22`.
+  Port 22 is where the container's ssh server listens.
+  The file uses 2222 on your computer, because your computer may already use 22.
+- `volumes:` mounts two things, like the two `-v` options.
+  `.:/workspace` mounts the project folder at `/workspace`.
+  The second line mounts your ssh public key as the list of keys
+  that may log in to the container as `root`,
+  and `ro` makes it read-only inside the container.
+  The key is the one from [SSH for authentication](0210-ssh-authentication.qmd).
+
+::: {.callout-note title="No ssh key yet?"}
+To check that you have the key, list it:
+
+```bash
+ls ~/.ssh/id_ed25519.pub
+```
+
+If `ls` says `No such file or directory`,
+make a key as in [SSH for authentication](0210-ssh-authentication.qmd):
+
+```bash
+ssh-keygen -t ed25519
+```
+
+Press Enter to save it in the default place, `~/.ssh/id_ed25519`.
+Make the key before you start the container.
+If the key is missing when the container starts,
+Docker makes a folder at `~/.ssh/id_ed25519.pub` instead,
+and you cannot log in to the container.
+:::
+
+Docker Compose reads the paths in the file itself,
+so the same file works on macOS, Linux and Windows,
+without the Git Bash `/$(pwd)` change from the earlier chapters.
+
+## Docker Compose commands
+
+Run these from the project folder.
+`docker compose build` builds the image.
+If you built it in [Python and R in one image](0648-containers-uv-renv.qmd),
+Docker reuses every layer:
+
+```bash
+docker compose build
+```
+
+```out
+[+] Building 20.6s (21/21) FINISHED
+ => [internal] load local bake definitions                                                     0.0s
+ => => reading from stdin 853B                                                                 0.0s
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 1.77kB                                                         0.0s
+ => [internal] load metadata for docker.io/rocker/r-ver:4.6.2                                  0.1s
+ => [internal] load metadata for ghcr.io/astral-sh/uv:0.13.7                                   1.2s
+ => [internal] load .dockerignore                                                              0.1s
+ => => transferring context: 2B                                                                0.0s
+ => [stage-0  1/12] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e  0.0s
+ => => resolve docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => FROM ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1334471  0.0s
+ => => resolve ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1  0.0s
+ => [internal] load build context                                                              0.1s
+ => => transferring context: 320.25kB                                                          0.1s
+ => CACHED [stage-0  2/12] RUN apt-get update && apt-get install --yes     curl     git     l  0.0s
+ => CACHED [stage-0  3/12] RUN curl --location --output quarto.deb     https://github.com/qua  0.0s
+ => CACHED [stage-0  4/12] COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/    0.0s
+ => CACHED [stage-0  5/12] WORKDIR /workspace                                                  0.0s
+ => CACHED [stage-0  6/12] RUN echo "UV_PROJECT_ENVIRONMENT=/opt/venv" >> /etc/environment     0.0s
+ => CACHED [stage-0  7/12] COPY pyproject.toml uv.lock .python-version ./                      0.0s
+ => CACHED [stage-0  8/12] RUN uv sync --locked                                                0.0s
+ => CACHED [stage-0  9/12] RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/  0.0s
+ => CACHED [stage-0 10/12] COPY renv.lock .Rprofile ./                                         0.0s
+ => CACHED [stage-0 11/12] COPY renv/activate.R renv/                                          0.0s
+ => CACHED [stage-0 12/12] RUN Rscript -e "renv::restore()"                                    0.0s
+ => exporting to image                                                                        18.3s
+ => => exporting layers                                                                        0.0s
+ => => exporting manifest sha256:4557e751a87e82b3a9de57cc050f041b1a9906f8ddcf6608497ae4553039  1.8s
+ => => exporting config sha256:381ae72e85e27b2dfc6f930cc4e82457d2c5a26e254ea71651f8c1b917b494  0.0s
+ => => exporting attestation manifest sha256:456fc1c36345b771766202511bb10ff31e2e2f804ec9aacc  0.0s
+ => => exporting manifest list sha256:0f31cb20fb9602e3500fb9e402df9966ea2d3934625e97864f52758  0.0s
+ => => naming to docker.io/library/docker-uv-renv:latest                                       0.0s
+ => => unpacking to docker.io/library/docker-uv-renv:latest                                   16.4s
+ => resolving provenance for metadata file                                                     0.0s
+[+] build 1/1
+ ✔ Image docker-uv-renv Built                                                                  20.8s
+```
+
+`docker compose up --detach` starts the container.
+`--detach` runs it in the background,
+so that you get your terminal back while the ssh server keeps running:
+
+```bash
+docker compose up --detach
+```
+
+```out
+[+] up 2/2
+ ✔ Network docker-uv-renv_default          Created                                              0.0s
+ ✔ Container docker-uv-renv-analysis-env-1 Started                                              0.2s
+```
+
+Docker Compose made a network for the project's containers,
+and named the container after the project folder and the service.
+`docker compose ps` lists the project's running containers:
+
+```bash
+docker compose ps
+```
+
+```out
+NAME                            IMAGE            COMMAND               SERVICE        CREATED        STATUS                  PORTS
+docker-uv-renv-analysis-env-1   docker-uv-renv   "/usr/sbin/sshd -D"   analysis-env   1 second ago   Up Less than a second   0.0.0.0:2222->22/tcp, [::]:2222->22/tcp
+```
+
+`docker compose exec` runs a command in the running container.
+Run `bash` there to get a terminal in it, in `/workspace`:
+
+```bash
+docker compose exec analysis-env bash
+```
+
+Then, at the container's prompt:
+
+```bash
+pwd
+ls
+```
+
+```out
+/workspace
+DESCRIPTION  LICENSE   README.md    docker-compose.yml  renv       reports
+Dockerfile   Makefile  _quarto.yml  pyproject.toml      renv.lock  uv.lock
+```
+
+`/workspace` shows the project folder, because it is mounted there.
+Type `exit` to leave the container, which keeps running.
+`docker compose down` stops and removes the container and its network:
 
 ```bash
 docker compose down
 ```
 
-Let's take a look at an example `docker-compose.yml` being used in a project:
-
-- <https://github.com/ttimbers/breast_cancer_predictor_py>
+```out
+[+] down 2/2
+ ✔ Container docker-uv-renv-analysis-env-1 Removed                                              0.3s
+ ✔ Network docker-uv-renv_default          Removed                                              0.1s
+```
 
 ## Running a Docker container non-interactively using the Docker Compose
 
-We can also use Docker Compose to run containers non-interactively!
-We can do this by specifying that we want to `run` the container (instead of `up`
-to launch it interactively).
-We use the `--rm` flag with the `run` command to make the container ephemeral
-(delete it upon exit).
-Then we specify the name of the service from the `docker-compose.yml` file
-that we want to run (in our `docker-compose.yml` files
-so far, we only have one service,
-the environment for running the analysis).
-And finally, we add the command we want to run non-interactively using the container
-(in the example below, we use `make` to run the data analysis pipeline script).
+We can also use Docker Compose to run a command in a new container,
+non-interactively.
+`docker compose run` starts a new container for a service,
+runs the command you give it,
+and `--rm` deletes the container when the command finishes.
+For example, this renders the project's reports,
+like the `docker run` command in [Python and R in one image](0648-containers-uv-renv.qmd),
+with the image and the mounts taken from `docker-compose.yml`:
 
 ```bash
-docker compose run --rm analysis-env make all
+docker compose run --rm analysis-env uv run quarto render
 ```
+
+Here are the main lines of the output, without the progress counters:
+
+```out
+ Container docker-uv-renv-analysis-env-run-9991dfe97fe0 Creating
+ Container docker-uv-renv-analysis-env-run-9991dfe97fe0 Created
+[1/2] reports/report-python.qmd
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+[typst]: Compiling report-python.typ to report-python.pdf...DONE
+[2/2] reports/report-r.qmd
+processing file: report-r.qmd
+output file: report-r.knit.md
+processing file: report-r.qmd
+output file: report-r.knit.md
+[typst]: Compiling report-r.typ to report-r.pdf...DONE
+Output created: reports/report-r.html
+```
+
+The reports are written to `reports/` in the project folder on your computer.

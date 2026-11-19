@@ -1,0 +1,160 @@
+---
+title: Building images for several platforms
+output-file: containers-platforms.html
+---
+
+## Learning Objectives {.unnumbered}
+
+{{< include ../learning_objectives/0680-containers-platforms.qmd >}}
+
+## One image, one kind of processor
+
+An image holds programs compiled for one kind of processor.
+Macs with Apple silicon, and some Windows laptops, have ARM processors (`arm64`).
+Most other laptops, and GitHub's usual Linux computers, have Intel or AMD processors (`amd64`).
+`docker build` builds for the computer it runs on,
+so the `hello-cowsay` image from [Building images](0630-containers-building.qmd),
+built on a Mac with Apple silicon, is for `arm64` only:
+
+```bash
+docker image inspect hello-cowsay --format '{{.Os}}/{{.Architecture}}'
+```
+
+```out
+linux/arm64
+```
+
+A classmate with an Intel laptop could not use it as it is,
+just as an ARM computer cannot pull the older `rocker/tidyverse` images
+(see the warning in [Building images](0630-containers-building.qmd)).
+
+## Build for both kinds on your computer
+
+`--platform` builds the image for each platform you list.
+Here are the steps of building `hello-cowsay` for both:
+
+```bash
+docker build --platform linux/amd64,linux/arm64 --tag hello-cowsay .
+```
+
+```out
+[+] Building 65.7s (9/9) FINISHED                                              docker:desktop-linux
+ => [linux/arm64 internal] load metadata for docker.io/rocker/r-ver:4.6.2                      0.1s
+ => [linux/amd64 internal] load metadata for docker.io/rocker/r-ver:4.6.2                      1.4s
+ => [linux/amd64 1/2] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601  51.0s
+ => [linux/arm64 1/2] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f  0.0s
+ => CACHED [linux/arm64 2/2] RUN Rscript -e "install.packages('cowsay')"                       0.0s
+ => [linux/amd64 2/2] RUN Rscript -e "install.packages('cowsay')"                             12.7s
+```
+
+The `arm64` steps were already cached.
+For `amd64`, Docker downloaded the `amd64` version of `rocker/r-ver:4.6.2`,
+and ran the `RUN` step by emulating an Intel processor,
+which is slower than running it on one.
+`docker image ls --tree` shows that the one tag now has both:
+
+```bash
+docker image ls --tree hello-cowsay
+```
+
+```out
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-cowsay:latest   fcb420e64e33       1.86GB          800MB        
+├─ linux/amd64        7f260b562e1c        410MB          410MB        
+└─ linux/arm64        f2d1c5ab15c8       1.45GB          390MB        
+```
+
+`--platform` on `docker run` picks which one to run,
+and `uname -m` prints the processor the container sees:
+
+```bash
+docker run --rm --platform linux/amd64 hello-cowsay uname -m
+docker run --rm --platform linux/arm64 hello-cowsay uname -m
+```
+
+```out
+x86_64
+aarch64
+```
+
+Docker's guide to [multi-platform builds](https://docs.docker.com/build/building/multi-platform/)
+has the details, including what your Docker needs to build them.
+
+## Push both to Docker Hub
+
+To share the image, push it to a container registry such as [Docker Hub](https://hub.docker.com/),
+where you need a free account.
+The image's name must start with your Docker Hub username,
+so replace `USERNAME` below with yours:
+
+<!-- TODO: dan: run with your Docker Hub account and add the output; Claude checked the same commands against a registry on localhost (both platforms were pushed under one tag) -->
+
+```bash
+docker login
+docker tag hello-cowsay USERNAME/hello-cowsay:0.1
+docker push USERNAME/hello-cowsay:0.1
+```
+
+- `docker login` signs you in to Docker Hub.
+- `docker tag` gives the image a second name, with your username and a version, `0.1`.
+- `docker push` uploads it.
+  Because the image has both platforms, it uploads both, under the one tag.
+
+Anyone can then run `docker pull USERNAME/hello-cowsay:0.1`,
+and Docker downloads the version for their computer.
+To list the platforms an image in a registry has:
+
+```bash
+docker buildx imagetools inspect USERNAME/hello-cowsay:0.1
+```
+
+## On GitHub Actions
+
+A project can also build its image on GitHub's computers, every time you push.
+[docker-uv-renv](https://github.com/chendaniely/docker-uv-renv) does this
+with [`build-and-render.yml`](https://github.com/chendaniely/docker-uv-renv/blob/main/.github/workflows/build-and-render.yml):
+
+```{.yaml}
+name: Build image and render reports
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build the image
+        run: docker build --tag docker-uv-renv .
+
+      # not `make render`: CI has no ssh key to mount
+      - name: Render the reports
+        run: docker run --rm --volume "$PWD:/workspace" docker-uv-renv uv run quarto render
+
+      # download them from the run's Summary page
+      - uses: actions/upload-artifact@v7
+        with:
+          name: reports
+          path: |
+            reports/*.html
+            reports/*.pdf
+```
+
+On every push to `main` and every pull request,
+a fresh Linux computer (`ubuntu-latest`, an `amd64` computer)
+builds the image from the `Dockerfile` in the repository,
+renders the reports in a container,
+and keeps them for you to download from the run's page,
+as in [this run](https://github.com/chendaniely/docker-uv-renv/actions/runs/43520328267).
+Because the build starts from nothing,
+it shows that the `Dockerfile` and lockfiles work on a computer other than yours.
+GitHub also has ARM computers (`ubuntu-24.04-arm`),
+and the project's [`check-platforms.yml`](https://github.com/chendaniely/docker-uv-renv/blob/main/.github/workflows/check-platforms.yml)
+builds the image on both.
+[GitHub Actions](1320-github-actions.qmd) explains how workflow files work.
