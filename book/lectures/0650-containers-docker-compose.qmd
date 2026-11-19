@@ -221,18 +221,43 @@ docker compose down
 
 ## Running a Docker container non-interactively using the Docker Compose
 
-We can also use Docker Compose to run containers non-interactively!
-We can do this by specifying that we want to `run` the container (instead of `up`
-to launch it interactively).
-We use the `--rm` flag with the `run` command to make the container ephemeral
-(delete it upon exit).
-Then we specify the name of the service from the `docker-compose.yml` file
-that we want to run (in our `docker-compose.yml` files
-so far, we only have one service,
-the environment for running the analysis).
-And finally, we add the command we want to run non-interactively using the container
-(in the example below, we use `make` to run the data analysis pipeline script).
+We can also use Docker Compose to run a command in a new container,
+non-interactively.
+`docker compose run` starts a new container for a service,
+runs the command you give it,
+and `--rm` deletes the container when the command finishes.
+For example, this renders the project's reports,
+like the `docker run` command in [Python and R in one image](0648-containers-uv-renv.qmd),
+with the image and the mounts taken from `docker-compose.yml`:
 
 ```bash
-docker compose run --rm analysis-env make all
+docker compose run --rm analysis-env uv run quarto render
 ```
+
+Here are the main lines of the output, without the progress counters:
+
+```out
+ Container docker-uv-renv-analysis-env-run-9991dfe97fe0 Creating
+ Container docker-uv-renv-analysis-env-run-9991dfe97fe0 Created
+[1/2] reports/report-python.qmd
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+[typst]: Compiling report-python.typ to report-python.pdf...DONE
+[2/2] reports/report-r.qmd
+processing file: report-r.qmd
+output file: report-r.knit.md
+processing file: report-r.qmd
+output file: report-r.knit.md
+[typst]: Compiling report-r.typ to report-r.pdf...DONE
+Output created: reports/report-r.html
+```
+
+The reports are written to `reports/` in the project folder on your computer.
