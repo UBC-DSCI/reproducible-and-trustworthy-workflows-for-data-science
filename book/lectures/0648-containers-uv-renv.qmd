@@ -204,3 +204,206 @@ Questions:
 2. What image does that build off?
 3. And then the next one?
 :::
+
+## Build the image
+
+From the project folder:
+
+```bash
+docker build --tag docker-uv-renv .
+```
+
+On a computer that has not built the image before, every step runs.
+To show that here, the build below added `--no-cache`,
+which runs every step again instead of reusing its layer.
+The `FROM` steps still say `CACHED`,
+because `--no-cache` does not download the base images again:
+
+```bash
+docker build --no-cache --tag docker-uv-renv .
+```
+
+```out
+[+] Building 143.8s (19/19) FINISHED                                           docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                           0.0s
+ => => transferring dockerfile: 1.77kB                                                         0.0s
+ => [internal] load metadata for docker.io/rocker/r-ver:4.6.2                                  0.1s
+ => [internal] load metadata for ghcr.io/astral-sh/uv:0.13.7                                   0.9s
+ => [internal] load .dockerignore                                                              0.0s
+ => => transferring context: 2B                                                                0.0s
+ => CACHED [stage-0  1/12] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b03  0.0s
+ => => resolve docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => CACHED FROM ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e  0.0s
+ => => resolve ghcr.io/astral-sh/uv:0.13.7@sha256:96f40d3904aad8d0bd010539001d36c8e2188b981e1  0.0s
+ => [internal] load build context                                                              0.0s
+ => => transferring context: 320.25kB                                                          0.0s
+ => [stage-0  2/12] RUN apt-get update && apt-get install --yes     curl     git     less     22.1s
+ => [stage-0  3/12] RUN curl --location --output quarto.deb     https://github.com/quarto-de  24.4s
+ => [stage-0  4/12] COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/           0.2s
+ => [stage-0  5/12] WORKDIR /workspace                                                         0.0s
+ => [stage-0  6/12] RUN echo "UV_PROJECT_ENVIRONMENT=/opt/venv" >> /etc/environment            0.1s
+ => [stage-0  7/12] COPY pyproject.toml uv.lock .python-version ./                             0.0s
+ => [stage-0  8/12] RUN uv sync --locked                                                      15.4s
+ => [stage-0  9/12] RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/R  0.4s
+ => [stage-0 10/12] COPY renv.lock .Rprofile ./                                                0.1s
+ => [stage-0 11/12] COPY renv/activate.R renv/                                                 0.0s
+ => [stage-0 12/12] RUN Rscript -e "renv::restore()"                                          53.4s
+ => exporting to image                                                                        26.4s
+ => => exporting layers                                                                       14.5s
+ => => exporting manifest sha256:0f8447d08dc66aa1be883ab5e8bbf3ba35b66f630bc48f254d4258b54a89  0.0s
+ => => exporting config sha256:c8db613a6eef3b72df13c615e421cf573d7b4547a158605a1aee8ff8f30688  0.0s
+ => => exporting attestation manifest sha256:599b12f91bf84cb1b7ecf5f05593f5f1e9b13af508ca5101  0.0s
+ => => exporting manifest list sha256:80dad0100177d131842bfcbe5d8e751c6f0b4ca58044338a5cf61fe  0.0s
+ => => naming to docker.io/library/docker-uv-renv:latest                                       0.0s
+ => => unpacking to docker.io/library/docker-uv-renv:latest                                   11.8s
+```
+
+The build took a little over two minutes.
+`renv::restore()` took longest, then installing Quarto and the `apt-get` packages.
+After this, a change to `pyproject.toml` or `renv.lock`
+reruns only the steps from its `COPY` down.
+The image is about 3 GB:
+
+```bash
+docker image ls docker-uv-renv
+```
+
+```out
+IMAGE                   ID             DISK USAGE   CONTENT SIZE   EXTRA
+docker-uv-renv:latest   80dad0100177       2.98GB          794MB        
+```
+
+## Use Python and R in one container
+
+With the project folder mounted at `/workspace`,
+the same container runs Python with uv:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv-renv uv run python --version
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv-renv uv run python --version
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv-renv uv run python --version
+```
+:::
+
+```out
+Python 3.14.4
+```
+
+and R:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv-renv Rscript -e 'R.version.string'
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv-renv Rscript -e 'R.version.string'
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv-renv Rscript -e 'R.version.string'
+```
+:::
+
+```out
+[1] "R version 4.6.2 (2026-10-29)"
+```
+
+## Render reports in both languages
+
+`uv run quarto render` renders both reports.
+`uv run` starts Quarto with the project's Python environment in `/opt/venv`,
+so Quarto runs the Python code with the packages from `uv.lock`,
+including `ipykernel` and `nbclient`, which Quarto needs to run Python code.
+R finds the packages from `renv.lock` in `/opt/renv/library`,
+because of the `RENV_PATHS_LIBRARY` line:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-uv-renv uv run quarto render
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-uv-renv uv run quarto render
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-uv-renv uv run quarto render
+```
+:::
+
+Here are the main lines of the output, without the progress counters:
+
+```out
+[1/2] reports/report-python.qmd
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+Starting python3 kernel...[IPKernelApp] WARNING | Kernel is running over TCP without encryption. All communication (including code and outputs) is sent in plain text and is susceptible to eavesdropping. Use IPC transport or launch with kernel manager-provisioned CurveZMQ keys to enable transport encryption.
+Done
+Executing 'report-python.quarto_ipynb'
+  Cell 1/2: ''...Done
+  Cell 2/2: ''...Done
+[typst]: Compiling report-python.typ to report-python.pdf...DONE
+[2/2] reports/report-r.qmd
+processing file: report-r.qmd
+output file: report-r.knit.md
+processing file: report-r.qmd
+output file: report-r.knit.md
+[typst]: Compiling report-r.typ to report-r.pdf...DONE
+Output created: reports/report-r.html
+```
+
+Quarto rendered each report twice,
+once as HTML and once as a PDF with Typst,
+because the project's `_quarto.yml` lists both formats.
+The warning about TCP comes from the Python kernel that Quarto starts,
+which talks to Quarto over a network connection inside the container.
+Nothing leaves the container, so it does not matter here.
+
+The reports are written to the mounted folder,
+so they are in `reports/` on your computer:
+
+```bash
+ls reports
+```
+
+```out
+report-python.html
+report-python.pdf
+report-python.qmd
+report-r.html
+report-r.pdf
+report-r.qmd
+```
+
+[Docker Compose](0650-containers-docker-compose.qmd) shortens these `docker run` commands,
+and the project's `Makefile` shortens them again,
+to `make build` and `make render`.
