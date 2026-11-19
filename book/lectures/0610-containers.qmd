@@ -12,7 +12,7 @@ aliases:
 ## Download the images before you start {.unnumbered}
 
 The exercises in this chapter run three container images,
-which together take several gigabytes of disk space.
+which together take about 13 GB of disk space (about 3 GB to download).
 Downloading them takes a while,
 so download (pull) them before you start.
 Start Docker first (on macOS and Windows, open Docker Desktop),
@@ -25,7 +25,7 @@ docker pull quay.io/jupyter/datascience-notebook:2025-03-14
 ```
 
 `docker pull` downloads an image from a container registry without running it.
-The Jupyter image is the largest of the three.
+The Jupyter image is the largest of the three, at about 9 GB.
 
 ## Documenting and loading dependencies
 
@@ -349,30 +349,37 @@ whereas a Chrome window is like a Docker container.
 <img src="../img/instance_analogy.png" width="600">
 
 You can list the container **images** on your computer that you pulled
-using Docker via:
-`docker images`.
-You should see a list like this when you do this:
+using Docker via `docker images`.
+After pulling the images for this chapter,
+the list includes these three, and any other images you have:
 
+```bash
+docker images
 ```
-$ docker images
+
+```out
 IMAGE                                             ID             DISK USAGE   CONTENT SIZE   EXTRA
-continuumio/miniconda3:23.9.0-0                   6fbaadd54391        536MB             0B    U
-hello-world:latest                                1b44b5a3e06a       10.1kB             0B
-postgres:15-alpine                                546a2cf48182        274MB             0B
-quay.io/jupyter/datascience-notebook:2025-03-14   1a211fc8a877       6.42GB             0B
-rocker/r-ver:4.3.2                                f0b4e058dcfa        849MB             0B
-rocker/rstudio:4.3.1                              c8bd7a718854          2GB             0B
-rocker/rstudio:4.4.2                              4503182694c4       2.36GB             0B
+quay.io/jupyter/datascience-notebook:2025-03-14   bf25d19758c0       9.06GB         2.17GB        
+rocker/r-ver:4.3.2                                4e32addfc4da       1.11GB          313MB        
+rocker/rstudio:4.4.2                              6bfc87fb66d0       3.16GB          734MB        
 ```
+
+`DISK USAGE` is how much space an image takes on your computer,
+and `CONTENT SIZE` is about how much was downloaded.
 
 You can list the states of containers that have been started by Docker
-on your computer (and not yet removed) via
-`docker ps -a`:
+on your computer (and not yet removed) via `docker ps -a`.
+Here, the R container from the first exercise
+and the RStudio container from the second are both running:
 
+```bash
+docker ps -a
 ```
-CONTAINER ID   IMAGE                  COMMAND   CREATED          STATUS          PORTS                                       NAMES
-9160100c7d4b   rocker/r-ver:4.3.2     "R"       5 seconds ago    Up 4 seconds                                                friendly_merkle
-0d0871c90313   rocker/rstudio:4.3.2   "/init"   33 minutes ago   Up 33 minutes   0.0.0.0:8787->8787/tcp, :::8787->8787/tcp   exciting_kepler
+
+```out
+CONTAINER ID   IMAGE                  COMMAND   CREATED        STATUS                  PORTS                                         NAMES
+adf3ea77f63f   rocker/rstudio:4.4.2   "/init"   1 second ago   Up Less than a second   0.0.0.0:8787->8787/tcp, [::]:8787->8787/tcp   objective_hoover
+adca5933388b   rocker/r-ver:4.3.2     "R"       1 second ago   Up Less than a second                                                 hardcore_swartz
 ```
 
 ## What is a container registry?
