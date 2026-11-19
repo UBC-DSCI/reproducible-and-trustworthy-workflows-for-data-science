@@ -211,26 +211,59 @@ We can do this via:
 
 Often,
 we want to mount the volume from our current directory (where we are working),
-and we can do that with a short form of `/$(pwd)` in place of the path
-to our computer's directory.
+and we can do that with `$(pwd)`, which prints the current directory,
+in place of the path to our computer's directory.
 This is a useful shorthand command when you work with multiple people,
 so the same command will work on different computers
 since you are not hard-coding the local computer path.
 
-To mount our current directory to a container
-from the `condaforge/miniforge3:25.3.1-0` image,
+To mount our current directory at `/workspace` in a container
+from the `ubuntu:24.04` image,
 we type the following on our laptop:
 
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
 ```bash
-docker run \
-    --rm \
-    -it \
-    -v /$(pwd):/home/my_mounted_volume \
-    condaforge/miniforge3:25.3.1-0
+docker run --rm -it -v "$(pwd):/workspace" ubuntu:24.04
 ```
 
-Navigate to the directory where you mounted your files via
-`cd /home/my_mounted_volume`, and type `ls` to ensure you can see them.
+## Windows (Git Bash)
+
+```bash
+docker run --rm -it -v "/$(pwd):/workspace" ubuntu:24.04
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -it -v "${PWD}:/workspace" ubuntu:24.04
+```
+:::
+
+Then, at the container's prompt,
+go to the directory where you mounted your files and list them:
+
+```bash
+cd /workspace
+ls
+```
+
+```out
+hello.R
+```
+
+Here, the current directory on the laptop held one file, `hello.R`.
+
+:::{.callout-note title="Why `/$(pwd)` in Git Bash?"}
+Git Bash turns command-line arguments that start with `/` into Windows paths,
+so `/workspace` could reach Docker as `C:/Program Files/Git/workspace`.
+Doubling the first slash stops that
+(see "Known issues" in the [Git for Windows release notes](https://github.com/git-for-windows/build-extra/blob/main/ReleaseNotes.md#known-issues)).
+`/$(pwd)` does it for the mount,
+and a path inside the container, such as `/workspace/hello.R` below,
+is written `//workspace/hello.R` in Git Bash.
+:::
 
 :::{.callout-note}
 If you are mounting volumes to a container from a Docker image that runs a web app,
@@ -379,74 +412,55 @@ docker run \
 ### Use a container to execute a script
 
 What if, instead of running the container interactively, we wanted to run a script?
-Let's take this R script, named `snowman.R`, shown below,
-which uses the `cowsay::say` function to print some ASCII art with a cute message!
+Let's take this R script, named `hello.R`, shown below,
+which prints the version of R that runs it,
+and a summary of a column of R's built-in `mtcars` data:
 
-```r
-# snowman.R
-
-library(cowsay)
-
-say("Snow again this week?", "snowman")
+```{.r}
+# hello.R
+cat("Hello from", R.version.string, "\n")
+summary(mtcars$mpg)
 ```
 
 Assuming that script is in our current working directory,
-we can mount volumes and then run the script as follows:
+we can mount the directory and then run the script with `Rscript`
+in a container from the `rocker/r-ver:4.3.2` image:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
 
 ```bash
-$ docker run \
-    --rm \
-    -v /$(pwd):/home/rstudio \
-    ttimbers/dockerfile-practice:v0.1.0 \
-    Rscript /home/rstudio/snowman.R
+docker run --rm -v "$(pwd):/workspace" rocker/r-ver:4.3.2 Rscript /workspace/hello.R
 ```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" rocker/r-ver:4.3.2 Rscript //workspace/hello.R
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" rocker/r-ver:4.3.2 Rscript /workspace/hello.R
+```
+:::
 
 This should result in:
 
-```sh
------
-Snow again this week?
- ------
-    \
-     \
-     _[_]_
-      (")
-  >--( : )--<
-    (__:__) [nosig]
+```out
+Hello from R version 4.3.2 (2023-10-31) 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  10.40   15.43   19.20   20.09   22.80   33.90 
 ```
 
-Now, that was a silly example,
-but this can be made powerful so that we can run an analysis pipeline,
-such as a `Makefile`, non-interactively using Docker!
+The script ran with R 4.3.2, the version in the image,
+whatever version of R your computer has.
 
-Let's do this exercise to demonstrate:
-
-1. Clone this GitHub repository:
-   <https://github.com/ttimbers/breast_cancer_predictor_py>
-
-2. Navigate into the root of the `breast_cancer_predictor_py` project
-   on your computer using the command line, and enter the following command
-   to reset the project to a clean state (i.e., remove all files generated
-   by previous runs of the analysis):
-
-```bash
-docker run \
-    --rm \
-    -v .:/home/jovyan \
-    ttimbers/breast_cancer_predictor_py:d285fc9 \
-    make clean
-```
-
-3. To run the analysis in its entirety,
-   enter the following command in the terminal in the project root:
-
-```bash
-docker run \
-    --rm \
-    -v .:/home/jovyan \
-    ttimbers/breast_cancer_predictor_py:d285fc9 \
-    make all
-```
+Now, that was a small example,
+but the same `docker run` command can run a whole analysis non-interactively.
+[Python and R in one image](0648-containers-uv-renv.qmd) uses it
+to render a project's reports in Python and R.
 
 ## Docker command-line commands
 
