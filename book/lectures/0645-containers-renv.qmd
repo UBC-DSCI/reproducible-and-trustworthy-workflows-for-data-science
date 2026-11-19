@@ -304,3 +304,229 @@ macos
 With `RENV_PATHS_LIBRARY=/opt/renv/library`,
 the container uses the packages the image installed,
 and leaves your computer's `renv` folder alone.
+
+## Add a package
+
+Adding an R package takes three steps,
+as in [renv: declaring packages in `DESCRIPTION`](0565-virtual-environments-r-renv-description.qmd):
+install it, add it to `DESCRIPTION` with its exact version, and snapshot.
+For example, to add [fs](https://fs.r-lib.org/), a package for working with files and folders,
+install it on your computer and look up its version:
+
+```bash
+Rscript -e 'renv::install("fs")'
+Rscript -e 'packageVersion("fs")'
+```
+
+```out
+[1] ‘2.1.0’
+```
+
+Add fs to `DESCRIPTION` with that version:
+
+```{.yaml}
+Type: project
+Version: 0.1.0
+Description: The R packages this project uses. renv.lock locks them.
+Depends:
+    cowsay (== 1.2.2),
+    fs (== 2.1.0)
+```
+
+and use it in `hello.R`:
+
+```{.r}
+n <- length(fs::dir_ls())
+cowsay::say(paste("This folder has", n, "files and folders."))
+```
+
+Then snapshot, which adds fs to `renv.lock`:
+
+```bash
+Rscript -e 'renv::snapshot(prompt = FALSE)'
+```
+
+```out
+- The project is out-of-sync -- use `renv::status()` for details.
+The following package(s) will be updated in the lockfile:
+
+# https://packagemanager.posit.co/cran/latest --------------------------------
+- fs   [* -> 2.1.0]
+```
+
+The first line appears because `DESCRIPTION` lists fs and `renv.lock` did not yet.
+
+## When a package needs a system library
+
+Build the image again:
+
+```bash
+docker build --tag docker-renv .
+```
+
+This time the build fails.
+Here are the steps, and the lines of `renv::restore()`'s output that explain why:
+
+```out
+[+] Building 30.0s (11/11) FINISHED                                            docker:desktop-linux
+ => [1/7] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e82249fdee3  0.0s
+ => CACHED [2/7] RUN apt-get update && apt-get install --yes     curl                          0.0s
+ => CACHED [3/7] WORKDIR /workspace                                                            0.0s
+ => CACHED [4/7] RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/Renv  0.0s
+ => [5/7] COPY renv.lock .Rprofile ./                                                          0.0s
+ => [6/7] COPY renv/activate.R renv/                                                           0.0s
+ => ERROR [7/7] RUN Rscript -e "renv::restore()"                                              29.7s
+...
+12.69 The following required system packages are not installed:
+12.69 - cmake [required by fs]
+12.69 - libuv1-dev  [required by fs]
+✔ fs 2.1.0 [installed binary]
+29.59 Error: error testing if 'fs' can be loaded [error code 1]
+29.59 Error in dyn.load(file, DLLpath = DLLpath, ...) :
+29.59 unable to load shared object '/opt/renv/library/.renv-staging/1/fs/libs/fs.so':
+29.59 libuv.so.1: cannot open shared object file: No such file or directory
+```
+
+fs uses [libuv](https://libuv.org/), a library written in C,
+which is not an R package and which `rocker/r-ver` does not include.
+Before installing anything, `renv::restore()` checks the operating system's packages
+that each R package needs,
+and it warned that two were missing.
+It then installed fs as a prebuilt binary,
+loaded it to test it,
+and stopped because the binary needs `libuv.so.1`, which `libuv1-dev` installs.
+
+The fix is to install `libuv1-dev` with `apt-get`, on the line that installs `curl`:
+
+```{.dockerfile}
+RUN apt-get update && apt-get install --yes \
+    curl \
+    libuv1-dev
+```
+
+`cmake` is only needed to compile fs from its source code.
+Posit Package Manager gives renv a prebuilt binary,
+so the image does not need `cmake`,
+and the build succeeds:
+
+```bash
+docker build --tag docker-renv .
+```
+
+```out
+[+] Building 40.8s (12/12) FINISHED                                            docker:desktop-linux
+ => CACHED [1/7] FROM docker.io/rocker/r-ver:4.6.2@sha256:8739c76d2d9316698a7145b032601f1e822  0.0s
+ => [2/7] RUN apt-get update && apt-get install --yes     curl     libuv1-dev                 10.7s
+ => [3/7] WORKDIR /workspace                                                                   0.0s
+ => [4/7] RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/Renviron.si  0.1s
+ => [5/7] COPY renv.lock .Rprofile ./                                                          0.0s
+ => [6/7] COPY renv/activate.R renv/                                                           0.0s
+ => [7/7] RUN Rscript -e "renv::restore()"                                                    27.7s
+```
+
+Changing the `apt-get` line rebuilt that step and every step below it,
+including `renv::restore()`
+(see [Building images](0630-containers-building.qmd)).
+The script now works:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-renv Rscript hello.R
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-renv Rscript hello.R
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-renv Rscript hello.R
+```
+:::
+
+```out
+ ______________________________________ 
+< This folder has 7 files and folders. >
+ -------------------------------------- 
+      \
+       \
+
+        ^__^ 
+        (oo)\ ________ 
+        (__)\         )\ /\ 
+             ||------w|
+             ||      ||
+```
+
+To check an R package's system requirements yourself,
+use `renv::sysreqs()`.
+In this image, it now lists only `cmake`.
+Its last lines give the install command for each system package fs can use:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-renv Rscript -e 'renv::sysreqs("fs")'
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-renv Rscript -e 'renv::sysreqs("fs")'
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-renv Rscript -e 'renv::sysreqs("fs")'
+```
+:::
+
+```out
+The following required system packages are not installed:
+- cmake  [required by fs]
+The R packages depending on these system packages may fail to install.
+
+An administrator can install these packages with:
+- sudo apt install cmake
+
+sudo apt install -y cmake
+sudo apt install -y libuv1-dev
+sudo apt install -y make
+```
+
+In a `Dockerfile`, write these as `apt-get install --yes` without `sudo`,
+because `RUN` commands already run as the administrator (`root`).
+`renv::status()` confirms that the image's packages match `renv.lock`:
+
+::: {.panel-tabset group="shell"}
+## macOS and Linux
+
+```bash
+docker run --rm -v "$(pwd):/workspace" docker-renv Rscript -e "renv::status()"
+```
+
+## Windows (Git Bash)
+
+```bash
+docker run --rm -v "/$(pwd):/workspace" docker-renv Rscript -e "renv::status()"
+```
+
+## Windows (PowerShell)
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" docker-renv Rscript -e "renv::status()"
+```
+:::
+
+```out
+No issues found -- the project is in a consistent state.
+```
+
+Commit `DESCRIPTION`, `renv.lock` and the `Dockerfile` together.
