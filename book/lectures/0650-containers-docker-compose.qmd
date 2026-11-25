@@ -172,6 +172,9 @@ docker compose up --detach
  ✔ Container docker-uv-renv-analysis-env-1 Started                                              0.2s
 ```
 
+`docker compose up --detach --build` does both steps in one command.
+It builds the image first, then starts the container.
+
 Docker Compose made a network for the project's containers,
 and named the container after the project folder and the service.
 `docker compose ps` lists the project's running containers:
@@ -186,7 +189,74 @@ docker-uv-renv-analysis-env-1   docker-uv-renv   "/usr/sbin/sshd -D"   analysis-
 ```
 
 `docker compose exec` runs a command in the running container.
-Run `bash` there to get a terminal in it, in `/workspace`:
+Give it the service name from `docker-compose.yml`, `analysis-env`,
+and then the command.
+This runs a line of Python with the project's Python packages:
+
+```bash
+docker compose exec analysis-env uv run python -c "print('hello')"
+```
+
+```out
+hello
+```
+
+To run a script,
+make a file called `hello.py` in the project folder on your computer,
+in your editor,
+with this one line:
+
+```{.python filename="hello.py"}
+print("hello")
+```
+
+Then run it in the container:
+
+```bash
+docker compose exec analysis-env uv run hello.py
+```
+
+```out
+hello
+```
+
+The container can run the file you just made on your computer,
+because the project folder is mounted at `/workspace`.
+
+::: {.callout-note title="Service not running?"}
+`docker compose exec` needs the container to be running,
+and a container runs only as long as its main command,
+the `CMD` in its `Dockerfile`.
+This project's `CMD` starts an ssh server, which keeps running.
+
+If you write your own `Dockerfile` without a `CMD`,
+for example one that starts `FROM ubuntu:24.04`,
+the image's main command is `bash`.
+With no terminal attached, `bash` finishes as soon as it starts,
+and so does the container.
+`docker compose ps` does not list it,
+and `docker compose exec` stops with this error:
+
+```out
+service "analysis-env" is not running
+```
+
+To keep the container running,
+give `bash` an open input and a terminal in `docker-compose.yml`,
+the Docker Compose versions of `-i` and `-t` in `docker run -it`:
+
+```{.yaml}
+services:
+  analysis-env:
+    build: .
+    stdin_open: true  # like -i
+    tty: true         # like -t
+    volumes:
+      - .:/workspace
+```
+:::
+
+Run `bash` in the container to get a terminal in it, in `/workspace`:
 
 ```bash
 docker compose exec analysis-env bash
@@ -201,11 +271,13 @@ ls
 
 ```out
 /workspace
-DESCRIPTION  LICENSE   README.md    docker-compose.yml  renv       reports
-Dockerfile   Makefile  _quarto.yml  pyproject.toml      renv.lock  uv.lock
+DESCRIPTION  Makefile     docker-compose.yml  renv       uv.lock
+Dockerfile   README.md    hello.py            renv.lock
+LICENSE      _quarto.yml  pyproject.toml      reports
 ```
 
-`/workspace` shows the project folder, because it is mounted there.
+`/workspace` shows the project folder, including `hello.py`,
+because it is mounted there.
 Type `exit` to leave the container, which keeps running.
 `docker compose down` stops and removes the container and its network:
 
@@ -217,6 +289,111 @@ docker compose down
 [+] down 2/2
  ✔ Container docker-uv-renv-analysis-env-1 Removed                                              0.3s
  ✔ Network docker-uv-renv_default          Removed                                              0.1s
+```
+
+`docker compose down` only stops this project's containers.
+To stop every running container on your computer,
+whichever project started it,
+give `docker stop` the IDs of all of them:
+
+```bash
+docker stop $(docker ps -q)
+```
+
+`docker ps -q` (`--quiet`) lists only the IDs of the running containers,
+and `$(...)` puts that list in the `docker stop` command.
+If no container is running,
+`docker stop` gets no IDs and says that it `requires at least 1 argument`,
+which you can ignore.
+`docker stop` only stops the containers.
+Run `docker compose down` in a project's folder to remove that project's containers.
+
+Here are the steps together:
+
+```bash
+# 1. Build the image from the Dockerfile that docker-compose.yml points to
+docker compose build
+
+# 2. Start the container in the background
+docker compose up --detach
+
+# 3. Run commands in the running container
+docker compose exec analysis-env uv run python -c "print('hello')"
+docker compose exec analysis-env uv run hello.py
+docker compose exec analysis-env bash          # interactive shell
+
+# 4. Stop and remove the container
+docker compose down
+```
+
+## `docker exec` and `docker compose exec`
+
+A container that Docker Compose starts is an ordinary Docker container,
+so `docker exec` can run commands in it too.
+To try it, start the container again from the project folder:
+
+```bash
+docker compose up --detach
+```
+
+`docker exec` needs the container's name instead of the service name.
+The `NAME` column of `docker compose ps` shows it,
+`docker-uv-renv-analysis-env-1`:
+
+```bash
+docker exec docker-uv-renv-analysis-env-1 uv run hello.py
+```
+
+```out
+hello
+```
+
+To get a terminal in the container,
+`docker exec` needs `-it`,
+like `docker run -it` in [Using and running containers](0620-containers-running.qmd):
+
+```bash
+docker exec -it docker-uv-renv-analysis-env-1 bash
+```
+
+Without `-it`, `bash` has no input and no terminal,
+so it finishes at once and you get your own prompt back, with no error.
+`docker compose exec` sets up both for you.
+
+`docker compose exec` finds the container through the `docker-compose.yml` file
+in the folder you run it from.
+From any other folder, it stops with this error:
+
+```out
+no configuration file provided: not found
+```
+
+`docker exec` works from any folder,
+because the container's name says which container you mean.
+
+This matters when you have several projects.
+Docker Compose names each container after its project folder and service,
+like `docker-uv-renv-analysis-env-1`,
+so two projects can both have a service called `analysis-env`.
+`docker compose exec analysis-env` picks the one from the folder you are in,
+and with `docker exec` you pick one by its full name.
+
+|                       | `docker exec`                         | `docker compose exec`                      |
+|-----------------------|---------------------------------------|--------------------------------------------|
+| Which container       | its name, from `docker ps`            | the service name, from `docker-compose.yml` |
+| Where you can run it  | any folder                            | the project folder                         |
+| Terminal for `bash`   | add `-it`                             | set up for you                             |
+| Several projects      | you choose by the full name           | uses the project in the current folder     |
+
+In a Docker Compose project, use `docker compose exec`,
+because the service name is short and you do not have to look up the container's name.
+Use `docker exec` for a container that Docker Compose did not start,
+or when you are not in the project folder.
+
+When you are done, stop the container:
+
+```bash
+docker compose down
 ```
 
 ## Running a Docker container non-interactively using the Docker Compose
