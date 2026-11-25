@@ -475,6 +475,72 @@ else:
     validated_data = data
 ```
 
+## Validating a real data set
+
+The examples above use small data frames that we made up to show each feature.
+Here we validate a real data set,
+the Palmer penguins data,
+which records measurements of 344 penguins from three islands in Antarctica.
+We check the same rules as [Data validation: Python (pointblank)](0750-data-validation-python-pointblank.qmd),
+so you can compare the two packages.
+
+```{python}
+from palmerpenguins import load_penguins
+
+penguins = load_penguins()
+
+schema = pa.DataFrameSchema({
+    "species": pa.Column(
+        str, pa.Check.isin(allowed_values=["Adelie", "Chinstrap", "Gentoo"])
+    ),
+    "bill_length_mm": pa.Column(
+        float, pa.Check.in_range(min_value=30, max_value=60)
+    ),
+    "body_mass_g": pa.Column(
+        float, pa.Check.in_range(min_value=3000, max_value=5500), nullable=True
+    ),
+    "flipper_length_mm": pa.Column(
+        float, pa.Check.ge(min_value=185), nullable=True
+    ),
+    "sex": pa.Column(str, pa.Check.isin(allowed_values=["male", "female"])),
+})  # nullable=False is the default, so missing bill length or sex fails
+```
+
+`pa.Check.in_range` is another name for `pa.Check.between`,
+and it is the name Pandera uses when it reports a failure.
+
+Setting `lazy=True` does not stop Pandera from raising an error.
+It makes Pandera run every check first,
+and then raise a single `SchemaErrors` (plural) that holds all of the failures,
+instead of the `SchemaError` (singular) it raises at the first failure.
+We catch that error with `try` and `except`
+to get its `failure_cases`,
+a data frame with one row for each failing value.
+Any other kind of error is not caught,
+and stops the code as usual.
+When the data passes every check,
+nothing is raised,
+so we start with an empty data frame of failures:
+
+```{python}
+failures = pd.DataFrame()  # stays empty if every check passes
+
+# lazy=True collects every failure instead of stopping at the first one
+try:
+    schema.validate(penguins, lazy=True)
+except pa.errors.SchemaErrors as err:
+    failures = err.failure_cases
+
+failures  # one row per failing value
+```
+
+A long list of failures is easier to read
+when we count them for each column and check:
+
+```{python}
+failures.groupby(["column", "check"]).size()  # how many failures per check
+```
+
 ## Learn more
 
 - The [Pandera documentation](https://pandera.readthedocs.io/en/stable/).

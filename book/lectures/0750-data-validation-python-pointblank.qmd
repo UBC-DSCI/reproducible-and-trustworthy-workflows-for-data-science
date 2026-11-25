@@ -5,61 +5,141 @@ aliases:
   - 137-data_validation-python-pointblank.html
 ---
 
-This chapter goes through the `{pointblank}` R package
-that has been ported to Python:
+pointblank started as an R package
+(see [Data validation: R (pointblank)](0720-data-validation-r-pointblank.qmd)),
+and has been ported to Python:
 <https://posit-dev.github.io/pointblank/>
 
+In this chapter we validate the Palmer penguins data,
+which records measurements of 344 penguins from three islands in Antarctica.
 
 ```{python}
-import pointblank as pb
+import pointblank as pb  # needs pointblank 1.3.0 or later, for get_row_flags()
+from palmerpenguins import load_penguins
 
-small_table = pb.load_dataset(dataset="small_table")
-small_table
+penguins = load_penguins()
+penguins
 ```
 
-## Validation rules
+## Where are the missing values?
 
+Before we write any rules,
+it helps to know where the data is missing.
+`pb.missing_vals_tbl()` shows the missing values in each column,
+split into sections of rows from the top of the data to the bottom:
 
 ```{python}
-pb.Validate(small_table).col_vals_lt(columns="a", value=10)
+pb.missing_vals_tbl(data=penguins)
 ```
 
+## Checking values
+
+We validate the data in two parts.
+The first part checks that the values we do have are sensible,
+and the second part, in the next section, checks for missing values.
+Keeping them apart makes each report easier to read,
+because a value outside its range and a value that is missing
+are different problems that we usually handle in different ways.
+
+A validation starts with `pb.Validate()`,
+which takes the data and, optionally, a label for the report.
+Each validation step we chain onto it is one rule,
+and `interrogate()` runs every step:
 
 ```{python}
-pb.Validate(small_table).col_vals_lt(columns="a", value=5)
-```
-
-
-```{python}
-validation = (
-    pb.Validate(small_table)
-    .col_vals_between(columns="d", left=0, right=5000)
-    .col_vals_le(columns="c", value=5)
-    .col_exists(columns=["date", "date_time"])
+values = (
+    pb.Validate(
+        data=penguins,
+        label="Penguin measurements",
+        thresholds=(0.01, 0.05, 0.10),  # warning, error, critical
+    )
+    .col_vals_in_set(columns="species", set=["Adelie", "Chinstrap", "Gentoo"])
+    .col_vals_between(columns="bill_length_mm", left=30, right=60, na_pass=True)
+    .col_vals_between(columns="body_mass_g", left=3000, right=5500, na_pass=True)
+    .col_vals_ge(columns="flipper_length_mm", value=185, na_pass=True)
+    .rows_distinct()
     .interrogate()
 )
-
-validation
+values
 ```
 
-## Post-interrogation
+Setting `na_pass=True` lets missing values pass a step,
+so these steps only judge the values that are there.
 
+The `thresholds` set how much failure we tolerate before pointblank raises a flag.
+A step is marked with a warning when at least 1% of its rows fail,
+an error at 5%,
+and critical at 10%.
+The report shows which level each step reached.
+
+Each row of the report is one step.
+To see which penguins failed a step,
+we ask for that step's report by its number:
 
 ```{python}
-validation = (
-    pb.Validate(small_table)
-    .col_vals_between(columns="d", left=0, right=5000)
-    .col_vals_le(columns="c", value=5)
-    .col_exists(columns=["date", "date_time"])
+values.get_step_report(i=3)  # which penguins failed step 3?
+```
+
+## Checking missing values
+
+The second validation checks for missing values.
+`col_vals_not_null()` checks that a column has no missing values,
+and `rows_complete()` checks that no row has a missing value in any column:
+
+```{python}
+missing = (
+    pb.Validate(
+        data=penguins,
+        label="Penguin missing values",
+        thresholds=(0.01, 0.05, 0.10),  # warning, error, critical
+    )
+    .col_vals_not_null(columns=["bill_length_mm", "sex"])
+    .rows_complete()
     .interrogate()
 )
+missing
 ```
 
+Giving `col_vals_not_null()` two columns creates one step for each column,
+so this validation has three steps.
+The thresholds turn these checks into a rule about how much missingness we accept,
+which is the "missingness not beyond expected threshold" item
+from the checklist in [Data validation](0710-data-validation.qmd).
+
+## Splitting the passing and failing rows
+
+After interrogating a validation,
+we can split the data into the rows that passed every step
+and the rows that failed at least one.
+We keep working with the rows that passed,
+and give the rows that failed to a teammate to fix:
 
 ```{python}
-validation.get_sundered_data(type="pass")
+passed = values.get_sundered_data(type="pass")  # keep working with these
+failed = values.get_sundered_data(type="fail")  # a teammate fixes these
+pb.preview(data=failed)  # a quick look at the rows that failed
 ```
 
 ```{python}
-validation.get_sundered_data(type="fail")
+failed.to_csv("penguins_to_fix.csv", index=False)
 ```
+
+Because our value checks use `na_pass=True`,
+a row with missing values can still be in `passed`.
+Whether to drop or keep those rows is a decision for the missing values validation.
+
+## Flagging every row
+
+`get_row_flags()` returns every row of the data,
+with a column for each step that is `True` where the row failed that step,
+the number of steps the row failed,
+and the fraction of steps it passed:
+
+```{python}
+values.get_row_flags()  # every row, with the checks it failed
+```
+
+## Learn more
+
+- The [pointblank for Python documentation](https://posit-dev.github.io/pointblank/),
+  including the [list of validation methods](https://posit-dev.github.io/pointblank/reference/).

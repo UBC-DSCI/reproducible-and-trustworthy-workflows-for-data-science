@@ -17,6 +17,7 @@ clean: ## Remove the rendered book and render leftovers
 	rm -rf book/_book
 	rm -rf book/lectures/*.quarto_ipynb
 	rm -rf book/lectures/*.log
+	rm -f book/lectures/penguins_to_fix.csv
 	rm -rf book/.quarto
 
 publish: ## No need: GitHub Actions publishes the book and PR previews
