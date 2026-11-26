@@ -43,16 +43,36 @@ the project from [Python and R in one image](0648-containers-uv-renv.qmd):
 
 ```{.yaml}
 services:
+  ## the service name, as in docker compose run analysis-env
   analysis-env:
+    ## docker compose build: builds from this folder's Dockerfile and names it with image:.
+    ## docker compose up: downloads image: first, and builds only if it can't
     build: .
+
+    ## from Docker Hub; the publish workflow writes the sha- tag here.
+    ## Use a sha- tag, not latest: Docker reuses your old copy of latest.
+    # image: chendaniely/docker-uv-renv:sha-1a2b3c4
+
+    ## built on your computer only
     image: docker-uv-renv
+
+    ## Uncomment the next two lines if your Dockerfile has no CMD,
+    ## or its CMD opens a prompt, such as CMD ["bash"].
+    ## (With no CMD, the FROM image's default runs: bash on ubuntu, R on rocker.)
+    ## A prompt exits at once without a terminal, so the container would stop
+    ## right after `docker compose up --detach`.
+    ## Not needed here: the Dockerfile's sshd CMD keeps the container running.
+    # stdin_open: true  ## docker run -i
+    # tty: true         ## docker run -t
+
     ports:
-      # 2222 on your computer, 22 in the container.
-      # "127.0.0.1:2222:22" stops others on the same Wi-Fi from reaching it.
+      ## 2222 on your computer, 22 in the container.
+      ## "127.0.0.1:2222:22" stops others on the same Wi-Fi from reaching it.
       - "2222:22"
+
     volumes:
       - .:/workspace
-      # ro: read-only
+      ## ro: read-only
       - ~/.ssh/id_ed25519.pub:/root/.ssh/authorized_keys:ro
 ```
 
@@ -81,6 +101,14 @@ Each part of the `docker run` command is a line of the file:
   that may log in to the container as `root`,
   and `ro` makes it read-only inside the container.
   The key is the one from [SSH for authentication](0210-ssh-authentication.qmd).
+- The lines that start with a single `#` are switched off.
+  The `image:` line with a Docker Hub name downloads a published image instead of building it
+  (see [Publish the image](https://github.com/chendaniely/docker-uv-renv#publish-the-image)
+  in the project's README).
+  A service has only one image,
+  so to use it, switch it on and switch off the `image: docker-uv-renv` line.
+  The `stdin_open:` and `tty:` lines are for images without a `CMD` that keeps running,
+  which the callout "Service not running?" below explains.
 
 ::: {.callout-note title="No ssh key yet?"}
 To check that you have the key, list it:

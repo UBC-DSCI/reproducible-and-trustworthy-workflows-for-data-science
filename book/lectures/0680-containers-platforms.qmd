@@ -100,6 +100,20 @@ docker push USERNAME/hello-cowsay:0.1
 - `docker push` uploads it.
   Because the image has both platforms, it uploads both, under the one tag.
 
+::: {.callout-note title="Signing in with `docker login`"}
+`docker login` signs you in through your web browser.
+It prints a one-time code and opens Docker's sign-in page,
+where you confirm the code and sign in,
+so you never type your password in the terminal.
+
+`docker login -u USERNAME` asks for a password in the terminal instead.
+Your Docker Hub password works there,
+unless you have turned on two-factor authentication.
+Then Docker Hub refuses your password,
+and you paste a personal access token at the prompt instead.
+[GitHub Actions](1320-github-actions.qmd#github-secrets) shows how to make one.
+:::
+
 Anyone can then run `docker pull USERNAME/hello-cowsay:0.1`,
 and Docker downloads the version for their computer.
 To list the platforms an image in a registry has:
@@ -133,11 +147,11 @@ jobs:
       - name: Build the image
         run: docker build --tag docker-uv-renv .
 
-      # not `make render`: CI has no ssh key to mount
+      ## not `make render`: CI has no ssh key to mount
       - name: Render the reports
         run: docker run --rm --volume "$PWD:/workspace" docker-uv-renv uv run quarto render
 
-      # download them from the run's Summary page
+      ## download them from the run's Summary page
       - uses: actions/upload-artifact@v7
         with:
           name: reports
@@ -157,4 +171,12 @@ it shows that the `Dockerfile` and lockfiles work on a computer other than yours
 GitHub also has ARM computers (`ubuntu-24.04-arm`),
 and the project's [`check-platforms.yml`](https://github.com/chendaniely/docker-uv-renv/blob/main/.github/workflows/check-platforms.yml)
 builds the image on both.
+Its [`publish-dockerhub.yml`](https://github.com/chendaniely/docker-uv-renv/blob/main/.github/workflows/publish-dockerhub.yml)
+goes one step further.
+It builds the image on both kinds of computer,
+publishes it on Docker Hub under one tag, as `docker push` did above,
+and writes the new tag into `docker-compose.yml`
+(see [Publish the image](https://github.com/chendaniely/docker-uv-renv#publish-the-image) in the project's README).
+To sign in to Docker Hub, it needs a Docker Hub access token stored in the repository,
+as in [signing in to Docker Hub](1320-github-actions.qmd#github-secrets).
 [GitHub Actions](1320-github-actions.qmd) explains how workflow files work.
