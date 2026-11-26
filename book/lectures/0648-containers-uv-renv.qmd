@@ -77,14 +77,24 @@ and `report-r.qmd` with dplyr and ggplot2.
 
 ## The `Dockerfile`
 
-Here is the project's whole `Dockerfile`:
+Here is the project's whole `Dockerfile`.
+In this file, and in the project's other files,
+`##` starts a comment,
+and a single `#` switches off a line of code,
+which you can switch on by deleting the `#`:
 
 ```{.dockerfile}
-# Ubuntu with R. Other versions:
-# https://rocker-project.org/images/versioned/r-ver.html
+## Ubuntu with R. Other versions:
+## https://rocker-project.org/images/versioned/r-ver.html
+## This base image alone: about 400 MB to download (compressed), 1.4 GB on disk.
 FROM rocker/r-ver:4.6.2
 
-# libuv1-dev: the fs R package needs it (see renv::sysreqs())
+## Python only, no R: plain Ubuntu (the version rocker uses) is much smaller,
+## about 40 MB to download (compressed), 180 MB on disk.
+## Swap the two FROM lines, and delete libuv1-dev and the R packages section below.
+# FROM ubuntu:26.04
+
+## libuv1-dev: the fs R package needs it (see renv::sysreqs())
 RUN apt-get update && apt-get install --yes \
     curl \
     git \
@@ -94,41 +104,41 @@ RUN apt-get update && apt-get install --yes \
     nano \
     openssh-server
 
-# install quarto
-# quarto comes with Typst for PDFs, so no LaTeX.
-# dpkg --print-architecture: amd64 or arm64, to match your computer.
+## install quarto
+## quarto comes with Typst for PDFs, so no LaTeX.
+## dpkg --print-architecture: amd64 or arm64, to match your computer.
 RUN curl --location --output quarto.deb \
     https://github.com/quarto-dev/quarto-cli/releases/download/v1.11.9/quarto-1.11.9-linux-$(dpkg --print-architecture).deb \
   && apt-get install --yes ./quarto.deb \
   && rm quarto.deb
 
-# install python uv
-# https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
+## install python uv
+## https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /usr/local/bin/
 
-# The project is mounted over /workspace, so the packages go in /opt
+## The project is mounted over /workspace, so the packages go in /opt
 WORKDIR /workspace
 
-# python packages in /opt/venv
+## python packages in /opt/venv
 ENV UV_PROJECT_ENVIRONMENT=/opt/venv
-# ssh logins don't see ENV, only /etc/environment
+## ssh logins don't see ENV, only /etc/environment
 RUN echo "UV_PROJECT_ENVIRONMENT=$UV_PROJECT_ENVIRONMENT" >> /etc/environment
 COPY pyproject.toml uv.lock .python-version ./
-# --locked: stop if uv.lock doesn't match pyproject.toml
+## --locked: stop if uv.lock doesn't match pyproject.toml
 RUN uv sync --locked
 
-# R packages in /opt/renv/library
+## R packages in /opt/renv/library
 RUN echo "RENV_PATHS_LIBRARY=/opt/renv/library" >> /usr/local/lib/R/etc/Renviron.site
 COPY renv.lock .Rprofile ./
 COPY renv/activate.R renv/
 RUN Rscript -e "renv::restore()"
 
-# For linux laptops:
-# StrictModes no: sshd wants root to own the key file,
-# but on Linux the mounted one is yours
+## For linux laptops:
+## StrictModes no: sshd wants root to own the key file,
+## but on Linux the mounted one is yours
 # RUN echo "StrictModes no" > /etc/ssh/sshd_config.d/container.conf
 
-# -D: stay in the foreground, so the container keeps running
+## -D: stay in the foreground, so the container keeps running
 CMD ["/usr/sbin/sshd", "-D"]
 ```
 

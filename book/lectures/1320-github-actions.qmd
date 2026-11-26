@@ -148,22 +148,21 @@ As shown in the file above, we can run multiple commands in a step using the `|`
 
 ### Actions
 
-Steps that use actions look like the one shown below (which builds and publishes Docker containers).
+Steps that use actions look like the one shown below (which uploads files from a workflow run, so you can download them).
 They always have a `uses` parameter, and often also have `name` and `with` parameters.
 The `uses` parameter specifies which action to use,
 and the `with` parameters provide arguments to those actions.
-The `@v5` at the end of the `uses` line
+The `@v7` at the end of the `uses` line
 specifies which version of the action to use,
 either a specific version, as here,
 or the head of a branch (*e.g.,* `@master`).
 
 ```yaml
-- name: Publish to Registry
-  uses: elgohr/Publish-Docker-Github-Action@v5
+- name: Upload the reports
+  uses: actions/upload-artifact@v7
   with:
-    name: myDocker/repository
-    username: ${{ secrets.DOCKER_USERNAME }}
-    password: ${{ secrets.DOCKER_PASSWORD }}
+    name: reports
+    path: reports/*.html
 ```
 
 Actions commonly perform one task in a workflow.
@@ -186,11 +185,11 @@ However, if you are interested in learning more, I point you to the documentatio
 
 #### Optional
 
-For example, for the action above, see its:
+For example, see GitHub's sample Docker container action:
 
-- [Dockerfile](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/Dockerfile)
-- [entrypoint.sh script](https://github.com/elgohr/Publish-Docker-Github-Action/blob/master/entrypoint.sh)
-- [GitHub repo](https://github.com/elgohr/Publish-Docker-Github-Action)
+- [Dockerfile](https://github.com/actions/hello-world-docker-action/blob/main/Dockerfile)
+- [entrypoint.sh script](https://github.com/actions/hello-world-docker-action/blob/main/entrypoint.sh)
+- [GitHub repo](https://github.com/actions/hello-world-docker-action)
 
 Read the docs here to learn how to build your own Docker container GitHub action: <https://help.github.com/en/actions/building-actions/creating-a-docker-container-action>
 
@@ -199,7 +198,7 @@ Read the docs here to learn how to build your own JavaScript GitHub action:
 
 
 
-## Storing and use GitHub Actions credentials safely via GitHub Secrets
+## Storing and using GitHub Actions credentials safely via GitHub Secrets {#github-secrets}
 
 Some of the tasks we want to do in our workflows require authentication.
 However, the whole point of this is to automate this process -
@@ -212,7 +211,90 @@ GitHub Secrets are encrypted environment variables that are used only with GitHu
 and specified on a repository-by-repository basis.
 They can be accessed in a workflow file via: `${{ secrets.SECRET_NAME }}`
 
-See GitHub's help docs for how to do this: <https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets>
+See GitHub's docs on [using secrets in GitHub Actions](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions).
+
+### Example: signing in to Docker Hub
+
+To push an image to Docker Hub,
+like the step in [Actions](#actions) above,
+a workflow has to sign in to your Docker Hub account.
+It signs in with a Docker Hub personal access token,
+not your password.
+
+First, make the token on Docker Hub:
+
+1. Sign in to [Docker Home](https://app.docker.com/),
+   select your avatar in the top-right corner,
+   and then select **Account settings**.
+2. Select **Personal access tokens**, then **Generate new token**.
+
+   ![](../img/dockerhub-personal-access-tokens.png){fig-alt="Docker Hub's Account settings, with Personal access tokens selected in the left sidebar, a Generate new token button in the middle of the page, and the account menu open from the avatar in the top-right corner, showing Account settings."}
+
+3. Fill in the form:
+   - **Access token description**: what the token is for,
+     such as `github-actions-my-project`.
+   - **Expiration date**: the default, **None**, makes a token that never expires.
+     Choose **30 days**, **90 days** or **Custom** (up to one year) for one that does.
+   - **Access permissions**: **Repo Read & Write**,
+     which lets the workflow push images, but not delete them.
+4. Select **Generate**, and copy the token.
+   Docker shows it only once.
+
+Then store the token, and your Docker Hub username, in your GitHub repository:
+
+1. On the repository's page, select **Settings**.
+2. In the **Security and quality** section of the sidebar,
+   select **Secrets and variables**, then **Actions**.
+
+   ![](../img/github-actions-secrets-and-variables.png){fig-alt="A GitHub repository's Settings, with Secrets and variables, then Actions, selected under Security and quality in the left sidebar. The Actions secrets and variables page has Secrets and Variables tabs, and a green New repository secret button under Repository secrets."}
+
+3. On the **Secrets** tab, select **New repository secret**.
+   Enter `DOCKERHUB_TOKEN` as the **Name**,
+   paste the token as the **Secret**,
+   and select **Add secret**.
+4. On the **Variables** tab, select **New repository variable**,
+   and add `DOCKERHUB_USERNAME` with your Docker Hub username.
+
+Your username is not a secret, so it is stored as a variable,
+which a workflow reads with `${{ vars.DOCKERHUB_USERNAME }}`.
+GitHub hides the value of every secret in a workflow's logs,
+so if the username were a secret,
+every image name that contains it would show up as `***`.
+
+A workflow can then sign in with Docker's own action, `docker/login-action`,
+and later steps can push to your account with `docker push`:
+
+```yaml
+- name: Log in to Docker Hub
+  uses: docker/login-action@v4
+  with:
+    username: ${{ vars.DOCKERHUB_USERNAME }}
+    password: ${{ secrets.DOCKERHUB_TOKEN }}
+```
+
+GitHub does not give secrets to workflows that run on pull requests from forks,
+so a workflow that signs in should only do so on pushes to your own repository.
+
+::: {.callout-important title="Why not your Docker Hub password?"}
+Docker Hub still accepts your password in some places,
+but use a personal access token in GitHub Actions:
+
+- `docker/login-action` itself says to use a personal access token,
+  and not your account password.
+- If you turn on two-factor authentication,
+  Docker Hub stops accepting your password from the command line,
+  and a workflow that uses it stops working.
+- A token can do less than your password.
+  **Repo Read & Write** can push images, but cannot delete repositories.
+- You can delete a token without changing your password,
+  for example when you no longer need the workflow.
+
+A token's permission applies to every repository your account can reach,
+not just one.
+Making one token for each project means you can delete one
+without breaking the others.
+See Docker's docs on [personal access tokens](https://docs.docker.com/security/access-tokens/personal-access-tokens/).
+:::
 
 ## Authenticating with the `GITHUB_TOKEN`
 
