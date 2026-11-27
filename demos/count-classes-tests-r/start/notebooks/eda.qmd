@@ -1,0 +1,32 @@
+---
+title: "Counting the observations in each class"
+format: html
+---
+
+```{r}
+#| label: load-packages
+library(tidyverse)
+```
+
+Here's some data (the Wisconsin Breast Cancer data set, originally from the [UCI machine learning repository](https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic)) where we would like to calculate the number of observations in each class:
+
+```{r}
+#| label: load-data
+cancer <- read_csv("https://raw.githubusercontent.com/UBC-DSCI/introduction-to-datascience/main/data/wdbc.csv")
+cancer
+```
+
+To calculate the number of observations of each class, we group the rows by class and count them:
+
+```{r}
+#| label: count-classes
+cancer |>
+  group_by(Class) |>
+  summarize(count = n()) |>
+  rename(class = Class)
+```
+
+We do this for almost every classification problem we work on.
+Next, we will move this code into a function, `count_classes`, in `../R/count_classes.R`,
+write tests for that function,
+and call the function here instead.
